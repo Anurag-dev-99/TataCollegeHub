@@ -178,18 +178,35 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;" id="modal-desc">
           Can't find a paper? Let us know what you need, and we'll notify you as soon as it's uploaded!
         </p>
-        
         <!-- Form state -->
         <form id="paper-request-form" style="display: flex; flex-direction: column; gap: 1rem;">
           <div class="form-group" style="margin-bottom: 0;">
-            <label class="form-label" for="req-name">Your Name</label>
-            <input type="text" id="req-name" required class="form-input" placeholder="e.g. Anurag Kumar" />
+            <label class="form-label" for="req-name">Your Name (Optional)</label>
+            <input type="text" id="req-name" class="form-input" placeholder="e.g. Binod" />
+          </div>
+
+          <!-- Request Type Click Option (Segmented pills) -->
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">What do you need?</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
+              <button type="button" class="btn btn-secondary request-type-btn active" data-type="pyq" style="height: 38px; font-size: 0.85rem; padding: 0; border-radius: var(--radius-xs); border: 1px solid var(--accent-primary); background-color: rgba(99, 102, 241, 0.1); color: var(--accent-primary);">
+                📄 PYQ Paper
+              </button>
+              <button type="button" class="btn btn-secondary request-type-btn" data-type="syllabus" style="height: 38px; font-size: 0.85rem; padding: 0; border-radius: var(--radius-xs);">
+                📚 Syllabus
+              </button>
+              <button type="button" class="btn btn-secondary request-type-btn" data-type="both" style="height: 38px; font-size: 0.85rem; padding: 0; border-radius: var(--radius-xs);">
+                🔄 Both
+              </button>
+            </div>
+            <input type="hidden" id="req-type" value="pyq" />
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <div class="form-group" style="margin-bottom: 0;">
               <label class="form-label" for="req-semester">Semester</label>
               <select id="req-semester" class="form-input" style="padding-right: 2rem;">
+                <option value="All">All Semesters</option>
                 <option value="1">Semester 1</option>
                 <option value="2">Semester 2</option>
                 <option value="3">Semester 3</option>
@@ -210,6 +227,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
                 <option value="MDC">MDC</option>
                 <option value="AEC">AEC</option>
                 <option value="VAC">VAC</option>
+                <option value="Other">Other</option>
               </select>
             </div>
           </div>
@@ -219,7 +237,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
             <input type="text" id="req-subject" required class="form-input" placeholder="e.g. Mathematics - Real Analysis" />
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div id="req-session-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <div class="form-group" style="margin-bottom: 0;">
               <label class="form-label" for="req-year">Exam Year</label>
               <select id="req-year" class="form-input">
@@ -232,22 +250,21 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
               </select>
             </div>
             
-            <div class="form-group" style="margin-bottom: 0;">
+            <div class="form-group" id="req-session-wrapper" style="margin-bottom: 0;">
               <label class="form-label" for="req-session">Session/Batch</label>
               <select id="req-session" class="form-input">
-                <option value="Any">Any Session</option>
-                <option value="2025-29">2025-29</option>
-                <option value="2024-28">2024-28</option>
-                <option value="2023-27">2023-27</option>
-                <option value="2022-26">2022-26</option>
-                <option value="2021-25">2021-25</option>
+                <option value="all batch">All Batches</option>
+                <option value="2025-2029 batch">2025-2029 batch</option>
+                <option value="2024-2028 batch">2024-2028 batch</option>
+                <option value="2023-2027 batch">2023-2027 batch</option>
+                <option value="2022-2026 batch">2022-2026 batch</option>
               </select>
             </div>
           </div>
 
           <div class="form-group" style="margin-bottom: 0;">
             <label class="form-label" for="req-contact">WhatsApp / Contact Number (Optional)</label>
-            <input type="text" id="req-contact" class="form-input" placeholder="e.g. +91 80020 59887" />
+            <input type="text" id="req-contact" class="form-input" placeholder="e.g. 100" />
           </div>
 
           <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem; width: 100%;">
@@ -379,6 +396,47 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       document.getElementById('theme-toggle-mobile')?.addEventListener('click', toggleTheme);
       initThemeIcons();
 
+      // Request Type toggling logic
+      const typeBtns = document.querySelectorAll('.request-type-btn');
+      const reqTypeInput = document.getElementById('req-type');
+      const sessionWrapper = document.getElementById('req-session-wrapper');
+      const sessionRow = document.getElementById('req-session-row');
+
+      const setRequestType = (type) => {
+        typeBtns.forEach(btn => {
+          const btnType = btn.getAttribute('data-type');
+          if (btnType === type) {
+            btn.classList.add('active');
+            btn.style.backgroundColor = 'rgba(99, 102, 241, 0.1)';
+            btn.style.color = 'var(--accent-primary)';
+            btn.style.borderColor = 'var(--accent-primary)';
+          } else {
+            btn.classList.remove('active');
+            btn.style.backgroundColor = 'var(--bg-tertiary)';
+            btn.style.color = 'var(--text-primary)';
+            btn.style.borderColor = 'var(--border-color)';
+          }
+        });
+
+        if (reqTypeInput) reqTypeInput.value = type;
+
+        // Hide Session/Batch when requesting Syllabus only
+        if (type === 'syllabus') {
+          if (sessionWrapper) sessionWrapper.style.display = 'none';
+          if (sessionRow) sessionRow.style.gridTemplateColumns = '1fr';
+        } else {
+          if (sessionWrapper) sessionWrapper.style.display = 'block';
+          if (sessionRow) sessionRow.style.gridTemplateColumns = '1fr 1fr';
+        }
+      };
+
+      typeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const type = btn.getAttribute('data-type');
+          setRequestType(type);
+        });
+      });
+
       // 2. Global Request Modal logic
       const modal = document.getElementById('request-modal');
       const closeBtn = document.getElementById('close-modal-btn');
@@ -390,6 +448,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         modal.classList.add('open');
         successState.style.display = 'none';
         requestForm.style.display = 'flex';
+        setRequestType('pyq');
         
         if (subject) {
           document.getElementById('req-subject').value = subject;
@@ -438,6 +497,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         const year = document.getElementById('req-year').value;
         const session = document.getElementById('req-session').value;
         const contact = document.getElementById('req-contact').value;
+        const type = document.getElementById('req-type').value;
         
         const successMsgEl = document.getElementById('success-message');
         const actionContainer = document.getElementById('success-action-container');
@@ -446,7 +506,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         if (successState) successState.style.display = 'flex';
         
         // WhatsApp request format
-        const text = `Hi Admin! I want to request a college paper:\n- Name: ${name}\n- Subject: ${subject}\n- Semester: Semester ${semester}\n- Category: ${category}\n- Exam Year: ${year}\n- Session/Batch: ${session}${contact ? `\n- Contact WhatsApp: ${contact}` : ''}`;
+        const typeLabel = type === 'pyq' ? 'PYQ Paper' : type === 'syllabus' ? 'Syllabus' : 'Syllabus & PYQ';
+        const text = `Hi Admin! I want to request a college resource:\n- Request Type: ${typeLabel}\n- Name: ${name || 'Anonymous'}\n- Subject: ${subject}\n- Semester: ${semester === 'All' ? 'All Semesters' : `Semester ${semester}`}\n- Category: ${category}${type !== 'syllabus' ? `\n- Exam Year: ${year}\n- Session/Batch: ${session}` : ''}${contact ? `\n- Contact WhatsApp: ${contact}` : ''}`;
         const waUrl = `https://api.whatsapp.com/send?phone=918002059887&text=${encodeURIComponent(text)}`;
         const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSemsAN3v2AdoXcsV0bC_uvM-cAwrrto4kcBDghtMLmrVyWLMg/viewform?usp=publish-editor`;
         
@@ -490,7 +551,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
             setTimeout(() => {
               try {
                 const mockRequests = JSON.parse(localStorage.getItem('requests') || '[]');
-                mockRequests.push({ name, semester, category, subject, year, session, contact, date: new Date().toISOString() });
+                mockRequests.push({ name: name || 'Anonymous', semester, category, subject, year, session, contact, type, date: new Date().toISOString() });
                 localStorage.setItem('requests', JSON.stringify(mockRequests));
                 document.dispatchEvent(new CustomEvent('request-submitted'));
               } catch (err) {
@@ -515,20 +576,21 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                  name,
+                  name: name || 'Anonymous',
                   semester,
                   category,
                   subject,
                   year,
                   session,
-                  contact
+                  contact,
+                  type
                 })
               });
               
               // Save to localStorage as history for the user's dashboard requests tracker
               try {
                 const mockRequests = JSON.parse(localStorage.getItem('requests') || '[]');
-                mockRequests.push({ name, semester, category, subject, year, session, contact, date: new Date().toISOString() });
+                mockRequests.push({ name: name || 'Anonymous', semester, category, subject, year, session, contact, type, date: new Date().toISOString() });
                 localStorage.setItem('requests', JSON.stringify(mockRequests));
                 document.dispatchEvent(new CustomEvent('request-submitted'));
               } catch (err) {
