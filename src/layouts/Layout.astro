@@ -273,20 +273,18 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         </form>
 
         <!-- Success state -->
-        <div id="modal-success-state" style="display: none; flex-direction: column; align-items: center; justify-content: center; padding: 1rem 0; text-align: center; gap: 1rem;">
-          <CheckCircle size="44" style="color: var(--accent-success);" />
+        <div id="modal-success-state" style="display: none; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem 0; text-align: center; gap: 1.25rem;">
+          <div style="background-color: rgba(16, 185, 129, 0.1); color: var(--accent-success); width: 64px; height: 64px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+            <CheckCircle size="36" />
+          </div>
           <div>
-            <h3 style="font-size: 1.25rem; font-family: var(--font-display); font-weight: 800;">Request Configured</h3>
-            <p id="success-message" style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem; line-height: 1.4;">
-              Select how you would like to submit your request:
+            <h3 style="font-size: 1.4rem; font-family: var(--font-display); font-weight: 800; color: var(--text-primary);">Request Submitted</h3>
+            <p id="success-message" style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.5rem; line-height: 1.5; max-width: 320px;">
+              Your request has been submitted successfully. We'll try to add it soon!
             </p>
           </div>
-          
-          <!-- Dynamic Action Buttons (WhatsApp & Google Form Options) -->
-          <div id="success-action-container" style="width: 100%; display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
-          </div>
 
-          <button id="success-done-btn" class="btn btn-secondary" style="width: 100%; margin-top: 1rem; border-radius: var(--radius-sm); font-weight: 600;">
+          <button id="success-done-btn" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem; border-radius: var(--radius-sm); font-weight: 700;">
             Close
           </button>
         </div>
@@ -489,6 +487,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       requestForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        const submitBtn = requestForm.querySelector('button[type="submit"]');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '⏳ Submitting Request...';
+        }
+        
         // Extract field values
         const name = document.getElementById('req-name').value;
         const semester = document.getElementById('req-semester').value;
@@ -498,164 +502,80 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         const session = document.getElementById('req-session').value;
         const contact = document.getElementById('req-contact').value;
         const type = document.getElementById('req-type').value;
-        
+
+        const successState = document.getElementById('modal-success-state');
         const successMsgEl = document.getElementById('success-message');
-        const actionContainer = document.getElementById('success-action-container');
-        
-        requestForm.style.display = 'none';
-        if (successState) successState.style.display = 'flex';
-        
-        // WhatsApp request format
-        const typeLabel = type === 'pyq' ? 'PYQ Paper' : type === 'syllabus' ? 'Syllabus' : 'Syllabus & PYQ';
-        const text = `Hi Admin! I want to request a college resource:\n- Request Type: ${typeLabel}\n- Name: ${name || 'Anonymous'}\n- Subject: ${subject}\n- Semester: ${semester === 'All' ? 'All Semesters' : `Semester ${semester}`}\n- Category: ${category}${type !== 'syllabus' ? `\n- Exam Year: ${year}\n- Session/Batch: ${session}` : ''}${contact ? `\n- Contact WhatsApp: ${contact}` : ''}`;
-        const waUrl = `https://api.whatsapp.com/send?phone=918002059887&text=${encodeURIComponent(text)}`;
-        const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSemsAN3v2AdoXcsV0bC_uvM-cAwrrto4kcBDghtMLmrVyWLMg/viewform?usp=publish-editor`;
-        
-        if (successMsgEl) {
-          successMsgEl.innerHTML = `Your request for <strong>${subject}</strong> is ready. Choose your preferred delivery method:`;
-        }
-        
-        if (actionContainer) {
-          actionContainer.innerHTML = `
-            <div style="width: 100%; display: flex; flex-direction: column; gap: 0.25rem; align-items: center;">
-              <a href="${formUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-sm); text-decoration: none; height: 44px;">
-                📝 Submit Anonymously (Google Form)
-              </a>
-              <span style="font-size: 0.725rem; color: var(--text-tertiary);">Recommended. 100% private, no phone required.</span>
-            </div>
-            
-            <div style="width: 100%; display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.75rem; align-items: center;">
-              <button id="direct-sheet-btn" class="btn btn-outline" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-sm); height: 44px;" disabled>
-                ⏳ Submitting directly on website...
-              </button>
-              <span id="direct-sheet-status-text" style="font-size: 0.725rem; color: var(--text-tertiary);">Automatic submission in progress.</span>
-            </div>
 
-            <div style="width: 100%; display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.75rem; align-items: center;">
-              <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-sm); text-decoration: none; height: 44px; border-color: var(--border-color); color: var(--text-secondary);">
-                💬 Send via WhatsApp (Fastest Response)
-              </a>
-              <span style="font-size: 0.725rem; color: var(--text-tertiary);">Discloses your phone number to the admin.</span>
-            </div>
-          `;
-        }
-
-        // Background direct Google Sheet submission
         const webhookUrl = 'https://script.google.com/macros/s/AKfycbx3ZJ1VuRgNc71FSKnrIAzLsv3qxnUeBwA8HALHWhDxlpJC93YzOwCV5rmLLT-swLaXHQ/exec';
-        const directBtn = document.getElementById('direct-sheet-btn');
-        const directText = document.getElementById('direct-sheet-status-text');
 
-        const submitToWebhook = async () => {
-          if (!webhookUrl || webhookUrl === 'YOUR_GOOGLE_SHEETS_WEB_APP_URL') {
-            // Demo Mode / Simulated Submission
-            setTimeout(() => {
-              try {
-                const mockRequests = JSON.parse(localStorage.getItem('requests') || '[]');
-                mockRequests.push({ name: name || 'Anonymous', semester, category, subject, year, session, contact, type, date: new Date().toISOString() });
-                localStorage.setItem('requests', JSON.stringify(mockRequests));
-                document.dispatchEvent(new CustomEvent('request-submitted'));
-              } catch (err) {
-                console.error(err);
-              }
-              if (directBtn) {
-                directBtn.innerHTML = '✅ Simulated Save (Google Sheets Web App)';
-                directBtn.style.borderColor = 'var(--accent-warning)';
-                directBtn.style.color = 'var(--accent-warning)';
-              }
-              if (directText) {
-                directText.innerHTML = 'Demo mode: data saved to Local Storage. Configure webhook URL in Layout.astro to submit to real Google Sheet.';
-              }
-            }, 1000);
-          } else {
-            // Real Submission
-            try {
-              await fetch(webhookUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  name: name || 'Anonymous',
-                  semester,
-                  category,
-                  subject,
-                  year,
-                  session,
-                  contact,
-                  type
-                })
-              });
-              
-              // Save to localStorage as history for the user's dashboard requests tracker
-              try {
-                const mockRequests = JSON.parse(localStorage.getItem('requests') || '[]');
-                mockRequests.push({ name: name || 'Anonymous', semester, category, subject, year, session, contact, type, date: new Date().toISOString() });
-                localStorage.setItem('requests', JSON.stringify(mockRequests));
-                document.dispatchEvent(new CustomEvent('request-submitted'));
-              } catch (err) {
-                console.error(err);
-              }
-
-              if (directBtn) {
-                directBtn.innerHTML = '✅ Submitted to Google Sheet successfully!';
-                directBtn.style.borderColor = 'var(--accent-success)';
-                directBtn.style.color = 'var(--accent-success)';
-              }
-              if (directText) {
-                directText.innerHTML = 'Instant submission. Fully anonymous.';
-              }
-            } catch (err) {
-              console.error(err);
-              if (directBtn) {
-                directBtn.innerHTML = '❌ Direct Submission Failed';
-                directBtn.style.borderColor = 'var(--accent-danger)';
-                directBtn.style.color = 'var(--accent-danger)';
-                directBtn.disabled = false; // Allow manual retry if needed
-              }
-              if (directText) {
-                directText.innerHTML = 'Failed to submit in background. Click to try again, or use other options.';
-              }
-            }
+        const handleSuccess = () => {
+          // Hide form and show success state
+          requestForm.style.display = 'none';
+          if (successState) successState.style.display = 'flex';
+          
+          if (successMsgEl) {
+            successMsgEl.innerHTML = `Your request for <strong>${subject}</strong> has been submitted successfully. We'll try to add it soon!`;
+          }
+          
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Submit Request';
           }
         };
 
-        // Run the background submit task
-        submitToWebhook();
-
-        // Direct button retry handler
-        if (directBtn) {
-          directBtn.addEventListener('click', async () => {
-            if (webhookUrl && webhookUrl !== 'YOUR_GOOGLE_SHEETS_WEB_APP_URL') {
-              directBtn.disabled = true;
-              directBtn.innerHTML = '⏳ Retrying submission...';
-              try {
-                await fetch(webhookUrl, {
-                  method: 'POST',
-                  mode: 'no-cors',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    name,
-                    semester,
-                    category,
-                    subject,
-                    year,
-                    session,
-                    contact
-                  })
-                });
-                directBtn.innerHTML = '✅ Submitted to Google Sheet successfully!';
-                directBtn.style.borderColor = 'var(--accent-success)';
-                directBtn.style.color = 'var(--accent-success)';
-              } catch (err) {
-                console.error(err);
-                directBtn.innerHTML = '❌ Direct Submission Failed';
-                directBtn.disabled = false;
-              }
+        if (!webhookUrl || webhookUrl === 'YOUR_GOOGLE_SHEETS_WEB_APP_URL') {
+          // Demo Mode / Simulated Submission
+          setTimeout(() => {
+            try {
+              const mockRequests = JSON.parse(localStorage.getItem('requests') || '[]');
+              mockRequests.push({ name: name || 'Anonymous', semester, category, subject, year, session, contact, type, date: new Date().toISOString() });
+              localStorage.setItem('requests', JSON.stringify(mockRequests));
+              document.dispatchEvent(new CustomEvent('request-submitted'));
+            } catch (err) {
+              console.error(err);
             }
-          });
+            handleSuccess();
+          }, 1000);
+        } else {
+          // Real Submission
+          try {
+            await fetch(webhookUrl, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                name: name || 'Anonymous',
+                semester,
+                category,
+                subject,
+                year,
+                session,
+                contact,
+                type
+              })
+            });
+            
+            // Save to localStorage as history for the user's dashboard requests tracker
+            try {
+              const mockRequests = JSON.parse(localStorage.getItem('requests') || '[]');
+              mockRequests.push({ name: name || 'Anonymous', semester, category, subject, year, session, contact, type, date: new Date().toISOString() });
+              localStorage.setItem('requests', JSON.stringify(mockRequests));
+              document.dispatchEvent(new CustomEvent('request-submitted'));
+            } catch (err) {
+              console.error(err);
+            }
+            
+            handleSuccess();
+          } catch (err) {
+            console.error(err);
+            alert('Submission failed. Please check your internet connection or try again later.');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = 'Submit Request';
+            }
+          }
         }
       });
 
