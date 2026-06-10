@@ -1,10 +1,10 @@
 ---
 import '../styles/global.css';
-import { Home, FileSpreadsheet, FileCode, GraduationCap, Bell, Moon, Sun, Search, X, CheckCircle } from '@lucide/astro';
+import { LayoutGrid, FileText, BookOpen, Bell, TrendingUp, Calculator, Moon, Sun, Search, X, CheckCircle } from '@lucide/astro';
 
 interface Props {
   title: string;
-  activeTab?: 'home' | 'syllabus' | 'pyqs' | 'results' | 'notices';
+  activeTab?: 'home' | 'syllabus' | 'pyqs' | 'results' | 'notices' | 'cgpa';
 }
 
 const { title, activeTab } = Astro.props;
@@ -12,7 +12,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
 ---
 
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,7 +28,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
           return localStorage.getItem('theme');
         }
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        return 'dark'; // DEFAULT theme is dark (Midnight Blue Legacy Theme)
       };
       
       const theme = getTheme();
@@ -41,30 +41,35 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       <!-- Desktop Sidebar -->
       <aside class="sidebar">
         <div style="display: flex; align-items: center; gap: 0.75rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
-          <div style="background-color: var(--accent-primary); color: white; width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; box-shadow: var(--shadow-glow);">
+          <div style="background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); color: white; width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; box-shadow: var(--shadow-glow);">
             T
           </div>
           <div>
-            <h2 style="font-size: 1rem; font-weight: 800; tracking: -0.02em;">Tata College</h2>
-            <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600;">Student Hub</span>
+            <h2 style="font-size: 1.1rem; font-weight: 800; tracking: -0.02em; font-family: var(--font-display);">
+              <span style="color: var(--text-primary);">Tata </span><span style="color: var(--accent-primary);">Hub</span>
+            </h2>
+            <span style="font-size: 0.7rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Student Portal</span>
           </div>
         </div>
 
         <nav style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
           <a href={`${baseUrl}/`} class={`mobile-nav-item ${activeTab === 'home' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
-            <Home /> <span style="font-size: 0.95rem; font-weight: 600;">Dashboard</span>
-          </a>
-          <a href={`${baseUrl}/syllabus`} class={`mobile-nav-item ${activeTab === 'syllabus' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
-            <FileSpreadsheet /> <span style="font-size: 0.95rem; font-weight: 600;">Syllabus</span>
+            <LayoutGrid /> <span style="font-size: 0.95rem; font-weight: 600;">Home</span>
           </a>
           <a href={`${baseUrl}/pyqs`} class={`mobile-nav-item ${activeTab === 'pyqs' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
-            <FileCode /> <span style="font-size: 0.95rem; font-weight: 600;">PYQs Database</span>
+            <FileText /> <span style="font-size: 0.95rem; font-weight: 600;">PYQs</span>
           </a>
-          <a href={`${baseUrl}/results`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
-            <GraduationCap /> <span style="font-size: 0.95rem; font-weight: 600;">Results Portal</span>
+          <a href={`${baseUrl}/syllabus`} class={`mobile-nav-item ${activeTab === 'syllabus' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+            <BookOpen /> <span style="font-size: 0.95rem; font-weight: 600;">Syllabus</span>
           </a>
           <a href={`${baseUrl}/notices`} class={`mobile-nav-item ${activeTab === 'notices' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
-            <Bell /> <span style="font-size: 0.95rem; font-weight: 600;">Notice Board</span>
+            <Bell /> <span style="font-size: 0.95rem; font-weight: 600;">Notices</span>
+          </a>
+          <a href={`${baseUrl}/results`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+            <TrendingUp /> <span style="font-size: 0.95rem; font-weight: 600;">Results</span>
+          </a>
+          <a href={`${baseUrl}/results#cgpa-calculator`} class={`mobile-nav-item ${activeTab === 'cgpa' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+            <Calculator /> <span style="font-size: 0.95rem; font-weight: 600;">CGPA</span>
           </a>
         </nav>
 
@@ -74,7 +79,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
               <Sun class="sun-icon" style="display: none;" />
               <Moon class="moon-icon" />
             </span>
-            <span style="font-size: 0.9rem; font-weight: 600;">Switch Mode</span>
+            <span style="font-size: 0.9rem; font-weight: 600;">Theme Mode</span>
           </button>
         </div>
       </aside>
@@ -83,33 +88,42 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       <div style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
         
         <!-- Sticky Header -->
-        <header style="background-color: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 40; padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; box-shadow: var(--shadow-sm);">
-          <div style="display: flex; align-items: center; gap: 0.5rem;" class="md:hidden">
-            <div style="background-color: var(--accent-primary); color: white; width: 32px; height: 32px; border-radius: var(--radius-xs); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1rem;">
+        <header style="background-color: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 40; padding: 0.75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; box-shadow: var(--shadow-sm); height: 68px;">
+          <!-- Logo & Branding -->
+          <div style="display: flex; align-items: center; gap: 0.625rem;">
+            <div style="background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); color: white; width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; box-shadow: var(--shadow-glow);">
               T
             </div>
-            <h1 style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display);">Tata College Hub</h1>
+            <h1 style="font-size: 1.15rem; font-weight: 800; font-family: var(--font-display); tracking: -0.01em;">
+              <span style="color: var(--text-primary);">Tata </span><span style="color: var(--accent-primary);">Hub</span>
+            </h1>
           </div>
 
-          <!-- Header Search -->
-          <div style="position: relative; flex: 1; max-width: 480px; display: flex; align-items: center;">
+          <!-- Header Search Bar Container -->
+          <div id="header-search-container" style="position: relative; flex: 1; max-width: 440px; display: flex; align-items: center;" class="hidden-search-mobile">
             <Search style="position: absolute; left: 0.875rem; width: 18px; height: 18px; color: var(--text-tertiary);" />
-            <input type="text" id="global-search-input" class="form-input" placeholder="Search syllabus, papers..." style="padding-left: 2.5rem; height: 40px;" />
+            <input type="text" id="global-search-input" class="form-input" placeholder="Search syllabus, papers..." style="padding-left: 2.5rem; height: 40px; border-radius: var(--radius-full); font-size: 0.875rem;" />
             
             <!-- Dynamic search suggestion box -->
-            <div id="search-suggestions" class="card" style="display: none; position: absolute; top: 46px; left: 0; right: 0; z-index: 60; max-height: 300px; overflow-y: auto; padding: 0.5rem; box-shadow: var(--shadow-lg);">
+            <div id="search-suggestions" class="card" style="display: none; position: absolute; top: 46px; left: 0; right: 0; z-index: 60; max-height: 300px; overflow-y: auto; padding: 0.5rem; box-shadow: var(--shadow-lg); border-radius: var(--radius-md);">
             </div>
           </div>
 
-          <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <!-- Mobile Theme Toggle -->
-            <button id="theme-toggle-mobile" class="btn btn-secondary btn-sm" style="width: 40px; height: 40px; border-radius: var(--radius-sm); padding: 0;" aria-label="Toggle Theme">
+          <!-- Action buttons -->
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <!-- Mobile Search Icon Trigger Button -->
+            <button id="mobile-search-toggle" class="btn btn-secondary" style="width: 40px; height: 40px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; padding: 0; background-color: var(--bg-tertiary); border: 1px solid var(--border-color);" aria-label="Search">
+              <Search size="20" />
+            </button>
+
+            <!-- Theme Toggle -->
+            <button id="theme-toggle-mobile" class="btn btn-secondary" style="width: 40px; height: 40px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; padding: 0; background-color: var(--bg-tertiary); border: 1px solid var(--border-color);" aria-label="Toggle Theme">
               <Sun class="sun-icon" style="display: none;" />
               <Moon class="moon-icon" />
             </button>
 
             <!-- Request Button -->
-            <button id="header-request-btn" class="btn btn-primary btn-sm" style="font-size: 0.85rem; height: 40px;">
+            <button id="header-request-btn" class="btn btn-primary" style="font-size: 0.85rem; height: 40px; padding: 0 1rem; border-radius: var(--radius-full); font-weight: 700;" class="md:flex">
               Request Paper
             </button>
           </div>
@@ -123,29 +137,32 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         </main>
 
         <!-- Footer -->
-        <footer style="background-color: var(--bg-secondary); border-top: 1px solid var(--border-color); padding: 2rem 1rem 6rem 1rem; text-align: center; font-size: 0.85rem; color: var(--text-secondary);" class="md:pb-8">
-          <p>© {new Date().getFullYear()} Tata College Student Hub. Built for mobile convenience.</p>
-          <p style="margin-top: 0.5rem; color: var(--text-tertiary);">Disclaimer: This website provides reference syllabus/PYQs for students. Verify official schedules with Kolhan University.</p>
+        <footer style="background-color: var(--bg-secondary); border-top: 1px solid var(--border-color); padding: 2.5rem 1rem 6.5rem 1rem; text-align: center; font-size: 0.825rem; color: var(--text-secondary);" class="md:pb-8">
+          <p>© {new Date().getFullYear()} Tata Hub. Rebuilt in Astro.</p>
+          <p style="margin-top: 0.5rem; color: var(--text-tertiary);">Disclaimer: Reference syllabus & PYQs source for student study. Verify with official administration.</p>
         </footer>
 
       </div>
 
-      <!-- Mobile Bottom Navigation -->
+      <!-- Mobile Bottom Navigation (6 Tabs matching Screenshot) -->
       <nav class="mobile-nav">
         <a href={`${baseUrl}/`} class={`mobile-nav-item ${activeTab === 'home' ? 'active' : ''}`}>
-          <Home /> <span>Home</span>
-        </a>
-        <a href={`${baseUrl}/syllabus`} class={`mobile-nav-item ${activeTab === 'syllabus' ? 'active' : ''}`}>
-          <FileSpreadsheet /> <span>Syllabus</span>
+          <LayoutGrid /> <span>Home</span>
         </a>
         <a href={`${baseUrl}/pyqs`} class={`mobile-nav-item ${activeTab === 'pyqs' ? 'active' : ''}`}>
-          <FileCode /> <span>PYQs</span>
+          <FileText /> <span>PYQs</span>
         </a>
-        <a href={`${baseUrl}/results`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`}>
-          <GraduationCap /> <span>Results</span>
+        <a href={`${baseUrl}/syllabus`} class={`mobile-nav-item ${activeTab === 'syllabus' ? 'active' : ''}`}>
+          <BookOpen /> <span>Syllabus</span>
         </a>
         <a href={`${baseUrl}/notices`} class={`mobile-nav-item ${activeTab === 'notices' ? 'active' : ''}`}>
           <Bell /> <span>Notices</span>
+        </a>
+        <a href={`${baseUrl}/results`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`}>
+          <TrendingUp /> <span>Results</span>
+        </a>
+        <a href={`${baseUrl}/results#cgpa-calculator`} class={`mobile-nav-item ${activeTab === 'cgpa' ? 'active' : ''}`}>
+          <Calculator /> <span>CGPA</span>
         </a>
       </nav>
 
@@ -211,8 +228,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
           </div>
 
           <div class="form-group" id="file-link-group" style="display: none; margin-bottom: 0;">
-            <label class="form-label" for="req-file-url">Drive/Image Link (Optional)</label>
+            <label class="form-label" for="req-file-url">Drive/Cloud Share Link (Optional)</label>
             <input type="url" id="req-file-url" class="form-input" placeholder="e.g. https://drive.google.com/..." />
+          </div>
+
+          <div class="form-group" id="file-upload-group" style="display: none; margin-bottom: 0;">
+            <label class="form-label" for="req-file">Or Upload PDF / Photo Files (Multiple)</label>
+            <input type="file" id="req-file" class="form-input" accept="application/pdf,image/*" multiple style="padding: 0.35rem 0.5rem;" />
+            <span style="font-size: 0.725rem; color: var(--text-tertiary); margin-top: 0.25rem; display: block;">Select PDF syllabus files or camera pictures of the exam papers.</span>
           </div>
 
           <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem; width: 100%;">
@@ -274,10 +297,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       const modal = document.getElementById('request-modal');
       const closeBtn = document.getElementById('close-modal-btn');
       const successDoneBtn = document.getElementById('success-done-btn');
-      const requestForm = document.getElementById('paper-request-form');
+      const requestForm = document.getElementById('paper-request-form') as HTMLFormElement;
       const successState = document.getElementById('modal-success-state');
       const actionSelect = document.getElementById('req-type');
       const fileLinkGroup = document.getElementById('file-link-group');
+      const fileUploadGroup = document.getElementById('file-upload-group');
 
       const openModal = (type = 'request', subject = '', semester = '1', category = 'Major') => {
         modal.classList.add('open');
@@ -298,6 +322,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       const closeModal = () => {
         modal.classList.remove('open');
         requestForm.reset();
+        if (fileLinkGroup) fileLinkGroup.style.display = 'none';
+        if (fileUploadGroup) fileUploadGroup.style.display = 'none';
       };
 
       // Header click
@@ -319,12 +345,15 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         openModal('request', subject, semester, category);
       });
 
-      // Handle upload url visible state
+      // Handle upload url/file visible state
       actionSelect?.addEventListener('change', (e) => {
-        if (e.target.value === 'submit') {
-          fileLinkGroup.style.display = 'block';
+        const target = e.target as HTMLSelectElement;
+        if (target.value === 'submit') {
+          if (fileLinkGroup) fileLinkGroup.style.display = 'block';
+          if (fileUploadGroup) fileUploadGroup.style.display = 'block';
         } else {
-          fileLinkGroup.style.display = 'none';
+          if (fileLinkGroup) fileLinkGroup.style.display = 'none';
+          if (fileUploadGroup) fileUploadGroup.style.display = 'none';
         }
       });
 
@@ -432,6 +461,24 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       document.addEventListener('click', (e) => {
         if (!searchInput?.contains(e.target) && !suggestionsBox?.contains(e.target)) {
           if (suggestionsBox) suggestionsBox.style.display = 'none';
+        }
+      });
+
+      // Mobile search trigger toggle
+      const mobileSearchToggle = document.getElementById('mobile-search-toggle');
+      const headerEl = document.querySelector('header');
+      mobileSearchToggle?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        headerEl?.classList.toggle('show-mobile-search');
+        if (headerEl?.classList.contains('show-mobile-search')) {
+          searchInput?.focus();
+        }
+      });
+      // Close search when clicking outside
+      document.addEventListener('click', (e) => {
+        const searchContainer = document.getElementById('header-search-container');
+        if (!searchContainer?.contains(e.target) && !mobileSearchToggle?.contains(e.target)) {
+          headerEl?.classList.remove('show-mobile-search');
         }
       });
     </script>

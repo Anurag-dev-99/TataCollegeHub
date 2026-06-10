@@ -6,7 +6,10 @@ import { ChevronLeft, Calendar, Download, FileCode, AlertCircle, HelpCircle, Ext
 export async function getStaticPaths() {
   const pathsMap = new Map();
   
-  pyqsData.forEach(item => {
+  // Filter only available papers with download URLs
+  const availablePyqs = pyqsData.filter(item => !!item.downloadUrl);
+  
+  availablePyqs.forEach(item => {
     const key = `${item.category.toLowerCase()}|${item.subject.toLowerCase()}|${item.semester}`;
     if (!pathsMap.has(key)) {
       pathsMap.set(key, {

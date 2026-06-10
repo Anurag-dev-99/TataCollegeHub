@@ -6,8 +6,10 @@ import { ChevronLeft, Calendar, Download, FileText, AlertCircle, HelpCircle, Arr
 export async function getStaticPaths() {
   const getSlug = (dept: string) => dept.toLowerCase().replace(/\s+/g, '-');
   
-  // Group syllabuses by department to map them correctly
-  const departments = [...new Set(syllabusData.map(item => item.department))];
+  // Filter and only build departments that have active files
+  const activeDepartments = ['Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor'];
+  const filteredSyllabus = syllabusData.filter(item => activeDepartments.includes(item.department));
+  const departments = [...new Set(filteredSyllabus.map(item => item.department))];
   
   return departments.map(dept => {
     return {

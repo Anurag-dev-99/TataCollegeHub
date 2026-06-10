@@ -17,42 +17,66 @@ const sortedNotices = [...noticesData].sort((a, b) => {
   return new Date(b.date).getTime() - new Date(a.date).getTime();
 });
 
-// Categories list
-const categories = ['All', 'General', 'Exam', 'Result', 'Admission', 'Academic'];
+// Categories list mapping labels to exact notice keys
+const categories = [
+  { label: 'All', key: 'All' },
+  { label: 'Exams', key: 'Exam' },
+  { label: 'Admissions', key: 'Admission' },
+  { label: 'Academic', key: 'Academic' },
+  { label: 'Results', key: 'Result' }
+];
 ---
 
 <Layout title="Notice Board" activeTab="notices">
 
-  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
-    <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">College Notice Board</h1>
+  <div style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+    <h1 style="font-size: 2.25rem; font-family: var(--font-display); font-weight: 800; tracking: -0.02em;">Notice Board</h1>
     <p style="color: var(--text-secondary); max-width: 600px; font-size: 1.05rem;">
-      Stay updated with real-time official notices from Kolhan University and Tata College administrations.
+      Stay updated with official notifications from Kolhan University and Tata College.
     </p>
   </div>
 
-  <!-- Filters & Search Toolbar -->
-  <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: 1rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);" class="md:flex-row md:align-center md:justify-between">
+  <!-- Archived Button -->
+  <div style="margin-bottom: 1.5rem;">
+    <button id="archive-toggle-btn" class="btn btn-secondary" style="border-radius: var(--radius-sm); font-weight: 600; padding: 0.625rem 1.25rem; gap: 0.625rem;">
+      <Bell size="18" /> View Archived Notices
+    </button>
+  </div>
+
+  <!-- Filters & Search Unified Card (Matching Screenshot) -->
+  <div class="card" style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem; padding: 1.5rem; border-color: var(--border-color); box-shadow: var(--shadow-lg);">
     
-    <!-- Filter tabs -->
+    <!-- Search Input -->
+    <div style="position: relative; display: flex; align-items: center; width: 100%;">
+      <Search style="position: absolute; left: 1rem; width: 18px; height: 18px; color: var(--text-tertiary);" />
+      <input 
+        type="text" 
+        id="notice-search" 
+        class="form-input" 
+        placeholder="Search notices by keyword..." 
+        style="padding-left: 2.75rem; border-radius: var(--radius-sm); height: 46px; font-size: 0.95rem; background-color: rgba(0,0,0,0.15);" 
+      />
+    </div>
+
+    <!-- Category Pills -->
     <div style="display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.25rem; -webkit-overflow-scrolling: touch;" class="no-scrollbar">
       {categories.map((cat, idx) => (
         <button 
           class={`btn btn-sm filter-btn ${idx === 0 ? 'btn-primary' : 'btn-secondary'}`} 
-          data-category={cat}
-          style="white-space: nowrap;"
+          data-category={cat.key}
+          style="white-space: nowrap; border-radius: var(--radius-full); padding: 0.5rem 1.15rem; font-size: 0.85rem;"
         >
-          {cat}
+          {cat.label}
         </button>
       ))}
     </div>
 
-    <!-- Search input in notices -->
-    <div style="position: relative; display: flex; align-items: center; width: 100%;" class="md:max-w-xs">
-      <Search style="position: absolute; left: 0.875rem; width: 16px; height: 16px; color: var(--text-tertiary);" />
-      <input type="text" id="notice-search" class="form-input form-input-sm" placeholder="Search notices..." style="padding-left: 2.25rem; font-size: 0.875rem; height: 36px;" />
-    </div>
-
   </div>
+
+  <!-- Notices List Section -->
+  <h2 style="font-size: 1.35rem; font-family: var(--font-display); margin-bottom: 1.25rem; color: var(--text-primary);" id="list-heading">
+    Latest Active Notices
+  </h2>
 
   <!-- Notices List Container -->
   <div id="notices-container" style="display: grid; grid-template-columns: 1fr; gap: 1.25rem;" class="md:grid-cols-2">
@@ -60,6 +84,15 @@ const categories = ['All', 'General', 'Exam', 'Result', 'Admission', 'Academic']
       const isExpired = notice.isArchived;
       const containsDeadline = /last date|deadline|due date/i.test(`${notice.title} ${notice.description}`);
       
+      // Determine vertical border accent color
+      let borderAccent = 'var(--border-color)';
+      if (!isExpired) {
+        if (notice.category === 'Exam') borderAccent = 'var(--accent-danger)';
+        else if (notice.category === 'General') borderAccent = 'var(--accent-warning)';
+        else if (notice.category === 'Result') borderAccent = 'var(--accent-success)';
+        else if (notice.category === 'Admission') borderAccent = 'var(--accent-primary)';
+      }
+
       return (
         <div 
           class="card notice-card" 
@@ -67,9 +100,7 @@ const categories = ['All', 'General', 'Exam', 'Result', 'Admission', 'Academic']
           data-cat={notice.category}
           data-archived={notice.isArchived ? "true" : "false"}
           data-pinned={notice.isPinned ? "true" : "false"}
-          style={`display: flex; flex-direction: column; gap: 1rem; position: relative; border-left: 4px solid ${
-            isExpired ? 'var(--text-tertiary)' : notice.isPinned ? 'var(--accent-primary)' : containsDeadline ? 'var(--accent-danger)' : 'var(--border-color)'
-          }; opacity: ${isExpired ? 0.7 : 1};`}
+          style={`display: flex; flex-direction: column; gap: 1rem; position: relative; border-left: 4px solid ${borderAccent}; opacity: ${isExpired ? 0.6 : 1}; display: ${isExpired ? 'none' : 'flex'};`}
         >
           <!-- Notice Metadata -->
           <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -79,26 +110,25 @@ const categories = ['All', 'General', 'Exam', 'Result', 'Admission', 'Academic']
                 notice.category === 'Result' ? 'badge-success' : 
                 notice.category === 'Admission' ? 'badge-primary' : 
                 'badge-warning'
-              }`}>
+              }`} style="border-radius: var(--radius-xs); text-transform: uppercase;">
                 {notice.category}
               </span>
-              {isExpired && <span class="badge" style="background-color: var(--bg-tertiary); color: var(--text-secondary);">Archived</span>}
+              {isExpired && <span class="badge" style="background-color: var(--bg-tertiary); color: var(--text-secondary); border-radius: var(--radius-xs);">Archived</span>}
             </div>
             
             <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-tertiary); font-weight: 600;">
-              <Calendar size="14" />
-              <span>{notice.date}</span>
-              {notice.isPinned && (
-                <span style="color: var(--accent-primary); display: flex; align-items: center; gap: 0.15rem; font-weight: 700;" title="Pinned Notice">
-                  <Pin size="12" /> Pinned
+              {notice.isPinned && !isExpired && (
+                <span style="color: var(--accent-warning); display: flex; align-items: center; gap: 0.2rem; font-weight: 700; text-transform: uppercase;" title="Pinned Notice">
+                  📌 Pinned
                 </span>
               )}
+              <span>{notice.date}</span>
             </div>
           </div>
 
           <!-- Title & Description -->
           <div>
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.35;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.35; color: var(--text-primary);">
               {notice.title}
             </h3>
             <p style="font-size: 0.925rem; color: var(--text-secondary); line-height: 1.6;">
@@ -110,7 +140,7 @@ const categories = ['All', 'General', 'Exam', 'Result', 'Admission', 'Academic']
           {!isExpired && containsDeadline && (
             <div style="background-color: rgba(239, 68, 68, 0.05); border: 1px dashed rgba(239, 68, 68, 0.2); border-radius: var(--radius-xs); padding: 0.625rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--accent-danger); font-weight: 600;">
               <AlertCircle size="14" />
-              <span>Deadline details are listed inside description.</span>
+              <span>Deadline detected in notice details.</span>
             </div>
           )}
 
@@ -157,22 +187,27 @@ const categories = ['All', 'General', 'Exam', 'Result', 'Admission', 'Academic']
     const searchInput = document.getElementById('notice-search') as HTMLInputElement;
     const cards = document.querySelectorAll('.notice-card') as NodeListOf<HTMLElement>;
     const noNoticesBox = document.getElementById('no-notices');
+    const archiveBtn = document.getElementById('archive-toggle-btn') as HTMLButtonElement;
+    const listHeading = document.getElementById('list-heading');
 
     let currentCategory = 'All';
     let searchQuery = '';
+    let showArchived = false;
 
     const filterNotices = () => {
       let visibleCount = 0;
 
       cards.forEach(card => {
         const category = card.getAttribute('data-cat') || '';
+        const isArchived = card.getAttribute('data-archived') === 'true';
         const title = card.querySelector('h3')?.textContent?.toLowerCase() || '';
         const desc = card.querySelector('p')?.textContent?.toLowerCase() || '';
         
         const matchesCategory = currentCategory === 'All' || category.toLowerCase() === currentCategory.toLowerCase();
         const matchesSearch = title.includes(searchQuery) || desc.includes(searchQuery);
+        const matchesArchiveState = isArchived === showArchived;
 
-        if (matchesCategory && matchesSearch) {
+        if (matchesCategory && matchesSearch && matchesArchiveState) {
           card.style.display = 'flex';
           visibleCount++;
         } else {
@@ -206,6 +241,19 @@ const categories = ['All', 'General', 'Exam', 'Result', 'Admission', 'Academic']
 
     searchInput?.addEventListener('input', (e) => {
       searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+      filterNotices();
+    });
+
+    // Handle archived toggle button click
+    archiveBtn?.addEventListener('click', () => {
+      showArchived = !showArchived;
+      if (showArchived) {
+        archiveBtn.innerHTML = `<span>📂 View Active Notices</span>`;
+        if (listHeading) listHeading.textContent = 'Archived Notices';
+      } else {
+        archiveBtn.innerHTML = `<span>📁 View Archived Notices</span>`;
+        if (listHeading) listHeading.textContent = 'Latest Active Notices';
+      }
       filterNotices();
     });
 
