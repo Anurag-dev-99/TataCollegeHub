@@ -251,7 +251,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
           </div>
 
           <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem; width: 100%;">
-            Prepare WhatsApp Request
+            Submit Request
           </button>
         </form>
 
@@ -324,6 +324,24 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
 
         <button id="close-submit-done-btn" class="btn btn-secondary" style="width: 100%; margin-top: 1.5rem; border-radius: var(--radius-sm); font-weight: 600;">
           Cancel
+        </button>
+      </div>
+    </div>
+
+    <!-- Floating Request Toast -->
+    <div id="request-toast" class="toast-container">
+      <button id="close-toast-btn" class="toast-close" aria-label="Close notification">
+        <X size="16" />
+      </button>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem; padding-right: 1.25rem;">
+        <h4 style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display); color: var(--text-primary); display: flex; align-items: center; gap: 0.35rem; margin: 0;">
+          🔍 Can't find your paper?
+        </h4>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+          Request any question paper, syllabus, or note. We'll try to add it soon.
+        </p>
+        <button id="toast-action-btn" class="btn btn-primary btn-sm" style="margin-top: 0.25rem; font-size: 0.775rem; padding: 0.35rem 0.75rem; border-radius: var(--radius-xs); width: fit-content; font-weight: 700;">
+          Request Now
         </button>
       </div>
     </div>
@@ -409,7 +427,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       });
 
       // Form submit
-      requestForm?.addEventListener('submit', (e) => {
+      requestForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         // Extract field values
@@ -430,7 +448,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         // WhatsApp request format
         const text = `Hi Admin! I want to request a college paper:\n- Name: ${name}\n- Subject: ${subject}\n- Semester: Semester ${semester}\n- Category: ${category}\n- Exam Year: ${year}\n- Session/Batch: ${session}${contact ? `\n- Contact WhatsApp: ${contact}` : ''}`;
         const waUrl = `https://api.whatsapp.com/send?phone=918002059887&text=${encodeURIComponent(text)}`;
-        const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSdBj3G1eQnF6zIrHjc5VtudcCzknOV1wsUXT2dE4xE11P9Qgg/viewform?usp=sharing&ouid=101804319546278458995`;
+        const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSemsAN3v2AdoXcsV0bC_uvM-cAwrrto4kcBDghtMLmrVyWLMg/viewform?usp=publish-editor`;
         
         if (successMsgEl) {
           successMsgEl.innerHTML = `Your request for <strong>${subject}</strong> is ready. Choose your preferred delivery method:`;
@@ -439,19 +457,132 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         if (actionContainer) {
           actionContainer.innerHTML = `
             <div style="width: 100%; display: flex; flex-direction: column; gap: 0.25rem; align-items: center;">
-              <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-sm); text-decoration: none; height: 44px;">
-                💬 Send via WhatsApp (Fastest)
-              </a>
-              <span style="font-size: 0.725rem; color: var(--text-tertiary);">Reveals your number to the admin</span>
-            </div>
-            
-            <div style="width: 100%; display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.5rem; align-items: center;">
-              <a href="${formUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-sm); text-decoration: none; height: 44px;">
+              <a href="${formUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-sm); text-decoration: none; height: 44px;">
                 📝 Submit Anonymously (Google Form)
               </a>
-              <span style="font-size: 0.725rem; color: var(--text-tertiary);">100% private, no phone number revealed</span>
+              <span style="font-size: 0.725rem; color: var(--text-tertiary);">Recommended. 100% private, no phone required.</span>
+            </div>
+            
+            <div style="width: 100%; display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.75rem; align-items: center;">
+              <button id="direct-sheet-btn" class="btn btn-outline" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-sm); height: 44px;" disabled>
+                ⏳ Submitting directly on website...
+              </button>
+              <span id="direct-sheet-status-text" style="font-size: 0.725rem; color: var(--text-tertiary);">Automatic submission in progress.</span>
+            </div>
+
+            <div style="width: 100%; display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.75rem; align-items: center;">
+              <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-sm); text-decoration: none; height: 44px; border-color: var(--border-color); color: var(--text-secondary);">
+                💬 Send via WhatsApp (Fastest Response)
+              </a>
+              <span style="font-size: 0.725rem; color: var(--text-tertiary);">Discloses your phone number to the admin.</span>
             </div>
           `;
+        }
+
+        // Background direct Google Sheet submission
+        const webhookUrl = 'YOUR_GOOGLE_SHEETS_WEB_APP_URL';
+        const directBtn = document.getElementById('direct-sheet-btn');
+        const directText = document.getElementById('direct-sheet-status-text');
+
+        const submitToWebhook = async () => {
+          if (!webhookUrl || webhookUrl === 'YOUR_GOOGLE_SHEETS_WEB_APP_URL') {
+            // Demo Mode / Simulated Submission
+            setTimeout(() => {
+              try {
+                const mockRequests = JSON.parse(localStorage.getItem('requests') || '[]');
+                mockRequests.push({ name, semester, category, subject, year, session, contact, date: new Date().toISOString() });
+                localStorage.setItem('requests', JSON.stringify(mockRequests));
+              } catch (err) {
+                console.error(err);
+              }
+              if (directBtn) {
+                directBtn.innerHTML = '✅ Simulated Save (Google Sheets Web App)';
+                directBtn.style.borderColor = 'var(--accent-warning)';
+                directBtn.style.color = 'var(--accent-warning)';
+              }
+              if (directText) {
+                directText.innerHTML = 'Demo mode: data saved to Local Storage. Configure webhook URL in Layout.astro to submit to real Google Sheet.';
+              }
+            }, 1000);
+          } else {
+            // Real Submission
+            try {
+              await fetch(webhookUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  name,
+                  semester,
+                  category,
+                  subject,
+                  year,
+                  session,
+                  contact
+                })
+              });
+              
+              if (directBtn) {
+                directBtn.innerHTML = '✅ Submitted to Google Sheet successfully!';
+                directBtn.style.borderColor = 'var(--accent-success)';
+                directBtn.style.color = 'var(--accent-success)';
+              }
+              if (directText) {
+                directText.innerHTML = 'Instant submission. Fully anonymous.';
+              }
+            } catch (err) {
+              console.error(err);
+              if (directBtn) {
+                directBtn.innerHTML = '❌ Direct Submission Failed';
+                directBtn.style.borderColor = 'var(--accent-danger)';
+                directBtn.style.color = 'var(--accent-danger)';
+                directBtn.disabled = false; // Allow manual retry if needed
+              }
+              if (directText) {
+                directText.innerHTML = 'Failed to submit in background. Click to try again, or use other options.';
+              }
+            }
+          }
+        };
+
+        // Run the background submit task
+        submitToWebhook();
+
+        // Direct button retry handler
+        if (directBtn) {
+          directBtn.addEventListener('click', async () => {
+            if (webhookUrl && webhookUrl !== 'YOUR_GOOGLE_SHEETS_WEB_APP_URL') {
+              directBtn.disabled = true;
+              directBtn.innerHTML = '⏳ Retrying submission...';
+              try {
+                await fetch(webhookUrl, {
+                  method: 'POST',
+                  mode: 'no-cors',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    name,
+                    semester,
+                    category,
+                    subject,
+                    year,
+                    session,
+                    contact
+                  })
+                });
+                directBtn.innerHTML = '✅ Submitted to Google Sheet successfully!';
+                directBtn.style.borderColor = 'var(--accent-success)';
+                directBtn.style.color = 'var(--accent-success)';
+              } catch (err) {
+                console.error(err);
+                directBtn.innerHTML = '❌ Direct Submission Failed';
+                directBtn.disabled = false;
+              }
+            }
+          });
         }
       });
 
@@ -479,6 +610,33 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       document.addEventListener('open-submit-modal', () => {
         openSubmitModal();
       });
+
+      // 2c. Floating Request Toast logic
+      const toast = document.getElementById('request-toast');
+      const closeToastBtn = document.getElementById('close-toast-btn');
+      const toastActionBtn = document.getElementById('toast-action-btn');
+
+      const initToast = () => {
+        if (localStorage.getItem('hide-request-toast') === 'true') {
+          return;
+        }
+        setTimeout(() => {
+          toast?.classList.add('show');
+        }, 3500);
+      };
+
+      closeToastBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toast?.classList.remove('show');
+        localStorage.setItem('hide-request-toast', 'true');
+      });
+
+      toastActionBtn?.addEventListener('click', () => {
+        toast?.classList.remove('show');
+        openModal();
+      });
+
+      initToast();
 
 
       // 3. Global Search Suggestion Engine

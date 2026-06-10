@@ -105,4 +105,50 @@ cmd.exe /c npm run preview -- --host
 ## 6. Configured External Integration Links
 
 * **Admin WhatsApp Contact**: `+918002059887`
-* **Official Google Form Link**: `https://docs.google.com/forms/d/e/1FAIpQLSdBj3G1eQnF6zIrHjc5VtudcCzknOV1wsUXT2dE4xE11P9Qgg/viewform?usp=sharing&ouid=101804319546278458995`
+* **Official Submissions Google Form**: `https://docs.google.com/forms/d/e/1FAIpQLSdBj3G1eQnF6zIrHjc5VtudcCzknOV1wsUXT2dE4xE11P9Qgg/viewform?usp=sharing&ouid=101804319546278458995`
+* **Official Requests Google Form**: `https://docs.google.com/forms/d/e/1FAIpQLSemsAN3v2AdoXcsV0bC_uvM-cAwrrto4kcBDghtMLmrVyWLMg/viewform?usp=publish-editor`
+
+---
+
+## 7. Google Sheets Web App Apps Script Webhook Setup
+
+To enable Option 2 ("Submit directly on website (Google Sheet)") on the request form:
+1. Create a new Google Sheet in your Google Drive.
+2. Click **Extensions > Apps Script**.
+3. Delete any default code and paste the following Google Apps Script:
+   ```javascript
+   function doPost(e) {
+     try {
+       var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+       var data = JSON.parse(e.postData.contents);
+       
+       sheet.appendRow([
+         new Date(),
+         data.name,
+         "Semester " + data.semester,
+         data.category,
+         data.subject,
+         data.year,
+         data.session,
+         data.contact || "Not provided"
+       ]);
+       
+       return ContentService.createTextOutput(JSON.stringify({ status: "success" }))
+         .setMimeType(ContentService.MimeType.JSON);
+     } catch (err) {
+       return ContentService.createTextOutput(JSON.stringify({ status: "error", message: err.toString() }))
+         .setMimeType(ContentService.MimeType.JSON);
+     }
+   }
+   ```
+4. Click **Deploy > New Deployment**.
+5. Select **Web app** as the type.
+6. Set:
+   * *Execute as*: `Me (your gmail)`
+   * *Who has access*: `Anyone`
+7. Click **Deploy** and authorize permissions.
+8. Copy the **Web app URL** and paste it into the `webhookUrl` variable on line 500 of `src/layouts/Layout.astro`:
+   ```javascript
+   const webhookUrl = 'PASTE_YOUR_COPIED_URL_HERE';
+   ```
+

@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import noticesData from '../../public/data/notices.json';
 import calendarData from '../../public/data/calendar.json';
 import pyqsData from '../../public/data/pyqs.json';
-import { Bell, Calendar, Download, FileSpreadsheet, FileCode, GraduationCap, ChevronRight, AlertTriangle, Clock, ArrowRight } from '@lucide/astro';
+import { Bell, Calendar, Download, FileSpreadsheet, FileCode, GraduationCap, ChevronRight, AlertTriangle, Clock, ArrowRight, HelpCircle } from '@lucide/astro';
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -82,6 +82,30 @@ const popularPapers = [...pyqsData]
       </a>
     </div>
   )}
+
+  <!-- Dedicated Request & Contribution Section -->
+  <div class="card request-glow-card" style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1.25rem; border-color: var(--accent-primary); position: relative; overflow: hidden; background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(99, 102, 241, 0.05) 100%);">
+    <div class="glow-border-highlight"></div>
+    <div style="display: flex; gap: 1rem; align-items: flex-start;">
+      <div style="background-color: rgba(99, 102, 241, 0.1); color: var(--accent-primary); width: 48px; height: 48px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <HelpCircle size="24" />
+      </div>
+      <div>
+        <h2 style="font-size: 1.2rem; font-family: var(--font-display); font-weight: 800; margin-bottom: 0.25rem;">Can't find your paper?</h2>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.45;">
+          Request any question paper, syllabus, or note. We'll try to add it soon. You can also submit papers you have to help your peers!
+        </p>
+      </div>
+    </div>
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.25rem;">
+      <button class="btn btn-primary" onclick="document.dispatchEvent(new CustomEvent('open-request-modal'));" style="font-size: 0.875rem; font-weight: 700; height: 40px; padding: 0 1.25rem; border-radius: var(--radius-sm);">
+        Request a Paper
+      </button>
+      <button class="btn btn-outline" onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));" style="font-size: 0.875rem; font-weight: 700; height: 40px; padding: 0 1.25rem; border-radius: var(--radius-sm); border-color: var(--border-color); color: var(--text-primary);">
+        Submit a Paper
+      </button>
+    </div>
+  </div>
 
   <!-- Quick Grid Layout -->
   <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2.5rem;" class="md:grid-cols-3">
