@@ -1,0 +1,303 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import syllabusData from '../../../public/data/syllabus.json';
+import { ChevronLeft, Calendar, Download, FileText, AlertCircle, HelpCircle, ArrowLeft, ArrowUpRight } from '@lucide/astro';
+
+export async function getStaticPaths() {
+  const getSlug = (dept: string) => dept.toLowerCase().replace(/\s+/g, '-');
+  
+  // Group syllabuses by department to map them correctly
+  const departments = [...new Set(syllabusData.map(item => item.department))];
+  
+  return departments.map(dept => {
+    return {
+      params: { department: getSlug(dept) },
+      props: { departmentName: dept }
+    };
+  });
+}
+
+const { department } = Astro.params;
+const { departmentName } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Get all syllabuses for this department
+const syllabuses = syllabusData.filter(s => s.department.toLowerCase().replace(/\s+/g, '-') === department);
+
+// Check if local PDF exists for this combination
+const getLocalPdfPath = (deptName: string, semNum: number) => {
+  const dept = deptName.toLowerCase();
+  if (dept === 'mathematics') {
+    return `${baseUrl}/pdf/math_sem${semNum}_syllabus.pdf`;
+  } else if (dept === 'mathematics minor') {
+    return `${baseUrl}/pdf/math_minor_sem${semNum}_syllabus.pdf`;
+  } else if (dept === 'physics') {
+    return `${baseUrl}/pdf/physics_sem${semNum}_syllabus.pdf`;
+  } else if (dept === 'physics minor') {
+    return `${baseUrl}/pdf/physics_minor_sem${semNum}_syllabus.pdf`;
+  }
+  return null; // Fallback to Coming Soon state
+};
+
+// Parse modules text into human readable form
+const getModulesForSemester = (modules: string[], semNum: number) => {
+  const query = `sem ${semNum}:`;
+  const matched = modules.filter(m => 
+    m.toLowerCase().startsWith(query) || 
+    m.toLowerCase().includes(`sem ${semNum} `) ||
+    m.toLowerCase().includes(`semester ${semNum}`)
+  );
+  
+  if (matched.length > 0) {
+    return matched.map(m => m.replace(/^sem\s+\d+:\s*/i, ''));
+  }
+  
+  // If no direct sem matches, but it has outline
+  return [`No detailed syllabus module listed for Semester ${semNum}.`];
+};
+---
+
+<Layout title={`${departmentName} Syllabus`} activeTab="syllabus">
+
+  <!-- Breadcrumb Navigation -->
+  <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
+    <a href={`${baseUrl}/syllabus`} style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 600; color: var(--text-secondary);">
+      <ChevronLeft size="16" /> Syllabus Directory
+    </a>
+    <span style="color: var(--text-tertiary);">/</span>
+    <span style="color: var(--text-primary); font-weight: 500;">{departmentName}</span>
+  </div>
+
+  <!-- Main Department Title -->
+  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+    <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">{departmentName} Department</h1>
+    <p style="color: var(--text-secondary); max-width: 600px; font-size: 1.05rem;">
+      Select the course and semester tabs below to view course modules or download official PDF papers.
+    </p>
+  </div>
+
+  {syllabuses.length === 0 ? (
+    <div class="card" style="text-align: center; padding: 3rem 1rem;">
+      <p style="color: var(--text-secondary);">No syllabus records found for this department.</p>
+    </div>
+  ) : (
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+      
+      <!-- Multi-Course Subselector (e.g., Arts: History vs Political Science) -->
+      {syllabuses.length > 1 && (
+        <div style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 0.5rem;">
+          <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; padding-left: 0.5rem;">Select Course Branch:</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            {syllabuses.map((syl, idx) => (
+              <button 
+                class={`btn btn-sm course-tab-btn ${idx === 0 ? 'btn-primary' : 'btn-secondary'}`}
+                data-course-id={syl.id}
+                style="flex: 1; min-width: 200px; text-align: left; justify-content: flex-start; gap: 0.5rem; font-size: 0.85rem;"
+              >
+                <FileText size="14" /> {syl.title.replace(/ Syllabus \(FYUGP NEP-2020\)/gi, '')}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Syllabus Containers -->
+      {syllabuses.map((syl, courseIdx) => {
+        const isArtsHistory = syl.id === 'syl-arts-hist';
+        const isArtsPolSci = syl.id === 'syl-arts-polsci';
+        
+        return (
+          <div 
+            class="course-container animate-fade-in" 
+            id={`course-section-${syl.id}`}
+            style={`display: ${courseIdx === 0 ? 'block' : 'none'};`}
+          >
+            <!-- Course Header Info -->
+            <div class="card" style="margin-bottom: 1.5rem; background-color: var(--bg-secondary);">
+              <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; font-family: var(--font-display);">{syl.title}</h2>
+              <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">{syl.description}</p>
+              
+              <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.8rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); padding-top: 0.875rem;">
+                <div style="display: flex; align-items: center; gap: 0.25rem;">
+                  <Calendar size="14" style="color: var(--accent-primary);" /> <span>Batch: {syl.effectiveFrom}</span>
+                </div>
+                <div>•</div>
+                <div>Semester Range: {syl.semester}</div>
+                <div>•</div>
+                <div>Avg Size: {syl.fileSize}</div>
+              </div>
+            </div>
+
+            <!-- Semester Selection Tabs -->
+            <div style="display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.5rem; margin-bottom: 1.25rem; -webkit-overflow-scrolling: touch;" class="no-scrollbar">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map(sem => (
+                <button 
+                  class={`btn btn-sm sem-tab-btn-${syl.id} ${sem === 1 ? 'btn-primary' : 'btn-secondary'}`}
+                  data-sem={sem}
+                  style="min-width: 76px; flex-shrink: 0; font-size: 0.85rem;"
+                >
+                  Sem {sem}
+                </button>
+              ))}
+            </div>
+
+            <!-- Semester Detail Content Box -->
+            {[1, 2, 3, 4, 5, 6, 7, 8].map(sem => {
+              const semModules = getModulesForSemester(syl.modules, sem);
+              const localPdf = getLocalPdfPath(syl.department, sem);
+              const paperTitle = `${syl.title.replace(/Syllabus.*/gi, '')} Sem ${sem}`;
+              const category = syl.department.toLowerCase().includes('minor') ? 'Minor' : 'Major';
+              
+              return (
+                <div 
+                  class={`sem-content-${syl.id}`}
+                  data-sem={sem}
+                  style={`display: ${sem === 1 ? 'block' : 'none'};`}
+                >
+                  <div class="card" style="display: flex; flex-direction: column; gap: 1.5rem; border-color: var(--border-color);">
+                    
+                    <div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                        <h3 style="font-size: 1.1rem; font-weight: 700; font-family: var(--font-display);">Semester {sem} Modules</h3>
+                        <span class="badge badge-primary">FYUGP NEP</span>
+                      </div>
+                      
+                      <!-- Modules List -->
+                      <ul style="list-style-type: none; display: flex; flex-direction: column; gap: 0.75rem; padding-left: 0.25rem;">
+                        {semModules.map(mod => (
+                          <li style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.95rem; line-height: 1.5; color: var(--text-primary);">
+                            <span style="color: var(--accent-primary); font-weight: 800; font-size: 1.1rem; line-height: 1; margin-top: -1px;">•</span>
+                            <span>{mod}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <!-- PDF Download Action System (No Dead Ends) -->
+                    <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; display: flex; flex-direction: column; gap: 1rem; align-items: center;" class="md:flex-row md:justify-between">
+                      <div style="text-align: center;" class="md:text-left">
+                        <h4 style="font-size: 0.95rem; font-weight: 700;">Official Curriculum PDF</h4>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.15rem;">
+                          {localPdf ? `Includes syllabus structure & book references (${syl.fileSize})` : 'Syllabus PDF file is currently awaiting upload from KU counters.'}
+                        </p>
+                      </div>
+
+                      <div style="display: flex; gap: 0.5rem; width: 100%;" class="md:w-auto">
+                        {localPdf ? (
+                          <a 
+                            href={localPdf} 
+                            download 
+                            class="btn btn-primary" 
+                            style="flex: 1; justify-content: center; gap: 0.5rem; font-size: 0.9rem;"
+                          >
+                            <Download size="16" /> Download PDF
+                          </a>
+                        ) : (
+                          <div style="display: flex; gap: 0.5rem; width: 100%;">
+                            <button 
+                              disabled 
+                              class="btn btn-secondary" 
+                              style="flex: 1.5; opacity: 0.6; cursor: not-allowed; font-size: 0.85rem; padding: 0.5rem; background: var(--bg-hover);"
+                            >
+                              Coming Soon
+                            </button>
+                            <button 
+                              class="btn btn-outline" 
+                              style="flex: 2; font-size: 0.85rem; white-space: nowrap; justify-content: center;"
+                              onclick={`document.dispatchEvent(new CustomEvent('open-request-modal', { detail: { subject: '${paperTitle} Syllabus', semester: '${sem}', category: '${category}' } }));`}
+                            >
+                              Request Paper
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+
+    </div>
+  )}
+
+  <script>
+    // Client-side interactions for dynamic tabs
+    
+    // 1. Course Tab Branch selectors (History vs Pol Sci)
+    const courseBtns = document.querySelectorAll('.course-tab-btn');
+    const courseContainers = document.querySelectorAll('.course-container');
+
+    courseBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const courseId = target.getAttribute('data-course-id') || '';
+
+        // Update branch button states
+        courseBtns.forEach(b => {
+          b.classList.remove('btn-primary');
+          b.classList.add('btn-secondary');
+        });
+        target.classList.remove('btn-secondary');
+        target.classList.add('btn-primary');
+
+        // Show/hide correct course containers
+        courseContainers.forEach(container => {
+          const id = container.getAttribute('id') || '';
+          if (id === `course-section-${courseId}`) {
+            container.style.display = 'block';
+          } else {
+            container.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // 2. Semester tab triggers per course
+    courseContainers.forEach(container => {
+      const courseSectionId = container.getAttribute('id') || '';
+      const courseId = courseSectionId.replace('course-section-', '');
+      const semBtns = container.querySelectorAll(`.sem-tab-btn-${courseId}`);
+      const semContents = container.querySelectorAll(`.sem-content-${courseId}`);
+
+      semBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const target = e.currentTarget as HTMLButtonElement;
+          const sem = target.getAttribute('data-sem') || '';
+
+          // Update active state of semester buttons in this course
+          semBtns.forEach(b => {
+            b.classList.remove('btn-primary');
+            b.classList.add('btn-secondary');
+          });
+          target.classList.remove('btn-secondary');
+          target.classList.add('btn-primary');
+
+          // Show active semester content, hide rest
+          semContents.forEach(content => {
+            const contentSem = content.getAttribute('data-sem') || '';
+            if (contentSem === sem) {
+              content.style.display = 'block';
+            } else {
+              content.style.display = 'none';
+            }
+          });
+        });
+      });
+    });
+  </script>
+
+  <style>
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+
+</Layout>

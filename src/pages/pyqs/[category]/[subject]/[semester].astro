@@ -1,0 +1,156 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import pyqsData from '../../../../../public/data/pyqs.json';
+import { ChevronLeft, Calendar, Download, FileCode, AlertCircle, HelpCircle, ExternalLink } from '@lucide/astro';
+
+export async function getStaticPaths() {
+  const pathsMap = new Map();
+  
+  pyqsData.forEach(item => {
+    const key = `${item.category.toLowerCase()}|${item.subject.toLowerCase()}|${item.semester}`;
+    if (!pathsMap.has(key)) {
+      pathsMap.set(key, {
+        params: {
+          category: item.category.toLowerCase(),
+          subject: item.subject.toLowerCase(),
+          semester: item.semester.toString()
+        },
+        props: {
+          originalCategory: item.category,
+          originalSubject: item.subject,
+          originalSemester: item.semester
+        }
+      });
+    }
+  });
+  
+  return Array.from(pathsMap.values());
+}
+
+const { category, subject, semester } = Astro.params;
+const { originalCategory, originalSubject, originalSemester } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Filter papers matching these exactly
+const matchingPapers = pyqsData.filter(p => 
+  p.category.toLowerCase() === category &&
+  p.subject.toLowerCase() === subject &&
+  p.semester.toString() === semester
+);
+---
+
+<Layout title={`${originalSubject} Sem ${originalSemester} PYQs`} activeTab="pyqs">
+
+  <!-- Breadcrumb Navigation -->
+  <div style="margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.85rem;">
+    <a href={`${baseUrl}/pyqs`} style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 600; color: var(--text-secondary);">
+      <ChevronLeft size="16" /> PYQs Database
+    </a>
+    <span style="color: var(--text-tertiary);">/</span>
+    <span style="color: var(--text-secondary); font-weight: 500;">{originalCategory}</span>
+    <span style="color: var(--text-tertiary);">/</span>
+    <span style="color: var(--text-secondary); font-weight: 500;">{originalSubject}</span>
+    <span style="color: var(--text-tertiary);">/</span>
+    <span style="color: var(--text-primary); font-weight: 600;">Sem {originalSemester}</span>
+  </div>
+
+  <!-- Page Header -->
+  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+    <h1 style="font-size: 1.75rem; font-family: var(--font-display); tracking: -0.03em;">
+      {originalSubject} Question Papers
+    </h1>
+    <p style="color: var(--text-secondary); font-size: 1rem;">
+      Category: <strong>{originalCategory}</strong> • Semester: <strong>{originalSemester}</strong>
+    </p>
+  </div>
+
+  {matchingPapers.length === 0 ? (
+    <div class="card" style="text-align: center; padding: 4rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+      <AlertCircle size="40" style="color: var(--text-tertiary);" />
+      <div>
+        <h3 style="font-size: 1.25rem; font-family: var(--font-display);">No papers available yet</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.25rem;">
+          We are currently checking archives for this subject paper.
+        </p>
+      </div>
+      <button 
+        class="btn btn-primary btn-sm" 
+        style="margin-top: 0.5rem;"
+        onclick={`document.dispatchEvent(new CustomEvent('open-request-modal', { detail: { subject: '${originalSubject}', semester: '${originalSemester}', category: '${originalCategory}' } }));`}
+      >
+        Request Paper Now
+      </button>
+    </div>
+  ) : (
+    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+      {matchingPapers.map(paper => {
+        const hasUrl = !!paper.downloadUrl;
+        
+        return (
+          <div class="card" style="display: flex; flex-direction: column; gap: 1rem; border-color: var(--border-color);" class="animate-fade-in">
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+              <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+                <div style="background-color: var(--bg-tertiary); color: var(--accent-primary); width: 40px; height: 40px; border-radius: var(--radius-xs); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <FileCode size="20" />
+                </div>
+                <div>
+                  <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary);">{paper.title}</h3>
+                  <div style="display: flex; gap: 0.75rem; font-size: 0.775rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                    <span>Year: <strong>{paper.year}</strong></span>
+                    <span>•</span>
+                    <span>Size: {paper.fileSize}</span>
+                    <span>•</span>
+                    <span style="display: flex; align-items: center; gap: 0.15rem;"><Download size="12" /> {paper.downloadCount || 0} downloads</span>
+                  </div>
+                </div>
+              </div>
+              
+              <span class="badge badge-primary" style="font-size: 0.7rem; flex-shrink: 0;">{paper.category}</span>
+            </div>
+
+            <!-- "No Dead Ends" Download System Actions -->
+            <div style="border-top: 1px solid var(--border-color); padding-top: 0.875rem; display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem;">
+              {hasUrl ? (
+                <a 
+                  href={paper.downloadUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="btn btn-primary btn-sm" 
+                  style="gap: 0.35rem; font-size: 0.85rem;"
+                >
+                  Download Paper <ExternalLink size="14" />
+                </a>
+              ) : (
+                <div style="display: flex; align-items: center; gap: 0.5rem; width: 100%; justify-content: space-between;" class="md:w-auto">
+                  <span style="font-size: 0.8rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.25rem;">
+                    <AlertCircle size="14" /> PDF link awaiting upload
+                  </span>
+                  
+                  <div style="display: flex; gap: 0.5rem;">
+                    <button 
+                      disabled 
+                      class="btn btn-secondary btn-sm" 
+                      style="opacity: 0.6; cursor: not-allowed; font-size: 0.8rem; background: var(--bg-hover);"
+                    >
+                      Coming Soon
+                    </button>
+                    <button 
+                      class="btn btn-outline btn-sm" 
+                      style="font-size: 0.8rem; white-space: nowrap;"
+                      onclick={`document.dispatchEvent(new CustomEvent('open-request-modal', { detail: { subject: '${paper.title}', semester: '${paper.semester}', category: '${paper.category}' } }));`}
+                    >
+                      Request Paper
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+          </div>
+        );
+      })}
+    </div>
+  )}
+
+</Layout>

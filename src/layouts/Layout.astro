@@ -1,0 +1,439 @@
+---
+import '../styles/global.css';
+import { Home, FileSpreadsheet, FileCode, GraduationCap, Bell, Moon, Sun, Search, X, CheckCircle } from '@lucide/astro';
+
+interface Props {
+  title: string;
+  activeTab?: 'home' | 'syllabus' | 'pyqs' | 'results' | 'notices';
+}
+
+const { title, activeTab } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing slash if any
+---
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={`${baseUrl}/favicon.svg`} />
+    <meta name="generator" content={Astro.generator} />
+    
+    <title>{title} — Tata College Student Hub</title>
+    <meta name="description" content="Access official syllabus, download previous year question papers (PYQs), track results, and read official notices for Tata College Chaibasa." />
+
+    <!-- Theme initialization script to run before rendering -->
+    <script is:inline>
+      const getTheme = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+      
+      const theme = getTheme();
+      document.documentElement.setAttribute('data-theme', theme);
+    </script>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      
+      <!-- Desktop Sidebar -->
+      <aside class="sidebar">
+        <div style="display: flex; align-items: center; gap: 0.75rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+          <div style="background-color: var(--accent-primary); color: white; width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; box-shadow: var(--shadow-glow);">
+            T
+          </div>
+          <div>
+            <h2 style="font-size: 1rem; font-weight: 800; tracking: -0.02em;">Tata College</h2>
+            <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600;">Student Hub</span>
+          </div>
+        </div>
+
+        <nav style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
+          <a href={`${baseUrl}/`} class={`mobile-nav-item ${activeTab === 'home' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+            <Home /> <span style="font-size: 0.95rem; font-weight: 600;">Dashboard</span>
+          </a>
+          <a href={`${baseUrl}/syllabus`} class={`mobile-nav-item ${activeTab === 'syllabus' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+            <FileSpreadsheet /> <span style="font-size: 0.95rem; font-weight: 600;">Syllabus</span>
+          </a>
+          <a href={`${baseUrl}/pyqs`} class={`mobile-nav-item ${activeTab === 'pyqs' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+            <FileCode /> <span style="font-size: 0.95rem; font-weight: 600;">PYQs Database</span>
+          </a>
+          <a href={`${baseUrl}/results`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+            <GraduationCap /> <span style="font-size: 0.95rem; font-weight: 600;">Results Portal</span>
+          </a>
+          <a href={`${baseUrl}/notices`} class={`mobile-nav-item ${activeTab === 'notices' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+            <Bell /> <span style="font-size: 0.95rem; font-weight: 600;">Notice Board</span>
+          </a>
+        </nav>
+
+        <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+          <button id="theme-toggle-desktop" class="btn btn-secondary" style="width: 100%; justify-content: center; gap: 0.75rem;">
+            <span class="theme-icon-container">
+              <Sun class="sun-icon" style="display: none;" />
+              <Moon class="moon-icon" />
+            </span>
+            <span style="font-size: 0.9rem; font-weight: 600;">Switch Mode</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Shell Area -->
+      <div style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+        
+        <!-- Sticky Header -->
+        <header style="background-color: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 40; padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; box-shadow: var(--shadow-sm);">
+          <div style="display: flex; align-items: center; gap: 0.5rem;" class="md:hidden">
+            <div style="background-color: var(--accent-primary); color: white; width: 32px; height: 32px; border-radius: var(--radius-xs); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1rem;">
+              T
+            </div>
+            <h1 style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display);">Tata College Hub</h1>
+          </div>
+
+          <!-- Header Search -->
+          <div style="position: relative; flex: 1; max-width: 480px; display: flex; align-items: center;">
+            <Search style="position: absolute; left: 0.875rem; width: 18px; height: 18px; color: var(--text-tertiary);" />
+            <input type="text" id="global-search-input" class="form-input" placeholder="Search syllabus, papers..." style="padding-left: 2.5rem; height: 40px;" />
+            
+            <!-- Dynamic search suggestion box -->
+            <div id="search-suggestions" class="card" style="display: none; position: absolute; top: 46px; left: 0; right: 0; z-index: 60; max-height: 300px; overflow-y: auto; padding: 0.5rem; box-shadow: var(--shadow-lg);">
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <!-- Mobile Theme Toggle -->
+            <button id="theme-toggle-mobile" class="btn btn-secondary btn-sm" style="width: 40px; height: 40px; border-radius: var(--radius-sm); padding: 0;" aria-label="Toggle Theme">
+              <Sun class="sun-icon" style="display: none;" />
+              <Moon class="moon-icon" />
+            </button>
+
+            <!-- Request Button -->
+            <button id="header-request-btn" class="btn btn-primary btn-sm" style="font-size: 0.85rem; height: 40px;">
+              Request Paper
+            </button>
+          </div>
+        </header>
+
+        <!-- Main Content Wrapper -->
+        <main class="main-content">
+          <div class="animate-fade-in">
+            <slot />
+          </div>
+        </main>
+
+        <!-- Footer -->
+        <footer style="background-color: var(--bg-secondary); border-top: 1px solid var(--border-color); padding: 2rem 1rem 6rem 1rem; text-align: center; font-size: 0.85rem; color: var(--text-secondary);" class="md:pb-8">
+          <p>© {new Date().getFullYear()} Tata College Student Hub. Built for mobile convenience.</p>
+          <p style="margin-top: 0.5rem; color: var(--text-tertiary);">Disclaimer: This website provides reference syllabus/PYQs for students. Verify official schedules with Kolhan University.</p>
+        </footer>
+
+      </div>
+
+      <!-- Mobile Bottom Navigation -->
+      <nav class="mobile-nav">
+        <a href={`${baseUrl}/`} class={`mobile-nav-item ${activeTab === 'home' ? 'active' : ''}`}>
+          <Home /> <span>Home</span>
+        </a>
+        <a href={`${baseUrl}/syllabus`} class={`mobile-nav-item ${activeTab === 'syllabus' ? 'active' : ''}`}>
+          <FileSpreadsheet /> <span>Syllabus</span>
+        </a>
+        <a href={`${baseUrl}/pyqs`} class={`mobile-nav-item ${activeTab === 'pyqs' ? 'active' : ''}`}>
+          <FileCode /> <span>PYQs</span>
+        </a>
+        <a href={`${baseUrl}/results`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`}>
+          <GraduationCap /> <span>Results</span>
+        </a>
+        <a href={`${baseUrl}/notices`} class={`mobile-nav-item ${activeTab === 'notices' ? 'active' : ''}`}>
+          <Bell /> <span>Notices</span>
+        </a>
+      </nav>
+
+    </div>
+
+    <!-- Paper Request Modal (Triggered globally) -->
+    <div id="request-modal" class="modal-overlay">
+      <div class="modal-container">
+        <div class="modal-close" id="close-modal-btn">
+          <X size="20" />
+        </div>
+        <h2 style="font-size: 1.35rem; margin-bottom: 0.5rem; font-family: var(--font-display);">Request or Submit Paper</h2>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;" id="modal-desc">
+          Can't find a paper or want to contribute? Fill out the details below. Our student moderators will verify and upload it.
+        </p>
+        
+        <!-- Form state -->
+        <form id="paper-request-form" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" for="req-name">Your Name</label>
+            <input type="text" id="req-name" required class="form-input" placeholder="e.g. Anurag Kumar" />
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="req-semester">Semester</label>
+              <select id="req-semester" class="form-input" style="padding-right: 2rem;">
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="req-category">Category</label>
+              <select id="req-category" class="form-input">
+                <option value="Major">Major</option>
+                <option value="Minor">Minor</option>
+                <option value="SEC">SEC</option>
+                <option value="MDC">MDC</option>
+                <option value="AEC">AEC</option>
+                <option value="VAC">VAC</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" for="req-subject">Subject/Paper Name</label>
+            <input type="text" id="req-subject" required class="form-input" placeholder="e.g. Mathematics - Real Analysis" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" for="req-type">Action</label>
+            <select id="req-type" class="form-input">
+              <option value="request">I want to request this paper</option>
+              <option value="submit">I want to upload/share a paper link</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="file-link-group" style="display: none; margin-bottom: 0;">
+            <label class="form-label" for="req-file-url">Drive/Image Link (Optional)</label>
+            <input type="url" id="req-file-url" class="form-input" placeholder="e.g. https://drive.google.com/..." />
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem; width: 100%;">
+            Submit Request
+          </button>
+        </form>
+
+        <!-- Success state -->
+        <div id="modal-success-state" style="display: none; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 0; text-align: center; gap: 1rem;">
+          <CheckCircle size="48" style="color: var(--accent-success);" />
+          <div>
+            <h3 style="font-size: 1.2rem; font-family: var(--font-display);">Thank you!</h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.5rem;">
+              Your submission has been logged. Our student team will update the website shortly!
+            </p>
+          </div>
+          <button id="success-done-btn" class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">
+            Close
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Client-side Layout interactions script -->
+    <script define:vars={{ baseUrl }}>
+      // 1. Theme toggle logic
+      const toggleTheme = () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', nextTheme);
+        localStorage.setItem('theme', nextTheme);
+        updateToggleIcons(nextTheme);
+      };
+
+      const updateToggleIcons = (theme) => {
+        const sunIcons = document.querySelectorAll('.sun-icon');
+        const moonIcons = document.querySelectorAll('.moon-icon');
+        
+        if (theme === 'dark') {
+          sunIcons.forEach(icon => icon.style.display = 'block');
+          moonIcons.forEach(icon => icon.style.display = 'none');
+        } else {
+          sunIcons.forEach(icon => icon.style.display = 'none');
+          moonIcons.forEach(icon => icon.style.display = 'block');
+        }
+      };
+
+      const initThemeIcons = () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        updateToggleIcons(currentTheme);
+      };
+
+      document.getElementById('theme-toggle-desktop')?.addEventListener('click', toggleTheme);
+      document.getElementById('theme-toggle-mobile')?.addEventListener('click', toggleTheme);
+      initThemeIcons();
+
+      // 2. Global Request Modal logic
+      const modal = document.getElementById('request-modal');
+      const closeBtn = document.getElementById('close-modal-btn');
+      const successDoneBtn = document.getElementById('success-done-btn');
+      const requestForm = document.getElementById('paper-request-form');
+      const successState = document.getElementById('modal-success-state');
+      const actionSelect = document.getElementById('req-type');
+      const fileLinkGroup = document.getElementById('file-link-group');
+
+      const openModal = (type = 'request', subject = '', semester = '1', category = 'Major') => {
+        modal.classList.add('open');
+        successState.style.display = 'none';
+        requestForm.style.display = 'flex';
+        
+        if (subject) {
+          document.getElementById('req-subject').value = subject;
+        }
+        if (semester) {
+          document.getElementById('req-semester').value = semester;
+        }
+        if (category) {
+          document.getElementById('req-category').value = category;
+        }
+      };
+
+      const closeModal = () => {
+        modal.classList.remove('open');
+        requestForm.reset();
+      };
+
+      // Header click
+      document.getElementById('header-request-btn')?.addEventListener('click', () => {
+        openModal();
+      });
+
+      closeBtn?.addEventListener('click', closeModal);
+      successDoneBtn?.addEventListener('click', closeModal);
+      
+      // Close on overlay click
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // Handle custom events from other pages
+      document.addEventListener('open-request-modal', (e) => {
+        const { subject, semester, category } = e.detail || {};
+        openModal('request', subject, semester, category);
+      });
+
+      // Handle upload url visible state
+      actionSelect?.addEventListener('change', (e) => {
+        if (e.target.value === 'submit') {
+          fileLinkGroup.style.display = 'block';
+        } else {
+          fileLinkGroup.style.display = 'none';
+        }
+      });
+
+      // Form submit
+      requestForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        // Mock save logic, can link to external storage in future
+        requestForm.style.display = 'none';
+        successState.style.display = 'flex';
+      });
+
+
+      // 3. Global Search Suggestion Engine
+      const searchInput = document.getElementById('global-search-input');
+      const suggestionsBox = document.getElementById('search-suggestions');
+
+      let searchDatabase = { syllabus: [], pyqs: [] };
+
+      // Load database from json files client-side for immediate reactive matching
+      const fetchSearchData = async () => {
+        try {
+          const resSyl = await fetch(`${baseUrl}/data/syllabus.json`);
+          const syllabus = await resSyl.json();
+          const resPyq = await fetch(`${baseUrl}/data/pyqs.json`);
+          const pyqs = await resPyq.json();
+          searchDatabase = { syllabus, pyqs };
+        } catch (err) {
+          console.error("Failed to load search index: ", err);
+        }
+      };
+      fetchSearchData();
+
+      searchInput?.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        if (!query) {
+          suggestionsBox.style.display = 'none';
+          return;
+        }
+
+        const filteredSyllabus = searchDatabase.syllabus.filter(item => 
+          item.title.toLowerCase().includes(query) || 
+          item.department.toLowerCase().includes(query) ||
+          item.description.toLowerCase().includes(query)
+        ).slice(0, 3);
+
+        const filteredPyqs = searchDatabase.pyqs.filter(item => 
+          item.title.toLowerCase().includes(query) || 
+          item.subject.toLowerCase().includes(query) ||
+          item.category.toLowerCase().includes(query)
+        ).slice(0, 5);
+
+        if (filteredSyllabus.length === 0 && filteredPyqs.length === 0) {
+          suggestionsBox.innerHTML = `
+            <div style="padding: 0.75rem; color: var(--text-secondary); text-align: center; font-size: 0.9rem;">
+              No matches found. 
+              <button class="btn btn-outline btn-sm" id="search-req-btn" style="margin-top: 0.5rem; width: 100%;">
+                Request this paper
+              </button>
+            </div>
+          `;
+          suggestionsBox.style.display = 'block';
+          
+          document.getElementById('search-req-btn')?.addEventListener('click', () => {
+            suggestionsBox.style.display = 'none';
+            openModal('request', query);
+          });
+          return;
+        }
+
+        let html = '';
+
+        if (filteredSyllabus.length > 0) {
+          html += `<div style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase;">Syllabus Modules</div>`;
+          filteredSyllabus.forEach(item => {
+            html += `
+              <a href="${baseUrl}/syllabus/${item.department.toLowerCase()}" style="display: block; padding: 0.625rem 0.75rem; border-radius: var(--radius-xs); color: var(--text-primary); transition: background 0.15s;" class="hover:bg-tertiary">
+                <div style="font-weight: 600; font-size: 0.9rem;">${item.department} Syllabus</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.title}</div>
+              </a>
+            `;
+          });
+        }
+
+        if (filteredPyqs.length > 0) {
+          html += `<div style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase; margin-top: 0.5rem;">Previous Papers</div>`;
+          filteredPyqs.forEach(item => {
+            const path = `${baseUrl}/pyqs/${item.category.toLowerCase()}/${item.subject.toLowerCase()}/${item.semester}`;
+            html += `
+              <a href="${path}" style="display: block; padding: 0.625rem 0.75rem; border-radius: var(--radius-xs); color: var(--text-primary); transition: background 0.15s;" class="hover:bg-tertiary">
+                <div style="font-weight: 600; font-size: 0.9rem;">${item.subject} (${item.category})</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary); display: flex; justify-content: space-between;">
+                  <span>Sem ${item.semester} • ${item.year}</span>
+                  <span style="color: var(--accent-primary); font-weight: 500;">Download →</span>
+                </div>
+              </a>
+            `;
+          });
+        }
+
+        suggestionsBox.innerHTML = html;
+        suggestionsBox.style.display = 'block';
+      });
+
+      // Close suggestions when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!searchInput?.contains(e.target) && !suggestionsBox?.contains(e.target)) {
+          if (suggestionsBox) suggestionsBox.style.display = 'none';
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,235 @@
+---
+import Layout from '../layouts/Layout.astro';
+import noticesData from '../../public/data/notices.json';
+import { Bell, Filter, ExternalLink, Calendar, Search, Pin, AlertCircle } from '@lucide/astro';
+
+// Sort notices: active first, pinned first, then by date descending
+const sortedNotices = [...noticesData].sort((a, b) => {
+  // Archived last
+  if (a.isArchived !== b.isArchived) {
+    return a.isArchived ? 1 : -1;
+  }
+  // Pinned first
+  if (a.isPinned !== b.isPinned) {
+    return a.isPinned ? -1 : 1;
+  }
+  // Date descending
+  return new Date(b.date).getTime() - new Date(a.date).getTime();
+});
+
+// Categories list
+const categories = ['All', 'General', 'Exam', 'Result', 'Admission', 'Academic'];
+---
+
+<Layout title="Notice Board" activeTab="notices">
+
+  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+    <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">College Notice Board</h1>
+    <p style="color: var(--text-secondary); max-width: 600px; font-size: 1.05rem;">
+      Stay updated with real-time official notices from Kolhan University and Tata College administrations.
+    </p>
+  </div>
+
+  <!-- Filters & Search Toolbar -->
+  <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: 1rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm);" class="md:flex-row md:align-center md:justify-between">
+    
+    <!-- Filter tabs -->
+    <div style="display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.25rem; -webkit-overflow-scrolling: touch;" class="no-scrollbar">
+      {categories.map((cat, idx) => (
+        <button 
+          class={`btn btn-sm filter-btn ${idx === 0 ? 'btn-primary' : 'btn-secondary'}`} 
+          data-category={cat}
+          style="white-space: nowrap;"
+        >
+          {cat}
+        </button>
+      ))}
+    </div>
+
+    <!-- Search input in notices -->
+    <div style="position: relative; display: flex; align-items: center; width: 100%;" class="md:max-w-xs">
+      <Search style="position: absolute; left: 0.875rem; width: 16px; height: 16px; color: var(--text-tertiary);" />
+      <input type="text" id="notice-search" class="form-input form-input-sm" placeholder="Search notices..." style="padding-left: 2.25rem; font-size: 0.875rem; height: 36px;" />
+    </div>
+
+  </div>
+
+  <!-- Notices List Container -->
+  <div id="notices-container" style="display: grid; grid-template-columns: 1fr; gap: 1.25rem;" class="md:grid-cols-2">
+    {sortedNotices.map(notice => {
+      const isExpired = notice.isArchived;
+      const containsDeadline = /last date|deadline|due date/i.test(`${notice.title} ${notice.description}`);
+      
+      return (
+        <div 
+          class="card notice-card" 
+          id={notice.id}
+          data-cat={notice.category}
+          data-archived={notice.isArchived ? "true" : "false"}
+          data-pinned={notice.isPinned ? "true" : "false"}
+          style={`display: flex; flex-direction: column; gap: 1rem; position: relative; border-left: 4px solid ${
+            isExpired ? 'var(--text-tertiary)' : notice.isPinned ? 'var(--accent-primary)' : containsDeadline ? 'var(--accent-danger)' : 'var(--border-color)'
+          }; opacity: ${isExpired ? 0.7 : 1};`}
+        >
+          <!-- Notice Metadata -->
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span class={`badge ${
+                notice.category === 'Exam' ? 'badge-danger' : 
+                notice.category === 'Result' ? 'badge-success' : 
+                notice.category === 'Admission' ? 'badge-primary' : 
+                'badge-warning'
+              }`}>
+                {notice.category}
+              </span>
+              {isExpired && <span class="badge" style="background-color: var(--bg-tertiary); color: var(--text-secondary);">Archived</span>}
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-tertiary); font-weight: 600;">
+              <Calendar size="14" />
+              <span>{notice.date}</span>
+              {notice.isPinned && (
+                <span style="color: var(--accent-primary); display: flex; align-items: center; gap: 0.15rem; font-weight: 700;" title="Pinned Notice">
+                  <Pin size="12" /> Pinned
+                </span>
+              )}
+            </div>
+          </div>
+
+          <!-- Title & Description -->
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.35;">
+              {notice.title}
+            </h3>
+            <p style="font-size: 0.925rem; color: var(--text-secondary); line-height: 1.6;">
+              {notice.description}
+            </p>
+          </div>
+
+          <!-- Deadline notification warning (inside card) -->
+          {!isExpired && containsDeadline && (
+            <div style="background-color: rgba(239, 68, 68, 0.05); border: 1px dashed rgba(239, 68, 68, 0.2); border-radius: var(--radius-xs); padding: 0.625rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--accent-danger); font-weight: 600;">
+              <AlertCircle size="14" />
+              <span>Deadline details are listed inside description.</span>
+            </div>
+          )}
+
+          <!-- Quick Action Buttons inside notice -->
+          {notice.links && notice.links.length > 0 && (
+            <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 0.875rem;">
+              {notice.links.map(link => {
+                const isForm = /form|apply|fill/i.test(link.label);
+                
+                return (
+                  <a 
+                    href={link.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    class={`btn btn-sm ${isForm ? 'btn-primary' : 'btn-secondary'}`}
+                    style="flex: 1; min-width: 130px; justify-content: center; gap: 0.4rem; padding: 0.5rem 0.875rem;"
+                  >
+                    {link.label} <ExternalLink size="14" />
+                  </a>
+                );
+              })}
+            </div>
+          )}
+
+        </div>
+      );
+    })}
+  </div>
+
+  <!-- Empty Search Result -->
+  <div id="no-notices" style="display: none; flex-direction: column; align-items: center; text-align: center; padding: 4rem 1rem; gap: 1rem;">
+    <Bell size="48" style="color: var(--text-tertiary);" />
+    <div>
+      <h3 style="font-size: 1.2rem; font-family: var(--font-display);">No notices found</h3>
+      <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.25rem;">
+        Try adjusting your filters or search keywords.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Client-side Notice Board filter and search logic
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const searchInput = document.getElementById('notice-search') as HTMLInputElement;
+    const cards = document.querySelectorAll('.notice-card') as NodeListOf<HTMLElement>;
+    const noNoticesBox = document.getElementById('no-notices');
+
+    let currentCategory = 'All';
+    let searchQuery = '';
+
+    const filterNotices = () => {
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-cat') || '';
+        const title = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+        const desc = card.querySelector('p')?.textContent?.toLowerCase() || '';
+        
+        const matchesCategory = currentCategory === 'All' || category.toLowerCase() === currentCategory.toLowerCase();
+        const matchesSearch = title.includes(searchQuery) || desc.includes(searchQuery);
+
+        if (matchesCategory && matchesSearch) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (noNoticesBox) {
+        noNoticesBox.style.display = visibleCount === 0 ? 'flex' : 'none';
+      }
+    };
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        
+        // Remove primary state from all filter buttons
+        filterButtons.forEach(b => {
+          b.classList.remove('btn-primary');
+          b.classList.add('btn-secondary');
+        });
+        
+        // Add primary state to current
+        target.classList.remove('btn-secondary');
+        target.classList.add('btn-primary');
+
+        currentCategory = target.getAttribute('data-category') || 'All';
+        filterNotices();
+      });
+    });
+
+    searchInput?.addEventListener('input', (e) => {
+      searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+      filterNotices();
+    });
+
+    // Handle hash scrolling if navigating from banner
+    window.addEventListener('load', () => {
+      if (window.location.hash) {
+        const element = document.getElementById(window.location.hash.substring(1));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          element.style.boxShadow = '0 0 15px rgba(239, 68, 68, 0.3)';
+          element.style.borderColor = 'var(--accent-danger)';
+        }
+      }
+    });
+  </script>
+
+  <style>
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+
+</Layout>
