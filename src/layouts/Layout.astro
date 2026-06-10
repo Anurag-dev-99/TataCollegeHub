@@ -168,15 +168,15 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
 
     </div>
 
-    <!-- Paper Request Modal (Triggered globally) -->
+    <!-- Paper Request Modal (Strictly for requesting) -->
     <div id="request-modal" class="modal-overlay">
       <div class="modal-container">
         <div class="modal-close" id="close-modal-btn">
           <X size="20" />
         </div>
-        <h2 style="font-size: 1.35rem; margin-bottom: 0.5rem; font-family: var(--font-display);">Request or Submit Paper</h2>
+        <h2 style="font-size: 1.35rem; margin-bottom: 0.5rem; font-family: var(--font-display);">Request a Paper</h2>
         <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;" id="modal-desc">
-          Can't find a paper or want to contribute? Fill out the details below. Our student moderators will verify and upload it.
+          Can't find a paper? Let us know what you need, and we'll notify you as soon as it's uploaded!
         </p>
         
         <!-- Form state -->
@@ -219,44 +219,112 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
             <input type="text" id="req-subject" required class="form-input" placeholder="e.g. Mathematics - Real Analysis" />
           </div>
 
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="req-year">Exam Year</label>
+              <select id="req-year" class="form-input">
+                <option value="Any">Any Year</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+              </select>
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="req-session">Session/Batch</label>
+              <select id="req-session" class="form-input">
+                <option value="Any">Any Session</option>
+                <option value="2025-29">2025-29</option>
+                <option value="2024-28">2024-28</option>
+                <option value="2023-27">2023-27</option>
+                <option value="2022-26">2022-26</option>
+                <option value="2021-25">2021-25</option>
+              </select>
+            </div>
+          </div>
+
           <div class="form-group" style="margin-bottom: 0;">
-            <label class="form-label" for="req-type">Action</label>
-            <select id="req-type" class="form-input">
-              <option value="request">I want to request this paper</option>
-              <option value="submit">I want to upload/share a paper link</option>
-            </select>
-          </div>
-
-          <div class="form-group" id="file-link-group" style="display: none; margin-bottom: 0;">
-            <label class="form-label" for="req-file-url">Drive/Cloud Share Link (Optional)</label>
-            <input type="url" id="req-file-url" class="form-input" placeholder="e.g. https://drive.google.com/..." />
-          </div>
-
-          <div class="form-group" id="file-upload-group" style="display: none; margin-bottom: 0;">
-            <label class="form-label" for="req-file">Or Upload PDF / Photo Files (Multiple)</label>
-            <input type="file" id="req-file" class="form-input" accept="application/pdf,image/*" multiple style="padding: 0.35rem 0.5rem;" />
-            <span style="font-size: 0.725rem; color: var(--text-tertiary); margin-top: 0.25rem; display: block;">Select PDF syllabus files or camera pictures of the exam papers.</span>
+            <label class="form-label" for="req-contact">WhatsApp / Contact Number (Optional)</label>
+            <input type="text" id="req-contact" class="form-input" placeholder="e.g. +91 80020 59887" />
           </div>
 
           <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem; width: 100%;">
-            Submit Request
+            Prepare WhatsApp Request
           </button>
         </form>
 
         <!-- Success state -->
-        <div id="modal-success-state" style="display: none; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 0; text-align: center; gap: 1rem;">
-          <CheckCircle size="48" style="color: var(--accent-success);" />
+        <div id="modal-success-state" style="display: none; flex-direction: column; align-items: center; justify-content: center; padding: 1rem 0; text-align: center; gap: 1rem;">
+          <CheckCircle size="44" style="color: var(--accent-success);" />
           <div>
-            <h3 style="font-size: 1.2rem; font-family: var(--font-display);">Thank you!</h3>
-            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.5rem;">
-              Your submission has been logged. Our student team will update the website shortly!
+            <h3 style="font-size: 1.25rem; font-family: var(--font-display); font-weight: 800;">Request Configured</h3>
+            <p id="success-message" style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem; line-height: 1.4;">
+              Select how you would like to submit your request:
             </p>
           </div>
-          <button id="success-done-btn" class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">
+          
+          <!-- Dynamic Action Buttons (WhatsApp & Google Form Options) -->
+          <div id="success-action-container" style="width: 100%; display: flex; flex-direction: column; gap: 0.75rem; align-items: center;">
+          </div>
+
+          <button id="success-done-btn" class="btn btn-secondary" style="width: 100%; margin-top: 1rem; border-radius: var(--radius-sm); font-weight: 600;">
             Close
           </button>
         </div>
 
+      </div>
+    </div>
+
+    <!-- Paper Submit Modal (Simplified premium selection) -->
+    <div id="submit-modal" class="modal-overlay">
+      <div class="modal-container" style="max-width: 500px;">
+        <div class="modal-close" id="close-submit-modal-btn">
+          <X size="20" />
+        </div>
+        <h2 style="font-size: 1.4rem; margin-bottom: 0.5rem; font-family: var(--font-display); text-align: center; font-weight: 800;">Submit a Paper</h2>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.75rem; text-align: center; line-height: 1.5;">
+          Help fellow college students by contributing syllabus or previous year exam papers. Select your preferred method to submit:
+        </p>
+
+        <div class="submit-grid">
+          <!-- Google Form Card Option -->
+          <a 
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdBj3G1eQnF6zIrHjc5VtudcCzknOV1wsUXT2dE4xE11P9Qgg/viewform?usp=sharing&ouid=101804319546278458995" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="submit-card-btn"
+            style="text-decoration: none;"
+          >
+            <div class="submit-card-icon" style="color: var(--accent-success); background-color: rgba(16, 185, 129, 0.1);">
+              📝
+            </div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">Google Form</h3>
+            <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">Upload PDFs, images, or files. 100% anonymous & private.</p>
+            <span class="submit-card-badge" style="background-color: var(--accent-success); color: white;">Recommended</span>
+          </a>
+          
+          <!-- WhatsApp Card Option -->
+          <a 
+            href="https://api.whatsapp.com/send?phone=918002059887&text=Hi%20Admin!%20I%20want%20to%20submit%20a%20syllabus%20or%20PYQ%20paper." 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="submit-card-btn"
+            style="text-decoration: none;"
+          >
+            <div class="submit-card-icon" style="color: var(--accent-primary); background-color: rgba(99, 102, 241, 0.1);">
+              💬
+            </div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">WhatsApp</h3>
+            <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">Send files directly to the admin. Fast & interactive chat.</p>
+            <span class="submit-card-badge" style="background: var(--bg-tertiary); color: var(--text-secondary); border: 1px solid var(--border-color);">Direct Message</span>
+          </a>
+        </div>
+
+        <button id="close-submit-done-btn" class="btn btn-secondary" style="width: 100%; margin-top: 1.5rem; border-radius: var(--radius-sm); font-weight: 600;">
+          Cancel
+        </button>
       </div>
     </div>
 
@@ -297,13 +365,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       const modal = document.getElementById('request-modal');
       const closeBtn = document.getElementById('close-modal-btn');
       const successDoneBtn = document.getElementById('success-done-btn');
-      const requestForm = document.getElementById('paper-request-form') as HTMLFormElement;
+      const requestForm = document.getElementById('paper-request-form');
       const successState = document.getElementById('modal-success-state');
-      const actionSelect = document.getElementById('req-type');
-      const fileLinkGroup = document.getElementById('file-link-group');
-      const fileUploadGroup = document.getElementById('file-upload-group');
 
-      const openModal = (type = 'request', subject = '', semester = '1', category = 'Major') => {
+      const openModal = (subject = '', semester = '1', category = 'Major') => {
         modal.classList.add('open');
         successState.style.display = 'none';
         requestForm.style.display = 'flex';
@@ -322,8 +387,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       const closeModal = () => {
         modal.classList.remove('open');
         requestForm.reset();
-        if (fileLinkGroup) fileLinkGroup.style.display = 'none';
-        if (fileUploadGroup) fileUploadGroup.style.display = 'none';
       };
 
       // Header click
@@ -342,27 +405,79 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       // Handle custom events from other pages
       document.addEventListener('open-request-modal', (e) => {
         const { subject, semester, category } = e.detail || {};
-        openModal('request', subject, semester, category);
-      });
-
-      // Handle upload url/file visible state
-      actionSelect?.addEventListener('change', (e) => {
-        const target = e.target as HTMLSelectElement;
-        if (target.value === 'submit') {
-          if (fileLinkGroup) fileLinkGroup.style.display = 'block';
-          if (fileUploadGroup) fileUploadGroup.style.display = 'block';
-        } else {
-          if (fileLinkGroup) fileLinkGroup.style.display = 'none';
-          if (fileUploadGroup) fileUploadGroup.style.display = 'none';
-        }
+        openModal(subject, semester, category);
       });
 
       // Form submit
       requestForm?.addEventListener('submit', (e) => {
         e.preventDefault();
-        // Mock save logic, can link to external storage in future
+        
+        // Extract field values
+        const name = document.getElementById('req-name').value;
+        const semester = document.getElementById('req-semester').value;
+        const category = document.getElementById('req-category').value;
+        const subject = document.getElementById('req-subject').value;
+        const year = document.getElementById('req-year').value;
+        const session = document.getElementById('req-session').value;
+        const contact = document.getElementById('req-contact').value;
+        
+        const successMsgEl = document.getElementById('success-message');
+        const actionContainer = document.getElementById('success-action-container');
+        
         requestForm.style.display = 'none';
-        successState.style.display = 'flex';
+        if (successState) successState.style.display = 'flex';
+        
+        // WhatsApp request format
+        const text = `Hi Admin! I want to request a college paper:\n- Name: ${name}\n- Subject: ${subject}\n- Semester: Semester ${semester}\n- Category: ${category}\n- Exam Year: ${year}\n- Session/Batch: ${session}${contact ? `\n- Contact WhatsApp: ${contact}` : ''}`;
+        const waUrl = `https://api.whatsapp.com/send?phone=918002059887&text=${encodeURIComponent(text)}`;
+        const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSdBj3G1eQnF6zIrHjc5VtudcCzknOV1wsUXT2dE4xE11P9Qgg/viewform?usp=sharing&ouid=101804319546278458995`;
+        
+        if (successMsgEl) {
+          successMsgEl.innerHTML = `Your request for <strong>${subject}</strong> is ready. Choose your preferred delivery method:`;
+        }
+        
+        if (actionContainer) {
+          actionContainer.innerHTML = `
+            <div style="width: 100%; display: flex; flex-direction: column; gap: 0.25rem; align-items: center;">
+              <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-sm); text-decoration: none; height: 44px;">
+                💬 Send via WhatsApp (Fastest)
+              </a>
+              <span style="font-size: 0.725rem; color: var(--text-tertiary);">Reveals your number to the admin</span>
+            </div>
+            
+            <div style="width: 100%; display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.5rem; align-items: center;">
+              <a href="${formUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width: 100%; justify-content: center; gap: 0.5rem; font-weight: 700; border-radius: var(--radius-sm); text-decoration: none; height: 44px;">
+                📝 Submit Anonymously (Google Form)
+              </a>
+              <span style="font-size: 0.725rem; color: var(--text-tertiary);">100% private, no phone number revealed</span>
+            </div>
+          `;
+        }
+      });
+
+      // 2b. Global Submit Modal logic
+      const submitModal = document.getElementById('submit-modal');
+      const closeSubmitBtn = document.getElementById('close-submit-modal-btn');
+      const closeSubmitDoneBtn = document.getElementById('close-submit-done-btn');
+
+      const openSubmitModal = () => {
+        submitModal?.classList.add('open');
+      };
+
+      const closeSubmitModal = () => {
+        submitModal?.classList.remove('open');
+      };
+
+      closeSubmitBtn?.addEventListener('click', closeSubmitModal);
+      closeSubmitDoneBtn?.addEventListener('click', closeSubmitModal);
+
+      submitModal?.addEventListener('click', (e) => {
+        if (e.target === submitModal) closeSubmitModal();
+      });
+
+      // Handle custom events for submit
+      document.addEventListener('open-submit-modal', () => {
+        openSubmitModal();
       });
 
 
@@ -418,7 +533,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
           
           document.getElementById('search-req-btn')?.addEventListener('click', () => {
             suggestionsBox.style.display = 'none';
-            openModal('request', query);
+            openModal(query);
           });
           return;
         }
