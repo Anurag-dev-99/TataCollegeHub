@@ -7,6 +7,9 @@ import { BookOpen, GraduationCap, ChevronRight, FileText, Compass, Award } from 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 const categories = ["Science", "Arts & Humanities", "Commerce & Business", "Languages"];
 
+// Sort MDC data alphabetically by subject name
+const sortedMdcData = [...mdcData].sort((a, b) => a.name.localeCompare(b.name));
+
 // Create slug helper
 const getSlug = (dept: string) => {
   return dept.toLowerCase().replace(/\s+/g, '-');
@@ -162,7 +165,7 @@ const departments = Object.keys(deptGroups);
 
         <!-- MDC Subjects Grid -->
         <div id="mdc-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
-          {mdcData.map(item => (
+          {sortedMdcData.map(item => (
             <a 
               href={item.link} 
               target="_blank" 
