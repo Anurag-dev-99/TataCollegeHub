@@ -105,7 +105,7 @@ cmd.exe /c npm run preview -- --host
 ## 6. Configured External Integration Links
 
 * **Admin WhatsApp Contact**: `+918002059887`
-* **Official Submissions Google Form**: `https://docs.google.com/forms/d/e/1FAIpQLSdBj3G1eQnF6zIrHjc5VtudcCzknOV1wsUXT2dE4xE11P9Qgg/viewform?usp=sharing&ouid=101804319546278458995`
+* **Official Submissions Google Form**: `https://docs.google.com/forms/d/e/1FAIpQLSdBj3G1eQnF6zIrHjc5VtudcCzknOV1wsUXT2dE4xE11P9Qgg/viewform`
 * **Official Requests Google Form**: `https://docs.google.com/forms/d/e/1FAIpQLSemsAN3v2AdoXcsV0bC_uvM-cAwrrto4kcBDghtMLmrVyWLMg/viewform?usp=publish-editor`
 
 ---
