@@ -386,9 +386,21 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
       </p>
 
       <div style="display: flex; flex-direction: column; gap: 1rem;">
-        <div style="position: relative;">
-          <input type="text" id="modal-browse-search" class="form-input" placeholder="Search by student name or roll number..." style="height: 40px; padding-left: 2.25rem; border-radius: var(--radius-xs);" />
-          <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); font-size: 0.9rem;">🔍</span>
+        <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+          <div style="position: relative; flex: 1; min-width: 200px;">
+            <input type="text" id="modal-browse-search" class="form-input" placeholder="Search by student name or roll number..." style="height: 40px; padding-left: 2.25rem; border-radius: var(--radius-xs);" />
+            <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); font-size: 0.9rem;">🔍</span>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary);">Sort:</span>
+            <select id="modal-browse-sort" class="form-input" style="width: auto; height: 40px; padding: 0 1.75rem 0 0.5rem; font-size: 0.8rem; border-radius: var(--radius-xs); cursor: pointer;">
+              <option value="rank">Marks (High to Low)</option>
+              <option value="rank-asc">Marks (Low to High)</option>
+              <option value="name-asc">Name (A to Z)</option>
+              <option value="name-desc">Name (Z to A)</option>
+            </select>
+          </div>
         </div>
 
         <div style="max-height: 350px; overflow-y: auto; overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-sm); width: 100%;">
@@ -1793,6 +1805,7 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
   };
 
   // --- Browse All Modal ---
+  // --- Browse All Modal ---
   const openBrowseAllModal = () => {
     if (!browseModal || !browseModalTableBody) return;
 
@@ -1801,11 +1814,40 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
       ? currentResultsDataset
       : currentResultsDataset.filter(s => s.major === selectedMajor);
 
-    const sorted = [...filteredData].sort((a, b) => b.grand_total - a.grand_total);
+    // Baseline rankings list (always sorted by marks high to low to compute Rank)
+    const baselineRanked = [...filteredData].sort((a, b) => b.grand_total - a.grand_total);
 
-    const renderRows = (list) => {
-      return list.map(s => {
-        const rank = sorted.findIndex(item => item.roll_number === s.roll_number) + 1;
+    let activeSort = 'rank';
+    let searchQuery = '';
+
+    const sortAndRender = () => {
+      // 1. Filter by search query first
+      let list = [...baselineRanked];
+      if (searchQuery) {
+        list = list.filter(s => 
+          s.student_name.toLowerCase().includes(searchQuery) || 
+          s.roll_number.includes(searchQuery)
+        );
+      }
+
+      // 2. Sort the filtered list
+      if (activeSort === 'rank') {
+        list.sort((a, b) => b.grand_total - a.grand_total);
+      } else if (activeSort === 'rank-asc') {
+        list.sort((a, b) => a.grand_total - b.grand_total);
+      } else if (activeSort === 'name-asc') {
+        list.sort((a, b) => a.student_name.localeCompare(b.student_name));
+      } else if (activeSort === 'name-desc') {
+        list.sort((a, b) => b.student_name.localeCompare(a.student_name));
+      }
+
+      if (list.length === 0) {
+        browseModalTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-secondary);">No matching student results found.</td></tr>`;
+        return;
+      }
+
+      browseModalTableBody.innerHTML = list.map(s => {
+        const rank = baselineRanked.findIndex(item => item.roll_number === s.roll_number) + 1;
         const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
         const isPass = s.result.toLowerCase() === 'pass';
 
@@ -1824,10 +1866,9 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
           </tr>
         `;
       }).join('');
-    };
 
-    browseModalTableBody.innerHTML = renderRows(sorted);
-    browseModal.classList.add('open');
+      bindClicks();
+    };
 
     // Bind click events on rows
     const bindClicks = () => {
@@ -1844,24 +1885,29 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
         });
       });
     };
-    bindClicks();
 
-    // Bind modal search filter
+    // Reset selectors
+    const sortSelect = document.getElementById('modal-browse-sort') as HTMLSelectElement;
+    if (sortSelect) sortSelect.value = 'rank';
+
+    // Initial render
+    sortAndRender();
+    browseModal.classList.add('open');
+
+    // Bind search handler
     if (modalBrowseSearch) {
       modalBrowseSearch.value = '';
       modalBrowseSearch.oninput = (e) => {
-        const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
-        const filtered = sorted.filter(s => 
-          s.student_name.toLowerCase().includes(query) || 
-          s.roll_number.includes(query)
-        );
+        searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        sortAndRender();
+      };
+    }
 
-        if (filtered.length === 0) {
-          browseModalTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-secondary);">No matching student results found.</td></tr>`;
-        } else {
-          browseModalTableBody.innerHTML = renderRows(filtered);
-          bindClicks();
-        }
+    // Bind sort handler
+    if (sortSelect) {
+      sortSelect.onchange = (e) => {
+        activeSort = (e.target as HTMLSelectElement).value;
+        sortAndRender();
       };
     }
   };
