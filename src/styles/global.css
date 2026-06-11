@@ -440,6 +440,12 @@ button {
   transition: transform var(--transition-normal);
 }
 
+@media (max-width: 576px) {
+  .modal-container {
+    padding: 1.25rem 1rem;
+  }
+}
+
 .modal-overlay.open .modal-container {
   transform: scale(1);
 }

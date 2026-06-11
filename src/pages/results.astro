@@ -193,48 +193,48 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
     </div>
 
     <!-- Stats Cards Grid -->
-    <div class="results-stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+    <div class="results-stats-grid">
       <!-- Total Enrolled -->
-      <div class="card" style="display: flex; flex-direction: column; gap: 0.5rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); font-size: 0.85rem; font-weight: 600;">
-          <span>Total Enrolled</span>
-          <span style="font-size: 1.15rem;">👥</span>
+      <div class="card results-stat-card">
+        <div class="results-stat-header-row">
+          <span class="stat-title">Total Enrolled</span>
+          <span class="stat-icon">👥</span>
         </div>
-        <div id="stat-total-students" style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary);">0</div>
-        <span style="font-size: 0.75rem; color: var(--text-secondary);">Students in batch</span>
+        <div id="stat-total-students" class="stat-number">0</div>
+        <span class="stat-desc">Students in batch</span>
       </div>
 
       <!-- Pass Percentage -->
-      <div class="card" style="display: flex; flex-direction: column; gap: 0.5rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); font-size: 0.85rem; font-weight: 600;">
-          <span>Pass Percentage</span>
-          <span style="color: var(--accent-success); font-size: 1.15rem;">✅</span>
+      <div class="card results-stat-card">
+        <div class="results-stat-header-row">
+          <span class="stat-title">Pass Percentage</span>
+          <span class="stat-icon">✅</span>
         </div>
-        <div id="stat-pass-percent" style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary);">0%</div>
-        <span id="stat-pass-sub" style="font-size: 0.75rem; color: var(--text-secondary);">0 of 0 Passed</span>
-        <div style="background-color: var(--bg-tertiary); height: 6px; border-radius: var(--radius-full); overflow: hidden; margin-top: 0.25rem;">
-          <div id="stat-pass-progress" style="width: 0%; background: var(--accent-success); height: 100%; border-radius: var(--radius-full); transition: width 0.3s;"></div>
+        <div id="stat-pass-percent" class="stat-number">0%</div>
+        <span id="stat-pass-sub" class="stat-desc">0 of 0 Passed</span>
+        <div class="stat-progress-bar">
+          <div id="stat-pass-progress" class="stat-progress-fill"></div>
         </div>
       </div>
 
       <!-- Batch Topper -->
-      <div class="card" id="stat-topper-card" style="display: flex; flex-direction: column; gap: 0.5rem; cursor: pointer;">
-        <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); font-size: 0.85rem; font-weight: 600;">
-          <span>Batch Topper</span>
-          <span style="color: var(--accent-warning); font-size: 1.15rem;">👑</span>
+      <div class="card results-stat-card" id="stat-topper-card" style="cursor: pointer;">
+        <div class="results-stat-header-row">
+          <span class="stat-title">Batch Topper</span>
+          <span class="stat-icon">👑</span>
         </div>
-        <div id="stat-topper-score" style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary);">0</div>
-        <span id="stat-topper-name" style="font-size: 0.75rem; font-weight: 700; color: var(--accent-warning); text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width: 100%; display: block;" title="-">-</span>
+        <div id="stat-topper-score" class="stat-number">0</div>
+        <span id="stat-topper-name" class="highlight-name" title="-">-</span>
       </div>
 
       <!-- Batch Average -->
-      <div class="card" style="display: flex; flex-direction: column; gap: 0.5rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); font-size: 0.85rem; font-weight: 600;">
-          <span>Batch Average</span>
-          <span style="color: var(--accent-primary); font-size: 1.15rem;">📈</span>
+      <div class="card results-stat-card">
+        <div class="results-stat-header-row">
+          <span class="stat-title">Batch Average</span>
+          <span class="stat-icon">📈</span>
         </div>
-        <div id="stat-avg-score" style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary);">0</div>
-        <span style="font-size: 0.75rem; color: var(--text-secondary);">Avg grand total score</span>
+        <div id="stat-avg-score" class="stat-number">0</div>
+        <span class="stat-desc">Avg grand total score</span>
       </div>
     </div>
 
@@ -379,8 +379,8 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
           <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); font-size: 0.9rem;">🔍</span>
         </div>
 
-        <div style="max-height: 350px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
-          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+        <div style="max-height: 350px; overflow-y: auto; overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-sm); width: 100%;">
+          <table style="width: 100%; min-width: 520px; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
             <thead style="background-color: var(--bg-tertiary); position: sticky; top: 0; z-index: 10;">
               <tr style="border-bottom: 1px solid var(--border-color);">
                 <th style="padding: 0.75rem 0.5rem; font-weight: 700; color: var(--text-secondary); width: 60px; text-align: center;">Rank</th>
@@ -847,6 +847,90 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
   }
   .browse-results-row:hover {
     background-color: var(--bg-tertiary);
+  }
+
+  /* Stats Cards Grid Optimization */
+  .results-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  .results-stat-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0.85rem !important;
+    gap: 0.35rem !important;
+    min-width: 0;
+  }
+  .results-stat-card .results-stat-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+  .results-stat-card .stat-title {
+    font-size: 0.75rem;
+  }
+  .results-stat-card .stat-icon {
+    font-size: 1rem;
+  }
+  .results-stat-card .stat-number {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+  .results-stat-card .stat-desc {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+  }
+  .results-stat-card .stat-progress-bar {
+    background-color: var(--bg-tertiary);
+    height: 6px;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-top: 0.25rem;
+    width: 100%;
+  }
+  .results-stat-card .stat-progress-fill {
+    width: 0%;
+    background: var(--accent-success);
+    height: 100%;
+    border-radius: var(--radius-full);
+    transition: width 0.3s;
+  }
+  .results-stat-card .highlight-name {
+    font-weight: 700;
+    color: var(--accent-warning);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    display: block;
+  }
+
+  @media (min-width: 640px) {
+    .results-stats-grid {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .results-stat-card {
+      padding: 1.5rem !important;
+      gap: 0.5rem !important;
+    }
+    .results-stat-card .stat-title {
+      font-size: 0.85rem;
+    }
+    .results-stat-card .stat-icon {
+      font-size: 1.15rem;
+    }
+    .results-stat-card .stat-number {
+      font-size: 1.75rem;
+    }
+    .results-stat-card .stat-desc {
+      font-size: 0.75rem;
+    }
   }
   
   @media (max-width: 768px) {
