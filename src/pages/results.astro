@@ -197,7 +197,10 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
       <!-- Total Enrolled -->
       <div class="card results-stat-card">
         <div class="results-stat-header-row">
-          <span class="stat-title">Total Enrolled</span>
+          <span class="stat-title">
+            <span class="stat-title-desktop">Total Enrolled</span>
+            <span class="stat-title-mobile">Total</span>
+          </span>
           <span class="stat-icon">👥</span>
         </div>
         <div id="stat-total-students" class="stat-number">0</div>
@@ -207,7 +210,10 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
       <!-- Pass Percentage -->
       <div class="card results-stat-card">
         <div class="results-stat-header-row">
-          <span class="stat-title">Pass Percentage</span>
+          <span class="stat-title">
+            <span class="stat-title-desktop">Pass Percentage</span>
+            <span class="stat-title-mobile">Pass %</span>
+          </span>
           <span class="stat-icon">✅</span>
         </div>
         <div id="stat-pass-percent" class="stat-number">0%</div>
@@ -220,7 +226,10 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
       <!-- Batch Topper -->
       <div class="card results-stat-card" id="stat-topper-card" style="cursor: pointer;">
         <div class="results-stat-header-row">
-          <span class="stat-title">Batch Topper</span>
+          <span class="stat-title">
+            <span class="stat-title-desktop">Batch Topper</span>
+            <span class="stat-title-mobile">Topper</span>
+          </span>
           <span class="stat-icon">👑</span>
         </div>
         <div id="stat-topper-score" class="stat-number">0</div>
@@ -230,7 +239,10 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
       <!-- Batch Average -->
       <div class="card results-stat-card">
         <div class="results-stat-header-row">
-          <span class="stat-title">Batch Average</span>
+          <span class="stat-title">
+            <span class="stat-title-desktop">Batch Average</span>
+            <span class="stat-title-mobile">Avg</span>
+          </span>
           <span class="stat-icon">📈</span>
         </div>
         <div id="stat-avg-score" class="stat-number">0</div>
@@ -852,15 +864,16 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
   /* Stats Cards Grid Optimization */
   .results-stats-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
   }
   .results-stat-card {
     display: flex;
     flex-direction: column;
-    padding: 0.85rem !important;
-    gap: 0.35rem !important;
+    padding: 0.5rem 0.4rem !important;
+    gap: 0.15rem !important;
     min-width: 0;
+    border-radius: var(--radius-sm) !important;
   }
   .results-stat-card .results-stat-header-row {
     display: flex;
@@ -871,43 +884,31 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
     font-weight: 600;
   }
   .results-stat-card .stat-title {
-    font-size: 0.75rem;
+    font-size: 0.625rem;
+    white-space: nowrap;
+  }
+  .results-stat-card .stat-title-mobile {
+    display: inline;
+  }
+  .results-stat-card .stat-title-desktop {
+    display: none;
   }
   .results-stat-card .stat-icon {
-    font-size: 1rem;
+    font-size: 0.85rem;
   }
   .results-stat-card .stat-number {
-    font-size: 1.35rem;
+    font-size: 1.1rem;
     font-weight: 800;
     color: var(--text-primary);
   }
   .results-stat-card .stat-desc {
-    font-size: 0.7rem;
-    color: var(--text-secondary);
+    display: none;
   }
   .results-stat-card .stat-progress-bar {
-    background-color: var(--bg-tertiary);
-    height: 6px;
-    border-radius: var(--radius-full);
-    overflow: hidden;
-    margin-top: 0.25rem;
-    width: 100%;
-  }
-  .results-stat-card .stat-progress-fill {
-    width: 0%;
-    background: var(--accent-success);
-    height: 100%;
-    border-radius: var(--radius-full);
-    transition: width 0.3s;
+    display: none;
   }
   .results-stat-card .highlight-name {
-    font-weight: 700;
-    color: var(--accent-warning);
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    width: 100%;
-    display: block;
+    display: none;
   }
 
   @media (min-width: 640px) {
@@ -918,9 +919,16 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
     .results-stat-card {
       padding: 1.5rem !important;
       gap: 0.5rem !important;
+      border-radius: var(--radius-md) !important;
     }
     .results-stat-card .stat-title {
       font-size: 0.85rem;
+    }
+    .results-stat-card .stat-title-mobile {
+      display: none;
+    }
+    .results-stat-card .stat-title-desktop {
+      display: inline;
     }
     .results-stat-card .stat-icon {
       font-size: 1.15rem;
@@ -929,7 +937,34 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
       font-size: 1.75rem;
     }
     .results-stat-card .stat-desc {
+      display: block;
       font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    .results-stat-card .stat-progress-bar {
+      display: block;
+      background-color: var(--bg-tertiary);
+      height: 6px;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin-top: 0.25rem;
+      width: 100%;
+    }
+    .results-stat-card .stat-progress-fill {
+      width: 0%;
+      background: var(--accent-success);
+      height: 100%;
+      border-radius: var(--radius-full);
+      transition: width 0.3s;
+    }
+    .results-stat-card .highlight-name {
+      display: block;
+      font-weight: 700;
+      color: var(--accent-warning);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 100%;
     }
   }
   
