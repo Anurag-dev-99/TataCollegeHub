@@ -1,0 +1,37 @@
+[
+  {
+    "id": "vac-1a-understanding-india",
+    "name": "VAC-1(A) Understanding India",
+    "semester": "Semester 1",
+    "link": "/pdf/vac_understanding_india.pdf",
+    "type": "VAC-1(A) (Compulsory)"
+  },
+  {
+    "id": "vac-1b-environmental-studies",
+    "name": "VAC-1(B) Environmental Studies",
+    "semester": "Semester 1",
+    "link": "/pdf/vac_environmental_studies.pdf",
+    "type": "VAC-1(B) (Choose One)"
+  },
+  {
+    "id": "vac-1b-health-wellness",
+    "name": "VAC-1(B) Health & Wellness",
+    "semester": "Semester 1",
+    "link": "/pdf/vac_health_wellness.pdf",
+    "type": "VAC-1(B) (Choose One)"
+  },
+  {
+    "id": "vac-1b-yoga",
+    "name": "VAC-1(B) Yoga",
+    "semester": "Semester 1",
+    "link": "/pdf/vac_yoga.pdf",
+    "type": "VAC-1(B) (Choose One)"
+  },
+  {
+    "id": "vac-2-global-citizenship",
+    "name": "VAC-2 Global Citizenship Education for Sustainable Development",
+    "semester": "Semester 4",
+    "link": "/pdf/vac_global_citizenship.pdf",
+    "type": "VAC-2 (Compulsory)"
+  }
+]
