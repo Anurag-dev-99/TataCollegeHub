@@ -1,0 +1,50 @@
+[
+  {
+    "id": "aec-1-hindi",
+    "name": "AEC-1 Hindi",
+    "semester": "Semester 1",
+    "link": "https://drive.google.com/file/d/1jvYPrG7FqXZqwcSMukcPSgIUJXP5f6_c/view?usp=drive_link"
+  },
+  {
+    "id": "aec-2-english",
+    "name": "AEC-2 English",
+    "semester": "Semester 2",
+    "link": "https://drive.google.com/file/d/1yfdCALhcLHPQ6C2MBRLLW6jnOk5cpnpJ/view?usp=drive_link"
+  },
+  {
+    "id": "aec-3-hindi",
+    "name": "AEC-3 Hindi",
+    "semester": "Semester 3",
+    "link": "https://drive.google.com/file/d/19r8H96amNuU9SfcTP6Y2E8Bf8K3RJyZ3/view?usp=drive_link"
+  },
+  {
+    "id": "aec-3-sanskrit",
+    "name": "AEC-3 Sanskrit",
+    "semester": "Semester 3",
+    "link": "https://drive.google.com/file/d/1k_KLzrq7LCWBbiFSDjgeuGQrg5IMfl9Q/view?usp=drive_link"
+  },
+  {
+    "id": "aec-3-english",
+    "name": "AEC-3 English",
+    "semester": "Semester 3",
+    "link": "https://drive.google.com/file/d/1YrIZawoU5UjbgbgRNY3GjBhUxf6AkJnU/view?usp=drive_link"
+  },
+  {
+    "id": "aec-4-hindi",
+    "name": "AEC-4 Hindi",
+    "semester": "Semester 4",
+    "link": "https://drive.google.com/file/d/1_qna6taI-V2uzC9ndY6FXEJ3Sg5Uet5u/view?usp=drive_link"
+  },
+  {
+    "id": "aec-4-sanskrit",
+    "name": "AEC-4 Sanskrit",
+    "semester": "Semester 4",
+    "link": "https://drive.google.com/file/d/1t9YDPZ_Xub-P4bIRAHdHFnCMw0LN3vs_/view?usp=drive_link"
+  },
+  {
+    "id": "aec-4-english",
+    "name": "AEC-4 English",
+    "semester": "Semester 4",
+    "link": "https://drive.google.com/file/d/1tqG5qTYlBlz0KIvsX_FHLEVITHihyalh/view?usp=drive_link"
+  }
+]
