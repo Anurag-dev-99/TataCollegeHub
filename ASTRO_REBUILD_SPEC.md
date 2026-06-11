@@ -30,7 +30,8 @@ The project uses static, indexable, and crawler-friendly routes compiled into HT
 * **`/cgpa/index.html` (CGPA Calculator)**:
   * Features an **Interactive CGPA / SGPA Calculator** for students to input marks and project scores to calculate their honors grades.
 * **`/syllabus/` (Syllabus Directory & Detail dynamic pages)**:
-  * `/syllabus/index.html` selects departments.
+  * `/syllabus/index.html` displays Major (Honours), Minor, and **Multidisciplinary Courses (MDC)**.
+  * **Interactive MDC Index**: Features a responsive grid listing 30 clean, deduplicated MDC syllabus Google Drive links. Includes quick-filter tabs (Science, Arts & Humanities, Commerce & Business, Languages) and real-time subject search.
   * Dynamic `/syllabus/[department]/index.html` details courses and displays tabbed modules (Sem 1 to 8).
   * **"No Dead Ends" Filtering**: Astro compiles **only** pages and tab elements that have actual files in `public/pdf` or external links, dropping compile paths from 34 to 12. If a specific tab has no PDF, it shows a greyed-out "Coming Soon" label alongside a button to request the file.
 * **`/pyqs/` (PYQs Directory & dynamic pages)**:
