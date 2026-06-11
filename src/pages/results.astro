@@ -55,6 +55,39 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
         </div>
       </div>
 
+
+      <!-- Department Toppers -->
+      <div>
+        <h2 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <Trophy style="color: var(--accent-warning);" /> Department Toppers (NEP Batch)
+        </h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;" class="md:grid-cols-2">
+          {passPercentageByDepartment.map(dept => (
+            <div class="card" style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                <h3 style="font-size: 1.05rem; font-weight: 700;">{dept.department}</h3>
+                <span class="badge badge-success" style="font-size: 0.75rem;">{dept.passPercentage}% Pass</span>
+              </div>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                {dept.toppers.map((topper, idx) => (
+                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;">
+                    <Award size="16" style={`color: ${idx === 0 ? 'var(--accent-warning)' : 'var(--text-tertiary)'};`} />
+                    <span style="color: var(--text-primary); font-weight: 500;">{topper}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right 1 Col: Analytics & Reminders -->
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+      
       <!-- CSS-Based Visualizations: Pass Rates by Semester -->
       <div>
         <h2 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
@@ -86,91 +119,6 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
         </div>
       </div>
 
-      <!-- Department Toppers -->
-      <div>
-        <h2 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <Trophy style="color: var(--accent-warning);" /> Department Toppers (NEP Batch)
-        </h2>
-        
-        <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;" class="md:grid-cols-2">
-          {passPercentageByDepartment.map(dept => (
-            <div class="card" style="display: flex; flex-direction: column; gap: 0.75rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
-                <h3 style="font-size: 1.05rem; font-weight: 700;">{dept.department}</h3>
-                <span class="badge badge-success" style="font-size: 0.75rem;">{dept.passPercentage}% Pass</span>
-              </div>
-              
-              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                {dept.toppers.map((topper, idx) => (
-                  <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;">
-                    <Award size="16" style={`color: ${idx === 0 ? 'var(--accent-warning)' : 'var(--text-tertiary)'};`} />
-                    <span style="color: var(--text-primary); font-weight: 500;">{topper}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Right 1 Col: Dynamic CGPA Calculator & Reminders -->
-    <div style="display: flex; flex-direction: column; gap: 2rem;">
-      
-      <!-- Interactive SGPA to CGPA Calculator -->
-      <div class="card" style="border-color: var(--accent-primary);">
-        <h2 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <Calculator style="color: var(--accent-primary);" /> CGPA Calculator
-        </h2>
-        
-        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
-          Select Semesters and input your SGPAs to compute your cumulative CGPA and percentage according to Kolhan University CBCS rules.
-        </p>
-
-        <!-- Calculator Form -->
-        <div style="display: flex; flex-direction: column; gap: 0.75rem;" id="cgpa-calc-inputs">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map(sem => (
-            <div style="display: flex; align-items: center; gap: 0.75rem; justify-content: space-between;">
-              <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
-                <input type="checkbox" class="sem-check" data-sem={sem} checked={sem <= 2} style="cursor: pointer; width: 16px; height: 16px; accent-color: var(--accent-primary);" />
-                <span>Semester {sem}</span>
-              </label>
-              
-              <input 
-                type="number" 
-                class="sem-sgpa form-input" 
-                data-sem={sem} 
-                min="0" 
-                max="10" 
-                step="0.01" 
-                placeholder="SGPA (0-10)" 
-                style={`width: 100px; padding: 0.35rem 0.5rem; font-size: 0.85rem; text-align: right; height: 32px; display: ${sem <= 2 ? 'block' : 'none'};`} 
-              />
-            </div>
-          ))}
-        </div>
-
-        <!-- Result Box -->
-        <div style="background-color: var(--bg-tertiary); border: 1px dashed var(--border-color); border-radius: var(--radius-sm); padding: 1rem; margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: center;">
-          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Estimated CGPA</div>
-          <div id="cgpa-output" style="font-size: 2rem; font-family: var(--font-display); font-weight: 800; color: var(--accent-primary); line-height: 1;">0.00</div>
-          
-          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; border-top: 1px solid var(--border-color); padding-top: 0.5rem; margin-top: 0.25rem;">
-            <span style="color: var(--text-secondary);">Percentage:</span>
-            <span id="percent-output" style="font-weight: 700; color: var(--text-primary);">0.0%</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
-            <span style="color: var(--text-secondary);">Classification:</span>
-            <span id="class-output" style="font-weight: 700; color: var(--text-primary);">-</span>
-          </div>
-        </div>
-
-        <p style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 0.75rem; text-align: center;">
-          *Formula: Percentage = CGPA * 9.5. Minimum pass marks is 4.0 SGPA.
-        </p>
-      </div>
-
       <!-- Postponed Chart.js Reminder Widget -->
       <div class="card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%); border: 1px dashed var(--border-color); padding: 1.25rem;">
         <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; color: var(--accent-primary);">
@@ -184,81 +132,5 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
     </div>
 
   </div>
-
-  <script>
-    // Real-time CGPA calculator implementation
-    const calcInputsContainer = document.getElementById('cgpa-calc-inputs');
-    const checkboxes = calcInputsContainer?.querySelectorAll('.sem-check') as NodeListOf<HTMLInputElement>;
-    const sgpaInputs = calcInputsContainer?.querySelectorAll('.sem-sgpa') as NodeListOf<HTMLInputElement>;
-    
-    const cgpaOutput = document.getElementById('cgpa-output');
-    const percentOutput = document.getElementById('percent-output');
-    const classOutput = document.getElementById('class-output');
-
-    const recalculateCGPA = () => {
-      let sum = 0;
-      let count = 0;
-
-      sgpaInputs.forEach(input => {
-        const sem = input.getAttribute('data-sem') || '';
-        const matchingCheckbox = calcInputsContainer?.querySelector(`.sem-check[data-sem="${sem}"]`) as HTMLInputElement;
-        
-        if (matchingCheckbox?.checked) {
-          const val = parseFloat(input.value) || 0;
-          sum += val;
-          count++;
-        }
-      });
-
-      if (count === 0) {
-        if (cgpaOutput) cgpaOutput.textContent = '0.00';
-        if (percentOutput) percentOutput.textContent = '0.0%';
-        if (classOutput) classOutput.textContent = '-';
-        return;
-      }
-
-      const cgpa = sum / count;
-      const percentage = cgpa * 9.5;
-
-      let classification = 'Fail';
-      if (cgpa >= 7.5) {
-        classification = '1st Class with Distinction';
-      } else if (cgpa >= 6.0) {
-        classification = '1st Class';
-      } else if (cgpa >= 5.0) {
-        classification = '2nd Class';
-      } else if (cgpa >= 4.0) {
-        classification = 'Pass';
-      }
-
-      if (cgpaOutput) cgpaOutput.textContent = cgpa.toFixed(2);
-      if (percentOutput) percentOutput.textContent = percentage.toFixed(1) + '%';
-      if (classOutput) classOutput.textContent = classification;
-    };
-
-    // Listen to changes
-    checkboxes?.forEach(box => {
-      box.addEventListener('change', (e) => {
-        const target = e.target as HTMLInputElement;
-        const sem = target.getAttribute('data-sem') || '';
-        const input = calcInputsContainer?.querySelector(`.sem-sgpa[data-sem="${sem}"]`) as HTMLInputElement;
-        
-        if (input) {
-          input.style.display = target.checked ? 'block' : 'none';
-          if (!target.checked) {
-            input.value = '';
-          }
-        }
-        recalculateCGPA();
-      });
-    });
-
-    sgpaInputs?.forEach(input => {
-      input.addEventListener('input', recalculateCGPA);
-    });
-
-    // Run once on load
-    recalculateCGPA();
-  </script>
 
 </Layout>

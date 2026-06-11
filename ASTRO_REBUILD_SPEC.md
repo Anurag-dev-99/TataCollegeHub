@@ -25,8 +25,10 @@ The project uses static, indexable, and crawler-friendly routes compiled into HT
   * Lists and categorizes all college notices from `notices.json`.
   * Features category tab switching (All, Exams, Admissions, Academic, Results).
   * Includes a `[View Archived Notices]` button that reveals older notices.
-* **`/results/index.html` (Results Portal & CGPA Calculator)**:
-  * Shows overall metrics and features an **Interactive CGPA / SGPA Calculator** for students to input marks and project scores.
+* **`/results/index.html` (Results Portal)**:
+  * Shows overall metrics, results declarations, department toppers, and semester pass rates.
+* **`/cgpa/index.html` (CGPA Calculator)**:
+  * Features an **Interactive CGPA / SGPA Calculator** for students to input marks and project scores to calculate their honors grades.
 * **`/syllabus/` (Syllabus Directory & Detail dynamic pages)**:
   * `/syllabus/index.html` selects departments.
   * Dynamic `/syllabus/[department]/index.html` details courses and displays tabbed modules (Sem 1 to 8).

@@ -68,7 +68,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
           <a href={`${baseUrl}/results`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <TrendingUp /> <span style="font-size: 0.95rem; font-weight: 600;">Results</span>
           </a>
-          <a href={`${baseUrl}/results#cgpa-calculator`} class={`mobile-nav-item ${activeTab === 'cgpa' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+          <a href={`${baseUrl}/cgpa`} class={`mobile-nav-item ${activeTab === 'cgpa' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <Calculator /> <span style="font-size: 0.95rem; font-weight: 600;">CGPA</span>
           </a>
         </nav>
@@ -100,7 +100,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
           </div>
 
           <!-- Header Search Bar Container -->
-          <div id="header-search-container" style="position: relative; flex: 1; max-width: 440px; display: flex; align-items: center;" class="hidden-search-mobile">
+          <div id="header-search-container" class="header-search-container hidden-search-mobile">
             <Search style="position: absolute; left: 0.875rem; width: 18px; height: 18px; color: var(--text-tertiary);" />
             <input type="text" id="global-search-input" class="form-input" placeholder="Search syllabus, papers..." style="padding-left: 2.5rem; height: 40px; border-radius: var(--radius-full); font-size: 0.875rem;" />
             
@@ -161,7 +161,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         <a href={`${baseUrl}/results`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`}>
           <TrendingUp /> <span>Results</span>
         </a>
-        <a href={`${baseUrl}/results#cgpa-calculator`} class={`mobile-nav-item ${activeTab === 'cgpa' ? 'active' : ''}`}>
+        <a href={`${baseUrl}/cgpa`} class={`mobile-nav-item ${activeTab === 'cgpa' ? 'active' : ''}`}>
           <Calculator /> <span>CGPA</span>
         </a>
       </nav>

@@ -1,0 +1,147 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Calculator } from '@lucide/astro';
+---
+
+<Layout title="CGPA Calculator" activeTab="cgpa">
+
+  <!-- Header -->
+  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+    <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">CGPA Calculator</h1>
+    <p style="color: var(--text-secondary); max-width: 600px; font-size: 1.05rem;">
+      Compute your cumulative CGPA, overall percentage, and honors classification based on Kolhan University CBCS grading criteria.
+    </p>
+  </div>
+
+  <div style="max-width: 600px; margin: 0 auto;">
+    <!-- Interactive SGPA to CGPA Calculator Card -->
+    <div class="card" style="border-color: var(--accent-primary); padding: 2rem;">
+      <h2 style="font-size: 1.4rem; font-family: var(--font-display); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem;">
+        <Calculator style="color: var(--accent-primary); width: 28px; height: 28px;" /> Kolhan University CGPA Calculator
+      </h2>
+      
+      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.5;">
+        Check the semesters you have completed and enter your SGPA for each. The calculator will dynamically update your cumulative CGPA, percentage, and classification.
+      </p>
+
+      <!-- Calculator Form -->
+      <div style="display: flex; flex-direction: column; gap: 1rem;" id="cgpa-calc-inputs">
+        {[1, 2, 3, 4, 5, 6, 7, 8].map(sem => (
+          <div style="display: flex; align-items: center; gap: 1rem; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+            <label style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.95rem; font-weight: 600; cursor: pointer; user-select: none;">
+              <input type="checkbox" class="sem-check" data-sem={sem} checked={sem <= 2} style="cursor: pointer; width: 18px; height: 18px; accent-color: var(--accent-primary);" />
+              <span>Semester {sem}</span>
+            </label>
+            
+            <input 
+              type="number" 
+              class="sem-sgpa form-input" 
+              data-sem={sem} 
+              min="0" 
+              max="10" 
+              step="0.01" 
+              placeholder="SGPA (0-10)" 
+              style={`width: 130px; padding: 0.5rem; font-size: 0.9rem; text-align: right; height: 38px; display: ${sem <= 2 ? 'block' : 'none'};`} 
+            />
+          </div>
+        ))}
+      </div>
+
+      <!-- Result Box -->
+      <div style="background-color: var(--bg-tertiary); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-top: 1.75rem; display: flex; flex-direction: column; gap: 0.75rem; text-align: center; box-shadow: var(--shadow-sm);">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Estimated CGPA</div>
+        <div id="cgpa-output" style="font-size: 2.75rem; font-family: var(--font-display); font-weight: 800; color: var(--accent-primary); line-height: 1;">0.00</div>
+        
+        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem; margin-top: 0.5rem;">
+          <span style="color: var(--text-secondary);">Percentage:</span>
+          <span id="percent-output" style="font-weight: 700; color: var(--text-primary);">0.0%</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+          <span style="color: var(--text-secondary);">Classification:</span>
+          <span id="class-output" style="font-weight: 700; color: var(--text-primary);">-</span>
+        </div>
+      </div>
+
+      <p style="font-size: 0.75rem; color: var(--text-tertiary); margin-top: 1.25rem; text-align: center; line-height: 1.4;">
+        *Formula: Percentage = CGPA * 9.5. Minimum pass marks is 4.0 SGPA per semester.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Real-time CGPA calculator implementation
+    const calcInputsContainer = document.getElementById('cgpa-calc-inputs');
+    const checkboxes = calcInputsContainer?.querySelectorAll('.sem-check') as NodeListOf<HTMLInputElement>;
+    const sgpaInputs = calcInputsContainer?.querySelectorAll('.sem-sgpa') as NodeListOf<HTMLInputElement>;
+    
+    const cgpaOutput = document.getElementById('cgpa-output');
+    const percentOutput = document.getElementById('percent-output');
+    const classOutput = document.getElementById('class-output');
+
+    const recalculateCGPA = () => {
+      let sum = 0;
+      let count = 0;
+
+      sgpaInputs.forEach(input => {
+        const sem = input.getAttribute('data-sem') || '';
+        const matchingCheckbox = calcInputsContainer?.querySelector(`.sem-check[data-sem="${sem}"]`) as HTMLInputElement;
+        
+        if (matchingCheckbox?.checked) {
+          const val = parseFloat(input.value) || 0;
+          sum += val;
+          count++;
+        }
+      });
+
+      if (count === 0) {
+        if (cgpaOutput) cgpaOutput.textContent = '0.00';
+        if (percentOutput) percentOutput.textContent = '0.0%';
+        if (classOutput) classOutput.textContent = '-';
+        return;
+      }
+
+      const cgpa = sum / count;
+      const percentage = cgpa * 9.5;
+
+      let classification = 'Fail';
+      if (cgpa >= 7.5) {
+        classification = '1st Class with Distinction';
+      } else if (cgpa >= 6.0) {
+        classification = '1st Class';
+      } else if (cgpa >= 5.0) {
+        classification = '2nd Class';
+      } else if (cgpa >= 4.0) {
+        classification = 'Pass';
+      }
+
+      if (cgpaOutput) cgpaOutput.textContent = cgpa.toFixed(2);
+      if (percentOutput) percentOutput.textContent = percentage.toFixed(1) + '%';
+      if (classOutput) classOutput.textContent = classification;
+    };
+
+    // Listen to changes
+    checkboxes?.forEach(box => {
+      box.addEventListener('change', (e) => {
+        const target = e.target as HTMLInputElement;
+        const sem = target.getAttribute('data-sem') || '';
+        const input = calcInputsContainer?.querySelector(`.sem-sgpa[data-sem="${sem}"]`) as HTMLInputElement;
+        
+        if (input) {
+          input.style.display = target.checked ? 'block' : 'none';
+          if (!target.checked) {
+            input.value = '';
+          }
+        }
+        recalculateCGPA();
+      });
+    });
+
+    sgpaInputs?.forEach(input => {
+      input.addEventListener('input', recalculateCGPA);
+    });
+
+    // Run once on load
+    recalculateCGPA();
+  </script>
+
+</Layout>
