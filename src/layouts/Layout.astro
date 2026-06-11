@@ -643,9 +643,85 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         try {
           const resSyl = await fetch(`${baseUrl}/data/syllabus.json`);
           const syllabus = await resSyl.json();
+          
+          const resMdc = await fetch(`${baseUrl}/data/mdc.json`);
+          const mdc = await resMdc.json();
+          
+          const resAec = await fetch(`${baseUrl}/data/aec.json`);
+          const aec = await resAec.json();
+          
+          const resVac = await fetch(`${baseUrl}/data/vac.json`);
+          const vac = await resVac.json();
+          
           const resPyq = await fetch(`${baseUrl}/data/pyqs.json`);
           const pyqs = await resPyq.json();
-          searchDatabase = { syllabus, pyqs };
+
+          const formattedSyllabus = [];
+
+          syllabus.forEach(item => {
+            const isMinor = item.department.toLowerCase().includes('minor');
+            formattedSyllabus.push({
+              type: isMinor ? 'minor' : 'major',
+              title: item.title,
+              subtitle: `${item.department} • ${item.semester}`,
+              searchString: `${item.title} ${item.department} ${item.description} ${item.modules ? item.modules.join(' ') : ''} ${isMinor ? 'minor' : 'major honours hons'}`.toLowerCase(),
+              link: `${baseUrl}/syllabus/${item.department.toLowerCase().replace(/\s+/g, '-')}`,
+              targetBlank: false,
+              download: false
+            });
+          });
+
+          mdc.forEach(item => {
+            formattedSyllabus.push({
+              type: 'mdc',
+              title: `${item.name} (MDC) Syllabus`,
+              subtitle: `Multidisciplinary Course • ${item.category}`,
+              searchString: `${item.name} mdc multidisciplinary ${item.category} syllabus`.toLowerCase(),
+              link: item.link,
+              targetBlank: true,
+              download: false
+            });
+          });
+
+          aec.forEach(item => {
+            formattedSyllabus.push({
+              type: 'aec',
+              title: `${item.name} (AEC) Syllabus`,
+              subtitle: `Ability Enhancement Course • ${item.semester}`,
+              searchString: `${item.name} aec ability enhancement language ${item.semester} syllabus`.toLowerCase(),
+              link: item.link,
+              targetBlank: true,
+              download: false
+            });
+          });
+
+          vac.forEach(item => {
+            formattedSyllabus.push({
+              type: 'vac',
+              title: `${item.name} (VAC) Syllabus`,
+              subtitle: `Value Added Course • ${item.semester} • ${item.type}`,
+              searchString: `${item.name} vac value added ${item.semester} ${item.type} syllabus`.toLowerCase(),
+              link: `${baseUrl}${item.link}`,
+              targetBlank: false,
+              download: true
+            });
+          });
+
+          const formattedPyqs = pyqs.map(item => ({
+            title: `${item.subject} (${item.category})`,
+            subtitle: `Sem ${item.semester} • ${item.year} Exam Paper`,
+            searchString: `${item.subject} ${item.category} ${item.title} sem ${item.semester} ${item.year} pyq pyqs exam paper question`.toLowerCase(),
+            link: `${baseUrl}/pyqs/${item.category.toLowerCase()}/${item.subject.toLowerCase()}/${item.semester}`,
+            category: item.category,
+            subject: item.subject,
+            semester: item.semester,
+            year: item.year
+          }));
+
+          searchDatabase = {
+            syllabus: formattedSyllabus,
+            pyqs: formattedPyqs
+          };
         } catch (err) {
           console.error("Failed to load search index: ", err);
         }
@@ -659,17 +735,69 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
           return;
         }
 
-        const filteredSyllabus = searchDatabase.syllabus.filter(item => 
-          item.title.toLowerCase().includes(query) || 
-          item.department.toLowerCase().includes(query) ||
-          item.description.toLowerCase().includes(query)
-        ).slice(0, 3);
+        const queryWords = query.split(/\s+/).filter(w => w.length > 0);
+        
+        // Map common synonyms to standardized search terms
+        const wordMapping = {
+          'maths': 'mathematics',
+          'math': 'mathematics',
+          'phy': 'physics',
+          'chem': 'chemistry',
+          'eng': 'english',
+          'evs': 'environmental'
+        };
+        const searchWords = queryWords.map(w => wordMapping[w] || w);
 
-        const filteredPyqs = searchDatabase.pyqs.filter(item => 
-          item.title.toLowerCase().includes(query) || 
-          item.subject.toLowerCase().includes(query) ||
-          item.category.toLowerCase().includes(query)
-        ).slice(0, 5);
+        // Check if query is explicitly searching for pyqs
+        const isQueryingPyq = searchWords.some(w => ['pyq', 'pyqs', 'paper', 'papers', 'question', 'questions', 'previous'].includes(w));
+
+        const getScore = (item, isPyqItem) => {
+          let score = 0;
+          let matchCount = 0;
+
+          for (const word of searchWords) {
+            if (item.searchString.includes(word)) {
+              matchCount++;
+              score += 10;
+              if (item.title.toLowerCase().includes(word)) {
+                score += 20;
+              }
+            }
+          }
+
+          if (matchCount === searchWords.length) {
+            score += 100; // Perfect match bonus for matching all words
+          }
+
+          // Category-specific boosts
+          if (searchWords.includes('major') && item.type === 'major') score += 50;
+          if (searchWords.includes('minor') && item.type === 'minor') score += 50;
+          if (searchWords.includes('mdc') && item.type === 'mdc') score += 50;
+          if (searchWords.includes('aec') && item.type === 'aec') score += 50;
+          if (searchWords.includes('vac') && item.type === 'vac') score += 50;
+
+          // Priority bias: syllabus first unless query is explicitly about pyq
+          if (!isPyqItem && !isQueryingPyq) {
+            score += 30; // boost syllabus
+          }
+
+          return score;
+        };
+
+        const scoredSyllabus = searchDatabase.syllabus
+          .map(item => ({ item, score: getScore(item, false) }))
+          .filter(res => res.score > 0)
+          .sort((a, b) => b.score - a.score)
+          .map(res => res.item);
+
+        const scoredPyqs = searchDatabase.pyqs
+          .map(item => ({ item, score: getScore(item, true) }))
+          .filter(res => res.score > 0)
+          .sort((a, b) => b.score - a.score)
+          .map(res => res.item);
+
+        const filteredSyllabus = scoredSyllabus.slice(0, 4);
+        const filteredPyqs = scoredPyqs.slice(0, 4);
 
         if (filteredSyllabus.length === 0 && filteredPyqs.length === 0) {
           suggestionsBox.innerHTML = `
@@ -694,10 +822,15 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         if (filteredSyllabus.length > 0) {
           html += `<div style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase;">Syllabus Modules</div>`;
           filteredSyllabus.forEach(item => {
+            const downloadAttr = item.download ? 'download' : '';
+            const targetAttr = item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '';
             html += `
-              <a href="${baseUrl}/syllabus/${item.department.toLowerCase()}" style="display: block; padding: 0.625rem 0.75rem; border-radius: var(--radius-xs); color: var(--text-primary); transition: background 0.15s;" class="hover:bg-tertiary">
-                <div style="font-weight: 600; font-size: 0.9rem;">${item.department} Syllabus</div>
-                <div style="font-size: 0.75rem; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.title}</div>
+              <a href="${item.link}" ${downloadAttr} ${targetAttr} style="display: block; padding: 0.625rem 0.75rem; border-radius: var(--radius-xs); color: var(--text-primary); transition: background 0.15s;" class="hover:bg-tertiary">
+                <div style="font-weight: 600; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
+                  <span>${item.title}</span>
+                  ${item.download ? '<span style="font-size: 0.7rem;" class="badge badge-primary">Download</span>' : ''}
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.subtitle}</div>
               </a>
             `;
           });
@@ -706,12 +839,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         if (filteredPyqs.length > 0) {
           html += `<div style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase; margin-top: 0.5rem;">Previous Papers</div>`;
           filteredPyqs.forEach(item => {
-            const path = `${baseUrl}/pyqs/${item.category.toLowerCase()}/${item.subject.toLowerCase()}/${item.semester}`;
             html += `
-              <a href="${path}" style="display: block; padding: 0.625rem 0.75rem; border-radius: var(--radius-xs); color: var(--text-primary); transition: background 0.15s;" class="hover:bg-tertiary">
-                <div style="font-weight: 600; font-size: 0.9rem;">${item.subject} (${item.category})</div>
+              <a href="${item.link}" style="display: block; padding: 0.625rem 0.75rem; border-radius: var(--radius-xs); color: var(--text-primary); transition: background 0.15s;" class="hover:bg-tertiary">
+                <div style="font-weight: 600; font-size: 0.9rem;">${item.title}</div>
                 <div style="font-size: 0.75rem; color: var(--text-secondary); display: flex; justify-content: space-between;">
-                  <span>Sem ${item.semester} • ${item.year}</span>
+                  <span>${item.subtitle}</span>
                   <span style="color: var(--accent-primary); font-weight: 500;">Download →</span>
                 </div>
               </a>
