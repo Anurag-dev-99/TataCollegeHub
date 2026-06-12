@@ -63,6 +63,26 @@ def transform_student(student):
         "subjects": subjects
     }
 
+def load_excluded_rolls(filepath=r"C:\Users\Anurag\Documents\GitHub\rollno.txt"):
+    if not os.path.exists(filepath):
+        print(f"Warning: Excluded roll numbers file not found at {filepath}")
+        return set()
+    try:
+        with open(filepath, "r", encoding="utf-16") as f:
+            rolls = set(line.strip() for line in f if line.strip())
+            print(f"Loaded {len(rolls)} roll numbers to exclude from {filepath}")
+            return rolls
+    except Exception as e:
+        print(f"Error reading {filepath} with UTF-16: {e}")
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                rolls = set(line.strip() for line in f if line.strip())
+                print(f"Loaded {len(rolls)} roll numbers to exclude from {filepath} (using UTF-8)")
+                return rolls
+        except Exception as e2:
+            print(f"Error reading {filepath} with UTF-8: {e2}")
+            return set()
+
 def main():
     source_dir = r"C:\Users\Anurag\Documents\GitHub\Sem_3_2023_batch_result"
     files = {
@@ -70,6 +90,9 @@ def main():
         "physics": "phy_sem3_Merged.json",
         "chemistry": "che_sem3_Merged.json"
     }
+    
+    excluded_rolls = load_excluded_rolls()
+    excluded_count = 0
     
     merged_results = []
     seen_rolls = set()
@@ -91,6 +114,10 @@ def main():
                 continue
             roll = roll.strip()
             
+            if roll in excluded_rolls:
+                excluded_count += 1
+                continue
+                
             # Warn/handle duplicates if any
             if roll in seen_rolls:
                 print(f"Warning: Duplicate student with roll {roll} found in {filename}. Skipping.")
@@ -112,6 +139,7 @@ def main():
         json.dump(merged_results, f, ensure_ascii=False, indent=4)
         
     print(f"Successfully merged {len(merged_results)} students into {output_path}")
+    print(f"Excluded {excluded_count} students based on rollno.txt")
 
 if __name__ == "__main__":
     main()
