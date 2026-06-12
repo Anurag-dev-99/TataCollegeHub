@@ -1099,19 +1099,19 @@ datasets.forEach(d => {
         }
       }
     } else if (name.toLowerCase().includes('multi disciplinary course')) {
-      cleaned = name.replace(/^Multi Disciplinary Course-II\s*-\s*/i, 'MDC: ').replace(/^Multi Disciplinary Course-II\s*/i, 'MDC: ').replace(/Geography-/, 'Geography');
+      cleaned = name.replace(/^Multi Disciplinary Course-[lIVX]+\s*-\s*/i, 'MDC: ').replace(/^Multi Disciplinary Course-[lIVX]+\s*/i, 'MDC: ').replace(/Geography-/, 'Geography');
     } else if (name.toLowerCase().includes('skill enhancement course')) {
-      cleaned = name.replace(/^Skill Enhancement Course-II\s*-\s*/i, 'SEC: ').replace(/^Skill Enhancement Course-II-?\s*/i, 'SEC: ').replace(/^Skill Enhancement Course-ll\s*-\s*/i, 'SEC: ').replace(/^Skill Enhancement Course-\s*-\s*/i, 'SEC: ');
+      cleaned = name.replace(/^Skill Enhancement Course-[lIVX]+\s*-\s*/i, 'SEC: ').replace(/^Skill Enhancement Course-[lIVX]+\s*/i, 'SEC: ').replace(/^Skill Enhancement Course-\s*-\s*/i, 'SEC: ');
     } else if (name.toLowerCase().includes('ability enhancement course')) {
-      cleaned = name.replace(/^Ability Enhancement Courses-II\s*-\s*/i, 'AEC: ').replace(/^Ability Enhancement Courses-\s*-\s*/i, 'AEC: ').replace(/^Ability Enhancement Courses-II-?\s*/i, 'AEC: ').replace(/^Ability Enhancement Courses-IV\s*-\s*/i, 'AEC: ').replace(/^Ability Enhancement Courses-IV-?\s*/i, 'AEC: ');
+      cleaned = name.replace(/^Ability Enhancement Courses?-[lIVX]+\s*-\s*/i, 'AEC: ').replace(/^Ability Enhancement Courses?-[lIVX]+\s*/i, 'AEC: ').replace(/^Ability Enhancement Courses?-\s*-\s*/i, 'AEC: ');
     } else if (name.toLowerCase().includes('value addes course') || name.toLowerCase().includes('value added course')) {
-      cleaned = name.replace(/^Value Addes Courses-ll\s*-\s*/i, 'VAC: ').replace(/^Value Addes Courses-\s*-\s*/i, 'VAC: ').replace(/^Value Addes Courses-?\s*/i, 'VAC: ');
+      cleaned = name.replace(/^Value Adde[ds] Courses?-[lIVX]+\s*-\s*/i, 'VAC: ').replace(/^Value Adde[ds] Courses?-[lIVX]+\s*/i, 'VAC: ').replace(/^Value Adde[ds] Courses?-\s*-\s*/i, 'VAC: ');
     } else {
       cleaned = name
-        .replace(/^MAJOR-[VIX]+-/i, '')
-        .replace(/^Minor-[IIB]+-/i, '')
-        .replace(/^Ability Enhancement Courses-[IVX]+ ?- ?/i, 'AEC: ')
-        .replace(/^Value Addes Courses-[lIVX]* ?-? ?/i, 'VAC: ')
+        .replace(/^MAJOR-[lIVX]+-/i, '')
+        .replace(/^Minor-[lIVX]+[a-zA-Z]?-/i, '')
+        .replace(/^Ability Enhancement Courses?-[lIVX]+ ?- ?/i, 'AEC: ')
+        .replace(/^Value Adde[ds] Courses?-[lIVX]* ?-? ?/i, 'VAC: ')
         .trim();
     }
 

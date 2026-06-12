@@ -27,6 +27,13 @@
       "date": "Pending",
       "status": "Awaiting Exams (July 2026)",
       "link": "#"
+    },
+    {
+      "id": "res-ug-sem3-science",
+      "title": "UG Semester 3 Science Streams (Session 2023-27)",
+      "date": "2026-06-12",
+      "status": "Declared",
+      "link": "#results?exam=sem3_master_2023-2027"
     }
   ],
   "passPercentageBySemester": [
@@ -128,6 +135,15 @@
       "date": "2026-06-07",
       "status": "Declared",
       "file": "results_sem2_master.json"
+    },
+    {
+      "id": "sem3_master_2023-2027",
+      "title": "Semester 3 — Science Streams",
+      "batch": "Session 2023-2027",
+      "university": "Kolhan University",
+      "date": "2026-06-12",
+      "status": "Declared",
+      "file": "results_sem3_master.json"
     }
   ]
 }
