@@ -34,23 +34,36 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       const theme = getTheme();
       document.documentElement.setAttribute('data-theme', theme);
     </script>
+    
+    <style is:global>
+      .logo-link {
+        transition: opacity var(--transition-fast) !important;
+      }
+      .logo-link:hover .logo-icon {
+        transform: scale(1.06) rotate(-3deg);
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.45);
+      }
+      .logo-link:hover .logo-text-primary {
+        color: var(--accent-primary) !important;
+      }
+    </style>
   </head>
   <body>
     <div class="page-wrapper">
       
       <!-- Desktop Sidebar -->
       <aside class="sidebar">
-        <div style="display: flex; align-items: center; gap: 0.75rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
-          <div style="background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); color: white; width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; box-shadow: var(--shadow-glow);">
+        <a href={`${baseUrl}/`} class="logo-link" style="display: flex; align-items: center; gap: 0.75rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); text-decoration: none; color: inherit;">
+          <div class="logo-icon" style="background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); color: white; width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; box-shadow: var(--shadow-glow); transition: all var(--transition-normal);">
             T
           </div>
           <div>
-            <h2 style="font-size: 1.1rem; font-weight: 800; tracking: -0.02em; font-family: var(--font-display);">
-              <span style="color: var(--text-primary);">Tata </span><span style="color: var(--accent-primary);">Hub</span>
+            <h2 style="font-size: 1.1rem; font-weight: 800; tracking: -0.02em; font-family: var(--font-display); margin: 0; transition: color var(--transition-fast);">
+              <span style="color: var(--text-primary);" class="logo-text-primary">Tata </span><span style="color: var(--accent-primary);">Hub</span>
             </h2>
-            <span style="font-size: 0.7rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Student Portal</span>
+            <span style="font-size: 0.7rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: block;">Student Portal</span>
           </div>
-        </div>
+        </a>
 
         <nav style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
           <a href={`${baseUrl}/`} class={`mobile-nav-item ${activeTab === 'home' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
@@ -90,14 +103,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
         <!-- Sticky Header -->
         <header style="background-color: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 40; padding: 0.75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; box-shadow: var(--shadow-sm); height: 68px;">
           <!-- Logo & Branding -->
-          <div style="display: flex; align-items: center; gap: 0.625rem;">
-            <div style="background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); color: white; width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; box-shadow: var(--shadow-glow);">
+          <a href={`${baseUrl}/`} class="logo-link" style="display: flex; align-items: center; gap: 0.625rem; text-decoration: none; color: inherit;">
+            <div class="logo-icon" style="background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); color: white; width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; box-shadow: var(--shadow-glow); transition: all var(--transition-normal);">
               T
             </div>
-            <h1 style="font-size: 1.15rem; font-weight: 800; font-family: var(--font-display); tracking: -0.01em;">
-              <span style="color: var(--text-primary);">Tata </span><span style="color: var(--accent-primary);">Hub</span>
+            <h1 style="font-size: 1.15rem; font-weight: 800; font-family: var(--font-display); tracking: -0.01em; margin: 0; transition: color var(--transition-fast);">
+              <span style="color: var(--text-primary);" class="logo-text-primary">Tata </span><span style="color: var(--accent-primary);">Hub</span>
             </h1>
-          </div>
+          </a>
 
           <!-- Header Search Bar Container -->
           <div id="header-search-container" class="header-search-container hidden-search-mobile">
