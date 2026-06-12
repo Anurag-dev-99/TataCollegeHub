@@ -1032,6 +1032,14 @@ datasets.forEach(d => {
   let selectedMajor = 'All';
   let comparisonChart = null;
 
+  // Custom comparator for grand total (descending), tie-broken by student name (alphabetically ascending)
+  const grandTotalComparator = (a, b) => {
+    if (b.grand_total !== a.grand_total) {
+      return b.grand_total - a.grand_total;
+    }
+    return a.student_name.localeCompare(b.student_name);
+  };
+
   // DOM Elements
   const hubView = document.getElementById('results-hub-view');
   const dashboardView = document.getElementById('results-dashboard-view');
@@ -1289,7 +1297,7 @@ datasets.forEach(d => {
     const passPercent = ((passCount / totalCount) * 100).toFixed(1);
     
     // Sort to find toppers and average
-    const sorted = [...filteredData].sort((a, b) => b.grand_total - a.grand_total);
+    const sorted = [...filteredData].sort(grandTotalComparator);
     const topStudent = sorted[0];
     const avgScore = (filteredData.reduce((sum, s) => sum + s.grand_total, 0) / totalCount).toFixed(1);
 
@@ -1356,13 +1364,16 @@ datasets.forEach(d => {
 
     let sorted = [];
     if (sortBy === 'grand_total') {
-      sorted = [...filteredData].sort((a, b) => b.grand_total - a.grand_total);
+      sorted = [...filteredData].sort(grandTotalComparator);
       if (leaderboardDesc) leaderboardDesc.textContent = "Top 10 students by Grand Total in this semester exam.";
     } else {
       sorted = [...filteredData].sort((a, b) => {
         const t1 = a.subjects[sortBy]?.total ?? 0;
         const t2 = b.subjects[sortBy]?.total ?? 0;
-        return t2 - t1;
+        if (t2 !== t1) {
+          return t2 - t1;
+        }
+        return a.student_name.localeCompare(b.student_name);
       });
       const subName = subjectToppersList?.querySelector(`[data-key="${sortBy}"]`) ? cleanSubjectName(filteredData[0]?.subjects[sortBy]?.subject) : 'Subject';
       if (leaderboardDesc) leaderboardDesc.textContent = `Top 10 students sorted by marks in ${subName}.`;
@@ -1426,7 +1437,7 @@ datasets.forEach(d => {
         const score = subObj.total;
         const cleanName = cleanSubjectName(subObj.subject);
         
-        if (!toppersMap[key] || score > toppersMap[key].maxScore) {
+        if (!toppersMap[key] || score > toppersMap[key].maxScore || (score === toppersMap[key].maxScore && student.student_name.localeCompare(toppersMap[key].student.student_name) < 0)) {
           toppersMap[key] = {
             student,
             maxScore: score,
@@ -1500,7 +1511,7 @@ datasets.forEach(d => {
   };
 
   const renderStudentCard = (container, student) => {
-    const sorted = [...currentResultsDataset].sort((a, b) => b.grand_total - a.grand_total);
+    const sorted = [...currentResultsDataset].sort(grandTotalComparator);
     const rank = sorted.findIndex(s => s.roll_number === student.roll_number) + 1;
     const isPass = student.result.toLowerCase() === 'pass';
     const statusClass = isPass ? 'pass' : 'promoted';
@@ -1662,7 +1673,7 @@ datasets.forEach(d => {
   const renderComparison = (s1, s2) => {
     if (!comparisonResultOutput) return;
 
-    const sorted = [...currentResultsDataset].sort((a, b) => b.grand_total - a.grand_total);
+    const sorted = [...currentResultsDataset].sort(grandTotalComparator);
     const rank1 = sorted.findIndex(s => s.roll_number === s1.roll_number) + 1;
     const rank2 = sorted.findIndex(s => s.roll_number === s2.roll_number) + 1;
 
@@ -1856,7 +1867,7 @@ datasets.forEach(d => {
       : currentResultsDataset.filter(s => s.major === selectedMajor);
 
     // Baseline rankings list (always sorted by marks high to low to compute Rank)
-    const baselineRanked = [...filteredData].sort((a, b) => b.grand_total - a.grand_total);
+    const baselineRanked = [...filteredData].sort(grandTotalComparator);
 
     let activeSort = 'rank';
     let searchQuery = '';
@@ -1873,9 +1884,14 @@ datasets.forEach(d => {
 
       // 2. Sort the filtered list
       if (activeSort === 'rank') {
-        list.sort((a, b) => b.grand_total - a.grand_total);
+        list.sort(grandTotalComparator);
       } else if (activeSort === 'rank-asc') {
-        list.sort((a, b) => a.grand_total - b.grand_total);
+        list.sort((a, b) => {
+          if (a.grand_total !== b.grand_total) {
+            return a.grand_total - b.grand_total;
+          }
+          return a.student_name.localeCompare(b.student_name);
+        });
       } else if (activeSort === 'name-asc') {
         list.sort((a, b) => a.student_name.localeCompare(b.student_name));
       } else if (activeSort === 'name-desc') {
