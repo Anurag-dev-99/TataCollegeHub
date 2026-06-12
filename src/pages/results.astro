@@ -7,6 +7,15 @@ import {
 } from '@lucide/astro';
 
 const { announcements, passPercentageBySemester, passPercentageByDepartment, yearlyTrends, datasets = [] } = resultsData;
+
+// Group datasets by batch/session
+const groupedDatasets: Record<string, typeof datasets> = {};
+datasets.forEach(d => {
+  if (!groupedDatasets[d.batch]) {
+    groupedDatasets[d.batch] = [];
+  }
+  groupedDatasets[d.batch].push(d);
+});
 ---
 
 <Layout title="Results & Analysis Portal" activeTab="results">
@@ -23,25 +32,42 @@ const { announcements, passPercentageBySemester, passPercentageByDepartment, yea
       </p>
     </div>
 
-    <!-- Selection Cards Grid -->
-    <div class="results-hub-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
-      {datasets.map(d => (
-        <div class="results-card-select card card-interactive" data-exam={d.id} style="display: flex; flex-direction: column; gap: 1rem; cursor: pointer; text-decoration: none; color: inherit;">
-          <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
-            <div style="background-color: rgba(99, 102, 241, 0.1); color: var(--accent-primary); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
-              <Award size="22" />
-            </div>
-            <span class="badge badge-success" style="font-size: 0.7rem; text-transform: uppercase;">{d.status}</span>
+    <!-- Selection Groups (Separated by Batch) -->
+    <div style="display: flex; flex-direction: column; gap: 2.25rem; margin-bottom: 2.5rem;">
+      {Object.entries(groupedDatasets).map(([batchName, items]) => (
+        <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+            <span style="font-size: 1.25rem; line-height: 1;">🎓</span>
+            <h2 style="font-size: 1.15rem; font-family: var(--font-display); font-weight: 800; color: var(--accent-primary); letter-spacing: -0.01em;">
+              Batch {batchName.replace('Session ', '')}
+            </h2>
           </div>
           
-          <div>
-            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">{d.title}</h3>
-            <p style="font-size: 0.85rem; color: var(--text-secondary);">{d.batch}</p>
-          </div>
-          
-          <div style="display: flex; justify-content: space-between; width: 100%; border-top: 1px solid var(--border-color); padding-top: 0.875rem; margin-top: auto; font-size: 0.8rem; color: var(--text-secondary);">
-            <span style="display: flex; align-items: center; gap: 0.25rem;"><Calendar size="14" /> {d.date}</span>
-            <span style="display: flex; align-items: center; gap: 0.25rem; font-weight: 700; color: var(--accent-primary);">Open Dashboard →</span>
+          <div class="results-hub-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+            {items.map(d => (
+              <div class="results-card-select card card-interactive" data-exam={d.id} style="display: flex; flex-direction: column; gap: 1rem; cursor: pointer; text-decoration: none; color: inherit;">
+                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                  <div style="background-color: rgba(99, 102, 241, 0.1); color: var(--accent-primary); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+                    <Award size="22" />
+                  </div>
+                  <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <span class={`badge ${d.batch.includes('2022-2026') ? 'badge-primary' : 'badge-warning'}`} style="font-size: 0.75rem; font-weight: 800; padding: 0.25rem 0.625rem; border-radius: var(--radius-xs); letter-spacing: normal; text-transform: none;">
+                      {d.batch}
+                    </span>
+                    <span class="badge badge-success" style="font-size: 0.75rem; font-weight: 800; padding: 0.25rem 0.625rem; text-transform: uppercase; border-radius: var(--radius-xs);">{d.status}</span>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.15rem; tracking: -0.015em; line-height: 1.35;">{d.title}</h3>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; width: 100%; border-top: 1px solid var(--border-color); padding-top: 0.875rem; margin-top: auto; font-size: 0.8rem; color: var(--text-secondary);">
+                  <span style="display: flex; align-items: center; gap: 0.25rem;"><Calendar size="14" /> {d.date}</span>
+                  <span style="display: flex; align-items: center; gap: 0.25rem; font-weight: 700; color: var(--accent-primary);">Open Dashboard →</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       ))}
