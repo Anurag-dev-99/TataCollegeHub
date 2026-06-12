@@ -1,0 +1,26 @@
+[
+  {
+    "id": "sec-1-digital-education",
+    "name": "SEC-1 Digital Education",
+    "semester": "Semester 1",
+    "link": "https://drive.google.com/file/d/1tKuuXiTzDXcIL-gMvhUDBC_RJbBEl2Yu/view?usp=drive_link"
+  },
+  {
+    "id": "sec-2-news-writing-reporting",
+    "name": "SEC-2 News Writing & Reporting",
+    "semester": "Semester 2",
+    "link": "https://drive.google.com/file/d/1CEsfwVRju5B4c0uzlV9oswhdpAkzcMUl/view?usp=drive_link"
+  },
+  {
+    "id": "sec-2-communication-skills",
+    "name": "SEC-2 Communication Skills and Personality Development",
+    "semester": "Semester 2",
+    "link": "https://drive.google.com/file/d/1ctclScS60Zb2tYAVK3Q6mrYaKGqvLYIg/view?usp=drive_link"
+  },
+  {
+    "id": "sec-3-mathematical-computational-thinking",
+    "name": "SEC-3 Mathematical & Computational Thinking and Analysis",
+    "semester": "Semester 3",
+    "link": "https://drive.google.com/file/d/1mRuDft6Sp6uCeuiC0cLb5MRF9HuwOd6n/view?usp=drive_link"
+  }
+]
