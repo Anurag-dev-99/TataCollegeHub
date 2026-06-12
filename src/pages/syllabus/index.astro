@@ -350,8 +350,9 @@ const departments = Object.keys(deptGroups);
             <div id="vac-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
               {vacData.map(item => (
                 <a 
-                  href={`${baseUrl}${item.link}`} 
-                  download 
+                  href={item.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
                   class="card card-interactive vac-item" 
                   data-name={item.name.toLowerCase()} 
                   data-semester={item.semester} 
