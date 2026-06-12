@@ -206,6 +206,10 @@ datasets.forEach(d => {
     <div style="display: flex; flex-direction: column; gap: 0.25rem;">
       <h2 id="dashboard-exam-title" style="font-size: 1.8rem; font-family: var(--font-display); tracking: -0.02em;">-</h2>
       <p id="dashboard-exam-subtitle" style="color: var(--text-secondary); font-size: 1rem;">-</p>
+      <div id="dashboard-exam-notice" style="display: none; margin-top: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-sm); background-color: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); color: var(--accent-warning); font-size: 0.875rem; font-weight: 500; align-items: center; gap: 0.5rem; width: fit-content;">
+        <span style="font-size: 1.15rem; line-height: 1;">⚠️</span>
+        <span id="dashboard-exam-notice-text"></span>
+      </div>
     </div>
 
     <!-- Major Filter select (if multi-major) -->
@@ -1207,6 +1211,17 @@ datasets.forEach(d => {
   const loadExamDashboard = async (dataset) => {
     if (examTitle) examTitle.textContent = dataset.title;
     if (examSubtitle) examSubtitle.textContent = `${dataset.batch} — ${dataset.university} • Declared on ${dataset.date}`;
+    
+    const examNotice = document.getElementById('dashboard-exam-notice');
+    const examNoticeText = document.getElementById('dashboard-exam-notice-text');
+    if (examNotice && examNoticeText) {
+      if (dataset.notice) {
+        examNoticeText.textContent = dataset.notice;
+        examNotice.style.display = 'flex';
+      } else {
+        examNotice.style.display = 'none';
+      }
+    }
     
     // Reset inputs & output
     if (searchInput) searchInput.value = '';
