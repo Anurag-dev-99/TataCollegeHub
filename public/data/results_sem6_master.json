@@ -1,1162 +1,603 @@
 [
     {
-        "student_name": "CHAITAN MUNDA",
-        "roll_number": "231305779893",
-        "result": "Promoted",
-        "grand_total": 244,
+        "student_name": "BHARGAV KUMAR MAHATO",
+        "roll_number": "231305779995",
+        "result": "Pass",
+        "grand_total": 384,
         "subjects": {
             "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 17,
-                "internal": 21,
-                "practical": null,
-                "total": 38
+                "subject": "MAJOR-XII-Physics",
+                "theory": 40,
+                "internal": 12,
+                "practical": 22,
+                "total": 74
             },
             "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 41.0,
-                "internal": 22,
-                "practical": null,
-                "total": 63
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 30.0,
-                "internal": 21,
-                "practical": null,
-                "total": 51
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 36.0,
-                "internal": 22,
-                "practical": null,
-                "total": 58
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": null,
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 40,
                 "internal": 11,
                 "practical": 23,
-                "total": 34
-            }
-        }
-    },
-    {
-        "student_name": "RUBEN BALMUCHU",
-        "roll_number": "231305779894",
-        "result": "Pass",
-        "grand_total": 317,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 16,
-                "internal": 22,
-                "practical": null,
-                "total": 38
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 54.0,
-                "internal": 21,
-                "practical": null,
-                "total": 75
+                "total": 74
             },
             "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 41.0,
-                "internal": 22,
-                "practical": null,
-                "total": 63
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 48.0,
-                "internal": 21,
-                "practical": null,
-                "total": 69
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 38.0,
-                "internal": 10,
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 39,
+                "internal": 12,
                 "practical": 22,
-                "total": 70
-            }
-        }
-    },
-    {
-        "student_name": "HIMANSHU MAHTO",
-        "roll_number": "231305779897",
-        "result": "Promoted",
-        "grand_total": 282,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 3,
-                "internal": 21,
-                "practical": null,
-                "total": 24
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 47.0,
-                "internal": 22,
-                "practical": null,
-                "total": 69
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 36.0,
-                "internal": 22,
-                "practical": null,
-                "total": 58
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 36.0,
-                "internal": 22,
-                "practical": null,
-                "total": 58
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 40.0,
-                "internal": 12,
-                "practical": 21,
                 "total": 73
-            }
-        }
-    },
-    {
-        "student_name": "RAYMUNI BURIULY",
-        "roll_number": "231305779899",
-        "result": "Pass",
-        "grand_total": 281,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 21,
-                "internal": 22,
-                "practical": null,
-                "total": 43
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 45.0,
-                "internal": 21,
-                "practical": null,
-                "total": 66
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 30.0,
-                "internal": 22,
-                "practical": null,
-                "total": 52
             },
             "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 32.0,
-                "internal": 21,
-                "practical": null,
-                "total": 53
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 35.0,
+                "subject": "MAJOR-XV-Physics",
+                "theory": 54,
                 "internal": 12,
-                "practical": 20,
-                "total": 67
-            }
-        }
-    },
-    {
-        "student_name": "ANJAN KUMAR MAHATO",
-        "roll_number": "231305779900",
-        "result": "Promoted",
-        "grand_total": 275,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 2,
-                "internal": 21,
-                "practical": null,
-                "total": 23
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 47.0,
-                "internal": 22,
-                "practical": null,
-                "total": 69
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 34.0,
-                "internal": 21,
-                "practical": null,
-                "total": 55
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 30.0,
-                "internal": 22,
-                "practical": null,
-                "total": 52
+                "practical": 21,
+                "total": 87
             },
             "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 44.0,
-                "internal": 11,
-                "practical": 21,
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 57,
+                "internal": 19,
+                "practical": null,
                 "total": 76
             }
         }
     },
     {
-        "student_name": "SAMIR KUMAR",
-        "roll_number": "231305779903",
+        "student_name": "BASANTI KONDANKEL",
+        "roll_number": "231305780025",
         "result": "Pass",
-        "grand_total": 313,
+        "grand_total": 383,
         "subjects": {
             "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 27,
-                "internal": 23,
-                "practical": null,
-                "total": 50
+                "subject": "MAJOR-XII-Physics",
+                "theory": 42,
+                "internal": 13,
+                "practical": 23,
+                "total": 78
             },
             "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 45.0,
-                "internal": 23,
-                "practical": null,
-                "total": 68
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 49,
+                "internal": 12,
+                "practical": 22,
+                "total": 83
             },
             "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 37.0,
-                "internal": 23,
-                "practical": null,
-                "total": 60
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 37,
+                "internal": 13,
+                "practical": 23,
+                "total": 73
             },
             "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 40.0,
-                "internal": 23,
-                "practical": null,
-                "total": 63
+                "subject": "MAJOR-XV-Physics",
+                "theory": 44,
+                "internal": 12,
+                "practical": 21,
+                "total": 77
             },
             "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 39.0,
-                "internal": 13,
-                "practical": 20,
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 52,
+                "internal": 20,
+                "practical": null,
                 "total": 72
             }
         }
     },
     {
-        "student_name": "CHANDRA SHEKHAR BEHRA",
-        "roll_number": "231305779904",
+        "student_name": "PAWAN KUMAR GUPTA",
+        "roll_number": "231305780004",
         "result": "Pass",
-        "grand_total": 290,
+        "grand_total": 379,
         "subjects": {
             "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 22,
-                "internal": 22,
-                "practical": null,
-                "total": 44
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 33.0,
-                "internal": 21,
-                "practical": null,
-                "total": 54
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 30.0,
-                "internal": 22,
-                "practical": null,
-                "total": 52
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 46.0,
-                "internal": 21,
-                "practical": null,
-                "total": 67
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 37.0,
-                "internal": 14,
+                "subject": "MAJOR-XII-Physics",
+                "theory": 39,
+                "internal": 13,
                 "practical": 22,
-                "total": 73
-            }
-        }
-    },
-    {
-        "student_name": "RITIK KUMAR GOPE",
-        "roll_number": "231305779905",
-        "result": "Promoted",
-        "grand_total": 258,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 12,
-                "internal": 21,
-                "practical": null,
-                "total": 33
+                "total": 74
             },
             "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 33.0,
-                "internal": 22,
-                "practical": null,
-                "total": 55
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 26.0,
-                "internal": 21,
-                "practical": null,
-                "total": 47
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 36.0,
-                "internal": 22,
-                "practical": null,
-                "total": 58
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 31.0,
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 38,
                 "internal": 12,
-                "practical": 22,
+                "practical": 23,
+                "total": 73
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 45,
+                "internal": 12,
+                "practical": 23,
+                "total": 80
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 53,
+                "internal": 11,
+                "practical": 23,
+                "total": 87
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 46,
+                "internal": 19,
+                "practical": null,
                 "total": 65
             }
         }
     },
     {
-        "student_name": "MURLI MARSAL BIRUA",
-        "roll_number": "231305779907",
+        "student_name": "RAMDURLABH GOPE",
+        "roll_number": "231305779996",
         "result": "Pass",
-        "grand_total": 314,
+        "grand_total": 376,
         "subjects": {
             "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 52,
-                "internal": 23,
-                "practical": null,
-                "total": 75
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 41.0,
-                "internal": 23,
-                "practical": null,
-                "total": 64
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 15.0,
-                "internal": 23,
-                "practical": null,
-                "total": 38
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 39.0,
-                "internal": 23,
-                "practical": null,
-                "total": 62
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 39.0,
-                "internal": 12,
-                "practical": 22,
-                "total": 73
-            }
-        }
-    },
-    {
-        "student_name": "BIMAL SINGH",
-        "roll_number": "231305779910",
-        "result": "Pass",
-        "grand_total": 279,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 18,
-                "internal": 22,
-                "practical": null,
-                "total": 40
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 33.0,
-                "internal": 21,
-                "practical": null,
-                "total": 54
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 39.0,
-                "internal": 22,
-                "practical": null,
-                "total": 61
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 34.0,
-                "internal": 21,
-                "practical": null,
-                "total": 55
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 36.0,
-                "internal": 12,
-                "practical": 21,
-                "total": 69
-            }
-        }
-    },
-    {
-        "student_name": "NIKITA GIRI",
-        "roll_number": "231305779913",
-        "result": "Promoted",
-        "grand_total": 288,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 6,
-                "internal": 21,
-                "practical": null,
-                "total": 27
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 45.0,
-                "internal": 22,
-                "practical": null,
-                "total": 67
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 43.0,
-                "internal": 21,
-                "practical": null,
-                "total": 64
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 40.0,
-                "internal": 22,
-                "practical": null,
-                "total": 62
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 34.0,
-                "internal": 13,
-                "practical": 21,
-                "total": 68
-            }
-        }
-    },
-    {
-        "student_name": "HARI KRISHNA BARI",
-        "roll_number": "231305779914",
-        "result": "Promoted",
-        "grand_total": 287,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 17,
-                "internal": 22,
-                "practical": null,
-                "total": 39
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 34.0,
-                "internal": 21,
-                "practical": null,
-                "total": 55
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 37.0,
-                "internal": 22,
-                "practical": null,
-                "total": 59
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 43.0,
-                "internal": 21,
-                "practical": null,
-                "total": 64
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 36.0,
+                "subject": "MAJOR-XII-Physics",
+                "theory": 36,
                 "internal": 12,
                 "practical": 22,
                 "total": 70
-            }
-        }
-    },
-    {
-        "student_name": "RAM CHARAN HESSA",
-        "roll_number": "231305779915",
-        "result": "Pass",
-        "grand_total": 314,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 36,
-                "internal": 21,
-                "practical": null,
-                "total": 57
             },
             "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 47.0,
-                "internal": 22,
-                "practical": null,
-                "total": 69
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 38,
+                "internal": 12,
+                "practical": 23,
+                "total": 73
             },
             "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 31.0,
-                "internal": 21,
-                "practical": null,
-                "total": 52
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 47,
+                "internal": 12,
+                "practical": 23,
+                "total": 82
             },
             "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 41.0,
-                "internal": 22,
-                "practical": null,
-                "total": 63
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 39.0,
+                "subject": "MAJOR-XV-Physics",
+                "theory": 44,
                 "internal": 11,
                 "practical": 23,
+                "total": 78
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 54,
+                "internal": 19,
+                "practical": null,
                 "total": 73
             }
         }
     },
     {
-        "student_name": "KAMAL MAHATO",
-        "roll_number": "231305779916",
-        "result": "Promoted",
-        "grand_total": 237,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 3,
-                "internal": 22,
-                "practical": null,
-                "total": 25
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 30.0,
-                "internal": 21,
-                "practical": null,
-                "total": 51
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 24.0,
-                "internal": 22,
-                "practical": null,
-                "total": 46
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 26.0,
-                "internal": 21,
-                "practical": null,
-                "total": 47
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 37.0,
-                "internal": 11,
-                "practical": 20,
-                "total": 68
-            }
-        }
-    },
-    {
-        "student_name": "SOURAV PRADHAN",
-        "roll_number": "231305779917",
+        "student_name": "ANKIT KUMAR GUPTA",
+        "roll_number": "231305780014",
         "result": "Pass",
-        "grand_total": 321,
+        "grand_total": 375,
         "subjects": {
             "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 35,
-                "internal": 21,
-                "practical": null,
-                "total": 56
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 39.0,
-                "internal": 22,
-                "practical": null,
-                "total": 61
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 45.0,
-                "internal": 21,
-                "practical": null,
-                "total": 66
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 47.0,
-                "internal": 22,
-                "practical": null,
-                "total": 69
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 39.0,
-                "internal": 10,
-                "practical": 20,
-                "total": 69
-            }
-        }
-    },
-    {
-        "student_name": "VIKAS SINGH",
-        "roll_number": "231305779919",
-        "result": "Pass",
-        "grand_total": 268,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 20,
-                "internal": 22,
-                "practical": null,
-                "total": 42
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 33.0,
-                "internal": 21,
-                "practical": null,
-                "total": 54
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 30.0,
-                "internal": 22,
-                "practical": null,
-                "total": 52
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 31.0,
-                "internal": 21,
-                "practical": null,
-                "total": 52
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 36.0,
-                "internal": 11,
-                "practical": 21,
-                "total": 68
-            }
-        }
-    },
-    {
-        "student_name": "KAMAL KISHOR DIGGI",
-        "roll_number": "231305779920",
-        "result": "Pass",
-        "grand_total": 281,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 26,
-                "internal": 21,
-                "practical": null,
-                "total": 47
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 31.0,
-                "internal": 22,
-                "practical": null,
-                "total": 53
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 34.0,
-                "internal": 21,
-                "practical": null,
-                "total": 55
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 32.0,
-                "internal": 22,
-                "practical": null,
-                "total": 54
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 41.0,
-                "internal": 11,
-                "practical": 20,
-                "total": 72
-            }
-        }
-    },
-    {
-        "student_name": "VISHAL BARDA",
-        "roll_number": "231305779921",
-        "result": "Promoted",
-        "grand_total": 254,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 8,
-                "internal": 22,
-                "practical": null,
-                "total": 30
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 37.0,
-                "internal": 21,
-                "practical": null,
-                "total": 58
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 27.0,
-                "internal": 22,
-                "practical": null,
-                "total": 49
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 30.0,
-                "internal": 21,
-                "practical": null,
-                "total": 51
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 32.0,
+                "subject": "MAJOR-XII-Physics",
+                "theory": 29,
                 "internal": 12,
                 "practical": 22,
-                "total": 66
-            }
-        }
-    },
-    {
-        "student_name": "AASHISH KUDADA",
-        "roll_number": "231305779923",
-        "result": "Pass",
-        "grand_total": 315,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 34,
-                "internal": 21,
-                "practical": null,
-                "total": 55
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 41.0,
-                "internal": 21,
-                "practical": null,
-                "total": 62
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 47.0,
-                "internal": 21,
-                "practical": null,
-                "total": 68
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 45.0,
-                "internal": 21,
-                "practical": null,
-                "total": 66
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 31.0,
-                "internal": 11,
-                "practical": 22,
-                "total": 64
-            }
-        }
-    },
-    {
-        "student_name": "MILAN KUMAR PAN",
-        "roll_number": "231305779924",
-        "result": "Promoted",
-        "grand_total": 265,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 31,
-                "internal": 22,
-                "practical": null,
-                "total": 53
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 41.0,
-                "internal": 21,
-                "practical": null,
-                "total": 62
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 17.0,
-                "internal": 21,
-                "practical": null,
-                "total": 38
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 27.0,
-                "internal": 22,
-                "practical": null,
-                "total": 49
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 31.0,
-                "internal": 11,
-                "practical": 21,
-                "total": 63
-            }
-        }
-    },
-    {
-        "student_name": "PONDA HEMBRAM",
-        "roll_number": "231305779928",
-        "result": "Pass",
-        "grand_total": 302,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 22,
-                "internal": 22,
-                "practical": null,
-                "total": 44
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 42.0,
-                "internal": 21,
-                "practical": null,
                 "total": 63
             },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 38.0,
-                "internal": 21,
-                "practical": null,
-                "total": 59
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 40.0,
-                "internal": 21,
-                "practical": null,
-                "total": 61
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 41.0,
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 43,
                 "internal": 12,
+                "practical": 23,
+                "total": 78
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 40,
+                "internal": 13,
                 "practical": 22,
                 "total": 75
-            }
-        }
-    },
-    {
-        "student_name": "MILAN MAHATO",
-        "roll_number": "231305779929",
-        "result": "Pass",
-        "grand_total": 287,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 34,
-                "internal": 21,
-                "practical": null,
-                "total": 55
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 40.0,
-                "internal": 22,
-                "practical": null,
-                "total": 62
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 28.0,
-                "internal": 21,
-                "practical": null,
-                "total": 49
             },
             "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 27.0,
-                "internal": 22,
-                "practical": null,
-                "total": 49
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 39.0,
-                "internal": 12,
-                "practical": 21,
-                "total": 72
-            }
-        }
-    },
-    {
-        "student_name": "KAMLESH KUMAR",
-        "roll_number": "231305779930",
-        "result": "Pass",
-        "grand_total": 267,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 20,
-                "internal": 21,
-                "practical": null,
-                "total": 41
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 35.0,
-                "internal": 22,
-                "practical": null,
-                "total": 57
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 36.0,
-                "internal": 21,
-                "practical": null,
-                "total": 57
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 23.0,
-                "internal": 22,
-                "practical": null,
-                "total": 45
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 36.0,
+                "subject": "MAJOR-XV-Physics",
+                "theory": 51,
                 "internal": 11,
-                "practical": 20,
-                "total": 67
-            }
-        }
-    },
-    {
-        "student_name": "KAILASH LAGURI",
-        "roll_number": "231305779931",
-        "result": "Pass",
-        "grand_total": 301,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 36,
-                "internal": 22,
-                "practical": null,
-                "total": 58
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 33.0,
-                "internal": 21,
-                "practical": null,
-                "total": 54
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 35.0,
-                "internal": 22,
-                "practical": null,
-                "total": 57
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 35.0,
-                "internal": 21,
-                "practical": null,
-                "total": 56
+                "practical": 21,
+                "total": 83
             },
             "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 43.0,
-                "internal": 12,
-                "practical": 21,
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 56,
+                "internal": 20,
+                "practical": null,
                 "total": 76
             }
         }
     },
     {
-        "student_name": "PRAVIN GOPE",
-        "roll_number": "231305779932",
+        "student_name": "ROHIT KUNKAL",
+        "roll_number": "231305780010",
         "result": "Pass",
-        "grand_total": 296,
+        "grand_total": 373,
         "subjects": {
             "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 30,
-                "internal": 21,
-                "practical": null,
-                "total": 51
+                "subject": "MAJOR-XII-Physics",
+                "theory": 26,
+                "internal": 13,
+                "practical": 22,
+                "total": 61
             },
             "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 42.0,
-                "internal": 22,
-                "practical": null,
-                "total": 64
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 38,
+                "internal": 12,
+                "practical": 23,
+                "total": 73
             },
             "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 34.0,
-                "internal": 21,
-                "practical": null,
-                "total": 55
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 48,
+                "internal": 13,
+                "practical": 21,
+                "total": 82
             },
             "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 32.0,
-                "internal": 22,
-                "practical": null,
-                "total": 54
+                "subject": "MAJOR-XV-Physics",
+                "theory": 50,
+                "internal": 12,
+                "practical": 22,
+                "total": 84
             },
             "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 39.0,
-                "internal": 11,
-                "practical": 22,
-                "total": 72
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 53,
+                "internal": 20,
+                "practical": null,
+                "total": 73
             }
         }
     },
     {
-        "student_name": "RUPALI PRADHAN",
-        "roll_number": "231305779934",
+        "student_name": "ASHISH HONHAGA",
+        "roll_number": "231305780000",
         "result": "Pass",
-        "grand_total": 296,
+        "grand_total": 362,
         "subjects": {
             "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
+                "subject": "MAJOR-XII-Physics",
+                "theory": 41,
+                "internal": 14,
+                "practical": 21,
+                "total": 76
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 32,
+                "internal": 13,
+                "practical": 21,
+                "total": 66
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 41,
+                "internal": 13,
+                "practical": 20,
+                "total": 74
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 54,
+                "internal": 12,
+                "practical": 22,
+                "total": 88
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 39,
+                "internal": 19,
+                "practical": null,
+                "total": 58
+            }
+        }
+    },
+    {
+        "student_name": "YASH RAJ VISHWAKARMA",
+        "roll_number": "231305780039",
+        "result": "Pass",
+        "grand_total": 361,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 48,
+                "internal": 12,
+                "practical": 23,
+                "total": 83
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 40,
+                "internal": 11,
+                "practical": 20,
+                "total": 71
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 44,
+                "internal": 12,
+                "practical": 20,
+                "total": 76
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 34,
+                "internal": 10,
+                "practical": 22,
+                "total": 66
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 46,
+                "internal": 19,
+                "practical": null,
+                "total": 65
+            }
+        }
+    },
+    {
+        "student_name": "TRINA TH GOPE",
+        "roll_number": "231305780038",
+        "result": "Pass",
+        "grand_total": 359,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 36,
+                "internal": 12,
+                "practical": 22,
+                "total": 70
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 43,
+                "internal": 11,
+                "practical": 22,
+                "total": 76
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 41,
+                "internal": 10,
+                "practical": 20,
+                "total": 71
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 48,
+                "internal": 10,
+                "practical": 23,
+                "total": 81
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 42,
+                "internal": 19,
+                "practical": null,
+                "total": 61
+            }
+        }
+    },
+    {
+        "student_name": "BHAGYAWATI PURTY",
+        "roll_number": "231305780028",
+        "result": "Pass",
+        "grand_total": 358,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 20,
+                "internal": 13,
+                "practical": 23,
+                "total": 56
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 52,
+                "internal": 12,
+                "practical": 21,
+                "total": 85
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 39,
+                "internal": 12,
+                "practical": 23,
+                "total": 74
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 37,
+                "internal": 13,
+                "practical": 22,
+                "total": 72
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 52,
+                "internal": 19,
+                "practical": null,
+                "total": 71
+            }
+        }
+    },
+    {
+        "student_name": "SARAS KALUNDIA",
+        "roll_number": "231305780046",
+        "result": "Pass",
+        "grand_total": 355,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": "42",
+                "internal": 12,
+                "practical": 21,
+                "total": 75
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": "46",
+                "internal": 13,
+                "practical": 20,
+                "total": 79
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": "37",
+                "internal": 12,
+                "practical": 22,
+                "total": 71
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": "46",
+                "internal": 11,
+                "practical": 20,
+                "total": 77
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": "34",
+                "internal": 19,
+                "practical": null,
+                "total": 53
+            }
+        }
+    },
+    {
+        "student_name": "AKBAR ALI",
+        "roll_number": "231305780016",
+        "result": "Pass",
+        "grand_total": 353,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 35,
+                "internal": 13,
+                "practical": 23,
+                "total": 71
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
                 "theory": 38,
+                "internal": 12,
+                "practical": 22,
+                "total": 72
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 38,
+                "internal": 13,
+                "practical": 22,
+                "total": 73
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 29,
+                "internal": 12,
+                "practical": 23,
+                "total": 64
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 51,
                 "internal": 22,
                 "practical": null,
+                "total": 73
+            }
+        }
+    },
+    {
+        "student_name": "ABNER GURIA",
+        "roll_number": "231305780031",
+        "result": "Pass",
+        "grand_total": 340,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 26,
+                "internal": 12,
+                "practical": 22,
                 "total": 60
             },
             "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 40.0,
-                "internal": 21,
-                "practical": null,
-                "total": 61
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 47,
+                "internal": 10,
+                "practical": 22,
+                "total": 79
             },
             "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 30.0,
-                "internal": 22,
-                "practical": null,
-                "total": 52
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 35,
+                "internal": 10,
+                "practical": 21,
+                "total": 66
             },
             "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 34.0,
-                "internal": 21,
-                "practical": null,
-                "total": 55
+                "subject": "MAJOR-XV-Physics",
+                "theory": 38,
+                "internal": 11,
+                "practical": 23,
+                "total": 72
             },
             "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 35.0,
-                "internal": 12,
-                "practical": 21,
-                "total": 68
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 43,
+                "internal": 20,
+                "practical": null,
+                "total": 63
             }
         }
     },
     {
-        "student_name": "NANIKA BARI",
-        "roll_number": "231305779935",
+        "student_name": "RAJENDRA  BIRUA",
+        "roll_number": "231305780048",
         "result": "Pass",
-        "grand_total": 307,
+        "grand_total": 338,
         "subjects": {
             "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 37,
-                "internal": 21,
-                "practical": null,
-                "total": 58
+                "subject": "MAJOR-XII-Physics",
+                "theory": "28",
+                "internal": 11,
+                "practical": 23,
+                "total": 62
             },
             "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 48.0,
-                "internal": 22,
-                "practical": null,
-                "total": 70
+                "subject": "MAJOR-XIII-Physics",
+                "theory": "40",
+                "internal": 12,
+                "practical": 21,
+                "total": 73
             },
             "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 26.0,
-                "internal": 21,
-                "practical": null,
-                "total": 47
+                "subject": "MAJOR-XIV-Physics",
+                "theory": "39",
+                "internal": 11,
+                "practical": 21,
+                "total": 71
             },
             "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 37.0,
-                "internal": 22,
-                "practical": null,
-                "total": 59
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 43.0,
+                "subject": "MAJOR-XV-Physics",
+                "theory": "33",
                 "internal": 10,
                 "practical": 20,
-                "total": 73
+                "total": 63
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": "49",
+                "internal": 20,
+                "practical": null,
+                "total": 69
             }
         }
     },
@@ -1204,217 +645,260 @@
         }
     },
     {
-        "student_name": "GOPAL HONHAGA",
-        "roll_number": "231305779938",
+        "student_name": "PREETY  GOPE",
+        "roll_number": "231305780037",
         "result": "Pass",
-        "grand_total": 285,
+        "grand_total": 333,
         "subjects": {
             "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 32,
-                "internal": 22,
-                "practical": null,
-                "total": 54
+                "subject": "MAJOR-XII-Physics",
+                "theory": 18,
+                "internal": 11,
+                "practical": 23,
+                "total": 52
             },
             "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 37.0,
-                "internal": 21,
-                "practical": null,
-                "total": 58
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 42,
+                "internal": 10,
+                "practical": 21,
+                "total": 73
             },
             "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 28.0,
-                "internal": 22,
-                "practical": null,
-                "total": 50
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 36,
+                "internal": 12,
+                "practical": 21,
+                "total": 69
             },
             "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 34.0,
-                "internal": 21,
-                "practical": null,
-                "total": 55
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 36.0,
+                "subject": "MAJOR-XV-Physics",
+                "theory": 44,
                 "internal": 10,
                 "practical": 22,
-                "total": 68
+                "total": 76
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 43,
+                "internal": 20,
+                "practical": null,
+                "total": 63
             }
         }
     },
     {
-        "student_name": "MADHUSMITA PRADHAN",
-        "roll_number": "231305779939",
+        "student_name": "SATYAM SHIVAM SUNDARAM SINKU",
+        "roll_number": "231305780043",
         "result": "Pass",
-        "grand_total": 282,
+        "grand_total": 331,
         "subjects": {
             "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 33,
-                "internal": 21,
-                "practical": null,
-                "total": 54
+                "subject": "MAJOR-XII-Physics",
+                "theory": "15",
+                "internal": 13,
+                "practical": 20,
+                "total": 48
             },
             "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 43.0,
-                "internal": 22,
-                "practical": null,
-                "total": 65
+                "subject": "MAJOR-XIII-Physics",
+                "theory": "47",
+                "internal": 10,
+                "practical": 21,
+                "total": 78
             },
             "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 33.0,
-                "internal": 21,
-                "practical": null,
-                "total": 54
+                "subject": "MAJOR-XIV-Physics",
+                "theory": "33",
+                "internal": 11,
+                "practical": 21,
+                "total": 65
             },
             "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 23.0,
-                "internal": 22,
-                "practical": null,
-                "total": 45
+                "subject": "MAJOR-XV-Physics",
+                "theory": "40",
+                "internal": 11,
+                "practical": 22,
+                "total": 73
             },
             "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 29.0,
-                "internal": 13,
+                "subject": "Minor-IIC-Chemistry",
+                "theory": "33",
+                "internal": 12,
+                "practical": 22.0,
+                "total": 67
+            }
+        }
+    },
+    {
+        "student_name": "MARSHAL  PINGUA",
+        "roll_number": "231305780026",
+        "result": "Pass",
+        "grand_total": 329,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 24,
+                "internal": 12,
                 "practical": 22,
+                "total": 58
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 48,
+                "internal": 13,
+                "practical": 23,
+                "total": 84
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 37,
+                "internal": 12,
+                "practical": 21,
+                "total": 70
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 24,
+                "internal": 11,
+                "practical": 21,
+                "total": 56
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 41,
+                "internal": 20,
+                "practical": null,
+                "total": 61
+            }
+        }
+    },
+    {
+        "student_name": "PRAKASH KUMAR",
+        "roll_number": "231305780042",
+        "result": "Pass",
+        "grand_total": 329,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": "28",
+                "internal": 12,
+                "practical": 21,
+                "total": 61
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": "43",
+                "internal": 10,
+                "practical": 20,
+                "total": 73
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": "32",
+                "internal": 11,
+                "practical": 21,
+                "total": 64
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": "35",
+                "internal": 10,
+                "practical": 22,
+                "total": 67
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": "44",
+                "internal": 20,
+                "practical": null,
                 "total": 64
             }
         }
     },
     {
-        "student_name": "KALESH KUMAR SINGH",
-        "roll_number": "231305779940",
+        "student_name": "AMISHA  KUMARI",
+        "roll_number": "231305780020",
         "result": "Pass",
-        "grand_total": 318,
+        "grand_total": 328,
         "subjects": {
             "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 35,
-                "internal": 22,
-                "practical": null,
-                "total": 57
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 48.0,
-                "internal": 21,
-                "practical": null,
-                "total": 69
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 38.0,
-                "internal": 22,
-                "practical": null,
-                "total": 60
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 40.0,
-                "internal": 21,
-                "practical": null,
-                "total": 61
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 37.0,
+                "subject": "MAJOR-XII-Physics",
+                "theory": 20,
                 "internal": 12,
                 "practical": 22,
-                "total": 71
+                "total": 54
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 39,
+                "internal": 12,
+                "practical": 21,
+                "total": 72
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 36,
+                "internal": 10,
+                "practical": 22,
+                "total": 68
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 27,
+                "internal": 11,
+                "practical": 22,
+                "total": 60
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 54,
+                "internal": 20,
+                "practical": null,
+                "total": 74
             }
         }
     },
     {
-        "student_name": "JYOTI ALDA",
-        "roll_number": "231305779941",
-        "result": "Promoted",
-        "grand_total": 259,
+        "student_name": "BABA Y SINKU",
+        "roll_number": "231305780049",
+        "result": "Pass",
+        "grand_total": 328,
         "subjects": {
             "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 14,
-                "internal": 21,
-                "practical": null,
-                "total": 35
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 33.0,
-                "internal": 22,
-                "practical": null,
+                "subject": "MAJOR-XII-Physics",
+                "theory": "20",
+                "internal": 13,
+                "practical": 22,
                 "total": 55
             },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 30.0,
-                "internal": 21,
-                "practical": null,
-                "total": 51
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 26.0,
-                "internal": 22,
-                "practical": null,
-                "total": 48
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 37.0,
-                "internal": 10,
-                "practical": 23,
-                "total": 70
-            }
-        }
-    },
-    {
-        "student_name": "GAYTRI KHANDAIT",
-        "roll_number": "231305779942",
-        "result": "Pass",
-        "grand_total": 244,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 27,
-                "internal": 23,
-                "practical": null,
-                "total": 50
-            },
             "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 30.0,
-                "internal": 23,
-                "practical": null,
-                "total": 53
+                "subject": "MAJOR-XIII-Physics",
+                "theory": "45",
+                "internal": 12,
+                "practical": 22,
+                "total": 79
             },
             "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 21.0,
-                "internal": 23,
-                "practical": null,
-                "total": 44
+                "subject": "MAJOR-XIV-Physics",
+                "theory": "39",
+                "internal": 12,
+                "practical": 21,
+                "total": 72
             },
             "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 18.0,
-                "internal": 23,
-                "practical": null,
-                "total": 41
+                "subject": "MAJOR-XV-Physics",
+                "theory": "25",
+                "internal": 11,
+                "practical": 20,
+                "total": 56
             },
             "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 24.0,
-                "internal": 11,
-                "practical": 21,
-                "total": 56
+                "subject": "Minor-IIC-Mathematics",
+                "theory": "47",
+                "internal": 19,
+                "practical": null,
+                "total": 66
             }
         }
     },
@@ -1505,6 +989,1339 @@
         }
     },
     {
+        "student_name": "PRADEEP  MAHA TO",
+        "roll_number": "231305780024",
+        "result": "Pass",
+        "grand_total": 326,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 24,
+                "internal": 11,
+                "practical": 22,
+                "total": 57
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 45,
+                "internal": 12,
+                "practical": 21,
+                "total": 78
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 30,
+                "internal": 10,
+                "practical": 23,
+                "total": 63
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 34,
+                "internal": 12,
+                "practical": 21,
+                "total": 67
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 42,
+                "internal": 19,
+                "practical": null,
+                "total": 61
+            }
+        }
+    },
+    {
+        "student_name": "LALIT DAS",
+        "roll_number": "231305780018",
+        "result": "Pass",
+        "grand_total": 325,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 13,
+                "internal": 12,
+                "practical": 22,
+                "total": 47
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 37,
+                "internal": 11,
+                "practical": 23,
+                "total": 71
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 35,
+                "internal": 10,
+                "practical": 22,
+                "total": 67
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 41,
+                "internal": 11,
+                "practical": 21,
+                "total": 73
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 48,
+                "internal": 19,
+                "practical": null,
+                "total": 67
+            }
+        }
+    },
+    {
+        "student_name": "ANISHA KHANDAIT",
+        "roll_number": "231305779978",
+        "result": "Pass",
+        "grand_total": 324,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 36,
+                "internal": 21,
+                "practical": null,
+                "total": 57
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 50.0,
+                "internal": 22,
+                "practical": null,
+                "total": 72
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 36.0,
+                "internal": 21,
+                "practical": null,
+                "total": 57
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 45.0,
+                "internal": 22,
+                "practical": null,
+                "total": 67
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 38.0,
+                "internal": 12,
+                "practical": 21,
+                "total": 71
+            }
+        }
+    },
+    {
+        "student_name": "RAVILAL  MAHALI",
+        "roll_number": "231305780017",
+        "result": "Pass",
+        "grand_total": 323,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 21,
+                "internal": 12,
+                "practical": 21,
+                "total": 54
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 36,
+                "internal": 12,
+                "practical": 22,
+                "total": 70
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 27,
+                "internal": 13,
+                "practical": 21,
+                "total": 61
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 36,
+                "internal": 11,
+                "practical": 20,
+                "total": 67
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 52,
+                "internal": 19,
+                "practical": null,
+                "total": 71
+            }
+        }
+    },
+    {
+        "student_name": "ATUL GOPE",
+        "roll_number": "231305780027",
+        "result": "Pass",
+        "grand_total": 322,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 18,
+                "internal": 13,
+                "practical": 22,
+                "total": 53
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 41,
+                "internal": 10,
+                "practical": 21,
+                "total": 72
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 32,
+                "internal": 11,
+                "practical": 23,
+                "total": 66
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 36,
+                "internal": 10,
+                "practical": 21,
+                "total": 67
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 30,
+                "internal": 13,
+                "practical": 21.0,
+                "total": 64
+            }
+        }
+    },
+    {
+        "student_name": "SOURAV PRADHAN",
+        "roll_number": "231305779917",
+        "result": "Pass",
+        "grand_total": 321,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 35,
+                "internal": 21,
+                "practical": null,
+                "total": 56
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 39.0,
+                "internal": 22,
+                "practical": null,
+                "total": 61
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 45.0,
+                "internal": 21,
+                "practical": null,
+                "total": 66
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 47.0,
+                "internal": 22,
+                "practical": null,
+                "total": 69
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 39.0,
+                "internal": 10,
+                "practical": 20,
+                "total": 69
+            }
+        }
+    },
+    {
+        "student_name": "GEETA KUMARI",
+        "roll_number": "231305779984",
+        "result": "Pass",
+        "grand_total": 321,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 30,
+                "internal": 23,
+                "practical": null,
+                "total": 53
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 52.0,
+                "internal": 23,
+                "practical": null,
+                "total": 75
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 41.0,
+                "internal": 23,
+                "practical": null,
+                "total": 64
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 34.0,
+                "internal": 23,
+                "practical": null,
+                "total": 57
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 37.0,
+                "internal": 13,
+                "practical": 22,
+                "total": 72
+            }
+        }
+    },
+    {
+        "student_name": "SANJEEV PURTY",
+        "roll_number": "231305780041",
+        "result": "Pass",
+        "grand_total": 321,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": "25",
+                "internal": 11,
+                "practical": 22,
+                "total": 58
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": "38",
+                "internal": 11,
+                "practical": 23,
+                "total": 72
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": "35",
+                "internal": 10,
+                "practical": 20,
+                "total": 65
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": "34",
+                "internal": 12,
+                "practical": 21,
+                "total": 67
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": "40",
+                "internal": 19,
+                "practical": null,
+                "total": 59
+            }
+        }
+    },
+    {
+        "student_name": "SOMNATH PINGUA",
+        "roll_number": "231305780007",
+        "result": "Pass",
+        "grand_total": 320,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 25,
+                "internal": 12,
+                "practical": 20,
+                "total": 57
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 31,
+                "internal": 11,
+                "practical": 21,
+                "total": 63
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 35,
+                "internal": 11,
+                "practical": 21,
+                "total": 67
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 41,
+                "internal": 11,
+                "practical": 21,
+                "total": 73
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 41,
+                "internal": 19,
+                "practical": null,
+                "total": 60
+            }
+        }
+    },
+    {
+        "student_name": "CHHAKKAN MAHA TO",
+        "roll_number": "231305780047",
+        "result": "Pass",
+        "grand_total": 320,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": "25",
+                "internal": 12,
+                "practical": 22,
+                "total": 59
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": "44",
+                "internal": 11,
+                "practical": 21,
+                "total": 76
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": "35",
+                "internal": 10,
+                "practical": 22,
+                "total": 67
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": "31",
+                "internal": 11,
+                "practical": 21,
+                "total": 63
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": "36",
+                "internal": 19,
+                "practical": null,
+                "total": 55
+            }
+        }
+    },
+    {
+        "student_name": "KALESH KUMAR SINGH",
+        "roll_number": "231305779940",
+        "result": "Pass",
+        "grand_total": 318,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 35,
+                "internal": 22,
+                "practical": null,
+                "total": 57
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 48.0,
+                "internal": 21,
+                "practical": null,
+                "total": 69
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 38.0,
+                "internal": 22,
+                "practical": null,
+                "total": 60
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 40.0,
+                "internal": 21,
+                "practical": null,
+                "total": 61
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 37.0,
+                "internal": 12,
+                "practical": 22,
+                "total": 71
+            }
+        }
+    },
+    {
+        "student_name": "RUBEN BALMUCHU",
+        "roll_number": "231305779894",
+        "result": "Pass",
+        "grand_total": 317,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 16,
+                "internal": 22,
+                "practical": null,
+                "total": 38
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 54.0,
+                "internal": 21,
+                "practical": null,
+                "total": 75
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 41.0,
+                "internal": 22,
+                "practical": null,
+                "total": 63
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 48.0,
+                "internal": 21,
+                "practical": null,
+                "total": 69
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 38.0,
+                "internal": 10,
+                "practical": 22,
+                "total": 70
+            }
+        }
+    },
+    {
+        "student_name": "AKASH SOY",
+        "roll_number": "231305779998",
+        "result": "Pass",
+        "grand_total": 317,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 30,
+                "internal": 10,
+                "practical": 21,
+                "total": 61
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 32,
+                "internal": 10,
+                "practical": 22,
+                "total": 64
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 37,
+                "internal": 11,
+                "practical": 21,
+                "total": 69
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 27,
+                "internal": 11,
+                "practical": 20,
+                "total": 58
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 47,
+                "internal": 18,
+                "practical": null,
+                "total": 65
+            }
+        }
+    },
+    {
+        "student_name": "LIZA NAIK",
+        "roll_number": "231305779950",
+        "result": "Pass",
+        "grand_total": 316,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 36,
+                "internal": 22,
+                "practical": null,
+                "total": 58
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 42.0,
+                "internal": 21,
+                "practical": null,
+                "total": 63
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 39.0,
+                "internal": 22,
+                "practical": null,
+                "total": 61
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 44.0,
+                "internal": 22,
+                "practical": null,
+                "total": 66
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 35.0,
+                "internal": 13,
+                "practical": 20,
+                "total": 68
+            }
+        }
+    },
+    {
+        "student_name": "ANEEK SINGH LAGURI",
+        "roll_number": "231305780054",
+        "result": "Promoted",
+        "grand_total": 316,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": "19",
+                "internal": 12,
+                "practical": 23,
+                "total": 54
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": "47",
+                "internal": 11,
+                "practical": 22,
+                "total": 80
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": "39",
+                "internal": 10,
+                "practical": 20,
+                "total": 69
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": "47",
+                "internal": 10,
+                "practical": 21,
+                "total": 78
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": "AB",
+                "internal": 13,
+                "practical": 22.0,
+                "total": 35
+            }
+        }
+    },
+    {
+        "student_name": "AASHISH KUDADA",
+        "roll_number": "231305779923",
+        "result": "Pass",
+        "grand_total": 315,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 34,
+                "internal": 21,
+                "practical": null,
+                "total": 55
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 41.0,
+                "internal": 21,
+                "practical": null,
+                "total": 62
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 47.0,
+                "internal": 21,
+                "practical": null,
+                "total": 68
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 45.0,
+                "internal": 21,
+                "practical": null,
+                "total": 66
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 31.0,
+                "internal": 11,
+                "practical": 22,
+                "total": 64
+            }
+        }
+    },
+    {
+        "student_name": "ROSHAN KUMAR SAH",
+        "roll_number": "231305779955",
+        "result": "Pass",
+        "grand_total": 315,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 47,
+                "internal": 21,
+                "practical": null,
+                "total": 68
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 41.0,
+                "internal": 22,
+                "practical": null,
+                "total": 63
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 51.0,
+                "internal": 21,
+                "practical": null,
+                "total": 72
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 36.0,
+                "internal": 22,
+                "practical": null,
+                "total": 58
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 23.0,
+                "internal": 10,
+                "practical": 21,
+                "total": 54
+            }
+        }
+    },
+    {
+        "student_name": "MURLI MARSAL BIRUA",
+        "roll_number": "231305779907",
+        "result": "Pass",
+        "grand_total": 314,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 52,
+                "internal": 23,
+                "practical": null,
+                "total": 75
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 41.0,
+                "internal": 23,
+                "practical": null,
+                "total": 64
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 15.0,
+                "internal": 23,
+                "practical": null,
+                "total": 38
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 39.0,
+                "internal": 23,
+                "practical": null,
+                "total": 62
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 39.0,
+                "internal": 12,
+                "practical": 22,
+                "total": 73
+            }
+        }
+    },
+    {
+        "student_name": "RAM CHARAN HESSA",
+        "roll_number": "231305779915",
+        "result": "Pass",
+        "grand_total": 314,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 36,
+                "internal": 21,
+                "practical": null,
+                "total": 57
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 47.0,
+                "internal": 22,
+                "practical": null,
+                "total": 69
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 31.0,
+                "internal": 21,
+                "practical": null,
+                "total": 52
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 41.0,
+                "internal": 22,
+                "practical": null,
+                "total": 63
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 39.0,
+                "internal": 11,
+                "practical": 23,
+                "total": 73
+            }
+        }
+    },
+    {
+        "student_name": "MEENAKSHI KUMARI",
+        "roll_number": "231305779985",
+        "result": "Pass",
+        "grand_total": 314,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 32,
+                "internal": 22,
+                "practical": null,
+                "total": 54
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 45.0,
+                "internal": 22,
+                "practical": null,
+                "total": 67
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 38.0,
+                "internal": 22,
+                "practical": null,
+                "total": 60
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 37.0,
+                "internal": 22,
+                "practical": null,
+                "total": 59
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 41.0,
+                "internal": 12,
+                "practical": 21,
+                "total": 74
+            }
+        }
+    },
+    {
+        "student_name": "KAILASH GOPE",
+        "roll_number": "231305780040",
+        "result": "Pass",
+        "grand_total": 314,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 27,
+                "internal": 12,
+                "practical": 23,
+                "total": 62
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 40,
+                "internal": 10,
+                "practical": 21,
+                "total": 71
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 31,
+                "internal": 10,
+                "practical": 22,
+                "total": 63
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 27,
+                "internal": 11,
+                "practical": 20,
+                "total": 58
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 41,
+                "internal": 19,
+                "practical": null,
+                "total": 60
+            }
+        }
+    },
+    {
+        "student_name": "SAMIR KUMAR",
+        "roll_number": "231305779903",
+        "result": "Pass",
+        "grand_total": 313,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 27,
+                "internal": 23,
+                "practical": null,
+                "total": 50
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 45.0,
+                "internal": 23,
+                "practical": null,
+                "total": 68
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 37.0,
+                "internal": 23,
+                "practical": null,
+                "total": 60
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 40.0,
+                "internal": 23,
+                "practical": null,
+                "total": 63
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 39.0,
+                "internal": 13,
+                "practical": 20,
+                "total": 72
+            }
+        }
+    },
+    {
+        "student_name": "ASHISH HEMBROM",
+        "roll_number": "231305780044",
+        "result": "Pass",
+        "grand_total": 313,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": "25",
+                "internal": 12,
+                "practical": 22,
+                "total": 59
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": "45",
+                "internal": 11,
+                "practical": 21,
+                "total": 77
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": "27",
+                "internal": 12,
+                "practical": 20,
+                "total": 59
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": "28",
+                "internal": 10,
+                "practical": 20,
+                "total": 58
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": "41",
+                "internal": 19,
+                "practical": null,
+                "total": 60
+            }
+        }
+    },
+    {
+        "student_name": "MANOJ GOPE",
+        "roll_number": "231305780015",
+        "result": "Pass",
+        "grand_total": 311,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 20,
+                "internal": 11,
+                "practical": 23,
+                "total": 54
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 36,
+                "internal": 12,
+                "practical": 22,
+                "total": 70
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 24,
+                "internal": 11,
+                "practical": 21,
+                "total": 56
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 39,
+                "internal": 10,
+                "practical": 22,
+                "total": 71
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 41,
+                "internal": 19,
+                "practical": null,
+                "total": 60
+            }
+        }
+    },
+    {
+        "student_name": "LARANGE PINGUA",
+        "roll_number": "231305779960",
+        "result": "Pass",
+        "grand_total": 310,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 37,
+                "internal": 21,
+                "practical": null,
+                "total": 58
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 36.0,
+                "internal": 22,
+                "practical": null,
+                "total": 58
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 32.0,
+                "internal": 21,
+                "practical": null,
+                "total": 53
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 45.0,
+                "internal": 22,
+                "practical": null,
+                "total": 67
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 41.0,
+                "internal": 12,
+                "practical": 21,
+                "total": 74
+            }
+        }
+    },
+    {
+        "student_name": "SAHADEV SARDAR",
+        "roll_number": "231305780029",
+        "result": "Pass",
+        "grand_total": 310,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 22,
+                "internal": 12,
+                "practical": 22,
+                "total": 56
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 38,
+                "internal": 11,
+                "practical": 22,
+                "total": 71
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 32,
+                "internal": 12,
+                "practical": 23,
+                "total": 67
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 27,
+                "internal": 13,
+                "practical": 21,
+                "total": 61
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 36,
+                "internal": 19,
+                "practical": null,
+                "total": 55
+            }
+        }
+    },
+    {
+        "student_name": "DOFEDAR HESSA",
+        "roll_number": "231305780052",
+        "result": "Pass",
+        "grand_total": 310,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": "17",
+                "internal": 12,
+                "practical": 22,
+                "total": 51
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": "46",
+                "internal": 10,
+                "practical": 21,
+                "total": 77
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": "24",
+                "internal": 11,
+                "practical": 20,
+                "total": 55
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": "33",
+                "internal": 11,
+                "practical": 21,
+                "total": 65
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": "43",
+                "internal": 19,
+                "practical": null,
+                "total": 62
+            }
+        }
+    },
+    {
+        "student_name": "NANIKA BARI",
+        "roll_number": "231305779935",
+        "result": "Pass",
+        "grand_total": 307,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 37,
+                "internal": 21,
+                "practical": null,
+                "total": 58
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 48.0,
+                "internal": 22,
+                "practical": null,
+                "total": 70
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 26.0,
+                "internal": 21,
+                "practical": null,
+                "total": 47
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 37.0,
+                "internal": 22,
+                "practical": null,
+                "total": 59
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 43.0,
+                "internal": 10,
+                "practical": 20,
+                "total": 73
+            }
+        }
+    },
+    {
+        "student_name": "PONDA HEMBRAM",
+        "roll_number": "231305779928",
+        "result": "Pass",
+        "grand_total": 302,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 22,
+                "internal": 22,
+                "practical": null,
+                "total": 44
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 42.0,
+                "internal": 21,
+                "practical": null,
+                "total": 63
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 38.0,
+                "internal": 21,
+                "practical": null,
+                "total": 59
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 40.0,
+                "internal": 21,
+                "practical": null,
+                "total": 61
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 41.0,
+                "internal": 12,
+                "practical": 22,
+                "total": 75
+            }
+        }
+    },
+    {
+        "student_name": "LAXMI KUMARI KUDADA",
+        "roll_number": "231305780022",
+        "result": "Pass",
+        "grand_total": 302,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 19,
+                "internal": 12,
+                "practical": 23,
+                "total": 54
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 45,
+                "internal": 12,
+                "practical": 22,
+                "total": 79
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 37,
+                "internal": 10,
+                "practical": 21,
+                "total": 68
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 31,
+                "internal": 10,
+                "practical": 20,
+                "total": 61
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 18,
+                "internal": 20,
+                "practical": null,
+                "total": 38
+            }
+        }
+    },
+    {
+        "student_name": "KAILASH LAGURI",
+        "roll_number": "231305779931",
+        "result": "Pass",
+        "grand_total": 301,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 36,
+                "internal": 22,
+                "practical": null,
+                "total": 58
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 33.0,
+                "internal": 21,
+                "practical": null,
+                "total": 54
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 35.0,
+                "internal": 22,
+                "practical": null,
+                "total": 57
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 35.0,
+                "internal": 21,
+                "practical": null,
+                "total": 56
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 43.0,
+                "internal": 12,
+                "practical": 21,
+                "total": 76
+            }
+        }
+    },
+    {
         "student_name": "DAYAMANTI KUMARI PRAMANIK",
         "roll_number": "231305779947",
         "result": "Pass",
@@ -1548,17 +2365,17 @@
         }
     },
     {
-        "student_name": "RAM KRISHNA GAGRAI",
-        "roll_number": "231305779948",
+        "student_name": "PRAVIN GOPE",
+        "roll_number": "231305779932",
         "result": "Pass",
-        "grand_total": 277,
+        "grand_total": 296,
         "subjects": {
             "major_xii": {
                 "subject": "MAJOR-XII-Mathematics",
-                "theory": 27,
+                "theory": 30,
                 "internal": 21,
                 "practical": null,
-                "total": 48
+                "total": 51
             },
             "major_xiii": {
                 "subject": "MAJOR-XIII-Mathematics",
@@ -1569,66 +2386,324 @@
             },
             "major_xiv": {
                 "subject": "MAJOR-XIV-Mathematics",
-                "theory": 25.0,
+                "theory": 34.0,
                 "internal": 21,
                 "practical": null,
-                "total": 46
+                "total": 55
             },
             "major_xv": {
                 "subject": "MAJOR-XV-Mathematics",
+                "theory": 32.0,
+                "internal": 22,
+                "practical": null,
+                "total": 54
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 39.0,
+                "internal": 11,
+                "practical": 22,
+                "total": 72
+            }
+        }
+    },
+    {
+        "student_name": "RUPALI PRADHAN",
+        "roll_number": "231305779934",
+        "result": "Pass",
+        "grand_total": 296,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 38,
+                "internal": 22,
+                "practical": null,
+                "total": 60
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 40.0,
+                "internal": 21,
+                "practical": null,
+                "total": 61
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
                 "theory": 30.0,
                 "internal": 22,
                 "practical": null,
                 "total": 52
             },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 34.0,
+                "internal": 21,
+                "practical": null,
+                "total": 55
+            },
             "minor_iic": {
                 "subject": "Minor-IIC-Physics",
-                "theory": 34.0,
+                "theory": 35.0,
                 "internal": 12,
                 "practical": 21,
-                "total": 67
+                "total": 68
             }
         }
     },
     {
-        "student_name": "LIZA NAIK",
-        "roll_number": "231305779950",
+        "student_name": "RAVINA SURIN",
+        "roll_number": "231305779959",
         "result": "Pass",
-        "grand_total": 316,
+        "grand_total": 295,
         "subjects": {
             "major_xii": {
                 "subject": "MAJOR-XII-Mathematics",
-                "theory": 36,
+                "theory": 35,
                 "internal": 22,
                 "practical": null,
-                "total": 58
+                "total": 57
             },
             "major_xiii": {
                 "subject": "MAJOR-XIII-Mathematics",
-                "theory": 42.0,
+                "theory": 32.0,
                 "internal": 21,
+                "practical": null,
+                "total": 53
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 24.0,
+                "internal": 22,
+                "practical": null,
+                "total": 46
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 44.0,
+                "internal": 21,
+                "practical": null,
+                "total": 65
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 41.0,
+                "internal": 10,
+                "practical": 23,
+                "total": 74
+            }
+        }
+    },
+    {
+        "student_name": "MANOJ KUMAR MAHA TO",
+        "roll_number": "231305780019",
+        "result": "Pass",
+        "grand_total": 295,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 16,
+                "internal": 12,
+                "practical": 23,
+                "total": 51
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 36,
+                "internal": 11,
+                "practical": 21,
+                "total": 68
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 29,
+                "internal": 12,
+                "practical": 21,
+                "total": 62
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 25,
+                "internal": 10,
+                "practical": 22,
+                "total": 57
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 38,
+                "internal": 19,
+                "practical": null,
+                "total": 57
+            }
+        }
+    },
+    {
+        "student_name": "MADAN BANKIRA",
+        "roll_number": "231305780032",
+        "result": "Pass",
+        "grand_total": 293,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 12,
+                "internal": 12,
+                "practical": 23,
+                "total": 47
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 41,
+                "internal": 11,
+                "practical": 21,
+                "total": 73
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 27,
+                "internal": 10,
+                "practical": 22,
+                "total": 59
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 34,
+                "internal": 10,
+                "practical": 21,
+                "total": 65
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 30,
+                "internal": 19,
+                "practical": null,
+                "total": 49
+            }
+        }
+    },
+    {
+        "student_name": "SANGITA DAS",
+        "roll_number": "231305779970",
+        "result": "Pass",
+        "grand_total": 292,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 28,
+                "internal": 22,
+                "practical": null,
+                "total": 50
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 41.0,
+                "internal": 22,
                 "practical": null,
                 "total": 63
             },
             "major_xiv": {
                 "subject": "MAJOR-XIV-Mathematics",
-                "theory": 39.0,
+                "theory": 37.0,
                 "internal": 22,
                 "practical": null,
-                "total": 61
+                "total": 59
             },
             "major_xv": {
                 "subject": "MAJOR-XV-Mathematics",
-                "theory": 44.0,
+                "theory": 29.0,
                 "internal": 22,
                 "practical": null,
-                "total": 66
+                "total": 51
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 37.0,
+                "internal": 13,
+                "practical": 19,
+                "total": 69
+            }
+        }
+    },
+    {
+        "student_name": "CHANDRA SHEKHAR BEHRA",
+        "roll_number": "231305779904",
+        "result": "Pass",
+        "grand_total": 290,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 22,
+                "internal": 22,
+                "practical": null,
+                "total": 44
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 33.0,
+                "internal": 21,
+                "practical": null,
+                "total": 54
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 30.0,
+                "internal": 22,
+                "practical": null,
+                "total": 52
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 46.0,
+                "internal": 21,
+                "practical": null,
+                "total": 67
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 37.0,
+                "internal": 14,
+                "practical": 22,
+                "total": 73
+            }
+        }
+    },
+    {
+        "student_name": "NIKITA GIRI",
+        "roll_number": "231305779913",
+        "result": "Promoted",
+        "grand_total": 288,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 6,
+                "internal": 21,
+                "practical": null,
+                "total": 27
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 45.0,
+                "internal": 22,
+                "practical": null,
+                "total": 67
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 43.0,
+                "internal": 21,
+                "practical": null,
+                "total": 64
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 40.0,
+                "internal": 22,
+                "practical": null,
+                "total": 62
             },
             "minor_iic": {
                 "subject": "Minor-IIC-Physics",
-                "theory": 35.0,
+                "theory": 34.0,
                 "internal": 13,
-                "practical": 20,
+                "practical": 21,
                 "total": 68
             }
         }
@@ -1677,475 +2752,174 @@
         }
     },
     {
-        "student_name": "BASANTI PURTY",
-        "roll_number": "231305779952",
-        "result": "Pass",
-        "grand_total": 284,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 33,
-                "internal": 22,
-                "practical": null,
-                "total": 55
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 33.0,
-                "internal": 21,
-                "practical": null,
-                "total": 54
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 30.0,
-                "internal": 22,
-                "practical": null,
-                "total": 52
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 46.0,
-                "internal": 21,
-                "practical": null,
-                "total": 67
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 23.0,
-                "internal": 11,
-                "practical": 22,
-                "total": 56
-            }
-        }
-    },
-    {
-        "student_name": "KAMALPATI MAHATO",
-        "roll_number": "231305779953",
-        "result": "Pass",
-        "grand_total": 259,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 23,
-                "internal": 21,
-                "practical": null,
-                "total": 44
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 43.0,
-                "internal": 22,
-                "practical": null,
-                "total": 65
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 21.0,
-                "internal": 21,
-                "practical": null,
-                "total": 42
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 24.0,
-                "internal": 22,
-                "practical": null,
-                "total": 46
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 29.0,
-                "internal": 11,
-                "practical": 22,
-                "total": 62
-            }
-        }
-    },
-    {
-        "student_name": "GONO BURIULY",
-        "roll_number": "231305779954",
+        "student_name": "HARI KRISHNA BARI",
+        "roll_number": "231305779914",
         "result": "Promoted",
-        "grand_total": 283,
+        "grand_total": 287,
         "subjects": {
             "major_xii": {
                 "subject": "MAJOR-XII-Mathematics",
-                "theory": 34,
+                "theory": 17,
                 "internal": 22,
-                "practical": null,
-                "total": 56
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 40.0,
-                "internal": 21,
-                "practical": null,
-                "total": 61
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 15.0,
-                "internal": 22,
-                "practical": null,
-                "total": 37
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 32.0,
-                "internal": 21,
-                "practical": null,
-                "total": 53
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 40.0,
-                "internal": 13,
-                "practical": 23,
-                "total": 76
-            }
-        }
-    },
-    {
-        "student_name": "ROSHAN KUMAR SAH",
-        "roll_number": "231305779955",
-        "result": "Pass",
-        "grand_total": 315,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 47,
-                "internal": 21,
-                "practical": null,
-                "total": 68
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 41.0,
-                "internal": 22,
-                "practical": null,
-                "total": 63
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 51.0,
-                "internal": 21,
-                "practical": null,
-                "total": 72
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 36.0,
-                "internal": 22,
-                "practical": null,
-                "total": 58
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 23.0,
-                "internal": 10,
-                "practical": 21,
-                "total": 54
-            }
-        }
-    },
-    {
-        "student_name": "MUSKAN BASKEY",
-        "roll_number": "231305779956",
-        "result": "Pass",
-        "grand_total": 276,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 19,
-                "internal": 22,
-                "practical": null,
-                "total": 41
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 47.0,
-                "internal": 21,
-                "practical": null,
-                "total": 68
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 27.0,
-                "internal": 22,
-                "practical": null,
-                "total": 49
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 31.0,
-                "internal": 22,
-                "practical": null,
-                "total": 53
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 33.0,
-                "internal": 12,
-                "practical": 20,
-                "total": 65
-            }
-        }
-    },
-    {
-        "student_name": "JAMDAR SIRKA",
-        "roll_number": "231305779958",
-        "result": "Promoted",
-        "grand_total": 264,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 18,
-                "internal": 21,
                 "practical": null,
                 "total": 39
             },
             "major_xiii": {
                 "subject": "MAJOR-XIII-Mathematics",
-                "theory": 31.0,
-                "internal": 22,
+                "theory": 34.0,
+                "internal": 21,
                 "practical": null,
-                "total": 53
+                "total": 55
             },
             "major_xiv": {
                 "subject": "MAJOR-XIV-Mathematics",
-                "theory": 30.0,
-                "internal": 21,
+                "theory": 37.0,
+                "internal": 22,
                 "practical": null,
-                "total": 51
+                "total": 59
             },
             "major_xv": {
                 "subject": "MAJOR-XV-Mathematics",
-                "theory": 42.0,
-                "internal": 22,
+                "theory": 43.0,
+                "internal": 21,
                 "practical": null,
                 "total": 64
             },
             "minor_iic": {
                 "subject": "Minor-IIC-Physics",
-                "theory": 24.0,
-                "internal": 11,
-                "practical": 22,
-                "total": 57
-            }
-        }
-    },
-    {
-        "student_name": "RAVINA SURIN",
-        "roll_number": "231305779959",
-        "result": "Pass",
-        "grand_total": 295,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 35,
-                "internal": 22,
-                "practical": null,
-                "total": 57
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 32.0,
-                "internal": 21,
-                "practical": null,
-                "total": 53
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 24.0,
-                "internal": 22,
-                "practical": null,
-                "total": 46
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 44.0,
-                "internal": 21,
-                "practical": null,
-                "total": 65
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 41.0,
-                "internal": 10,
-                "practical": 23,
-                "total": 74
-            }
-        }
-    },
-    {
-        "student_name": "LARANGE PINGUA",
-        "roll_number": "231305779960",
-        "result": "Pass",
-        "grand_total": 310,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 37,
-                "internal": 21,
-                "practical": null,
-                "total": 58
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
                 "theory": 36.0,
-                "internal": 22,
-                "practical": null,
-                "total": 58
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 32.0,
-                "internal": 21,
-                "practical": null,
-                "total": 53
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 45.0,
-                "internal": 22,
-                "practical": null,
-                "total": 67
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 41.0,
                 "internal": 12,
-                "practical": 21,
-                "total": 74
+                "practical": 22,
+                "total": 70
             }
         }
     },
     {
-        "student_name": "PURUSHOTAM JAMUDA",
-        "roll_number": "231305779961",
-        "result": "Promoted",
-        "grand_total": 270,
+        "student_name": "MILAN MAHATO",
+        "roll_number": "231305779929",
+        "result": "Pass",
+        "grand_total": 287,
         "subjects": {
             "major_xii": {
                 "subject": "MAJOR-XII-Mathematics",
-                "theory": 12,
-                "internal": 22,
+                "theory": 34,
+                "internal": 21,
                 "practical": null,
-                "total": 34
+                "total": 55
             },
             "major_xiii": {
                 "subject": "MAJOR-XIII-Mathematics",
-                "theory": 44.0,
-                "internal": 21,
+                "theory": 40.0,
+                "internal": 22,
                 "practical": null,
-                "total": 65
+                "total": 62
             },
             "major_xiv": {
                 "subject": "MAJOR-XIV-Mathematics",
-                "theory": 35.0,
-                "internal": 22,
+                "theory": 28.0,
+                "internal": 21,
                 "practical": null,
-                "total": 57
+                "total": 49
             },
             "major_xv": {
                 "subject": "MAJOR-XV-Mathematics",
-                "theory": 30.0,
-                "internal": 21,
+                "theory": 27.0,
+                "internal": 22,
                 "practical": null,
-                "total": 51
+                "total": 49
             },
             "minor_iic": {
                 "subject": "Minor-IIC-Physics",
-                "theory": 30.0,
+                "theory": 39.0,
                 "internal": 12,
                 "practical": 21,
-                "total": 63
+                "total": 72
             }
         }
     },
     {
-        "student_name": "PRITI HONHAGA",
-        "roll_number": "231305779964",
+        "student_name": "RAJNISH MUDUIYA",
+        "roll_number": "231305780030",
         "result": "Pass",
-        "grand_total": 277,
+        "grand_total": 287,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 27,
+                "internal": 13,
+                "practical": 21,
+                "total": 61
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 40,
+                "internal": 10,
+                "practical": 22,
+                "total": 72
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 18,
+                "internal": 11,
+                "practical": 23,
+                "total": 52
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 17,
+                "internal": 12,
+                "practical": 22,
+                "total": 51
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 32,
+                "internal": 19,
+                "practical": null,
+                "total": 51
+            }
+        }
+    },
+    {
+        "student_name": "GOPAL HONHAGA",
+        "roll_number": "231305779938",
+        "result": "Pass",
+        "grand_total": 285,
         "subjects": {
             "major_xii": {
                 "subject": "MAJOR-XII-Mathematics",
-                "theory": 30,
-                "internal": 21,
-                "practical": null,
-                "total": 51
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 47.0,
-                "internal": 22,
-                "practical": null,
-                "total": 69
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 21.0,
-                "internal": 21,
-                "practical": null,
-                "total": 42
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 32.0,
+                "theory": 32,
                 "internal": 22,
                 "practical": null,
                 "total": 54
             },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 27.0,
-                "internal": 13,
-                "practical": 21,
-                "total": 61
-            }
-        }
-    },
-    {
-        "student_name": "DIPTI KIRAN DEOGAM",
-        "roll_number": "231305779965",
-        "result": "Pass",
-        "grand_total": 281,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 30,
-                "internal": 22,
-                "practical": null,
-                "total": 52
-            },
             "major_xiii": {
                 "subject": "MAJOR-XIII-Mathematics",
-                "theory": 30.0,
+                "theory": 37.0,
                 "internal": 21,
                 "practical": null,
-                "total": 51
+                "total": 58
             },
             "major_xiv": {
                 "subject": "MAJOR-XIV-Mathematics",
-                "theory": 33.0,
+                "theory": 28.0,
                 "internal": 22,
                 "practical": null,
-                "total": 55
+                "total": 50
             },
             "major_xv": {
                 "subject": "MAJOR-XV-Mathematics",
-                "theory": 31.0,
-                "internal": 22,
+                "theory": 34.0,
+                "internal": 21,
                 "practical": null,
-                "total": 53
+                "total": 55
             },
             "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 37.0,
-                "internal": 12,
-                "practical": 21,
-                "total": 70
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 36.0,
+                "internal": 10,
+                "practical": 22,
+                "total": 68
             }
         }
     },
@@ -2193,6 +2967,608 @@
         }
     },
     {
+        "student_name": "BASANTI PURTY",
+        "roll_number": "231305779952",
+        "result": "Pass",
+        "grand_total": 284,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 33,
+                "internal": 22,
+                "practical": null,
+                "total": 55
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 33.0,
+                "internal": 21,
+                "practical": null,
+                "total": 54
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 30.0,
+                "internal": 22,
+                "practical": null,
+                "total": 52
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 46.0,
+                "internal": 21,
+                "practical": null,
+                "total": 67
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 23.0,
+                "internal": 11,
+                "practical": 22,
+                "total": 56
+            }
+        }
+    },
+    {
+        "student_name": "SAMREEN NAAZ",
+        "roll_number": "231305780034",
+        "result": "Pass",
+        "grand_total": 284,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 18,
+                "internal": 12,
+                "practical": 22,
+                "total": 52
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 33,
+                "internal": 10,
+                "practical": 21,
+                "total": 64
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 24,
+                "internal": 11,
+                "practical": 21,
+                "total": 56
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 32,
+                "internal": 10,
+                "practical": 20,
+                "total": 62
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 30,
+                "internal": 20,
+                "practical": null,
+                "total": 50
+            }
+        }
+    },
+    {
+        "student_name": "GONO BURIULY",
+        "roll_number": "231305779954",
+        "result": "Promoted",
+        "grand_total": 283,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 34,
+                "internal": 22,
+                "practical": null,
+                "total": 56
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 40.0,
+                "internal": 21,
+                "practical": null,
+                "total": 61
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 15.0,
+                "internal": 22,
+                "practical": null,
+                "total": 37
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 32.0,
+                "internal": 21,
+                "practical": null,
+                "total": 53
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 40.0,
+                "internal": 13,
+                "practical": 23,
+                "total": 76
+            }
+        }
+    },
+    {
+        "student_name": "HIMANSHU MAHTO",
+        "roll_number": "231305779897",
+        "result": "Promoted",
+        "grand_total": 282,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 3,
+                "internal": 21,
+                "practical": null,
+                "total": 24
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 47.0,
+                "internal": 22,
+                "practical": null,
+                "total": 69
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 36.0,
+                "internal": 22,
+                "practical": null,
+                "total": 58
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 36.0,
+                "internal": 22,
+                "practical": null,
+                "total": 58
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 40.0,
+                "internal": 12,
+                "practical": 21,
+                "total": 73
+            }
+        }
+    },
+    {
+        "student_name": "MADHUSMITA PRADHAN",
+        "roll_number": "231305779939",
+        "result": "Pass",
+        "grand_total": 282,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 33,
+                "internal": 21,
+                "practical": null,
+                "total": 54
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 43.0,
+                "internal": 22,
+                "practical": null,
+                "total": 65
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 33.0,
+                "internal": 21,
+                "practical": null,
+                "total": 54
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 23.0,
+                "internal": 22,
+                "practical": null,
+                "total": 45
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 29.0,
+                "internal": 13,
+                "practical": 22,
+                "total": 64
+            }
+        }
+    },
+    {
+        "student_name": "RAYMUNI BURIULY",
+        "roll_number": "231305779899",
+        "result": "Pass",
+        "grand_total": 281,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 21,
+                "internal": 22,
+                "practical": null,
+                "total": 43
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 45.0,
+                "internal": 21,
+                "practical": null,
+                "total": 66
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 30.0,
+                "internal": 22,
+                "practical": null,
+                "total": 52
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 32.0,
+                "internal": 21,
+                "practical": null,
+                "total": 53
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 35.0,
+                "internal": 12,
+                "practical": 20,
+                "total": 67
+            }
+        }
+    },
+    {
+        "student_name": "KAMAL KISHOR DIGGI",
+        "roll_number": "231305779920",
+        "result": "Pass",
+        "grand_total": 281,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 26,
+                "internal": 21,
+                "practical": null,
+                "total": 47
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 31.0,
+                "internal": 22,
+                "practical": null,
+                "total": 53
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 34.0,
+                "internal": 21,
+                "practical": null,
+                "total": 55
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 32.0,
+                "internal": 22,
+                "practical": null,
+                "total": 54
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 41.0,
+                "internal": 11,
+                "practical": 20,
+                "total": 72
+            }
+        }
+    },
+    {
+        "student_name": "DIPTI KIRAN DEOGAM",
+        "roll_number": "231305779965",
+        "result": "Pass",
+        "grand_total": 281,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 30,
+                "internal": 22,
+                "practical": null,
+                "total": 52
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 30.0,
+                "internal": 21,
+                "practical": null,
+                "total": 51
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 33.0,
+                "internal": 22,
+                "practical": null,
+                "total": 55
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 31.0,
+                "internal": 22,
+                "practical": null,
+                "total": 53
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 37.0,
+                "internal": 12,
+                "practical": 21,
+                "total": 70
+            }
+        }
+    },
+    {
+        "student_name": "BIMAL SINGH",
+        "roll_number": "231305779910",
+        "result": "Pass",
+        "grand_total": 279,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 18,
+                "internal": 22,
+                "practical": null,
+                "total": 40
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 33.0,
+                "internal": 21,
+                "practical": null,
+                "total": 54
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 39.0,
+                "internal": 22,
+                "practical": null,
+                "total": 61
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 34.0,
+                "internal": 21,
+                "practical": null,
+                "total": 55
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 36.0,
+                "internal": 12,
+                "practical": 21,
+                "total": 69
+            }
+        }
+    },
+    {
+        "student_name": "PANKAJ SAWAIYAN",
+        "roll_number": "231305780002",
+        "result": "Pass",
+        "grand_total": 279,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 24,
+                "internal": 11,
+                "practical": 21,
+                "total": 56
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 26,
+                "internal": 11,
+                "practical": 22,
+                "total": 59
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 20,
+                "internal": 11,
+                "practical": 22,
+                "total": 53
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 37,
+                "internal": 11,
+                "practical": 22,
+                "total": 70
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 21,
+                "internal": 20,
+                "practical": null,
+                "total": 41
+            }
+        }
+    },
+    {
+        "student_name": "RAM KRISHNA GAGRAI",
+        "roll_number": "231305779948",
+        "result": "Pass",
+        "grand_total": 277,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 27,
+                "internal": 21,
+                "practical": null,
+                "total": 48
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 42.0,
+                "internal": 22,
+                "practical": null,
+                "total": 64
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 25.0,
+                "internal": 21,
+                "practical": null,
+                "total": 46
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 30.0,
+                "internal": 22,
+                "practical": null,
+                "total": 52
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 34.0,
+                "internal": 12,
+                "practical": 21,
+                "total": 67
+            }
+        }
+    },
+    {
+        "student_name": "PRITI HONHAGA",
+        "roll_number": "231305779964",
+        "result": "Pass",
+        "grand_total": 277,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 30,
+                "internal": 21,
+                "practical": null,
+                "total": 51
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 47.0,
+                "internal": 22,
+                "practical": null,
+                "total": 69
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 21.0,
+                "internal": 21,
+                "practical": null,
+                "total": 42
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 32.0,
+                "internal": 22,
+                "practical": null,
+                "total": 54
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 27.0,
+                "internal": 13,
+                "practical": 21,
+                "total": 61
+            }
+        }
+    },
+    {
+        "student_name": "MUSKAN BASKEY",
+        "roll_number": "231305779956",
+        "result": "Pass",
+        "grand_total": 276,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 19,
+                "internal": 22,
+                "practical": null,
+                "total": 41
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 47.0,
+                "internal": 21,
+                "practical": null,
+                "total": 68
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 27.0,
+                "internal": 22,
+                "practical": null,
+                "total": 49
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 31.0,
+                "internal": 22,
+                "practical": null,
+                "total": 53
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 33.0,
+                "internal": 12,
+                "practical": 20,
+                "total": 65
+            }
+        }
+    },
+    {
+        "student_name": "ANJAN KUMAR MAHATO",
+        "roll_number": "231305779900",
+        "result": "Promoted",
+        "grand_total": 275,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 2,
+                "internal": 21,
+                "practical": null,
+                "total": 23
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 47.0,
+                "internal": 22,
+                "practical": null,
+                "total": 69
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 34.0,
+                "internal": 21,
+                "practical": null,
+                "total": 55
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 30.0,
+                "internal": 22,
+                "practical": null,
+                "total": 52
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 44.0,
+                "internal": 11,
+                "practical": 21,
+                "total": 76
+            }
+        }
+    },
+    {
         "student_name": "MUKESH MAHATO",
         "roll_number": "231305779969",
         "result": "Pass",
@@ -2232,307 +3608,6 @@
                 "internal": 11,
                 "practical": 20,
                 "total": 58
-            }
-        }
-    },
-    {
-        "student_name": "SANGITA DAS",
-        "roll_number": "231305779970",
-        "result": "Pass",
-        "grand_total": 292,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 28,
-                "internal": 22,
-                "practical": null,
-                "total": 50
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 41.0,
-                "internal": 22,
-                "practical": null,
-                "total": 63
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 37.0,
-                "internal": 22,
-                "practical": null,
-                "total": 59
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 29.0,
-                "internal": 22,
-                "practical": null,
-                "total": 51
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 37.0,
-                "internal": 13,
-                "practical": 19,
-                "total": 69
-            }
-        }
-    },
-    {
-        "student_name": "ANIMA MAHATO",
-        "roll_number": "231305779972",
-        "result": "Pass",
-        "grand_total": 272,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 31,
-                "internal": 21,
-                "practical": null,
-                "total": 52
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 32.0,
-                "internal": 22,
-                "practical": null,
-                "total": 54
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 32.0,
-                "internal": 21,
-                "practical": null,
-                "total": 53
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 27.0,
-                "internal": 22,
-                "practical": null,
-                "total": 49
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 32.0,
-                "internal": 12,
-                "practical": 20,
-                "total": 64
-            }
-        }
-    },
-    {
-        "student_name": "AMISHA HONHAGA",
-        "roll_number": "231305779974",
-        "result": "Pass",
-        "grand_total": 254,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 20,
-                "internal": 21,
-                "practical": null,
-                "total": 41
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 30.0,
-                "internal": 22,
-                "practical": null,
-                "total": 52
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 30.0,
-                "internal": 21,
-                "practical": null,
-                "total": 51
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 32.0,
-                "internal": 22,
-                "practical": null,
-                "total": 54
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 25.0,
-                "internal": 11,
-                "practical": 20,
-                "total": 56
-            }
-        }
-    },
-    {
-        "student_name": "NAVIN KUMAR SIRKA",
-        "roll_number": "231305779975",
-        "result": "Pass",
-        "grand_total": 265,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 21,
-                "internal": 22,
-                "practical": null,
-                "total": 43
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 34.0,
-                "internal": 21,
-                "practical": null,
-                "total": 55
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 20.0,
-                "internal": 22,
-                "practical": null,
-                "total": 42
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 33.0,
-                "internal": 21,
-                "practical": null,
-                "total": 54
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 36.0,
-                "internal": 13,
-                "practical": 22,
-                "total": 71
-            }
-        }
-    },
-    {
-        "student_name": "ANISHA KHANDAIT",
-        "roll_number": "231305779978",
-        "result": "Pass",
-        "grand_total": 324,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 36,
-                "internal": 21,
-                "practical": null,
-                "total": 57
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 50.0,
-                "internal": 22,
-                "practical": null,
-                "total": 72
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 36.0,
-                "internal": 21,
-                "practical": null,
-                "total": 57
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 45.0,
-                "internal": 22,
-                "practical": null,
-                "total": 67
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 38.0,
-                "internal": 12,
-                "practical": 21,
-                "total": 71
-            }
-        }
-    },
-    {
-        "student_name": "MANTI SINKU",
-        "roll_number": "231305779980",
-        "result": "Promoted",
-        "grand_total": 222,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 19,
-                "internal": 22,
-                "practical": null,
-                "total": 41
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 25.0,
-                "internal": 21,
-                "practical": null,
-                "total": 46
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 12.0,
-                "internal": 22,
-                "practical": null,
-                "total": 34
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 12.0,
-                "internal": 21,
-                "practical": null,
-                "total": 33
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 36.0,
-                "internal": 12,
-                "practical": 20,
-                "total": 68
-            }
-        }
-    },
-    {
-        "student_name": "PALO PURTY",
-        "roll_number": "231305779981",
-        "result": "Promoted",
-        "grand_total": 248,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 16,
-                "internal": 21,
-                "practical": null,
-                "total": 37
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 34.0,
-                "internal": 22,
-                "practical": null,
-                "total": 56
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 20.0,
-                "internal": 21,
-                "practical": null,
-                "total": 41
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 25.0,
-                "internal": 22,
-                "practical": null,
-                "total": 47
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Chemistry",
-                "theory": 33.0,
-                "internal": 13,
-                "practical": 21,
-                "total": 67
             }
         }
     },
@@ -2580,6 +3655,135 @@
         }
     },
     {
+        "student_name": "JAIRAM BODRA",
+        "roll_number": "231305780009",
+        "result": "Pass",
+        "grand_total": 275,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 17,
+                "internal": 12,
+                "practical": 21,
+                "total": 50
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 25,
+                "internal": 11,
+                "practical": 20,
+                "total": 56
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 28,
+                "internal": 11,
+                "practical": 20,
+                "total": 59
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 30,
+                "internal": 11,
+                "practical": 20,
+                "total": 61
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 29,
+                "internal": 20,
+                "practical": null,
+                "total": 49
+            }
+        }
+    },
+    {
+        "student_name": "TRILOCHAN KORAH",
+        "roll_number": "231305779993",
+        "result": "Pass",
+        "grand_total": 273,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 26,
+                "internal": 21,
+                "practical": null,
+                "total": 47
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 44.0,
+                "internal": 22,
+                "practical": null,
+                "total": 66
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 26.0,
+                "internal": 21,
+                "practical": null,
+                "total": 47
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 26.0,
+                "internal": 22,
+                "practical": null,
+                "total": 48
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 32.0,
+                "internal": 11,
+                "practical": 22,
+                "total": 65
+            }
+        }
+    },
+    {
+        "student_name": "ANIMA MAHATO",
+        "roll_number": "231305779972",
+        "result": "Pass",
+        "grand_total": 272,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 31,
+                "internal": 21,
+                "practical": null,
+                "total": 52
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 32.0,
+                "internal": 22,
+                "practical": null,
+                "total": 54
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 32.0,
+                "internal": 21,
+                "practical": null,
+                "total": 53
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 27.0,
+                "internal": 22,
+                "practical": null,
+                "total": 49
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 32.0,
+                "internal": 12,
+                "practical": 20,
+                "total": 64
+            }
+        }
+    },
+    {
         "student_name": "MANJU PURTY",
         "roll_number": "231305779983",
         "result": "Pass",
@@ -2623,88 +3827,303 @@
         }
     },
     {
-        "student_name": "GEETA KUMARI",
-        "roll_number": "231305779984",
-        "result": "Pass",
-        "grand_total": 321,
+        "student_name": "PURUSHOTAM JAMUDA",
+        "roll_number": "231305779961",
+        "result": "Promoted",
+        "grand_total": 270,
         "subjects": {
             "major_xii": {
                 "subject": "MAJOR-XII-Mathematics",
-                "theory": 30,
-                "internal": 23,
+                "theory": 12,
+                "internal": 22,
+                "practical": null,
+                "total": 34
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 44.0,
+                "internal": 21,
+                "practical": null,
+                "total": 65
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 35.0,
+                "internal": 22,
+                "practical": null,
+                "total": 57
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 30.0,
+                "internal": 21,
+                "practical": null,
+                "total": 51
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 30.0,
+                "internal": 12,
+                "practical": 21,
+                "total": 63
+            }
+        }
+    },
+    {
+        "student_name": "VIKAS SINGH",
+        "roll_number": "231305779919",
+        "result": "Pass",
+        "grand_total": 268,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 20,
+                "internal": 22,
+                "practical": null,
+                "total": 42
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 33.0,
+                "internal": 21,
+                "practical": null,
+                "total": 54
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 30.0,
+                "internal": 22,
+                "practical": null,
+                "total": 52
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 31.0,
+                "internal": 21,
+                "practical": null,
+                "total": 52
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 36.0,
+                "internal": 11,
+                "practical": 21,
+                "total": 68
+            }
+        }
+    },
+    {
+        "student_name": "KAMLESH KUMAR",
+        "roll_number": "231305779930",
+        "result": "Pass",
+        "grand_total": 267,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 20,
+                "internal": 21,
+                "practical": null,
+                "total": 41
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 35.0,
+                "internal": 22,
+                "practical": null,
+                "total": 57
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 36.0,
+                "internal": 21,
+                "practical": null,
+                "total": 57
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 23.0,
+                "internal": 22,
+                "practical": null,
+                "total": 45
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 36.0,
+                "internal": 11,
+                "practical": 20,
+                "total": 67
+            }
+        }
+    },
+    {
+        "student_name": "MILAN KUMAR PAN",
+        "roll_number": "231305779924",
+        "result": "Promoted",
+        "grand_total": 265,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 31,
+                "internal": 22,
                 "practical": null,
                 "total": 53
             },
             "major_xiii": {
                 "subject": "MAJOR-XIII-Mathematics",
-                "theory": 52.0,
-                "internal": 23,
+                "theory": 41.0,
+                "internal": 21,
                 "practical": null,
-                "total": 75
+                "total": 62
             },
             "major_xiv": {
                 "subject": "MAJOR-XIV-Mathematics",
-                "theory": 41.0,
-                "internal": 23,
+                "theory": 17.0,
+                "internal": 21,
                 "practical": null,
-                "total": 64
+                "total": 38
             },
             "major_xv": {
                 "subject": "MAJOR-XV-Mathematics",
-                "theory": 34.0,
-                "internal": 23,
+                "theory": 27.0,
+                "internal": 22,
                 "practical": null,
-                "total": 57
+                "total": 49
             },
             "minor_iic": {
                 "subject": "Minor-IIC-Physics",
-                "theory": 37.0,
-                "internal": 13,
-                "practical": 22,
-                "total": 72
+                "theory": 31.0,
+                "internal": 11,
+                "practical": 21,
+                "total": 63
             }
         }
     },
     {
-        "student_name": "MEENAKSHI KUMARI",
-        "roll_number": "231305779985",
+        "student_name": "NAVIN KUMAR SIRKA",
+        "roll_number": "231305779975",
         "result": "Pass",
-        "grand_total": 314,
+        "grand_total": 265,
         "subjects": {
             "major_xii": {
                 "subject": "MAJOR-XII-Mathematics",
-                "theory": 32,
+                "theory": 21,
                 "internal": 22,
                 "practical": null,
-                "total": 54
+                "total": 43
             },
             "major_xiii": {
                 "subject": "MAJOR-XIII-Mathematics",
-                "theory": 45.0,
-                "internal": 22,
+                "theory": 34.0,
+                "internal": 21,
                 "practical": null,
-                "total": 67
+                "total": 55
             },
             "major_xiv": {
                 "subject": "MAJOR-XIV-Mathematics",
-                "theory": 38.0,
+                "theory": 20.0,
                 "internal": 22,
                 "practical": null,
-                "total": 60
+                "total": 42
             },
             "major_xv": {
                 "subject": "MAJOR-XV-Mathematics",
-                "theory": 37.0,
+                "theory": 33.0,
+                "internal": 21,
+                "practical": null,
+                "total": 54
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 36.0,
+                "internal": 13,
+                "practical": 22,
+                "total": 71
+            }
+        }
+    },
+    {
+        "student_name": "JAMDAR SIRKA",
+        "roll_number": "231305779958",
+        "result": "Promoted",
+        "grand_total": 264,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 18,
+                "internal": 21,
+                "practical": null,
+                "total": 39
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 31.0,
                 "internal": 22,
                 "practical": null,
-                "total": 59
+                "total": 53
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 30.0,
+                "internal": 21,
+                "practical": null,
+                "total": 51
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 42.0,
+                "internal": 22,
+                "practical": null,
+                "total": 64
             },
             "minor_iic": {
                 "subject": "Minor-IIC-Physics",
-                "theory": 41.0,
-                "internal": 12,
+                "theory": 24.0,
+                "internal": 11,
+                "practical": 22,
+                "total": 57
+            }
+        }
+    },
+    {
+        "student_name": "HARISH CHANDRA DEOGAM",
+        "roll_number": "231305780008",
+        "result": "Promoted",
+        "grand_total": 262,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 16,
+                "internal": 10,
+                "practical": 20,
+                "total": 46
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 33,
+                "internal": 11,
+                "practical": 20,
+                "total": 64
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 20,
+                "internal": 10,
+                "practical": 20,
+                "total": 50
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 38,
+                "internal": 11,
                 "practical": 21,
-                "total": 74
+                "total": 70
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 13,
+                "internal": 19,
+                "practical": null,
+                "total": 32
             }
         }
     },
@@ -2752,45 +4171,389 @@
         }
     },
     {
-        "student_name": "CHANDO LEYANGI",
-        "roll_number": "231305779987",
+        "student_name": "JYOTI ALDA",
+        "roll_number": "231305779941",
         "result": "Promoted",
-        "grand_total": 229,
+        "grand_total": 259,
         "subjects": {
             "major_xii": {
                 "subject": "MAJOR-XII-Mathematics",
-                "theory": 21,
-                "internal": 22,
-                "practical": null,
-                "total": 43
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 19.0,
+                "theory": 14,
                 "internal": 21,
-                "practical": null,
-                "total": 40
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 13.0,
-                "internal": 22,
                 "practical": null,
                 "total": 35
             },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 33.0,
+                "internal": 22,
+                "practical": null,
+                "total": 55
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 30.0,
+                "internal": 21,
+                "practical": null,
+                "total": 51
+            },
             "major_xv": {
                 "subject": "MAJOR-XV-Mathematics",
-                "theory": 25.0,
+                "theory": 26.0,
+                "internal": 22,
+                "practical": null,
+                "total": 48
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 37.0,
+                "internal": 10,
+                "practical": 23,
+                "total": 70
+            }
+        }
+    },
+    {
+        "student_name": "KAMALPATI MAHATO",
+        "roll_number": "231305779953",
+        "result": "Pass",
+        "grand_total": 259,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 23,
                 "internal": 21,
+                "practical": null,
+                "total": 44
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 43.0,
+                "internal": 22,
+                "practical": null,
+                "total": 65
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 21.0,
+                "internal": 21,
+                "practical": null,
+                "total": 42
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 24.0,
+                "internal": 22,
                 "practical": null,
                 "total": 46
             },
             "minor_iic": {
                 "subject": "Minor-IIC-Physics",
-                "theory": 32.0,
+                "theory": 29.0,
                 "internal": 11,
                 "practical": 22,
+                "total": 62
+            }
+        }
+    },
+    {
+        "student_name": "RITIK KUMAR GOPE",
+        "roll_number": "231305779905",
+        "result": "Promoted",
+        "grand_total": 258,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 12,
+                "internal": 21,
+                "practical": null,
+                "total": 33
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 33.0,
+                "internal": 22,
+                "practical": null,
+                "total": 55
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 26.0,
+                "internal": 21,
+                "practical": null,
+                "total": 47
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 36.0,
+                "internal": 22,
+                "practical": null,
+                "total": 58
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 31.0,
+                "internal": 12,
+                "practical": 22,
                 "total": 65
+            }
+        }
+    },
+    {
+        "student_name": "SANJAY KALUNDIA",
+        "roll_number": "231305780013",
+        "result": "Promoted",
+        "grand_total": 255,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": 17,
+                "internal": 12,
+                "practical": 20,
+                "total": 49
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": 25,
+                "internal": 11,
+                "practical": 21,
+                "total": 57
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": 19,
+                "internal": 11,
+                "practical": 20,
+                "total": 50
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": 30,
+                "internal": 12,
+                "practical": 21,
+                "total": 63
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": 17,
+                "internal": 19,
+                "practical": null,
+                "total": 36
+            }
+        }
+    },
+    {
+        "student_name": "VISHAL BARDA",
+        "roll_number": "231305779921",
+        "result": "Promoted",
+        "grand_total": 254,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 8,
+                "internal": 22,
+                "practical": null,
+                "total": 30
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 37.0,
+                "internal": 21,
+                "practical": null,
+                "total": 58
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 27.0,
+                "internal": 22,
+                "practical": null,
+                "total": 49
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 30.0,
+                "internal": 21,
+                "practical": null,
+                "total": 51
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 32.0,
+                "internal": 12,
+                "practical": 22,
+                "total": 66
+            }
+        }
+    },
+    {
+        "student_name": "AMISHA HONHAGA",
+        "roll_number": "231305779974",
+        "result": "Pass",
+        "grand_total": 254,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 20,
+                "internal": 21,
+                "practical": null,
+                "total": 41
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 30.0,
+                "internal": 22,
+                "practical": null,
+                "total": 52
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 30.0,
+                "internal": 21,
+                "practical": null,
+                "total": 51
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 32.0,
+                "internal": 22,
+                "practical": null,
+                "total": 54
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 25.0,
+                "internal": 11,
+                "practical": 20,
+                "total": 56
+            }
+        }
+    },
+    {
+        "student_name": "PALO PURTY",
+        "roll_number": "231305779981",
+        "result": "Promoted",
+        "grand_total": 248,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 16,
+                "internal": 21,
+                "practical": null,
+                "total": 37
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 34.0,
+                "internal": 22,
+                "practical": null,
+                "total": 56
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 20.0,
+                "internal": 21,
+                "practical": null,
+                "total": 41
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 25.0,
+                "internal": 22,
+                "practical": null,
+                "total": 47
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Chemistry",
+                "theory": 33.0,
+                "internal": 13,
+                "practical": 21,
+                "total": 67
+            }
+        }
+    },
+    {
+        "student_name": "CHAITAN MUNDA",
+        "roll_number": "231305779893",
+        "result": "Promoted",
+        "grand_total": 244,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 17,
+                "internal": 21,
+                "practical": null,
+                "total": 38
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 41.0,
+                "internal": 22,
+                "practical": null,
+                "total": 63
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 30.0,
+                "internal": 21,
+                "practical": null,
+                "total": 51
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 36.0,
+                "internal": 22,
+                "practical": null,
+                "total": 58
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": null,
+                "internal": 11,
+                "practical": 23,
+                "total": 34
+            }
+        }
+    },
+    {
+        "student_name": "GAYTRI KHANDAIT",
+        "roll_number": "231305779942",
+        "result": "Pass",
+        "grand_total": 244,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 27,
+                "internal": 23,
+                "practical": null,
+                "total": 50
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 30.0,
+                "internal": 23,
+                "practical": null,
+                "total": 53
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 21.0,
+                "internal": 23,
+                "practical": null,
+                "total": 44
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 18.0,
+                "internal": 23,
+                "practical": null,
+                "total": 41
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 24.0,
+                "internal": 11,
+                "practical": 21,
+                "total": 56
             }
         }
     },
@@ -2838,6 +4601,178 @@
         }
     },
     {
+        "student_name": "KAMAL MAHATO",
+        "roll_number": "231305779916",
+        "result": "Promoted",
+        "grand_total": 237,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 3,
+                "internal": 22,
+                "practical": null,
+                "total": 25
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 30.0,
+                "internal": 21,
+                "practical": null,
+                "total": 51
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 24.0,
+                "internal": 22,
+                "practical": null,
+                "total": 46
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 26.0,
+                "internal": 21,
+                "practical": null,
+                "total": 47
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 37.0,
+                "internal": 11,
+                "practical": 20,
+                "total": 68
+            }
+        }
+    },
+    {
+        "student_name": "CHANDO LEYANGI",
+        "roll_number": "231305779987",
+        "result": "Promoted",
+        "grand_total": 229,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 21,
+                "internal": 22,
+                "practical": null,
+                "total": 43
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 19.0,
+                "internal": 21,
+                "practical": null,
+                "total": 40
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 13.0,
+                "internal": 22,
+                "practical": null,
+                "total": 35
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 25.0,
+                "internal": 21,
+                "practical": null,
+                "total": 46
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 32.0,
+                "internal": 11,
+                "practical": 22,
+                "total": 65
+            }
+        }
+    },
+    {
+        "student_name": "MANTI SINKU",
+        "roll_number": "231305779980",
+        "result": "Promoted",
+        "grand_total": 222,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Mathematics",
+                "theory": 19,
+                "internal": 22,
+                "practical": null,
+                "total": 41
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Mathematics",
+                "theory": 25.0,
+                "internal": 21,
+                "practical": null,
+                "total": 46
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Mathematics",
+                "theory": 12.0,
+                "internal": 22,
+                "practical": null,
+                "total": 34
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Mathematics",
+                "theory": 12.0,
+                "internal": 21,
+                "practical": null,
+                "total": 33
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Physics",
+                "theory": 36.0,
+                "internal": 12,
+                "practical": 20,
+                "total": 68
+            }
+        }
+    },
+    {
+        "student_name": "NAIKI BANRA",
+        "roll_number": "231305780051",
+        "result": "Promoted",
+        "grand_total": 152,
+        "subjects": {
+            "major_xii": {
+                "subject": "MAJOR-XII-Physics",
+                "theory": "AB",
+                "internal": 13,
+                "practical": 21,
+                "total": 34
+            },
+            "major_xiii": {
+                "subject": "MAJOR-XIII-Physics",
+                "theory": "AB",
+                "internal": 11,
+                "practical": 22,
+                "total": 33
+            },
+            "major_xiv": {
+                "subject": "MAJOR-XIV-Physics",
+                "theory": "AB",
+                "internal": 12,
+                "practical": 21,
+                "total": 33
+            },
+            "major_xv": {
+                "subject": "MAJOR-XV-Physics",
+                "theory": "AB",
+                "internal": 10,
+                "practical": 22,
+                "total": 32
+            },
+            "minor_iic": {
+                "subject": "Minor-IIC-Mathematics",
+                "theory": "AB",
+                "internal": 20,
+                "practical": null,
+                "total": 20
+            }
+        }
+    },
+    {
         "student_name": "MANISHA GAGRAI",
         "roll_number": "231305779989",
         "result": "Promoted",
@@ -2877,49 +4812,6 @@
                 "internal": 14,
                 "practical": 20,
                 "total": 34
-            }
-        }
-    },
-    {
-        "student_name": "TRILOCHAN KORAH",
-        "roll_number": "231305779993",
-        "result": "Pass",
-        "grand_total": 273,
-        "subjects": {
-            "major_xii": {
-                "subject": "MAJOR-XII-Mathematics",
-                "theory": 26,
-                "internal": 21,
-                "practical": null,
-                "total": 47
-            },
-            "major_xiii": {
-                "subject": "MAJOR-XIII-Mathematics",
-                "theory": 44.0,
-                "internal": 22,
-                "practical": null,
-                "total": 66
-            },
-            "major_xiv": {
-                "subject": "MAJOR-XIV-Mathematics",
-                "theory": 26.0,
-                "internal": 21,
-                "practical": null,
-                "total": 47
-            },
-            "major_xv": {
-                "subject": "MAJOR-XV-Mathematics",
-                "theory": 26.0,
-                "internal": 22,
-                "practical": null,
-                "total": 48
-            },
-            "minor_iic": {
-                "subject": "Minor-IIC-Physics",
-                "theory": 32.0,
-                "internal": 11,
-                "practical": 22,
-                "total": 65
             }
         }
     }

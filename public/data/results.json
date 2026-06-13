@@ -2,7 +2,7 @@
   "announcements": [
     {
       "id": "res-ug-sem6-science",
-      "title": "UG Semester 6 Science Streams (Session 2022-26) [Maths Live]",
+      "title": "UG Semester 6 Science Streams (Session 2022-26) [Maths + Physics Live]",
       "date": "2026-06-13",
       "status": "Declared",
       "link": "#results?exam=sem6_master_2022-2026"
@@ -79,27 +79,42 @@
     {
       "department": "Mathematics",
       "passPercentage": 82.5,
-      "toppers": ["Animesh Mahato (89.4%)", "Shalini Soy (87.2%)"]
+      "toppers": [
+        "Animesh Mahato (89.4%)",
+        "Shalini Soy (87.2%)"
+      ]
     },
     {
       "department": "Physics",
       "passPercentage": 78.4,
-      "toppers": ["Rohan Deogam (86.1%)", "Anjali Birua (84.5%)"]
+      "toppers": [
+        "Rohan Deogam (86.1%)",
+        "Anjali Birua (84.5%)"
+      ]
     },
     {
       "department": "Chemistry",
       "passPercentage": 80.2,
-      "toppers": ["Sourav Kar (88.0%)", "Karan Pingua (83.9%)"]
+      "toppers": [
+        "Sourav Kar (88.0%)",
+        "Karan Pingua (83.9%)"
+      ]
     },
     {
       "department": "Commerce",
       "passPercentage": 85.9,
-      "toppers": ["Pooja Agrawal (91.2%)", "Amit Kumar (89.5%)"]
+      "toppers": [
+        "Pooja Agrawal (91.2%)",
+        "Amit Kumar (89.5%)"
+      ]
     },
     {
       "department": "Arts",
       "passPercentage": 76.5,
-      "toppers": ["Deepak Sinku (82.3%)", "Sunita Purty (81.8%)"]
+      "toppers": [
+        "Deepak Sinku (82.3%)",
+        "Sunita Purty (81.8%)"
+      ]
     }
   ],
   "yearlyTrends": [
@@ -173,11 +188,11 @@
     },
     {
       "id": "sem6_master_2022-2026",
-      "title": "Semester 6 — Science Streams (Maths Live)",
+      "title": "Semester 6 - Science Streams (Maths + Physics Live)",
       "batch": "Session 2022-2026",
       "university": "Kolhan University",
       "date": "2026-06-13",
-      "status": "Maths Live",
+      "status": "Maths + Physics Live",
       "file": "results_sem6_master.json",
       "hasPdfs": true,
       "pdfFolder": "sem6_2022",
@@ -186,6 +201,11 @@
           "version": "1.0",
           "title": "Mathematics Results Live",
           "desc": "Mathematics major results published. Physics and Chemistry are pending and will be integrated as they are declared."
+        },
+        {
+          "version": "2.0",
+          "title": "Physics Results Live",
+          "desc": "Physics major results published (44 students). Chemistry results are pending."
         }
       ]
     }
