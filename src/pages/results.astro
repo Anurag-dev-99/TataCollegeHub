@@ -1078,62 +1078,62 @@ datasets.forEach(d => {
   };
 
   // DOM Elements
-  const hubView = document.getElementById('results-hub-view');
-  const dashboardView = document.getElementById('results-dashboard-view');
-  const backBtn = document.getElementById('dashboard-back-btn');
-  const examCards = document.querySelectorAll('.results-card-select');
+  let hubView;
+  let dashboardView;
+  let backBtn;
+  let examCards;
 
   // Dashboard DOM Elements
-  const examTitle = document.getElementById('dashboard-exam-title');
-  const examSubtitle = document.getElementById('dashboard-exam-subtitle');
-  const filterContainer = document.getElementById('dashboard-filter-container');
-  const majorSelect = document.getElementById('dashboard-major-select') as HTMLSelectElement;
+  let examTitle;
+  let examSubtitle;
+  let filterContainer;
+  let majorSelect;
 
   // Stats DOM Elements
-  const totalStudentsEl = document.getElementById('stat-total-students');
-  const passPercentEl = document.getElementById('stat-pass-percent');
-  const passSubEl = document.getElementById('stat-pass-sub');
-  const passProgressFill = document.getElementById('stat-pass-progress');
-  const topperScoreEl = document.getElementById('stat-topper-score');
-  const topperNameEl = document.getElementById('stat-topper-name');
-  const avgScoreEl = document.getElementById('stat-avg-score');
+  let totalStudentsEl;
+  let passPercentEl;
+  let passSubEl;
+  let passProgressFill;
+  let topperScoreEl;
+  let topperNameEl;
+  let avgScoreEl;
 
   // Search DOM Elements
-  const searchInput = document.getElementById('result-search-input') as HTMLInputElement;
-  const searchBtn = document.getElementById('result-search-btn');
-  const searchSuggestions = document.getElementById('results-search-suggestions');
-  const searchOutput = document.getElementById('student-result-output');
-  const browseAllBtn = document.getElementById('result-browse-all-btn');
+  let searchInput;
+  let searchBtn;
+  let searchSuggestions;
+  let searchOutput;
+  let browseAllBtn;
 
   // Leaderboard DOM Elements
-  const leaderboardSortSelect = document.getElementById('leaderboard-sort-select') as HTMLSelectElement;
-  const leaderboardTableBody = document.getElementById('leaderboard-table-body');
-  const leaderboardDesc = document.getElementById('leaderboard-desc');
+  let leaderboardSortSelect;
+  let leaderboardTableBody;
+  let leaderboardDesc;
 
   // Toppers DOM Element
-  const subjectToppersList = document.getElementById('subject-toppers-list');
+  let subjectToppersList;
 
   // Comparison DOM Elements
-  const compareBtn = document.getElementById('compare-btn');
-  const compareRoll1 = document.getElementById('compare-roll-1') as HTMLInputElement;
-  const compareRoll2 = document.getElementById('compare-roll-2') as HTMLInputElement;
-  const compareSuggestions1 = document.getElementById('compare-suggestions-1');
-  const compareSuggestions2 = document.getElementById('compare-suggestions-2');
-  const comparisonResultOutput = document.getElementById('comparison-result-output');
+  let compareBtn;
+  let compareRoll1;
+  let compareRoll2;
+  let compareSuggestions1;
+  let compareSuggestions2;
+  let comparisonResultOutput;
 
   // Modal DOM Elements
-  const browseModal = document.getElementById('browse-all-modal');
-  const closeBrowseModalBtn = document.getElementById('close-browse-modal-btn');
-  const modalBrowseSearch = document.getElementById('modal-browse-search') as HTMLInputElement;
-  const browseModalTableBody = document.getElementById('browse-modal-table-body');
+  let browseModal;
+  let closeBrowseModalBtn;
+  let modalBrowseSearch;
+  let browseModalTableBody;
 
   // Updates Modal DOM Elements
-  const updatesModal = document.getElementById('updates-modal');
-  const closeUpdatesModalBtn = document.getElementById('close-updates-modal-btn');
-  const closeUpdatesModalDoneBtn = document.getElementById('close-updates-modal-done-btn');
-  const updatesList = document.getElementById('updates-list');
-  const updatesBtn = document.getElementById('dashboard-updates-btn');
-  const updatesCount = document.getElementById('updates-count');
+  let updatesModal;
+  let closeUpdatesModalBtn;
+  let closeUpdatesModalDoneBtn;
+  let updatesList;
+  let updatesBtn;
+  let updatesCount;
 
   // --- Utility: Clean Subject Names ---
   function cleanSubjectName(name) {
@@ -2157,6 +2157,56 @@ datasets.forEach(d => {
 
   // --- Initialization & Event Listeners ---
   const init = () => {
+    // Re-query DOM Elements for view transitions compatibility
+    hubView = document.getElementById('results-hub-view');
+    dashboardView = document.getElementById('results-dashboard-view');
+    backBtn = document.getElementById('dashboard-back-btn');
+    examCards = document.querySelectorAll('.results-card-select');
+
+    examTitle = document.getElementById('dashboard-exam-title');
+    examSubtitle = document.getElementById('dashboard-exam-subtitle');
+    filterContainer = document.getElementById('dashboard-filter-container');
+    majorSelect = document.getElementById('dashboard-major-select') as HTMLSelectElement;
+
+    totalStudentsEl = document.getElementById('stat-total-students');
+    passPercentEl = document.getElementById('stat-pass-percent');
+    passSubEl = document.getElementById('stat-pass-sub');
+    passProgressFill = document.getElementById('stat-pass-progress');
+    topperScoreEl = document.getElementById('stat-topper-score');
+    topperNameEl = document.getElementById('stat-topper-name');
+    avgScoreEl = document.getElementById('stat-avg-score');
+
+    searchInput = document.getElementById('result-search-input') as HTMLInputElement;
+    searchBtn = document.getElementById('result-search-btn');
+    searchSuggestions = document.getElementById('results-search-suggestions');
+    searchOutput = document.getElementById('student-result-output');
+    browseAllBtn = document.getElementById('result-browse-all-btn');
+
+    leaderboardSortSelect = document.getElementById('leaderboard-sort-select') as HTMLSelectElement;
+    leaderboardTableBody = document.getElementById('leaderboard-table-body');
+    leaderboardDesc = document.getElementById('leaderboard-desc');
+
+    subjectToppersList = document.getElementById('subject-toppers-list');
+
+    compareBtn = document.getElementById('compare-btn');
+    compareRoll1 = document.getElementById('compare-roll-1') as HTMLInputElement;
+    compareRoll2 = document.getElementById('compare-roll-2') as HTMLInputElement;
+    compareSuggestions1 = document.getElementById('compare-suggestions-1');
+    compareSuggestions2 = document.getElementById('compare-suggestions-2');
+    comparisonResultOutput = document.getElementById('comparison-result-output');
+
+    browseModal = document.getElementById('browse-all-modal');
+    closeBrowseModalBtn = document.getElementById('close-browse-modal-btn');
+    modalBrowseSearch = document.getElementById('modal-browse-search') as HTMLInputElement;
+    browseModalTableBody = document.getElementById('browse-modal-table-body');
+
+    updatesModal = document.getElementById('updates-modal');
+    closeUpdatesModalBtn = document.getElementById('close-updates-modal-btn');
+    closeUpdatesModalDoneBtn = document.getElementById('close-updates-modal-done-btn');
+    updatesList = document.getElementById('updates-list');
+    updatesBtn = document.getElementById('dashboard-updates-btn');
+    updatesCount = document.getElementById('updates-count');
+
     // 1. Exam cards open dashboard click handlers
     examCards.forEach(card => {
       card.addEventListener('click', () => {
@@ -2205,19 +2255,29 @@ datasets.forEach(d => {
     handleCompareAutocomplete(compareRoll1, compareSuggestions1);
     handleCompareAutocomplete(compareRoll2, compareSuggestions2);
 
-    // Dismiss autocompletes when clicking outside
-    document.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      if (searchInput && searchSuggestions && !searchInput.contains(target) && !searchSuggestions.contains(target)) {
-        searchSuggestions.style.display = 'none';
-      }
-      if (compareRoll1 && compareSuggestions1 && !compareRoll1.contains(target) && !compareSuggestions1.contains(target)) {
-        compareSuggestions1.style.display = 'none';
-      }
-      if (compareRoll2 && compareSuggestions2 && !compareRoll2.contains(target) && !compareSuggestions2.contains(target)) {
-        compareSuggestions2.style.display = 'none';
-      }
-    });
+    // Dismiss autocompletes when clicking outside (registered once globally, queries dynamically)
+    if (!(window as any).__click_outside_bound) {
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const activeSearchInput = document.getElementById('result-search-input');
+        const activeSearchSuggestions = document.getElementById('results-search-suggestions');
+        const activeCompareRoll1 = document.getElementById('compare-roll-1');
+        const activeCompareSuggestions1 = document.getElementById('compare-suggestions-1');
+        const activeCompareRoll2 = document.getElementById('compare-roll-2');
+        const activeCompareSuggestions2 = document.getElementById('compare-suggestions-2');
+
+        if (activeSearchInput && activeSearchSuggestions && !activeSearchInput.contains(target) && !activeSearchSuggestions.contains(target)) {
+          activeSearchSuggestions.style.display = 'none';
+        }
+        if (activeCompareRoll1 && activeCompareSuggestions1 && !activeCompareRoll1.contains(target) && !activeCompareSuggestions1.contains(target)) {
+          activeCompareSuggestions1.style.display = 'none';
+        }
+        if (activeCompareRoll2 && activeCompareSuggestions2 && !activeCompareRoll2.contains(target) && !activeCompareSuggestions2.contains(target)) {
+          activeCompareSuggestions2.style.display = 'none';
+        }
+      });
+      (window as any).__click_outside_bound = true;
+    }
 
     // 6. Major Filter select trigger
     majorSelect?.addEventListener('change', (e) => {
@@ -2232,8 +2292,11 @@ datasets.forEach(d => {
       renderLeaderboard((e.target as HTMLSelectElement).value);
     });
 
-    // 8. Listen to hash routing changes
-    window.addEventListener('hashchange', handleRouting);
+    // 8. Listen to hash routing changes (registered once globally)
+    if (!(window as any).__hashchange_bound) {
+      window.addEventListener('hashchange', handleRouting);
+      (window as any).__hashchange_bound = true;
+    }
     // Listen to load routing checks
     handleRouting();
   };
