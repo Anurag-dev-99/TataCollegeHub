@@ -1,6 +1,13 @@
 {
   "announcements": [
     {
+      "id": "res-ug-sem6-science",
+      "title": "UG Semester 6 Science Streams (Session 2022-26) [Maths Live]",
+      "date": "2026-06-13",
+      "status": "Declared",
+      "link": "#results?exam=sem6_master_2022-2026"
+    },
+    {
       "id": "res-ug-sem2",
       "title": "UG Semester 2 Examination Results (Session 2025-28)",
       "date": "2026-05-28",
@@ -144,9 +151,43 @@
       "date": "2026-06-12",
       "status": "Declared",
       "file": "results_sem3_master.json",
-      "notice": "Notice: The result database has been updated to filter out incorrect 2022 batch roll numbers. It now correctly reflects the results of the 2023-27 batch.",
       "hasImages": true,
-      "imageFolder": "sem3_2023"
+      "imageFolder": "sem3_2023",
+      "updates": [
+        {
+          "version": "1.0",
+          "title": "Database Cleaned",
+          "desc": "2022 batch student records filtered out from Sem-3 2023-27 Science result database."
+        },
+        {
+          "version": "2.0",
+          "title": "Tie-Breaker Sort",
+          "desc": "Results are now sorted alphabetically by name instead of roll number when grand totals are tied."
+        },
+        {
+          "version": "3.0",
+          "title": "Marksheet Photos",
+          "desc": "Integrated original marksheet screenshots directly in student search profiles."
+        }
+      ]
+    },
+    {
+      "id": "sem6_master_2022-2026",
+      "title": "Semester 6 — Science Streams (Maths Live)",
+      "batch": "Session 2022-2026",
+      "university": "Kolhan University",
+      "date": "2026-06-13",
+      "status": "Maths Live",
+      "file": "results_sem6_master.json",
+      "hasPdfs": true,
+      "pdfFolder": "sem6_2022",
+      "updates": [
+        {
+          "version": "1.0",
+          "title": "Mathematics Results Live",
+          "desc": "Mathematics major results published. Physics and Chemistry are pending and will be integrated as they are declared."
+        }
+      ]
     }
   ]
 }

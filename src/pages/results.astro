@@ -204,8 +204,19 @@ datasets.forEach(d => {
 
     <!-- Dashboard Title Section -->
     <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-      <h2 id="dashboard-exam-title" style="font-size: 1.8rem; font-family: var(--font-display); tracking: -0.02em;">-</h2>
+      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+        <h2 id="dashboard-exam-title" style="font-size: 1.8rem; font-family: var(--font-display); tracking: -0.02em; margin: 0;">-</h2>
+        
+        <!-- Inline Updates Button -->
+        <button id="dashboard-updates-btn" class="badge badge-warning" style="display: none; align-items: center; gap: 0.35rem; cursor: pointer; border: 1px solid rgba(245, 158, 11, 0.3); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); transition: all 0.2s; background: rgba(245, 158, 11, 0.08); font-size: 0.75rem; font-weight: 700; height: 26px;" onmouseover="this.style.background='rgba(245, 158, 11, 0.15)'" onmouseout="this.style.background='rgba(245, 158, 11, 0.08)'">
+          <span>✨ Updates</span>
+          <span id="updates-count" style="background-color: var(--accent-warning); color: var(--bg-secondary); border-radius: var(--radius-full); width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 950; margin-left: 2px;">0</span>
+        </button>
+      </div>
+      
       <p id="dashboard-exam-subtitle" style="color: var(--text-secondary); font-size: 1rem;">-</p>
+      
+      <!-- Legacy Notice Banner (hidden by default) -->
       <div id="dashboard-exam-notice" style="display: none; margin-top: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-sm); background-color: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); color: var(--accent-warning); font-size: 0.875rem; font-weight: 500; align-items: center; gap: 0.5rem; width: fit-content;">
         <span style="font-size: 1.15rem; line-height: 1;">⚠️</span>
         <span id="dashboard-exam-notice-text"></span>
@@ -450,6 +461,31 @@ datasets.forEach(d => {
           </table>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!--   UPDATES/CHANGELOG MODAL                  -->
+  <!-- ========================================== -->
+  <div id="updates-modal" class="modal-overlay">
+    <div class="modal-container" style="max-width: 460px;">
+      <div class="modal-close" id="close-updates-modal-btn">
+        ✕
+      </div>
+      <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; font-family: var(--font-display); font-weight: 800; display: flex; align-items: center; gap: 0.5rem; color: var(--text-primary);">
+        ✨ Dashboard Updates
+      </h3>
+      <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.25rem;">
+        Latest modifications and features configured for this examination dashboard.
+      </p>
+
+      <div id="updates-list" style="display: flex; flex-direction: column; gap: 1.25rem;">
+        <!-- Rendered via Javascript -->
+      </div>
+
+      <button class="btn btn-secondary btn-sm" id="close-updates-modal-done-btn" style="margin-top: 1.5rem; width: 100%; font-weight: 700; height: 38px;">
+        Got it, thanks!
+      </button>
     </div>
   </div>
 
@@ -1091,6 +1127,14 @@ datasets.forEach(d => {
   const modalBrowseSearch = document.getElementById('modal-browse-search') as HTMLInputElement;
   const browseModalTableBody = document.getElementById('browse-modal-table-body');
 
+  // Updates Modal DOM Elements
+  const updatesModal = document.getElementById('updates-modal');
+  const closeUpdatesModalBtn = document.getElementById('close-updates-modal-btn');
+  const closeUpdatesModalDoneBtn = document.getElementById('close-updates-modal-done-btn');
+  const updatesList = document.getElementById('updates-list');
+  const updatesBtn = document.getElementById('dashboard-updates-btn');
+  const updatesCount = document.getElementById('updates-count');
+
   // --- Utility: Clean Subject Names ---
   function cleanSubjectName(name) {
     if (!name) return 'Unknown';
@@ -1230,6 +1274,16 @@ datasets.forEach(d => {
         examNotice.style.display = 'flex';
       } else {
         examNotice.style.display = 'none';
+      }
+    }
+
+    // Handle Updates Button visibility
+    if (updatesBtn && updatesCount) {
+      if (dataset.updates && dataset.updates.length > 0) {
+        updatesCount.textContent = dataset.updates.length.toString();
+        updatesBtn.style.display = 'inline-flex';
+      } else {
+        updatesBtn.style.display = 'none';
       }
     }
     
@@ -1580,12 +1634,22 @@ datasets.forEach(d => {
             </div>
             ${currentDatasetMetadata && currentDatasetMetadata.hasImages ? `
               <a href="${baseUrl}/images/results/${currentDatasetMetadata.imageFolder}/${student.roll_number}.png" 
-                 download="${student.student_name.replace(/\s+/g, '_')}_Sem3_Result.png" 
+                 download="${student.student_name.replace(/\s+/g, '_')}_Result.png" 
                  class="btn btn-primary btn-sm" 
                  style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; flex-shrink: 0; white-space: nowrap; height: 32px;"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                 <span>Download Marksheet</span>
+              </a>
+            ` : ''}
+            ${currentDatasetMetadata && currentDatasetMetadata.hasPdfs ? `
+              <a href="${baseUrl}/pdfs/results/${currentDatasetMetadata.pdfFolder}/${student.roll_number}.pdf" 
+                 download="${student.student_name.replace(/\s+/g, '_')}_Result.pdf" 
+                 class="btn btn-success btn-sm" 
+                 style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; flex-shrink: 0; white-space: nowrap; height: 32px; background-color: var(--accent-success); border-color: var(--accent-success);"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                <span>Download PDF</span>
               </a>
             ` : ''}
           </div>
@@ -1983,6 +2047,33 @@ datasets.forEach(d => {
     }
   };
 
+  // --- Updates Modal ---
+  const openUpdatesModal = () => {
+    if (!updatesModal || !updatesList || !currentDatasetMetadata) return;
+
+    const updates = currentDatasetMetadata.updates || [];
+    if (updates.length === 0) return;
+
+    updatesList.innerHTML = updates.map(up => `
+      <div style="display: flex; gap: 0.75rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; align-items: flex-start;">
+        <span style="background: linear-gradient(135deg, var(--accent-primary) 0%, #8b5cf6 100%); color: white; border-radius: var(--radius-xs); padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 800; font-family: var(--font-display); height: fit-content; align-self: flex-start; flex-shrink: 0; line-height: 1;">v${up.version}</span>
+        <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); line-height: 1.2; font-family: var(--font-display);">${up.title}</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">${up.desc}</p>
+        </div>
+      </div>
+    `).join('');
+
+    // Remove border-bottom from last item
+    const lastChild = updatesList.lastElementChild;
+    if (lastChild) {
+      (lastChild as HTMLElement).style.borderBottom = 'none';
+      (lastChild as HTMLElement).style.paddingBottom = '0';
+    }
+
+    updatesModal.classList.add('open');
+  };
+
   // --- Auto-complete suggestions ---
   const handleSearchAutocomplete = (e) => {
     const val = e.target.value.toLowerCase().trim();
@@ -2096,6 +2187,17 @@ datasets.forEach(d => {
     });
     browseModal?.addEventListener('click', (e) => {
       if (e.target === browseModal) browseModal.classList.remove('open');
+    });
+
+    updatesBtn?.addEventListener('click', openUpdatesModal);
+    closeUpdatesModalBtn?.addEventListener('click', () => {
+      updatesModal?.classList.remove('open');
+    });
+    closeUpdatesModalDoneBtn?.addEventListener('click', () => {
+      updatesModal?.classList.remove('open');
+    });
+    updatesModal?.addEventListener('click', (e) => {
+      if (e.target === updatesModal) updatesModal.classList.remove('open');
     });
 
     // 5. Compare triggers
