@@ -1,22 +1,14 @@
 import os
-import re
 import json
 import shutil
 
 # ── PATHS ────────────────────────────────────────────────────────────────────
-PHY_JSON_PATH    = r"C:\Users\Anurag\Documents\GitHub\Sem6_2022_all\Phy_sem6_2022\Phy_sem6_merged.json"
+PHY_JSON_PATH    = r"C:\Users\Anurag\Documents\GitHub\Sem6_2022_all\Phy_sem6_2022\merged_physics_students.json"
 PHY_PDF_SRC_DIR  = r"C:\Users\Anurag\Documents\GitHub\Sem6_2022_all\Phy_sem6_2022\pdfs"
 
 MASTER_JSON_PATH  = r"C:\Users\Anurag\Documents\GitHub\TataCollegeHub\public\data\results_sem6_master.json"
 PDF_DEST_DIR      = r"C:\Users\Anurag\Documents\GitHub\TataCollegeHub\public\pdfs\results\sem6_2022"
 RESULTS_JSON_PATH = r"C:\Users\Anurag\Documents\GitHub\TataCollegeHub\public\data\results.json"
-
-# ── HELPER: Clean roll numbers like ="[231305779995]" → "231305779995" ────────
-def clean_roll(raw):
-    raw = str(raw).strip()
-    # Remove Excel ="[...]" wrapper
-    cleaned = re.sub(r'[="\[\]]+', '', raw)
-    return cleaned.strip()
 
 # ── TRANSFORM: flat PHY record → nested website schema ───────────────────────
 def transform_phy_student(s):
@@ -40,43 +32,46 @@ def transform_phy_student(s):
             "practical": s.get("minor_iic_practical"),
             "total":     s.get("minor_iic_total"),
         }
-    roll = clean_roll(s["roll_number"])
+
+    # Recalculate grand_total from subject totals (fixes website errors)
+    all_totals = [s.get(f"major_{k}_total") for k in ["xii","xiii","xiv","xv"]]
+    all_totals.append(s.get("minor_iic_total"))
+    correct_total = int(sum(t for t in all_totals if t is not None))
+    stated_total  = int(s["grand_total"])
+    if correct_total != stated_total:
+        print(f"  [FIX] {s['student_name']} ({s['roll_number']}): "
+              f"grand_total {stated_total} -> {correct_total} (recalculated from subjects)")
+
     return {
         "student_name": s["student_name"].strip(),
-        "roll_number":  roll,
+        "roll_number":  str(s["roll_number"]).strip(),
         "result":       s["result"].strip(),
-        "grand_total":  int(s["grand_total"]),
+        "grand_total":  correct_total,
         "subjects":     subjects,
     }
 
-# ── STEP 1: Load existing master JSON (Maths only, 68 students) ───────────────
-print("Loading existing master JSON (Maths only)...")
+# ── STEP 1: Load master JSON (Maths only, 68 students) ───────────────────────
+print("Loading master JSON (Maths only)...")
 with open(MASTER_JSON_PATH, "r", encoding="utf-8-sig") as f:
     master = json.load(f)
 existing_rolls = {entry["roll_number"] for entry in master}
-print(f"  Current students in master: {len(master)}")
+print(f"  Existing Maths students: {len(master)}")
 
-# ── STEP 2: Load & transform PHY JSON ────────────────────────────────────────
+# ── STEP 2: Load, fix & transform PHY JSON ───────────────────────────────────
 print("\nLoading Physics JSON...")
 with open(PHY_JSON_PATH, "r", encoding="utf-8") as f:
     phy_raw = json.load(f)
-print(f"  PHY records found: {len(phy_raw)}")
-
-# Show roll number cleaning in action
-print(f"  Sample raw roll: {phy_raw[0]['roll_number']}")
-print(f"  After cleaning:  {clean_roll(phy_raw[0]['roll_number'])}")
+print(f"  PHY records: {len(phy_raw)}")
 
 added = 0
-skipped_dup = 0
+skipped = 0
 for record in phy_raw:
-    roll_raw = record.get("roll_number", "")
-    roll = clean_roll(roll_raw)
+    roll = str(record.get("roll_number", "")).strip()
     if not roll:
-        print(f"  WARNING: Empty roll number after cleaning '{roll_raw}' - skipping.")
         continue
     if roll in existing_rolls:
-        print(f"  INFO: Roll {roll} already in master - skipping duplicate.")
-        skipped_dup += 1
+        print(f"  [SKIP] Roll {roll} already in master.")
+        skipped += 1
         continue
     transformed = transform_phy_student(record)
     master.append(transformed)
@@ -84,51 +79,30 @@ for record in phy_raw:
     added += 1
 
 print(f"\n  Added:   {added} Physics students")
-if skipped_dup:
-    print(f"  Skipped: {skipped_dup} duplicates")
-print(f"  Total in master after merge: {len(master)}")
+if skipped:
+    print(f"  Skipped: {skipped} duplicates")
+print(f"  Total in master: {len(master)}")
 
 # ── STEP 3: Sort by grand_total descending ────────────────────────────────────
 master.sort(key=lambda x: x["grand_total"], reverse=True)
 
-# ── STEP 4: Write updated master JSON ────────────────────────────────────────
+# ── STEP 4: Write master JSON ─────────────────────────────────────────────────
 with open(MASTER_JSON_PATH, "w", encoding="utf-8") as f:
     json.dump(master, f, ensure_ascii=False, indent=4)
 print(f"\nMaster JSON saved -> {MASTER_JSON_PATH}")
 
-# ── STEP 5: Copy PHY PDFs to website ─────────────────────────────────────────
+# ── STEP 5: Copy all 44 PHY PDFs to website ───────────────────────────────────
 print("\nCopying Physics PDFs to website...")
 os.makedirs(PDF_DEST_DIR, exist_ok=True)
-
-# Get all PDFs from the source folder
 pdf_files = [f for f in os.listdir(PHY_PDF_SRC_DIR) if f.lower().endswith(".pdf")]
 copied = 0
-already_exists = 0
-
 for pdf_file in pdf_files:
-    src = os.path.join(PHY_PDF_SRC_DIR, pdf_file)
-    dst = os.path.join(PDF_DEST_DIR, pdf_file)
-    if os.path.exists(dst):
-        already_exists += 1
-        continue
-    shutil.copy2(src, dst)
+    shutil.copy2(os.path.join(PHY_PDF_SRC_DIR, pdf_file),
+                 os.path.join(PDF_DEST_DIR, pdf_file))
     copied += 1
-
-print(f"  Copied:         {copied} new Physics PDFs")
-if already_exists:
-    print(f"  Already existed: {already_exists} (skipped)")
-
-# Cross-check: which students in JSON have no PDF?
-phy_rolls_in_json = {clean_roll(r["roll_number"]) for r in phy_raw}
-pdf_basenames = {os.path.splitext(f)[0] for f in pdf_files}
-missing_pdfs = phy_rolls_in_json - pdf_basenames
-if missing_pdfs:
-    print(f"\n  WARNING: {len(missing_pdfs)} students have no PDF:")
-    for r in sorted(missing_pdfs):
-        name = next((s["student_name"] for s in phy_raw if clean_roll(s["roll_number"]) == r), "?")
-        print(f"    {r} - {name}")
-else:
-    print("  All students in JSON have a matching PDF.")
+print(f"  Copied: {copied} PDFs")
+total_pdfs = len([f for f in os.listdir(PDF_DEST_DIR) if f.endswith(".pdf")])
+print(f"  Total PDFs in website folder: {total_pdfs}")
 
 # ── STEP 6: Update results.json ───────────────────────────────────────────────
 print("\nUpdating results.json...")
@@ -142,7 +116,7 @@ for dataset in config.get("datasets", []):
         dataset.setdefault("updates", []).append({
             "version": "2.0",
             "title":   "Physics Results Live",
-            "desc":    f"Physics major results published ({added} students added). Chemistry results are pending."
+            "desc":    f"Physics major results added ({added} students). Chemistry results are pending."
         })
         break
 
@@ -153,15 +127,13 @@ for ann in config.get("announcements", []):
 
 with open(RESULTS_JSON_PATH, "w", encoding="utf-8") as f:
     json.dump(config, f, ensure_ascii=False, indent=2)
-print("  results.json updated -> 'Maths + Physics Live'")
+print("  results.json -> 'Maths + Physics Live'")
 
-# ── FINAL SUMMARY ─────────────────────────────────────────────────────────────
+# ── SUMMARY ───────────────────────────────────────────────────────────────────
 print("\n" + "="*55)
 print("[SUCCESS] Physics integration complete!")
-print(f"  Maths students (existing):  68")
-print(f"  Physics students added:     {added}")
-print(f"  Total in master JSON:       {len(master)}")
-print(f"  New PDFs copied to website: {copied}")
-total_pdfs = len(list(os.listdir(PDF_DEST_DIR)))
-print(f"  Total PDFs in website:      {total_pdfs}")
+print(f"  Maths students:       68")
+print(f"  Physics students:     {added}")
+print(f"  Total master JSON:    {len(master)}")
+print(f"  Total PDFs (website): {total_pdfs}")
 print("="*55)
