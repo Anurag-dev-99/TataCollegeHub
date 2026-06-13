@@ -2,7 +2,7 @@
   "announcements": [
     {
       "id": "res-ug-sem6-science",
-      "title": "UG Semester 6 Science Streams (Session 2022-26) [Maths + Physics Live]",
+      "title": "UG Semester 6 Science Streams (Session 2022-26) [Maths Live]",
       "date": "2026-06-13",
       "status": "Declared",
       "link": "#results?exam=sem6_master_2022-2026"
@@ -188,11 +188,11 @@
     },
     {
       "id": "sem6_master_2022-2026",
-      "title": "Semester 6 - Science Streams (Maths + Physics Live)",
+      "title": "Semester 6 — Science Streams (Maths Live)",
       "batch": "Session 2022-2026",
       "university": "Kolhan University",
       "date": "2026-06-13",
-      "status": "Maths + Physics Live",
+      "status": "Maths Live",
       "file": "results_sem6_master.json",
       "hasPdfs": true,
       "pdfFolder": "sem6_2022",
@@ -201,11 +201,6 @@
           "version": "1.0",
           "title": "Mathematics Results Live",
           "desc": "Mathematics major results published. Physics and Chemistry are pending and will be integrated as they are declared."
-        },
-        {
-          "version": "2.0",
-          "title": "Physics Results Live",
-          "desc": "Physics major results published (44 students). Chemistry results are pending."
         }
       ]
     }
