@@ -7,12 +7,13 @@
  * 2. Add headers in the first row (Row 1):
  *    Column A: Timestamp
  *    Column B: Name
- *    Column C: Semester
- *    Column D: Category
- *    Column E: Subject
- *    Column F: Exam Year
- *    Column G: Session/Batch
- *    Column H: Contact Number (WhatsApp)
+ *    Column C: What do you need? (PYQ Paper / Syllabus / Both)
+ *    Column D: Semester
+ *    Column E: Category
+ *    Column F: Subject
+ *    Column G: Exam Year
+ *    Column H: Session/Batch
+ *    Column I: Contact Number (WhatsApp)
  * 3. Go to Extensions > Apps Script.
  * 4. Delete any default code in Code.gs and paste this script content.
  * 5. Click "Deploy" > "New Deployment".
@@ -37,6 +38,7 @@ function doPost(e) {
     sheet.appendRow([
       new Date(),                         // Timestamp
       data.name,                          // Name
+      (data.type === 'syllabus' ? 'Syllabus' : data.type === 'both' ? 'PYQ + Syllabus' : 'PYQ Paper'), // What do you need?
       "Semester " + data.semester,        // Semester
       data.category,                      // Category
       data.subject,                       // Subject Name

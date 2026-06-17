@@ -4,11 +4,21 @@ import { LayoutGrid, FileText, BookOpen, Bell, TrendingUp, Calculator, Moon, Sun
 
 interface Props {
   title: string;
+  description?: string;
+  keywords?: string;
   activeTab?: 'home' | 'syllabus' | 'pyqs' | 'results' | 'notices' | 'cgpa';
 }
 
 const { title, activeTab } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing slash if any
+const siteUrl = 'https://anurag-dev-99.github.io/TataCollegeHub';
+
+const pageDescription = Astro.props.description ?? 'Download Kolhan University previous year question papers (PYQ) and NEP 2020 syllabus for Tata College, Chaibasa. Free resources for 2022 batch students — Semester 1 to 8.';
+
+const pageKeywords = Astro.props.keywords ?? 'Kolhan University PYQ, Tata College Chaibasa, Kolhan University syllabus, Tata College syllabus, Kolhan University question papers, NEP 2020 Kolhan University, Tata College PYQ, 2022 batch Kolhan University, FYUGP syllabus Tata College, Kolhan University previous year papers';
+
+const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
+const pageTitle = `${title} — Tata College Hub | Kolhan University`;
 ---
 
 <!DOCTYPE html>
@@ -25,12 +35,53 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing 
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-TV5YZQ3ELX');
     </script>
 
-    <title>{title} — Tata College Student Hub</title>
-    <meta name="description" content="Access official syllabus, download previous year question papers (PYQs), track results, and read official notices for Tata College Chaibasa." />
+    <!-- Primary SEO -->
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <meta name="keywords" content={pageKeywords} />
+    <meta name="author" content="Tata College Hub" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph (WhatsApp / Facebook / Telegram previews) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:site_name" content="Tata College Hub" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json" is:inline>
+      {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "Tata College Hub",
+        "alternateName": "Tata College Chaibasa Student Portal",
+        "description": "Free previous year question papers (PYQ) and NEP 2020 syllabus for Tata College, Chaibasa under Kolhan University. For 2022 batch FYUGP students.",
+        "url": "https://anurag-dev-99.github.io/TataCollegeHub",
+        "sameAs": [],
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Chaibasa",
+          "addressRegion": "Jharkhand",
+          "addressCountry": "IN"
+        },
+        "parentOrganization": {
+          "@type": "CollegeOrUniversity",
+          "name": "Kolhan University",
+          "alternateName": "KU Chaibasa"
+        }
+      }
+    </script>
 
     <!-- Theme initialization script to run before rendering -->
     <script is:inline>
