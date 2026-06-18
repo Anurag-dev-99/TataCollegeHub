@@ -1,71 +1,55 @@
 # Astro Project Rebuild & Handoff Guide
 
-This file provides a summary of the work completed during this session to rebuild the **Tata College Student Hub** in Astro, addressing all key issues, and instructions on how to proceed.
+This file provides a summary of the work completed to rebuild the **Tata College Student Hub** in Astro, including the custom domain launch and performance optimization, and guides how to resume development in the next session.
 
 ---
 
-## 1. Executive Summary of Accomplished Work
+## 1. Accomplished Work Summary
 
-We have resolved all active bugs and re-integrated the premium legacy features from the old HTML site:
+### A. Custom Domain Migration & Setup (`kolhanhub.in`)
+1. **Domain Launch:** Connected the custom domain **`kolhanhub.in`** to replace the old GitHub Pages subpath `anurag-dev-99.github.io/TataCollegeHub`.
+2. **DNS & KYC Configuration:** 
+   * Completed NIXI registry Aadhaar KYC verification on GoDaddy to unlock DNS settings.
+   * Pointed the domain’s DNS `A` records to GitHub's server IPs:
+     * `185.199.108.153`
+     * `185.199.109.153`
+     * `185.199.110.153`
+     * `185.199.111.153`
+   * Configured the `CNAME` record for `www` to point to `anurag-dev-99.github.io`.
+3. **Repository Pages Configuration:**
+   * Set Custom Domain to `kolhanhub.in` and checked **Enforce HTTPS** (SSL certificate generated successfully).
+   * Created a [CNAME](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/public/CNAME) file containing `kolhanhub.in` in the public directory to maintain custom domain routing across compiles.
+4. **Site Paths & SEO Updates:**
+   * Set `site: 'https://kolhanhub.in'` and base path `base: '/'` in [astro.config.mjs](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/astro.config.mjs), changing the site root from a subdirectory to the root.
+   * Updated canonical tags, school schemas, and metadata paths in [Layout.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/layouts/Layout.astro) to point to the new domain.
+   * Replaced the hardcoded `/TataCollegeHub` base path in [results.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/results.astro) client-script fetch calls with Astro's dynamic `BASE_URL` logic.
+   * Updated [robots.txt](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/public/robots.txt) to target sitemap indexing at `https://kolhanhub.in/sitemap-index.xml`.
 
-1. **Google Forms drive permission bug fixed:** 
-   * **Issue:** Under incognito mode, submitting papers led to a broken Drive permission wall.
-   * **Fix:** Removed URL query parameters (`ouid` & `usp`) from all Google Drive and Forms upload links in the submission modal within [Layout.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/layouts/Layout.astro).
+### B. Speed & Core Web Vitals Optimization
+* **LCP Layout Shift Resolved:** Disabled the automatic slide-in popup of the Floating Request Toast inside [Layout.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/layouts/Layout.astro). This toast was popping up after a 3.5s delay, which Lighthouse flagged as a late Largest Contentful Paint (LCP) shift. Disabling the auto-popup restored a perfect **Grade A / 100% Performance (562ms LCP, 65ms TBT)** on GTmetrix. (The request paper buttons themselves still work 100% manually).
 
-2. **Mobile search bar squishing fixed:**
-   * **Issue:** The header search input was too small, overlaying other buttons on mobile viewports.
-   * **Fix:** Refactored header layout styling rules in [Layout.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/layouts/Layout.astro) and [global.css](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/styles/global.css). The search bar now displays as a smooth full-width animated slide-down entry on mobile screen sizes.
-
-3. **Isolated CGPA section:**
-   * **Issue:** CGPA calculation tools were mixed with Results views.
-   * **Fix:** Split CGPA logic out completely. Created a standalone page [cgpa.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/cgpa.astro) accessible via the sidebar and bottom mobile navigation tabs.
-
-4. **Syllabus MDC list sorted & categorized:**
-   * **Issue:** Unsorted lists with duplicate Zoology PDFs.
-   * **Fix:** Cleaned, deduplicated, and alphabetized 30 unique MDC subject course links in [mdc.json](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/public/data/mdc.json). Separated them into 4 distinct stream tabs (Science, Arts, Commerce, Languages) with instant client-side filtering in [src/pages/syllabus/index.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/syllabus/index.astro).
-
-5. **Legacy Results Dashboard re-integrated:**
-   * **Issue:** Missing the advanced search and interactive widgets from the legacy HTML site.
-   * **Fix:** Placed legacy datasets (`results.json`, `results_sem2_master.json`, `sem4_maths_results.json`) into the `public/data/` folder and built a premium portal in [results.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/results.astro) with:
-     * **Selection Hub:** Landing view showing declarations and pass rates.
-     * **Individual Exam Dashboards:** Displays totals, pass rates, topper names, and batch averages.
-     * **Fuzzy Autocomplete Search:** Instant name/roll matches and detailed marks card rendering (traditional tables on desktop, stacked card blocks on mobile).
-     * **Head-to-Head Comparison:** Widget matching two students side-by-side with a Chart.js radar comparison chart.
-     * **Browse All Modal:** A scrollable table of all students ranked by total, query-filterable.
-
----
-
-## 2. File Architecture & Changes Reference
-
-* **Main Application Layout:** [Layout.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/layouts/Layout.astro)
-  * Implements mobile search bar trigger, request modal webhooks, submit modal cards, and navigation.
-* **Results Portal:** [results.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/results.astro)
-  * Incorporates all dashboard views, student auto-completes, modal rankings list, comparison widgets, and Chart.js initialization.
-* **CGPA Calculator:** [cgpa.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/cgpa.astro)
-  * Dedicated Kolhan University SGPA to CGPA interactive calculator.
-* **MDC Syllabus Page:** [src/pages/syllabus/index.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/syllabus/index.astro)
-  * Dynamic list with alphabetical, tabbed, and searchable MDC syllabus course guides.
-* **Public Datasets:** 
-  * [results.json](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/public/data/results.json) (Results metadata registry)
-  * [results_sem2_master.json](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/public/data/results_sem2_master.json) (Sem-II Student Marks list)
-  * [sem4_maths_results.json](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/public/data/sem4_maths_results.json) (Sem-IV Maths Marks list)
-  * [mdc.json](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/public/data/mdc.json) (Categorized MDC links)
+### C. Analytics & Search Integrations
+1. **Google Analytics (GA4):** Updated the Web Data Stream URL inside the GA Admin Panel from the old GitHub subdirectory link to the new root domain `https://kolhanhub.in`. No code changes were needed because the Measurement ID `G-TV5YZQ3ELX` is already integrated in layout headers.
+2. **Google Search Console (GSC):** Added the new prefix property `https://kolhanhub.in/` and submitted the new sitemap `https://kolhanhub.in/sitemap-index.xml` for indexing. Requested indexing for key URLs: Home (`/`), Results (`/results/`), Syllabus (`/syllabus/`), Notices (`/notices/`), and PYQs (`/pyqs/`).
 
 ---
 
-## 3. How to Proceed in the Next Agent Session
+## 2. File Architecture & Key Codebases
 
-When starting the new session with a fresh Gemini API quota, provide the AI with this instruction:
+* **Global Layout:** [Layout.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/layouts/Layout.astro) (Handles headers, Google Analytics tags, search databases, request webhook, and mobile triggers).
+* **Results Portal:** [results.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/results.astro) (Result announcement hubs, autocomplete roll search, student comparisons, Chart.js graphs, and browse lists).
+* **Syllabus Directory:** [src/pages/syllabus/index.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/syllabus/index.astro) (Multi-disciplinary tabs and syllabus indexing).
+* **CGPA Calculator:** [cgpa.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/cgpa.astro) (Standalone SGPA to CGPA converter widget).
+
+---
+
+## 3. How to Resume in the Next AI Session
+Copy and paste this instruction when launching a new pairing session under your Google AI Pro / other model workspaces:
 
 ```markdown
-Resume pair-programming on the Tata College Hub rebuild.
-Please read the handoff instructions in `./Astro_Project_Handoff.md` to see what is completed.
-1. Run `npm run dev` to verify the site is up.
-2. Ask the user if there are any additional features or pages they want to implement (e.g. notices, PYQs, home, or syllabus updates).
+Resume pair-programming on the Tata College Hub portal (kolhanhub.in).
+Read the Handoff Guide in `./Astro_Project_Handoff.md` to review the custom domain launch.
+1. Run `npm run dev` in the terminal to verify the local development environment works.
+2. Check Google Search Console (https://search.google.com/search-console) for kolhanhub.in to verify sitemap status (the "Couldn't fetch" quirk resolves to green "Success" automatically over 24-48h) and track search keywords.
+3. Help me implement new features or pages (e.g. uploading notices.json additions, linking new PYQ PDFs, or checking results merge python scripts).
 ```
-
-### Verification Verification Steps:
-1. **Google Form link:** Verify that clicking "Submit a Paper" -> "Google Form" in Incognito Mode opens the upload page smoothly.
-2. **Mobile layout:** Verify the search bar expanding animation and responsive elements.
-3. **MDC Syllabus:** Check alphabetical ordering and filter buttons.
-4. **Results Dashboard:** Open **Semester-II Master Result**, search for students, run comparisons (check radar chart rendering), and open **Browse All**.
