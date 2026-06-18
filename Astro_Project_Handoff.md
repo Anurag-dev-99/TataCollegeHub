@@ -36,20 +36,34 @@ This file provides a summary of the work completed to rebuild the **Tata College
 
 ## 2. File Architecture & Key Codebases
 
+### A. Astro Web Application
 * **Global Layout:** [Layout.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/layouts/Layout.astro) (Handles headers, Google Analytics tags, search databases, request webhook, and mobile triggers).
 * **Results Portal:** [results.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/results.astro) (Result announcement hubs, autocomplete roll search, student comparisons, Chart.js graphs, and browse lists).
 * **Syllabus Directory:** [src/pages/syllabus/index.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/syllabus/index.astro) (Multi-disciplinary tabs and syllabus indexing).
 * **CGPA Calculator:** [cgpa.astro](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/src/pages/cgpa.astro) (Standalone SGPA to CGPA converter widget).
 
+### B. Python Data Utility Scripts
+These utility scripts are located in the repository root and are used for processing, validation, and merging student academic results data:
+* [merge_sem3.py](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/merge_sem3.py): Script for processing and merging Semester 3 academic records.
+* [merge_sem6.py](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/merge_sem6.py): Script for processing and merging Semester 6 academic records.
+* [merge_sem6_phy.py](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/merge_sem6_phy.py): Tailored merging script for Semester 6 Physics students.
+* [validate_phy.py](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/validate_phy.py): Validation script checking constraints and data integrity for Physics students.
+
+### C. Google Sheets Integration
+* [google-sheets-script.js](file:///c:/Users/Anurag/Documents/GitHub/TataCollegeHub/google-sheets-script.js): Contains the Google Apps Script code deployed to the linked Google Sheets sheet. This manages paper request workflows, notices logging, or feedback submissions sent from the web app client.
+
 ---
 
 ## 3. How to Resume in the Next AI Session
-Copy and paste this instruction when launching a new pairing session under your Google AI Pro / other model workspaces:
+Copy and paste this instruction when launching a new pairing session under your Google AI Pro / other model workspaces (which has full API quota):
 
 ```markdown
 Resume pair-programming on the Tata College Hub portal (kolhanhub.in).
-Read the Handoff Guide in `./Astro_Project_Handoff.md` to review the custom domain launch.
+Read the Handoff Guide in `./Astro_Project_Handoff.md` to review the custom domain launch and codebase structure.
+
+Key Instructions for the Agent:
 1. Run `npm run dev` in the terminal to verify the local development environment works.
 2. Check Google Search Console (https://search.google.com/search-console) for kolhanhub.in to verify sitemap status (the "Couldn't fetch" quirk resolves to green "Success" automatically over 24-48h) and track search keywords.
-3. Help me implement new features or pages (e.g. uploading notices.json additions, linking new PYQ PDFs, or checking results merge python scripts).
+3. Help the user implement new features, upload notices (`notices.json`), connect new PYQ PDFs, or process academic results using the Python scripts in the root directory.
+4. Continue using maximum visual quality (vanilla CSS, sleek dark modes, premium typography) and keep GTmetrix performance at Grade A (LCP < 1.0s, no auto-popup delay layout shifts).
 ```
