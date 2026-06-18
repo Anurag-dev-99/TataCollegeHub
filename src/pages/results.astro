@@ -1066,7 +1066,7 @@ datasets.forEach(d => {
   import Chart from 'chart.js/auto';
 
   // Constants
-  const baseUrl = '/TataCollegeHub';
+  const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   // State
   let currentResultsDataset = [];
