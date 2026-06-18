@@ -702,12 +702,8 @@ const pageTitle = `${title} | Kolhan University — Tata College, Chaibasa`;
       const toastActionBtn = document.getElementById('toast-action-btn');
 
       const initToast = () => {
-        if (localStorage.getItem('hide-request-toast') === 'true') {
-          return;
-        }
-        setTimeout(() => {
-          toast?.classList.add('show');
-        }, 3500);
+        // Disabled automatic popup to prevent LCP layout shifts and delays
+        return;
       };
 
       closeToastBtn?.addEventListener('click', (e) => {
