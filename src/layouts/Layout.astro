@@ -13,12 +13,12 @@ const { title, activeTab } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing slash if any
 const siteUrl = 'https://anurag-dev-99.github.io/TataCollegeHub';
 
-const pageDescription = Astro.props.description ?? 'Download Kolhan University previous year question papers (PYQ) and NEP 2020 syllabus for Tata College, Chaibasa. Free resources for 2022 batch students — Semester 1 to 8.';
+const pageDescription = Astro.props.description ?? 'Free Kolhan University PYQ (previous year question papers) and NEP 2020 syllabus for Tata College, Chaibasa students. Download exam papers, check results, and get academic resources for Kolhan University 2022 batch — Semester 1 to 8.';
 
-const pageKeywords = Astro.props.keywords ?? 'Kolhan University PYQ, Tata College Chaibasa, Kolhan University syllabus, Tata College syllabus, Kolhan University question papers, NEP 2020 Kolhan University, Tata College PYQ, 2022 batch Kolhan University, FYUGP syllabus Tata College, Kolhan University previous year papers';
+const pageKeywords = Astro.props.keywords ?? 'Kolhan University PYQ, Kolhan University result, Kolhan University syllabus, Kolhan University Chaibasa, Kolhan University question papers download, Tata College Chaibasa, NEP 2020 Kolhan University, FYUGP syllabus Kolhan University, Tata College PYQ, 2022 batch Kolhan University';
 
 const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
-const pageTitle = `${title} — Tata College Hub | Kolhan University`;
+const pageTitle = `${title} | Kolhan University — Tata College, Chaibasa`;
 ---
 
 <!DOCTYPE html>
@@ -82,9 +82,10 @@ const pageTitle = `${title} — Tata College Hub | Kolhan University`;
         "@type": "EducationalOrganization",
         "name": "Tata College Hub",
         "alternateName": "Tata College Chaibasa Student Portal",
-        "description": "Free previous year question papers (PYQ) and NEP 2020 syllabus for Tata College, Chaibasa under Kolhan University. For 2022 batch FYUGP students.",
+        "description": "Free Kolhan University PYQ (previous year question papers), NEP 2020 syllabus, exam results and notices for Tata College, Chaibasa. For Kolhan University 2022 batch FYUGP students — Semester 1 to 8.",
         "url": "https://anurag-dev-99.github.io/TataCollegeHub",
         "sameAs": [],
+        "keywords": "Kolhan University PYQ, Kolhan University result, Kolhan University syllabus, Tata College Chaibasa",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Chaibasa",
@@ -94,7 +95,8 @@ const pageTitle = `${title} — Tata College Hub | Kolhan University`;
         "parentOrganization": {
           "@type": "CollegeOrUniversity",
           "name": "Kolhan University",
-          "alternateName": "KU Chaibasa"
+          "alternateName": "KU Chaibasa",
+          "url": "https://www.kolhanuniversity.ac.in"
         }
       }
     </script>
