@@ -818,17 +818,9 @@ const pageTitle = `${title} | Kolhan University — Tata College, Chaibasa`;
           console.error("Failed to load search index: ", err);
         }
       };
-      let searchDataFetched = false;
-      const ensureSearchData = async () => {
-        if (!searchDataFetched) {
-          searchDataFetched = true;
-          await fetchSearchData();
-        }
-      };
+      fetchSearchData();
 
-      searchInput?.addEventListener('focus', ensureSearchData);
-      searchInput?.addEventListener('input', async (e) => {
-        await ensureSearchData();
+      searchInput?.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
         if (!query) {
           suggestionsBox.style.display = 'none';
