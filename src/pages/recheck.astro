@@ -24,12 +24,12 @@ const steps = [
     number: 2,
     icon: '🏫',
     title: "Principal's Signature & Stamp",
-    subtitle: 'Get your college principal to sign and stamp the application',
+    subtitle: 'Get your own college principal to sign and stamp the application',
     color: '#f59e0b',
     colorBg: 'rgba(245, 158, 11, 0.1)',
     details: [
       { text: 'Take your application to <strong>your own college\'s Principal</strong> for their official signature and stamp.', warn: false },
-      { text: 'Each student must go to their respective college — Tata College students go to Tata College principal, Singhbhum College students go to their principal, etc.', warn: false },
+      { text: 'Each student must visit their respective college — Tata College students go to Tata College principal, Singhbhum College students go to their principal, and so on.', warn: false },
     ],
     tip: {
       label: '📌 Tata College Tip',
@@ -54,7 +54,7 @@ const steps = [
     number: 4,
     icon: '📄',
     title: 'Collect & Fill the Challan',
-    subtitle: 'Get the challan from the guard and get it signed',
+    subtitle: 'Get the challan from the guard downstairs and get it signed',
     color: '#8b5cf6',
     colorBg: 'rgba(139, 92, 246, 0.1)',
     details: [
@@ -69,17 +69,17 @@ const steps = [
     number: 5,
     icon: '🏦',
     title: 'Pay the Challan at Canara Bank',
-    subtitle: 'Deposit the fee at Canara Bank (~1 min walk)',
+    subtitle: 'Deposit the fee at Canara Bank (~1 min walk from exam dept.)',
     color: '#ef4444',
     colorBg: 'rgba(239, 68, 68, 0.1)',
     details: [
       { text: 'Take your signed Challan to <strong>Canara Bank</strong>, located roughly a <strong>1-minute walk</strong> from the Kolhan University Exam Department.', warn: false },
-      { text: 'Deposit the required scrutiny/photocopy fee at the bank counter.', warn: false },
+      { text: 'Fee: <strong>₹200 for Scrutiny</strong> / <strong>₹1,000 for Photocopy</strong>. Deposit the required amount at the bank counter.', warn: false },
       { text: 'The bank teller will stamp your Challan and return a copy as your payment receipt.', warn: false },
     ],
     tip: {
-      label: '🏦 Bank Info',
-      text: 'The Canara Bank branch is very close to the Kolhan University Exam Department — it is a short, easy walk. Carry your signed Challan and the exact fee amount.',
+      label: '🏦 Canara Bank Tip',
+      text: 'The Canara Bank branch is a short, easy walk from the Kolhan Exam Dept. Carry your signed Challan and the <strong>exact fee amount</strong> (₹200 scrutiny / ₹1,000 photocopy).',
     },
   },
   {
@@ -100,17 +100,56 @@ const steps = [
     },
   },
 ];
+
+const docs = [
+  {
+    src: 'sem_6_recheck_application_scrutiny_blur.jpg',
+    alt: 'Sem 6 History Minor Scrutiny Application — S.B. College Chandil',
+    title: 'Sem 6 Scrutiny Application — S.B. College Chandil',
+    label: 'Scrutiny Application',
+    badgeClass: 'badge-primary',
+    sub: 'Sem 6 — History Minor (MN-2C)',
+    meta: 'S.B. College Chandil • FYUGP 2022–2026',
+    downloadName: 'Scrutiny_Application_Sample_Sem6_KU.jpg',
+    fee: '₹200',
+    feeColor: 'var(--accent-primary)',
+  },
+  {
+    src: 'Sem_3_photo_copy_applicatioin_blue.jpg',
+    alt: 'Sem 3 Maths Major Photocopy Application — Tata College Chaibasa',
+    title: 'Sem 3 Maths Photocopy Application — Tata College Chaibasa',
+    label: 'Photocopy Application',
+    badgeClass: 'badge-success',
+    sub: 'Sem 3 — Maths Major (MJ-05)',
+    meta: 'Tata College Chaibasa • FYUGP 2022–2026',
+    downloadName: 'Photocopy_Application_Sample_Sem3_KU.jpg',
+    fee: '₹1,000',
+    feeColor: 'var(--accent-success)',
+  },
+  {
+    src: 'sem_3_challan_blur.jpg',
+    alt: 'Challan copy for Kolhan University photocopy/scrutiny fee payment',
+    title: 'Challan Copy — Canara Bank Payment',
+    label: 'Challan (Canara Bank)',
+    badgeClass: 'badge-warning',
+    sub: 'Bank Payment Challan',
+    meta: 'Sem 3 Photocopy Request • Kolhan University',
+    downloadName: 'KU_Challan_Sample_Canara_Bank.jpg',
+    fee: null,
+    feeColor: null,
+  },
+];
 ---
 
 <Layout
   title="Answer Sheet Recheck & Photocopy Guide — Kolhan University"
   activeTab="recheck"
-  description="Step-by-step guide for Kolhan University answer sheet scrutiny (recheck) and photocopy application process. For FYUGP students of Tata College Chaibasa, Singhbhum College Chandil and other affiliated colleges."
-  keywords="Kolhan University recheck process, Kolhan University scrutiny, answer sheet photocopy Kolhan University, Tata College recheck, FYUGP scrutiny application, Kolhan University exam department, Canara Bank challan Kolhan"
+  description="Step-by-step guide for Kolhan University answer sheet scrutiny (recheck) and photocopy application process. Fee: ₹200 for scrutiny, ₹1000 for photocopy. For FYUGP students of Tata College Chaibasa, Singhbhum College Chandil and other affiliated colleges."
+  keywords="Kolhan University recheck process, Kolhan University scrutiny, answer sheet photocopy Kolhan University, Tata College recheck, FYUGP scrutiny application, Kolhan University exam department, Canara Bank challan Kolhan, scrutiny fee 200 rupees, photocopy fee 1000 rupees"
 >
 
-  <!-- Page Header -->
-  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+  <!-- ===== PAGE HEADER ===== -->
+  <div style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
     <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
       <h1 style="font-size: 2rem; font-family: var(--font-display); letter-spacing: -0.03em;">
         Answer Sheet Recheck &amp; Photocopy Guide
@@ -120,64 +159,113 @@ const steps = [
       </span>
     </div>
     <p style="color: var(--text-secondary); max-width: 680px; font-size: 1.05rem; line-height: 1.6;">
-      Complete walkthrough for applying for <strong>Answer Sheet Scrutiny</strong> (officially called Scrutiny — not Recheck) and <strong>Photocopy</strong> at Kolhan University — for all affiliated colleges.
+      Complete walkthrough for applying for <strong>Answer Sheet Scrutiny</strong> (write "Scrutiny" — not "Recheck") and <strong>Photocopy</strong> at Kolhan University. Real application samples included below — can be downloaded.
     </p>
   </div>
 
-  <!-- Quick Info Cards Row -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2.5rem;">
-    
-    <!-- Same Day -->
-    <div class="card" style="display: flex; align-items: flex-start; gap: 0.875rem; padding: 1.25rem; border-color: rgba(16, 185, 129, 0.3); background: linear-gradient(135deg, rgba(16, 185, 129, 0.04) 0%, transparent 100%);">
-      <div style="background-color: rgba(16, 185, 129, 0.1); color: var(--accent-success); width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.25rem;">
-        ✅
+  <!-- ===== HERO DOCUMENT PREVIEW STRIP (top, small thumbnails) ===== -->
+  <div style="margin-bottom: 2rem;">
+    <p style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-tertiary); margin-bottom: 0.75rem;">📎 Real Sample Documents — Click to Zoom &amp; Download</p>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      {docs.map(doc => (
+        <div
+          class="hero-thumb-card image-doc-card"
+          data-src={`${baseUrl}/images/${doc.src}`}
+          data-title={doc.title}
+          data-download={doc.downloadName}
+          style="cursor: zoom-in; border-radius: var(--radius-md); border: 1px solid var(--border-color); overflow: hidden; background: var(--bg-secondary); display: flex; flex-direction: column; width: 110px; flex-shrink: 0; transition: all 0.2s; box-shadow: var(--shadow-sm);"
+        >
+          <div style="height: 130px; overflow: hidden; position: relative; background: var(--bg-tertiary);">
+            <img
+              src={`${baseUrl}/images/${doc.src}`}
+              alt={doc.alt}
+              loading="lazy"
+              style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease;"
+              class="doc-thumb"
+            />
+            <div class="zoom-overlay" style="position: absolute; inset: 0; background: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center; transition: background 0.2s; opacity: 0;">
+              <span style="background: rgba(255,255,255,0.95); color: #111; font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 999px;">🔍 Zoom</span>
+            </div>
+          </div>
+          <div style="padding: 0.5rem 0.5rem 0.4rem; text-align: center;">
+            <span style="font-size: 0.6rem; font-weight: 700; color: var(--text-secondary); display: block; line-height: 1.3;">{doc.label}</span>
+            {doc.fee && <span style={`font-size: 0.65rem; font-weight: 800; color: ${doc.feeColor}; display: block; margin-top: 1px;`}>{doc.fee}</span>}
+          </div>
+        </div>
+      ))}
+      <!-- "View all" hint -->
+      <div style="display: flex; align-items: center; padding: 0 0.25rem;">
+        <p style="font-size: 0.75rem; color: var(--text-tertiary); line-height: 1.4; max-width: 120px;">Scroll down for full gallery &amp; download links ↓</p>
       </div>
+    </div>
+  </div>
+
+  <!-- ===== QUICK INFO + FEE CARDS ===== -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 1rem; margin-bottom: 2.5rem;">
+
+    <!-- Single Day -->
+    <div class="card" style="display: flex; align-items: flex-start; gap: 0.875rem; padding: 1.1rem; border-color: rgba(16, 185, 129, 0.3); background: linear-gradient(135deg, rgba(16, 185, 129, 0.04) 0%, transparent 100%);">
+      <div style="background-color: rgba(16, 185, 129, 0.1); color: var(--accent-success); width: 38px; height: 38px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.15rem;">✅</div>
       <div>
-        <h3 style="font-size: 0.9rem; font-weight: 800; color: var(--accent-success); margin-bottom: 0.2rem;">Single Day Process</h3>
-        <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">Entire process can be completed in <strong>one day</strong>. Great for students travelling from far away.</p>
+        <h3 style="font-size: 0.88rem; font-weight: 800; color: var(--accent-success); margin-bottom: 0.2rem;">Single Day Process</h3>
+        <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.4;">Entire process done in <strong>one day</strong>. Great for students travelling from far.</p>
       </div>
     </div>
 
-    <!-- Scrutiny Warning -->
-    <div class="card" style="display: flex; align-items: flex-start; gap: 0.875rem; padding: 1.25rem; border-color: rgba(239, 68, 68, 0.3); background: linear-gradient(135deg, rgba(239, 68, 68, 0.04) 0%, transparent 100%);">
-      <div style="background-color: rgba(239, 68, 68, 0.1); color: var(--accent-danger); width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.25rem;">
-        ⚠️
-      </div>
+    <!-- Write Scrutiny Warning -->
+    <div class="card" style="display: flex; align-items: flex-start; gap: 0.875rem; padding: 1.1rem; border-color: rgba(239, 68, 68, 0.3); background: linear-gradient(135deg, rgba(239, 68, 68, 0.04) 0%, transparent 100%);">
+      <div style="background-color: rgba(239, 68, 68, 0.1); color: var(--accent-danger); width: 38px; height: 38px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.15rem;">⚠️</div>
       <div>
-        <h3 style="font-size: 0.9rem; font-weight: 800; color: var(--accent-danger); margin-bottom: 0.2rem;">Write "Scrutiny" Not "Recheck"</h3>
-        <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">In your application heading, write <strong>"Application for Scrutiny"</strong> — the Exam Dept. specifically asks for this term.</p>
+        <h3 style="font-size: 0.88rem; font-weight: 800; color: var(--accent-danger); margin-bottom: 0.2rem;">Write "Scrutiny" Not "Recheck"</h3>
+        <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.4;">The Exam Dept. specifically asks for <strong>"Application for Scrutiny"</strong> in the heading.</p>
       </div>
     </div>
 
-    <!-- Bank Info -->
-    <div class="card" style="display: flex; align-items: flex-start; gap: 0.875rem; padding: 1.25rem; border-color: rgba(99, 102, 241, 0.3); background: linear-gradient(135deg, rgba(99, 102, 241, 0.04) 0%, transparent 100%);">
-      <div style="background-color: rgba(99, 102, 241, 0.1); color: var(--accent-primary); width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.25rem;">
-        🏦
-      </div>
+    <!-- Scrutiny Fee -->
+    <div class="card fee-card" style="display: flex; align-items: flex-start; gap: 0.875rem; padding: 1.1rem; border-color: rgba(99, 102, 241, 0.35); background: linear-gradient(135deg, rgba(99, 102, 241, 0.06) 0%, transparent 100%);">
+      <div style="background-color: rgba(99, 102, 241, 0.12); color: var(--accent-primary); width: 38px; height: 38px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.15rem;">🔍</div>
       <div>
-        <h3 style="font-size: 0.9rem; font-weight: 800; color: var(--accent-primary); margin-bottom: 0.2rem;">Canara Bank Nearby</h3>
-        <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">Pay your challan fee at <strong>Canara Bank</strong>, just ~1 minute walk from the Kolhan Exam Dept.</p>
+        <h3 style="font-size: 0.88rem; font-weight: 800; color: var(--accent-primary); margin-bottom: 0.2rem;">Scrutiny Fee</h3>
+        <p style="font-size: 2rem; font-family: var(--font-display); font-weight: 800; color: var(--accent-primary); line-height: 1; margin: 0.2rem 0;">₹200</p>
+        <p style="font-size: 0.72rem; color: var(--text-secondary);">Pay at Canara Bank via Challan</p>
+      </div>
+    </div>
+
+    <!-- Photocopy Fee -->
+    <div class="card fee-card" style="display: flex; align-items: flex-start; gap: 0.875rem; padding: 1.1rem; border-color: rgba(16, 185, 129, 0.35); background: linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, transparent 100%);">
+      <div style="background-color: rgba(16, 185, 129, 0.12); color: var(--accent-success); width: 38px; height: 38px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.15rem;">📄</div>
+      <div>
+        <h3 style="font-size: 0.88rem; font-weight: 800; color: var(--accent-success); margin-bottom: 0.2rem;">Photocopy Fee</h3>
+        <p style="font-size: 2rem; font-family: var(--font-display); font-weight: 800; color: var(--accent-success); line-height: 1; margin: 0.2rem 0;">₹1,000</p>
+        <p style="font-size: 0.72rem; color: var(--text-secondary);">Pay at Canara Bank via Challan</p>
+      </div>
+    </div>
+
+    <!-- Canara Bank -->
+    <div class="card" style="display: flex; align-items: flex-start; gap: 0.875rem; padding: 1.1rem; border-color: rgba(245, 158, 11, 0.3); background: linear-gradient(135deg, rgba(245, 158, 11, 0.04) 0%, transparent 100%);">
+      <div style="background-color: rgba(245, 158, 11, 0.1); color: var(--accent-warning); width: 38px; height: 38px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.15rem;">🏦</div>
+      <div>
+        <h3 style="font-size: 0.88rem; font-weight: 800; color: var(--accent-warning); margin-bottom: 0.2rem;">Canara Bank (~1 min walk)</h3>
+        <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.4;">Very close to the Kolhan Exam Dept. Carry exact fee amount.</p>
       </div>
     </div>
 
     <!-- Processing Time -->
-    <div class="card" style="display: flex; align-items: flex-start; gap: 0.875rem; padding: 1.25rem; border-color: rgba(245, 158, 11, 0.3); background: linear-gradient(135deg, rgba(245, 158, 11, 0.04) 0%, transparent 100%);">
-      <div style="background-color: rgba(245, 158, 11, 0.1); color: var(--accent-warning); width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.25rem;">
-        ⏳
-      </div>
+    <div class="card" style="display: flex; align-items: flex-start; gap: 0.875rem; padding: 1.1rem; border-color: rgba(100, 116, 139, 0.3); background: linear-gradient(135deg, rgba(100, 116, 139, 0.04) 0%, transparent 100%);">
+      <div style="background-color: rgba(100, 116, 139, 0.1); color: var(--text-secondary); width: 38px; height: 38px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.15rem;">⏳</div>
       <div>
-        <h3 style="font-size: 0.9rem; font-weight: 800; color: var(--accent-warning); margin-bottom: 0.2rem;">15–45 Day Turnaround</h3>
-        <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">Photocopy requests typically take <strong>15 to 45 days</strong> to process and arrive.</p>
+        <h3 style="font-size: 0.88rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.2rem;">15–45 Day Turnaround</h3>
+        <p style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.4;">Photocopy requests typically take <strong>15 to 45 days</strong> to process.</p>
       </div>
     </div>
 
   </div>
 
-  <!-- Section Toggle: Scrutiny vs Photocopy -->
+  <!-- ===== SECTION TOGGLE: Scrutiny vs Photocopy ===== -->
   <div style="margin-bottom: 2rem;">
     <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
       <h2 style="font-size: 1.4rem; font-family: var(--font-display); font-weight: 800;">Step-by-Step Process</h2>
-      <div style="display: flex; background-color: var(--bg-tertiary); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-color); gap: 0px;">
+      <div style="display: flex; background-color: var(--bg-tertiary); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-color);">
         <button id="tab-scrutiny-btn" class="recheck-tab-btn active" style="font-size: 0.8rem; font-weight: 700; padding: 0.4rem 1rem; border-radius: var(--radius-full); transition: all 0.15s; cursor: pointer;">
           🔍 Scrutiny
         </button>
@@ -187,29 +275,27 @@ const steps = [
       </div>
     </div>
 
-    <!-- Context banner that changes with tab -->
     <div id="context-scrutiny" class="recheck-context-banner" style="border: 1px solid rgba(99,102,241,0.25); background: rgba(99,102,241,0.05); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; gap: 0.75rem; align-items: flex-start; margin-bottom: 2rem; border-left: 4px solid var(--accent-primary);">
       <span style="font-size: 1.3rem; flex-shrink: 0;">🔍</span>
       <div>
-        <strong style="font-size: 0.9rem; color: var(--accent-primary);">Scrutiny / Recheck Application</strong>
-        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem; line-height: 1.5;">Used for getting your answer sheet <em>re-evaluated</em>. The process shown below is based on a real <strong>Sem 6 History Minor (MN-2C) application</strong> from S.B. College Chandil. The process is the same for all KU affiliated colleges. Remember: write <strong>"Scrutiny"</strong> in your application, not "Recheck".</p>
+        <strong style="font-size: 0.9rem; color: var(--accent-primary);">Scrutiny / Recheck Application — <span style="background: rgba(99,102,241,0.15); padding: 0.1rem 0.45rem; border-radius: 4px;">₹200 Fee</span></strong>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem; line-height: 1.5;">Used for getting your answer sheet <em>re-evaluated</em>. Based on a real <strong>Sem 6 History Minor (MN-2C)</strong> application from S.B. College Chandil. Same process for all KU colleges. Remember: write <strong>"Scrutiny"</strong> — not "Recheck".</p>
       </div>
     </div>
 
     <div id="context-photocopy" class="recheck-context-banner" style="border: 1px solid rgba(16,185,129,0.25); background: rgba(16,185,129,0.05); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; gap: 0.75rem; align-items: flex-start; margin-bottom: 2rem; border-left: 4px solid var(--accent-success); display: none;">
       <span style="font-size: 1.3rem; flex-shrink: 0;">📄</span>
       <div>
-        <strong style="font-size: 0.9rem; color: var(--accent-success);">Photocopy Application</strong>
-        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem; line-height: 1.5;">Used to <em>receive a copy of your evaluated answer sheet</em>. The process shown below is based on a real <strong>Sem 3 Maths Major (MJ-05) application</strong> from Tata College Chaibasa. The steps and challan are the same — only the application purpose differs.</p>
+        <strong style="font-size: 0.9rem; color: var(--accent-success);">Photocopy Application — <span style="background: rgba(16,185,129,0.15); padding: 0.1rem 0.45rem; border-radius: 4px;">₹1,000 Fee</span></strong>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem; line-height: 1.5;">Used to <em>receive a physical copy of your evaluated answer sheet</em>. Based on a real <strong>Sem 3 Maths Major (MJ-05)</strong> application from Tata College Chaibasa. Steps and challan are identical — only the purpose differs.</p>
       </div>
     </div>
   </div>
 
-  <!-- Steps Timeline -->
+  <!-- ===== STEPS TIMELINE ===== -->
   <div style="display: flex; flex-direction: column; gap: 0; margin-bottom: 3rem;" class="steps-container">
     {steps.map((step, idx) => (
-      <div class="step-item" style={`display: flex; gap: 0; position: relative;`}>
-        <!-- Left: Number column with connector line -->
+      <div class="step-item" style="display: flex; gap: 0; position: relative;">
         <div style="display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 56px;">
           <div style={`width: 48px; height: 48px; border-radius: 50%; background: ${step.colorBg}; border: 2.5px solid ${step.color}; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; flex-shrink: 0; z-index: 1; position: relative;`}>
             {step.icon}
@@ -219,7 +305,6 @@ const steps = [
           )}
         </div>
 
-        <!-- Right: Content -->
         <div style={`flex: 1; padding-bottom: ${idx < steps.length - 1 ? '1.75rem' : '0'}; padding-left: 1.25rem; padding-top: 0.25rem;`}>
           <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.35rem;">
             <span style={`font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: ${step.color};`}>Step {step.number}</span>
@@ -228,7 +313,6 @@ const steps = [
           <h3 style="font-size: 1.1rem; font-family: var(--font-display); font-weight: 800; color: var(--text-primary); margin-bottom: 0.15rem;">{step.title}</h3>
           <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.875rem;">{step.subtitle}</p>
 
-          <!-- Detail bullets -->
           <div class="card" style="padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.6rem;">
             {step.details.map(detail => (
               <div style="display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.85rem;">
@@ -251,82 +335,57 @@ const steps = [
     ))}
   </div>
 
-  <!-- Image Gallery Section -->
+  <!-- ===== FULL DOCUMENT GALLERY WITH DOWNLOAD ===== -->
   <div style="margin-bottom: 3rem;">
-    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
       <h2 style="font-size: 1.4rem; font-family: var(--font-display); font-weight: 800;">Sample Application Documents</h2>
       <span class="badge badge-primary" style="font-size: 0.7rem; font-weight: 700; letter-spacing: normal; text-transform: none;">Click to Zoom</span>
     </div>
     <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.75rem; max-width: 640px; line-height: 1.6;">
-      Below are <strong>real application samples</strong> submitted by KU students. Use these as templates when writing your own applications. Images are slightly blurred for privacy.
+      Real applications submitted by KU students — use as templates. Images blurred for privacy. You can <strong>download</strong> any image to save as reference.
     </p>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem;">
-      
-      <!-- Scrutiny Application Image -->
-      <div class="image-doc-card card" data-src={`${baseUrl}/images/sem_6_recheck_application_scrutiny_blur.jpg`} data-title="Sem 6 Scrutiny Application — S.B. College Chandil" style="cursor: zoom-in; padding: 0; overflow: hidden; border-radius: var(--radius-md);">
-        <div style="aspect-ratio: 3/4; overflow: hidden; position: relative; background-color: var(--bg-tertiary);">
-          <img 
-            src={`${baseUrl}/images/sem_6_recheck_application_scrutiny_blur.jpg`} 
-            alt="Sem 6 History Minor Scrutiny Application — S.B. College Chandil"
-            style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
-            class="doc-thumb"
-          />
-          <div class="zoom-overlay" style="position: absolute; inset: 0; background: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center; transition: background 0.25s; opacity: 0;">
-            <span style="background: rgba(255,255,255,0.95); color: #111; font-size: 0.8rem; font-weight: 700; padding: 0.4rem 0.85rem; border-radius: var(--radius-full); display: flex; align-items: center; gap: 0.35rem;">🔍 Zoom</span>
+      {docs.map(doc => (
+        <div class="image-doc-card card" data-src={`${baseUrl}/images/${doc.src}`} data-title={doc.title} data-download={doc.downloadName} style="cursor: zoom-in; padding: 0; overflow: hidden; border-radius: var(--radius-md);">
+          <div style="aspect-ratio: 3/4; overflow: hidden; position: relative; background-color: var(--bg-tertiary);">
+            <img
+              src={`${baseUrl}/images/${doc.src}`}
+              alt={doc.alt}
+              loading="lazy"
+              style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
+              class="doc-thumb"
+            />
+            <div class="zoom-overlay" style="position: absolute; inset: 0; background: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center; transition: background 0.25s; opacity: 0;">
+              <span style="background: rgba(255,255,255,0.95); color: #111; font-size: 0.8rem; font-weight: 700; padding: 0.4rem 0.85rem; border-radius: var(--radius-full); display: flex; align-items: center; gap: 0.35rem;">🔍 Zoom</span>
+            </div>
+            {doc.fee && (
+              <div style={`position: absolute; top: 0.6rem; right: 0.6rem; background: rgba(0,0,0,0.72); backdrop-filter: blur(4px); color: white; font-size: 0.75rem; font-weight: 800; padding: 0.25rem 0.55rem; border-radius: 6px; font-family: var(--font-display);`}>
+                {doc.fee}
+              </div>
+            )}
+          </div>
+          <div style="padding: 1rem 1rem 0.75rem;">
+            <div class={`badge ${doc.badgeClass}`} style="font-size: 0.65rem; font-weight: 700; letter-spacing: normal; text-transform: none; margin-bottom: 0.5rem;">{doc.label}</div>
+            <h3 style="font-size: 0.9rem; font-weight: 800; color: var(--text-primary); line-height: 1.35; margin-bottom: 0.15rem;">{doc.sub}</h3>
+            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">{doc.meta}</p>
+            <!-- Download Button -->
+            <a
+              href={`${baseUrl}/images/${doc.src}`}
+              download={doc.downloadName}
+              class="btn btn-secondary btn-sm doc-download-btn"
+              style="width: 100%; font-size: 0.75rem; font-weight: 700; height: 32px; border-color: var(--border-color); gap: 0.35rem;"
+              onclick="event.stopPropagation();"
+            >
+              ⬇️ Download Image
+            </a>
           </div>
         </div>
-        <div style="padding: 1rem;">
-          <div class="badge badge-primary" style="font-size: 0.65rem; font-weight: 700; letter-spacing: normal; text-transform: none; margin-bottom: 0.5rem;">Scrutiny Application</div>
-          <h3 style="font-size: 0.9rem; font-weight: 800; color: var(--text-primary); line-height: 1.35;">Sem 6 — History Minor (MN-2C)</h3>
-          <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem;">S.B. College Chandil • FYUGP 2022–2026 Batch</p>
-        </div>
-      </div>
-
-      <!-- Photocopy Application Image -->
-      <div class="image-doc-card card" data-src={`${baseUrl}/images/Sem_3_photo_copy_applicatioin_blue.jpg`} data-title="Sem 3 Maths Photocopy Application — Tata College Chaibasa" style="cursor: zoom-in; padding: 0; overflow: hidden; border-radius: var(--radius-md);">
-        <div style="aspect-ratio: 3/4; overflow: hidden; position: relative; background-color: var(--bg-tertiary);">
-          <img 
-            src={`${baseUrl}/images/Sem_3_photo_copy_applicatioin_blue.jpg`} 
-            alt="Sem 3 Maths Major Photocopy Application — Tata College Chaibasa"
-            style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
-            class="doc-thumb"
-          />
-          <div class="zoom-overlay" style="position: absolute; inset: 0; background: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center; transition: background 0.25s; opacity: 0;">
-            <span style="background: rgba(255,255,255,0.95); color: #111; font-size: 0.8rem; font-weight: 700; padding: 0.4rem 0.85rem; border-radius: var(--radius-full); display: flex; align-items: center; gap: 0.35rem;">🔍 Zoom</span>
-          </div>
-        </div>
-        <div style="padding: 1rem;">
-          <div class="badge badge-success" style="font-size: 0.65rem; font-weight: 700; letter-spacing: normal; text-transform: none; margin-bottom: 0.5rem;">Photocopy Application</div>
-          <h3 style="font-size: 0.9rem; font-weight: 800; color: var(--text-primary); line-height: 1.35;">Sem 3 — Maths Major (MJ-05)</h3>
-          <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem;">Tata College Chaibasa • FYUGP 2022–2026 Batch</p>
-        </div>
-      </div>
-
-      <!-- Challan Image -->
-      <div class="image-doc-card card" data-src={`${baseUrl}/images/sem_3_challan_blur.jpg`} data-title="Challan Copy — Canara Bank Payment" style="cursor: zoom-in; padding: 0; overflow: hidden; border-radius: var(--radius-md);">
-        <div style="aspect-ratio: 3/4; overflow: hidden; position: relative; background-color: var(--bg-tertiary);">
-          <img 
-            src={`${baseUrl}/images/sem_3_challan_blur.jpg`} 
-            alt="Challan copy for Kolhan University photocopy/scrutiny fee payment"
-            style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
-            class="doc-thumb"
-          />
-          <div class="zoom-overlay" style="position: absolute; inset: 0; background: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center; transition: background 0.25s; opacity: 0;">
-            <span style="background: rgba(255,255,255,0.95); color: #111; font-size: 0.8rem; font-weight: 700; padding: 0.4rem 0.85rem; border-radius: var(--radius-full); display: flex; align-items: center; gap: 0.35rem;">🔍 Zoom</span>
-          </div>
-        </div>
-        <div style="padding: 1rem;">
-          <div class="badge badge-warning" style="font-size: 0.65rem; font-weight: 700; letter-spacing: normal; text-transform: none; margin-bottom: 0.5rem;">Challan (Canara Bank)</div>
-          <h3 style="font-size: 0.9rem; font-weight: 800; color: var(--text-primary); line-height: 1.35;">Bank Payment Challan</h3>
-          <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem;">Sem 3 Photocopy Request • Kolhan University</p>
-        </div>
-      </div>
-
+      ))}
     </div>
   </div>
 
-  <!-- Quick Reference Summary Card -->
+  <!-- ===== QUICK REFERENCE CHECKLIST ===== -->
   <div class="card" style="background: linear-gradient(135deg, rgba(99,102,241,0.04) 0%, rgba(16,185,129,0.04) 100%); border-color: rgba(99,102,241,0.2); margin-bottom: 2rem;">
     <h2 style="font-size: 1.2rem; font-family: var(--font-display); font-weight: 800; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
       📋 Quick Reference Checklist
@@ -340,7 +399,7 @@ const steps = [
         { icon: '🏛️', text: 'Kolhan Exam Dept. verification (1st floor)' },
         { icon: '📄', text: 'Blank Challan from downstairs guard' },
         { icon: '✍️', text: 'Fill & get Challan signed (1st floor corner room)' },
-        { icon: '🏦', text: 'Pay at Canara Bank (~1 min walk)' },
+        { icon: '🏦', text: 'Pay at Canara Bank — ₹200 (scrutiny) or ₹1,000 (photocopy)' },
         { icon: '🧾', text: 'Return to Exam Dept. for registration & receipt' },
       ].map(item => (
         <div style="display: flex; align-items: center; gap: 0.65rem; font-size: 0.83rem; padding: 0.6rem 0.75rem; background: var(--bg-secondary); border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
@@ -351,12 +410,18 @@ const steps = [
     </div>
   </div>
 
-  <!-- Image Lightbox Modal -->
-  <div id="img-lightbox" style="position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 200; display: none; align-items: center; justify-content: center; padding: 1rem; flex-direction: column; gap: 1rem;" onclick="closeLightbox(event)">
-    <div style="position: relative; max-width: 680px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
-      <button onclick="closeLightbox()" style="position: absolute; top: -44px; right: 0; background: rgba(255,255,255,0.12); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.22)'" onmouseout="this.style.background='rgba(255,255,255,0.12)'">✕</button>
-      <img id="lightbox-img" src="" alt="" style="max-height: 82vh; width: 100%; object-fit: contain; border-radius: var(--radius-md); box-shadow: 0 20px 60px rgba(0,0,0,0.8);" />
-      <p id="lightbox-caption" style="color: rgba(255,255,255,0.75); font-size: 0.82rem; text-align: center; font-weight: 600;"></p>
+  <!-- ===== LIGHTBOX MODAL ===== -->
+  <div id="img-lightbox" style="position: fixed; inset: 0; background: rgba(0,0,0,0.93); z-index: 200; display: none; align-items: center; justify-content: center; padding: 1rem; flex-direction: column; gap: 0.75rem;" onclick="closeLightbox(event)">
+    <div style="position: relative; max-width: 720px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
+      <!-- Close -->
+      <button onclick="closeLightbox()" style="position: absolute; top: -48px; right: 0; background: rgba(255,255,255,0.12); border: none; color: white; width: 38px; height: 38px; border-radius: 50%; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.22)'" onmouseout="this.style.background='rgba(255,255,255,0.12)'">✕</button>
+      <!-- Image -->
+      <img id="lightbox-img" src="" alt="" style="max-height: 80vh; width: 100%; object-fit: contain; border-radius: var(--radius-md); box-shadow: 0 20px 60px rgba(0,0,0,0.8);" />
+      <!-- Caption + Download in lightbox -->
+      <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+        <p id="lightbox-caption" style="color: rgba(255,255,255,0.75); font-size: 0.82rem; text-align: center; font-weight: 600; margin: 0;"></p>
+        <a id="lightbox-download-btn" href="" download="" style="background: rgba(255,255,255,0.12); color: white; font-size: 0.78rem; font-weight: 700; padding: 0.35rem 0.9rem; border-radius: 999px; text-decoration: none; display: flex; align-items: center; gap: 0.35rem; transition: background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.22)'" onmouseout="this.style.background='rgba(255,255,255,0.12)'">⬇️ Download</a>
+      </div>
     </div>
   </div>
 
@@ -383,7 +448,29 @@ const steps = [
     opacity: 1 !important;
   }
 
-  /* Step connector line fix on mobile */
+  .hero-thumb-card:hover {
+    border-color: var(--accent-primary) !important;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md), var(--shadow-glow) !important;
+  }
+  .hero-thumb-card:hover .doc-thumb {
+    transform: scale(1.06);
+  }
+  .hero-thumb-card:hover .zoom-overlay {
+    background: rgba(0,0,0,0.3) !important;
+    opacity: 1 !important;
+  }
+
+  .fee-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .doc-download-btn:hover {
+    border-color: var(--accent-primary) !important;
+    color: var(--accent-primary) !important;
+  }
+
   .steps-container .step-item > div:first-child {
     min-height: 48px;
   }
@@ -430,21 +517,27 @@ const steps = [
   const lightbox = document.getElementById('img-lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const lightboxCaption = document.getElementById('lightbox-caption');
+  const lightboxDownloadBtn = document.getElementById('lightbox-download-btn');
 
   document.querySelectorAll('.image-doc-card').forEach(card => {
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      // Don't open lightbox when clicking download button
+      if (e.target.closest('.doc-download-btn')) return;
       const src = card.getAttribute('data-src');
       const title = card.getAttribute('data-title');
+      const dlName = card.getAttribute('data-download');
       lightboxImg.src = src;
       lightboxImg.alt = title;
       lightboxCaption.textContent = title;
+      lightboxDownloadBtn.href = src;
+      lightboxDownloadBtn.download = dlName;
       lightbox.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     });
   });
 
   window.closeLightbox = (e) => {
-    if (!e || e.target === lightbox || e.currentTarget !== lightbox) {
+    if (!e || e.target === lightbox) {
       lightbox.style.display = 'none';
       lightboxImg.src = '';
       document.body.style.overflow = '';
