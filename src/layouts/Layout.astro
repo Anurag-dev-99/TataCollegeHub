@@ -19,6 +19,53 @@ const pageKeywords = Astro.props.keywords ?? 'Kolhan University PYQ, Kolhan Univ
 
 const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
 const pageTitle = `${title} | Kolhan University — Tata College, Chaibasa`;
+
+// Breadcrumb & per-page WebPage structured data
+const breadcrumbItems: Array<{name: string; item: string}> = [
+  { name: 'Home', item: siteUrl + '/' }
+];
+const activePageName =
+  activeTab === 'pyqs'     ? 'Previous Year Question Papers (PYQ)' :
+  activeTab === 'syllabus' ? 'Kolhan University Syllabus' :
+  activeTab === 'results'  ? 'Kolhan University Result & Analysis' :
+  activeTab === 'notices'  ? 'Notices & Announcements' :
+  activeTab === 'cgpa'     ? 'CGPA Calculator' : null;
+if (activePageName && activeTab !== 'home') {
+  breadcrumbItems.push({ name: activePageName, item: canonicalUrl });
+}
+
+const webPageSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": pageTitle,
+  "description": pageDescription,
+  "url": canonicalUrl,
+  "inLanguage": "en-IN",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Kolhan University Student Hub — Tata College, Chaibasa",
+    "url": siteUrl,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${siteUrl}/pyqs/?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  },
+  "about": {
+    "@type": "CollegeOrUniversity",
+    "name": "Kolhan University",
+    "url": "https://www.kolhanuniversity.ac.in"
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbItems.map((crumb, idx) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "name": crumb.name,
+      "item": crumb.item
+    }))
+  }
+});
 ---
 
 <!DOCTYPE html>
@@ -100,6 +147,9 @@ const pageTitle = `${title} | Kolhan University — Tata College, Chaibasa`;
         }
       }
     </script>
+
+    <!-- Per-page WebPage + BreadcrumbList Structured Data -->
+    <script type="application/ld+json" set:html={webPageSchema} />
 
     <!-- Theme initialization script to run before rendering -->
     <script is:inline>
