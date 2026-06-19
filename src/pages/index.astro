@@ -4,7 +4,7 @@ import noticesData from '../../public/data/notices.json';
 import calendarData from '../../public/data/calendar.json';
 import pyqsData from '../../public/data/pyqs.json';
 import holidaysData from '../../public/data/holidays-2026.json';
-import { Bell, Calendar, Download, FileSpreadsheet, FileCode, GraduationCap, ChevronRight, AlertTriangle, Clock, ArrowRight, HelpCircle, Calculator, X } from '@lucide/astro';
+import { Bell, Calendar, Download, FileSpreadsheet, FileCode, GraduationCap, ChevronRight, AlertTriangle, Clock, ArrowRight, HelpCircle, Calculator, X, ClipboardCheck } from '@lucide/astro';
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -213,6 +213,16 @@ const popularPapers = [...pyqsData]
             <div>
               <h3 style="font-size: 1rem; font-weight: 700;">CGPA Calculator</h3>
               <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Check your SGPA to CGPA status</p>
+            </div>
+          </a>
+
+          <a href={`${baseUrl}/recheck`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
+            <div style="background-color: rgba(239, 68, 68, 0.1); color: var(--accent-danger); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+              <ClipboardCheck />
+            </div>
+            <div>
+              <h3 style="font-size: 1rem; font-weight: 700;">Recheck Guide</h3>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Scrutiny & photocopy process</p>
             </div>
           </a>
 

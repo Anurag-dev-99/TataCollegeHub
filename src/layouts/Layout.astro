@@ -6,7 +6,7 @@ interface Props {
   title: string;
   description?: string;
   keywords?: string;
-  activeTab?: 'home' | 'syllabus' | 'pyqs' | 'results' | 'notices' | 'cgpa';
+  activeTab?: 'home' | 'syllabus' | 'pyqs' | 'results' | 'notices' | 'cgpa' | 'recheck';
 }
 
 const { title, activeTab } = Astro.props;
@@ -29,7 +29,8 @@ const activePageName =
   activeTab === 'syllabus' ? 'Kolhan University Syllabus' :
   activeTab === 'results'  ? 'Kolhan University Result & Analysis' :
   activeTab === 'notices'  ? 'Notices & Announcements' :
-  activeTab === 'cgpa'     ? 'CGPA Calculator' : null;
+  activeTab === 'cgpa'     ? 'CGPA Calculator' :
+  activeTab === 'recheck'  ? 'Answer Sheet Recheck & Photocopy Guide' : null;
 if (activePageName && activeTab !== 'home') {
   breadcrumbItems.push({ name: activePageName, item: canonicalUrl });
 }
