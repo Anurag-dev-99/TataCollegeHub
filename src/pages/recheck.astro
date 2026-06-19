@@ -115,7 +115,7 @@ const docs = [
     feeColor: 'var(--accent-primary)',
   },
   {
-    src: 'Sem_3_photo_copy_applicatioin_blue.jpg',
+    src: 'Sem3_Photo_copy_Application_blur.jpg',
     alt: 'Sem 3 Maths Major Photocopy Application — Tata College Chaibasa',
     title: 'Sem 3 Maths Photocopy Application — Tata College Chaibasa',
     label: 'Photocopy Application',
@@ -139,13 +139,53 @@ const docs = [
     feeColor: null,
   },
 ];
+
+const faqs = [
+  {
+    q: 'What is the difference between Scrutiny and Photocopy?',
+    a: 'Scrutiny (also known as Recheck) means your answer sheet is re-evaluated by an examiner to check for any marking errors — it costs ₹200. Photocopy means you receive a physical copy of your evaluated answer sheet so you can review it yourself — it costs ₹1,000. Both are separate processes and require individual applications.',
+  },
+  {
+    q: 'Why should I write "Scrutiny" instead of "Recheck" in my application?',
+    a: 'The Kolhan University Exam Department officially uses the term "Scrutiny". We were specifically told by the exam department staff to write "Application for Scrutiny" — not "Recheck" — in the application heading. Using the wrong term may cause delays or your application being returned.',
+  },
+  {
+    q: 'How long does a photocopy request take?',
+    a: 'The exam department does not give an official confirmed timeline. Based on experience, photocopy requests may take anywhere from 15 days to 45 days or possibly more. Plan accordingly and do not expect it to arrive quickly.',
+  },
+  {
+    q: 'Is the process the same for all Kolhan University affiliated colleges?',
+    a: 'Yes — the process at the Kolhan University Exam Department is the same for students of all affiliated colleges including Tata College Chaibasa, Singhbhum College Chandil, and others. The only difference is that you must get your principal\'s signature from your own college before visiting the KU Exam Department.',
+  },
+  {
+    q: 'What documents do I need to carry on the day?',
+    a: 'You will need: (1) A written application titled "Application for Scrutiny" with your details, (2) A photocopy of your Admit Card, (3) A photocopy of your Result/Marksheet, and (4) Your principal\'s signature and stamp on the application. Also carry the exact fee amount — ₹200 for Scrutiny or ₹1,000 for Photocopy — to deposit at Canara Bank.',
+  },
+  {
+    q: 'Where exactly is Canara Bank from the Kolhan University Exam Department?',
+    a: 'Canara Bank is approximately a 1-minute walk from the Kolhan University Exam Department. It is very close and easy to find. The entire process — from submitting your application to paying at the bank and collecting your receipt — can be completed in a single day.',
+  },
+];
+
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(f => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": f.a
+    }
+  }))
+});
 ---
 
 <Layout
   title="Answer Sheet Recheck & Photocopy Guide — Kolhan University"
   activeTab="recheck"
-  description="Step-by-step guide for Kolhan University answer sheet scrutiny (recheck) and photocopy application process. Fee: ₹200 for scrutiny, ₹1000 for photocopy. For FYUGP students of Tata College Chaibasa, Singhbhum College Chandil and other affiliated colleges."
-  keywords="Kolhan University recheck process, Kolhan University scrutiny, answer sheet photocopy Kolhan University, Tata College recheck, FYUGP scrutiny application, Kolhan University exam department, Canara Bank challan Kolhan, scrutiny fee 200 rupees, photocopy fee 1000 rupees"
+  description="Step-by-step guide for Kolhan University answer sheet scrutiny (recheck) and photocopy application process. Fee: ₹200 for scrutiny, ₹1000 for photocopy. Frequently asked questions and real sample applications for FYUGP students of Tata College Chaibasa, Singhbhum College Chandil and all KU affiliated colleges."
+  keywords="Kolhan University recheck process, Kolhan University scrutiny, answer sheet photocopy Kolhan University, Tata College recheck, FYUGP scrutiny application, Kolhan University exam department, Canara Bank challan Kolhan, scrutiny fee 200 rupees, photocopy fee 1000 rupees, Kolhan University recheck FAQ, scrutiny vs photocopy difference"
 >
 
   <!-- ===== PAGE HEADER ===== -->
@@ -425,6 +465,43 @@ const docs = [
     </div>
   </div>
 
+  <!-- ===== FAQ SECTION ===== -->
+  <div style="margin-bottom: 2.5rem;" id="faq">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+      <h2 style="font-size: 1.4rem; font-family: var(--font-display); font-weight: 800;">Frequently Asked Questions</h2>
+      <span class="badge badge-warning" style="font-size: 0.7rem; font-weight: 700; letter-spacing: normal; text-transform: none;">FAQ</span>
+    </div>
+    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.75rem; max-width: 620px; line-height: 1.6;">
+      Common questions about the Kolhan University Scrutiny and Photocopy process — answered based on real experience.
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+      {faqs.map((faq, idx) => (
+        <div class="faq-item card" id={`faq-${idx}`} style="padding: 0; overflow: hidden;">
+          <button
+            class="faq-trigger"
+            aria-expanded="false"
+            aria-controls={`faq-body-${idx}`}
+            style="width: 100%; text-align: left; padding: 1.1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; background: none; border: none; font-family: var(--font-sans);"
+          >
+            <span style="font-size: 0.925rem; font-weight: 700; color: var(--text-primary); line-height: 1.4; flex: 1;">{faq.q}</span>
+            <span class="faq-chevron" style="font-size: 1rem; color: var(--accent-primary); flex-shrink: 0; transition: transform 0.25s ease; display: flex; align-items: center;">﹢</span>
+          </button>
+          <div
+            class="faq-body"
+            id={`faq-body-${idx}`}
+            style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.25s ease;"
+          >
+            <p style="padding: 0 1.25rem 1.1rem; font-size: 0.875rem; color: var(--text-secondary); line-height: 1.7; border-top: 1px solid var(--border-color); margin: 0; padding-top: 0.9rem;">{faq.a}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- FAQ JSON-LD Schema for SEO -->
+  <script type="application/ld+json" set:html={faqSchema} />
+
 </Layout>
 
 <style is:global>
@@ -481,6 +558,26 @@ const docs = [
   }
   .steps-container {
     animation: recheck-fadein 0.4s ease forwards;
+  }
+
+  /* FAQ Accordion */
+  .faq-item {
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  .faq-item.open {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 1px rgba(99,102,241,0.15), var(--shadow-md);
+  }
+  .faq-trigger:hover > span:first-child {
+    color: var(--accent-primary);
+  }
+  .faq-item.open .faq-chevron {
+    transform: rotate(45deg);
+    color: var(--accent-primary);
+  }
+  .faq-trigger:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: -2px;
   }
 </style>
 
@@ -549,4 +646,30 @@ const docs = [
       window.closeLightbox();
     }
   });
+
+  // FAQ Accordion
+  document.querySelectorAll('.faq-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const item = trigger.closest('.faq-item');
+      const body = trigger.nextElementSibling;
+      const isOpen = item.classList.contains('open');
+
+      // Close all others
+      document.querySelectorAll('.faq-item.open').forEach(openItem => {
+        openItem.classList.remove('open');
+        openItem.querySelector('.faq-trigger').setAttribute('aria-expanded', 'false');
+        openItem.querySelector('.faq-body').style.maxHeight = '0';
+      });
+
+      // Toggle this one
+      if (!isOpen) {
+        item.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+        body.style.maxHeight = body.scrollHeight + 'px';
+        // Smooth scroll into view on mobile
+        setTimeout(() => item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+      }
+    });
+  });
+
 </script>
