@@ -846,16 +846,18 @@ const webPageSchema = JSON.stringify({
             });
           });
 
-          const formattedPyqs = pyqs.map(item => ({
-            title: `${item.subject} (${item.category})`,
-            subtitle: `Sem ${item.semester} • ${item.year} Exam Paper`,
-            searchString: `${item.subject} ${item.category} ${item.title} sem ${item.semester} ${item.year} pyq pyqs exam paper question`.toLowerCase(),
-            link: `${baseUrl}/pyqs/${item.category.toLowerCase()}/${item.subject.toLowerCase()}/${item.semester}`,
-            category: item.category,
-            subject: item.subject,
-            semester: item.semester,
-            year: item.year
-          }));
+          const formattedPyqs = pyqs
+            .filter(item => !!item.downloadUrl)
+            .map(item => ({
+              title: `${item.subject} (${item.category})`,
+              subtitle: `Sem ${item.semester} • ${item.year} Exam Paper`,
+              searchString: `${item.subject} ${item.category} ${item.title} sem ${item.semester} ${item.year} pyq pyqs exam paper question`.toLowerCase(),
+              link: `${baseUrl}/pyqs/${item.category.toLowerCase()}/${item.subject.toLowerCase()}/${item.semester}`,
+              category: item.category,
+              subject: item.subject,
+              semester: item.semester,
+              year: item.year
+            }));
 
           searchDatabase = {
             syllabus: formattedSyllabus,
