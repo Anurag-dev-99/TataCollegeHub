@@ -890,7 +890,7 @@ const webPageSchema = JSON.stringify({
         const searchWords = queryWords.map(w => wordMapping[w] || w);
 
         // Check if query is explicitly searching for pyqs
-        const isQueryingPyq = searchWords.some(w => ['pyq', 'pyqs', 'paper', 'papers', 'question', 'questions', 'previous'].includes(w));
+        const isQueryingPyq = searchWords.some(w => ['pyq', 'pyqs', 'paper', 'papers', 'question', 'questions', 'previous', 'exam', 'exams'].includes(w));
 
         const getScore = (item, isPyqItem) => {
           let score = 0;
@@ -920,6 +920,9 @@ const webPageSchema = JSON.stringify({
           // Priority bias: syllabus first unless query is explicitly about pyq
           if (!isPyqItem && !isQueryingPyq) {
             score += 30; // boost syllabus
+          }
+          if (isPyqItem && isQueryingPyq) {
+            score += 50; // boost PYQ matches if search query is about pyqs
           }
 
           return score;
@@ -958,14 +961,13 @@ const webPageSchema = JSON.stringify({
           return;
         }
 
-        let html = '';
-
+        let syllabusHtml = '';
         if (filteredSyllabus.length > 0) {
-          html += `<div style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase;">Syllabus Modules</div>`;
+          syllabusHtml += `<div style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase;">Syllabus Modules</div>`;
           filteredSyllabus.forEach(item => {
             const downloadAttr = item.download ? 'download' : '';
             const targetAttr = item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '';
-            html += `
+            syllabusHtml += `
               <a href="${item.link}" ${downloadAttr} ${targetAttr} style="display: block; padding: 0.625rem 0.75rem; border-radius: var(--radius-xs); color: var(--text-primary); transition: background 0.15s;" class="hover:bg-tertiary">
                 <div style="font-weight: 600; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
                   <span>${item.title}</span>
@@ -977,10 +979,11 @@ const webPageSchema = JSON.stringify({
           });
         }
 
+        let pyqHtml = '';
         if (filteredPyqs.length > 0) {
-          html += `<div style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase; margin-top: 0.5rem;">Previous Papers</div>`;
+          pyqHtml += `<div style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase;">Previous Papers</div>`;
           filteredPyqs.forEach(item => {
-            html += `
+            pyqHtml += `
               <a href="${item.link}" style="display: block; padding: 0.625rem 0.75rem; border-radius: var(--radius-xs); color: var(--text-primary); transition: background 0.15s;" class="hover:bg-tertiary">
                 <div style="font-weight: 600; font-size: 0.9rem;">${item.title}</div>
                 <div style="font-size: 0.75rem; color: var(--text-secondary); display: flex; justify-content: space-between;">
@@ -992,7 +995,19 @@ const webPageSchema = JSON.stringify({
           });
         }
 
-        suggestionsBox.innerHTML = html;
+        if (isQueryingPyq) {
+          // If PYQ section is shown first, add margin top to syllabus section if both exist
+          if (filteredSyllabus.length > 0 && filteredPyqs.length > 0) {
+            syllabusHtml = syllabusHtml.replace('style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase;"', 'style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase; margin-top: 0.5rem;"');
+          }
+          suggestionsBox.innerHTML = pyqHtml + syllabusHtml;
+        } else {
+          // If Syllabus section is shown first, add margin top to PYQ section if both exist
+          if (filteredSyllabus.length > 0 && filteredPyqs.length > 0) {
+            pyqHtml = pyqHtml.replace('style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase;"', 'style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase; margin-top: 0.5rem;"');
+          }
+          suggestionsBox.innerHTML = syllabusHtml + pyqHtml;
+        }
         suggestionsBox.style.display = 'block';
       });
 
