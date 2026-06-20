@@ -79,3 +79,72 @@ Google tracks **Dwell Time** (how long a user stays on your website). If a new s
   * Anurag will visit Tata College Chaibasa in person.
   * Ask teachers and department heads directly for guidance, official syllabus files, and PYQs.
   * Manually upload only verified, correct files directly to our hosting, bypassing unstable external links.
+
+---
+
+## 🎥 YouTube Shorts — Video Ideas Bank
+
+> All ideas for future YouTube Shorts to drive traffic to kolhanhub.in
+
+---
+
+### 💡 Idea 1 — "Results Like a Pro" + Community Comment Drive ⭐ HIGH PRIORITY
+
+**Concept:**
+Screen record yourself checking Kolhan University results on kolhanhub.in like a pro — fast roll number search, result appearing, CGPA shown. Then ask viewers in the pinned comment to drop their **batch + semester + college name** so you can add their result data to the website.
+
+**Why this is BRILLIANT (not ajeeb):**
+- Comments = algorithm gold. Each comment tells YouTube "this video is engaging" → pushes it to more people
+- You get a **free data collection pipeline** — students tell you exactly what result data to add
+- Creates a **community feeling** — students feel ownership of your website
+- Results videos get massive search traffic during exam season (Nov, May)
+- One video can spark a chain: student comments → you add data → they share with batch → more traffic
+
+**Script Hook Ideas:**
+- Hindi: *"Kolhan University result dekho 10 second mein — aur comment karo apna batch aur semester!"*
+- English: *"Check your Kolhan University result like a pro — drop your semester & college below 👇"*
+
+**Pinned Comment Template:**
+```
+👇 Comment karo:
+✅ College name
+✅ Batch (e.g. 2022-2026)
+✅ Semester (e.g. Sem 4)
+Main aapka result add karne ki koshish karunga kolhanhub.in par!
+```
+
+**Best time to post:** Right after Kolhan University announces results.
+
+**Status:** [ ] Not yet recorded
+
+---
+
+### 💡 Idea 2 — "All 32 MDC Syllabi in 30 Seconds"
+
+Show the MDC accordion opening, scrolling through all 32 subject cards rapidly, then downloading one. Fast-paced, satisfying to watch.
+
+**Status:** [ ] In progress (recording done, editing pending)
+
+---
+
+### 💡 Idea 3 — "Kolhan University Syllabus Download Guide" (Hindi)
+
+Broader tutorial: open kolhanhub.in → Syllabus → show AEC, VAC, MDC sections → download MDC History as example. Hindi voiceover via ElevenLabs.
+
+**Status:** [ ] Script ready, recording pending
+
+---
+
+### 💡 Idea 4 — "CGPA Calculator for Kolhan Students"
+
+Show the CGPA calculator on kolhanhub.in/cgpa — enter marks → result appears instantly. Hook: *"Apna CGPA 5 second mein nikalo"*
+
+**Status:** [ ] Not yet started
+
+---
+
+### 💡 Idea 5 — "Kolhan University PYQ Free Download"
+
+Show PYQ section — filter by department, semester — download a paper. Hook: *"Seniors se maangna band karo"*
+
+**Status:** [ ] Not yet started
