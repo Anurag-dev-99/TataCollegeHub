@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kolhan University — Syllabus Browser</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #21262d;
+      --border: #30363d;
+      --accent: #f78166;
+      --accent2: #79c0ff;
+      --green: #56d364;
+      --purple: #bc8cff;
+      --yellow: #e3b341;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, #1a1f2e 0%, #0d1117 50%, #1a1228 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 24px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%; transform: translateX(-50%);
+      width: 400px; height: 200px;
+      background: radial-gradient(ellipse, rgba(121,192,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .ku-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #f78166, #bc8cff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+    header p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 16px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .stat strong { color: var(--accent2); margin-right: 4px; }
+
+    /* CONTROLS */
+    .controls {
+      max-width: 1200px;
+      margin: 24px auto 0;
+      padding: 0 16px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .search-wrap {
+      flex: 1;
+      min-width: 220px;
+      position: relative;
+    }
+    .search-wrap input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 16px 10px 40px;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+    .search-wrap input:focus { border-color: var(--accent2); }
+    .search-wrap::before {
+      content: '🔍';
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+    }
+    .filter-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .filter-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+    .filter-btn.active {
+      background: var(--accent2);
+      border-color: var(--accent2);
+      color: #0d1117;
+    }
+
+    /* GRID */
+    .grid-container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 16px 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    /* CARD */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.15s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .card[data-cat="science"]::before { background: linear-gradient(90deg, #56d364, #79c0ff); }
+    .card[data-cat="commerce"]::before { background: linear-gradient(90deg, #e3b341, #f78166); }
+    .card[data-cat="arts"]::before { background: linear-gradient(90deg, #bc8cff, #f78166); }
+    .card[data-cat="language"]::before { background: linear-gradient(90deg, #79c0ff, #bc8cff); }
+    .card[data-cat="vac"]::before { background: linear-gradient(90deg, #f78166, #e3b341); }
+
+    .card:hover { border-color: #484f58; transform: translateY(-2px); }
+    .card.hidden { display: none !important; }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .card[data-cat="science"] .card-icon { background: rgba(86,211,100,0.1); }
+    .card[data-cat="commerce"] .card-icon { background: rgba(227,179,65,0.1); }
+    .card[data-cat="arts"] .card-icon { background: rgba(188,140,255,0.1); }
+    .card[data-cat="language"] .card-icon { background: rgba(121,192,255,0.1); }
+    .card[data-cat="vac"] .card-icon { background: rgba(247,129,102,0.1); }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      flex: 1;
+    }
+    .card-meta {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .tag-science { background: rgba(86,211,100,0.12); color: var(--green); border: 1px solid rgba(86,211,100,0.2); }
+    .tag-commerce { background: rgba(227,179,65,0.12); color: var(--yellow); border: 1px solid rgba(227,179,65,0.2); }
+    .tag-arts { background: rgba(188,140,255,0.12); color: var(--purple); border: 1px solid rgba(188,140,255,0.2); }
+    .tag-language { background: rgba(121,192,255,0.12); color: var(--accent2); border: 1px solid rgba(121,192,255,0.2); }
+    .tag-vac { background: rgba(247,129,102,0.12); color: var(--accent); border: 1px solid rgba(247,129,102,0.2); }
+    .tag-mdc { background: rgba(139,148,158,0.12); color: var(--muted); border: 1px solid rgba(139,148,158,0.2); }
+    .tag-sem { background: rgba(121,192,255,0.08); color: #6e9db8; border: 1px solid rgba(121,192,255,0.15); }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .btn {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      border: none;
+    }
+    .btn-preview {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .btn-preview:hover { border-color: var(--accent2); color: var(--accent2); }
+    .btn-download {
+      background: linear-gradient(135deg, #238636, #2ea043);
+      color: white;
+    }
+    .btn-download:hover { background: linear-gradient(135deg, #2ea043, #3fb950); }
+    .btn-copy {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      flex: 0;
+      padding: 8px 10px;
+    }
+    .btn-copy:hover { border-color: var(--yellow); color: var(--yellow); }
+
+    /* NO RESULTS */
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+    .no-results span { font-size: 40px; display: block; margin-bottom: 12px; }
+
+    /* FOOTER NOTE */
+    .footer-note {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-note a { color: var(--accent2); text-decoration: none; }
+
+    /* COPY TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--green);
+      color: #0d1117;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-size: 13px;
+      transition: transform 0.3s;
+      z-index: 9999;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* COUNT BADGE */
+    #count-badge {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: -10px;
+      margin-bottom: 4px;
+    }
+    #count-badge strong { color: var(--accent2); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="ku-badge">Kolhan University • Chaibasa, Jharkhand</div>
+  <h1>📚 Syllabus Browser</h1>
+  <p>All UG syllabus PDFs — direct access, no navigation needed</p>
+  <div class="stats-bar">
+    <div class="stat"><strong id="total-count">80+</strong> PDFs Available</div>
+    <div class="stat"><strong>Free</strong> No Login Required</div>
+    <div class="stat"><strong>Direct</strong> Download Links</div>
+    <div class="stat"><strong>FYUGP</strong> NEP 2020</div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <input type="text" id="search" placeholder="Search course... (e.g. BCA, Physics, Hindi)" oninput="filterCards()" />
+  </div>
+  <div class="filter-group">
+    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+    <button class="filter-btn" onclick="setFilter('science', this)">🔬 Science / IT</button>
+    <button class="filter-btn" onclick="setFilter('commerce', this)">📊 Commerce</button>
+    <button class="filter-btn" onclick="setFilter('arts', this)">🎨 Arts</button>
+    <button class="filter-btn" onclick="setFilter('language', this)">🗣️ Languages</button>
+    <button class="filter-btn" onclick="setFilter('vac', this)">📋 VAC / SEC / AEC</button>
+  </div>
+</div>
+
+<div id="count-badge"><strong id="showing-count">—</strong> syllabi shown</div>
+<div class="grid-container" id="grid"></div>
+
+<div class="footer-note">
+  Source: <a href="https://www.kolhanuniversity.ac.in/undergraduate-syllabus" target="_blank">kolhanuniversity.ac.in</a> &nbsp;|&nbsp;
+  <a href="https://www.kolhanuniversity.ac.in/postgraduate-syllabus" target="_blank">Postgraduate Syllabus →</a> &nbsp;|&nbsp;
+  <a href="https://www.kuuniv.in/" target="_blank">Exam & Results →</a>
+</div>
+<div class="toast" id="toast">✅ Link copied!</div>
+
+<script>
+const BASE = "https://www.kolhanuniversity.ac.in/storage/curriculum-pdfs/";
+const syllabi = [
+  // ── SCIENCE / IT ──
+  { title:"BCA", cat:"science", tags:["science","BCA"], file:"1767178918_BCA.pdf" },
+  { title:"BCA – MDC", cat:"science", tags:["science","BCA","MDC"], file:"1767178819_BCA_MDC.pdf" },
+  { title:"BSc IT", cat:"science", tags:["science","IT","BSc"], file:"1767179305_IT.pdf" },
+  { title:"BSc IT (updated)", cat:"science", tags:["science","IT","BSc"], file:"1767338237_IT_compressed.pdf" },
+  { title:"BSc IT – MDC", cat:"science", tags:["science","IT","MDC"], file:"1767179377_IT_MDC.pdf" },
+  { title:"IT – MDC (updated)", cat:"science", tags:["science","IT","MDC"], file:"1767338115_IT_MDC_compressed.pdf" },
+  { title:"Information Technology MDC", cat:"science", tags:["science","IT","MDC"], file:"1767849311_Information%20Technology_MDC_compressed.pdf" },
+  { title:"Computer Application MDC", cat:"science", tags:["science","computer","MDC"], file:"1767848324_Computer%20Application_MDC_compressed.pdf" },
+  { title:"Physics", cat:"science", tags:["science","physics"], file:"1767180666_Physics.pdf" },
+  { title:"Physics (New Syllabus)", cat:"science", tags:["science","physics"], file:"1767180564_Physics_New.pdf" },
+  { title:"Physics – MDC", cat:"science", tags:["science","physics","MDC"], file:"1767849668_Physics_MDC_compressed.pdf" },
+  { title:"Chemistry", cat:"science", tags:["science","chemistry"], file:"1767336321_Chemistry_compressed.pdf" },
+  { title:"Chemistry – MDC", cat:"science", tags:["science","chemistry","MDC"], file:"1767848108_Chemistry_MDC_compressed.pdf" },
+  { title:"Mathematics", cat:"science", tags:["science","maths"], file:"1767180285_Mathematics_compressed.pdf" },
+  { title:"Mathematics – MDC I", cat:"science", tags:["science","maths","MDC"], file:"1767179577_Mathematics_MDC.pdf" },
+  { title:"Mathematics – MDC II", cat:"science", tags:["science","maths","MDC"], file:"1767179684_Mathematics-MDC.pdf" },
+  { title:"Mathematics – MDC (updated)", cat:"science", tags:["science","maths","MDC"], file:"1767338504_Mathematics_MDC_compressed.pdf" },
+  { title:"Botany", cat:"science", tags:["science","botany"], file:"1767179115_Botany.pdf" },
+  { title:"MDC Botany", cat:"science", tags:["science","botany","MDC"], file:"1767180380_MDC_Botany.pdf" },
+  { title:"MDC Botany (updated)", cat:"science", tags:["science","botany","MDC"], file:"1767338584_MDC_Botany_compressed.pdf" },
+  { title:"Zoology", cat:"science", tags:["science","zoology"], file:"1767180981_Zoology.pdf" },
+  { title:"Zoology (updated)", cat:"science", tags:["science","zoology"], file:"1767340092_Zoology_compressed.pdf" },
+  { title:"Zoology – MDC", cat:"science", tags:["science","zoology","MDC"], file:"1767184923_Zoology_MDC.pdf" },
+  { title:"Zoology – MDC (updated)", cat:"science", tags:["science","zoology","MDC"], file:"1767850241_Zoology_MDC_compressed.pdf" },
+  { title:"Statistics", cat:"science", tags:["science","statistics"], file:"1767184986_Statistics.pdf" },
+  { title:"Statistics – MDC", cat:"science", tags:["science","statistics","MDC"], file:"1767850100_Statistics_MDC_compressed.pdf" },
+  { title:"Environmental Science & Water Mgmt", cat:"science", tags:["science","environment","water"], file:"1767337628_Environmental%20Science%20%26%20Water%20Mangement_compressed.pdf" },
+  { title:"Environmental Science – MDC", cat:"science", tags:["science","environment","MDC"], file:"1767848556_Environmental%20Science%20_%20Water%20Management_MDC_compressed.pdf" },
+  { title:"Environment & Water Mgmt (alt)", cat:"science", tags:["science","environment","water"], file:"1767337292_Environment%20%26%20Water%20Mangement_compressed.pdf" },
+  { title:"Geology – MDC", cat:"science", tags:["science","geology","MDC"], file:"1767886303_MDC_Geology_2025-2029_compressed.pdf" },
+  { title:"FYUGP Geology (2022 onwards)", cat:"science", tags:["science","geology","FYUGP"], file:"1768908562_2022_Onwards_FYUGP_UG%20Geology%20Syllabus_Kolhan%20University_compressed.pdf" },
+  { title:"FYUGP Geology (2025 onwards)", cat:"science", tags:["science","geology","FYUGP"], file:"1768908529_2025_Onwards_FYUGP_UG%20Geology%20Syllabus_Kolhan%20University_compressed.pdf" },
+  { title:"Mass Communication – Video Production", cat:"science", tags:["science","mass comm","media"], file:"1767179456_Mass%20Communication-%20Video%20Production.pdf" },
+  { title:"Mass Communication – MDC", cat:"science", tags:["science","mass comm","MDC"], file:"1767849436_Mass%20Communication_MDC_compressed.pdf" },
+
+  // ── COMMERCE ──
+  { title:"BBA", cat:"commerce", tags:["commerce","BBA"], file:"1767184841_BBA.pdf" },
+  { title:"BBA (updated)", cat:"commerce", tags:["commerce","BBA"], file:"1767336043_BBA_compressed.pdf" },
+  { title:"BBA – MDC", cat:"commerce", tags:["commerce","BBA","MDC"], file:"1767335921_BBA_MDC_compressed.pdf" },
+  { title:"Business Administration – MDC", cat:"commerce", tags:["commerce","business","MDC"], file:"1767848006_Business%20Administration_MDC_compressed.pdf" },
+  { title:"Commerce", cat:"commerce", tags:["commerce","BCom"], file:"1767336502_Commerce_compressed.pdf" },
+  { title:"Commerce – MDC", cat:"commerce", tags:["commerce","BCom","MDC"], file:"1767848260_Commerce_MDC_compressed.pdf" },
+  { title:"Economics", cat:"commerce", tags:["commerce","economics"], file:"1767336619_Economics_compressed.pdf" },
+  { title:"Economics – MDC", cat:"commerce", tags:["commerce","economics","MDC"], file:"1767848392_Economics_MDC_compressed.pdf" },
+
+  // ── ARTS ──
+  { title:"English", cat:"arts", tags:["arts","english"], file:"1767337085_English_compressed.pdf" },
+  { title:"English – MDC", cat:"arts", tags:["arts","english","MDC"], file:"1767848484_English_MDC_compressed.pdf" },
+  { title:"Hindi", cat:"arts", tags:["arts","hindi"], file:"1767179206_Hindi.pdf" },
+  { title:"Hindi – MDC", cat:"arts", tags:["arts","hindi","MDC"], file:"1767815364_Hindi_MDC.pdf" },
+  { title:"History – MDC", cat:"arts", tags:["arts","history","MDC"], file:"1767848882_History_MDC_compressed.pdf" },
+  { title:"Political Science – MDC", cat:"arts", tags:["arts","polsci","MDC"], file:"1767849750_Political%20Science_MDC_compressed.pdf" },
+  { title:"Sociology – MDC", cat:"arts", tags:["arts","sociology","MDC"], file:"1767850030_Sociology_MDC_compressed.pdf" },
+  { title:"Geography – MDC", cat:"arts", tags:["arts","geography","MDC"], file:"1767848621_Geography_MDC_compressed.pdf" },
+  { title:"Philosophy Major", cat:"arts", tags:["arts","philosophy"], file:"1767339059_Philosophy_Major_compressed.pdf" },
+  { title:"Philosophy Minor", cat:"arts", tags:["arts","philosophy"], file:"1767339141_Philosophy_Minor_compressed.pdf" },
+  { title:"Philosophy – MDC I", cat:"arts", tags:["arts","philosophy","MDC"], file:"1767180473_Philosophy_MDC.pdf" },
+  { title:"Philosophy – MDC (updated)", cat:"arts", tags:["arts","philosophy","MDC"], file:"1767849578_Philosophy_MDC_compressed.pdf" },
+  { title:"Psychology", cat:"arts", tags:["arts","psychology"], file:"1767339331_Psychology_compressed.pdf" },
+  { title:"Psychology – MDC", cat:"arts", tags:["arts","psychology","MDC"], file:"1767849810_Psychology_MDC_compressed.pdf" },
+  { title:"Public Administration – MDC", cat:"arts", tags:["arts","public admin","MDC"], file:"1767849909_Public%20Administration_MDC_compressed.pdf" },
+  { title:"Anthropology – MDC", cat:"arts", tags:["arts","anthropology","MDC"], file:"1767847691_Anthropology_MDC%20%282%29_compressed.pdf" },
+  { title:"Home Science", cat:"arts", tags:["arts","home science"], file:"1773639004_1370d5209eecbb73_NewUGSyllabus2024.pdf" },
+  { title:"Home Science – MDC", cat:"arts", tags:["arts","home science","MDC"], file:"1767849146_Home%20Science_MDC_compressed.pdf" },
+
+  // ── LANGUAGES ──
+  { title:"Sanskrit", cat:"language", tags:["language","sanskrit"], file:"1767339899_Sanskrit_compressed.pdf" },
+  { title:"Sanskrit – MDC", cat:"language", tags:["language","sanskrit","MDC"], file:"1767849971_Sanskrit_MDC_compressed.pdf" },
+  { title:"Santhali", cat:"language", tags:["language","santhali"], file:"1767185061_Santhali.pdf" },
+  { title:"Santhali – MDC", cat:"language", tags:["language","santhali","MDC"], file:"1767185125_Santhali_MDC.pdf" },
+  { title:"Santhali – AEC", cat:"language", tags:["language","santhali","AEC"], file:"1767185228_Santhali_AEC-3.pdf" },
+  { title:"Ho", cat:"language", tags:["language","ho"], file:"1767337973_Ho_compressed.pdf" },
+  { title:"Ho – MDC", cat:"language", tags:["language","ho","MDC"], file:"1767848975_Ho_MDC_compressed.pdf" },
+  { title:"Bangla", cat:"language", tags:["language","bangla","bengali"], file:"1767335679_Bangla_compressed.pdf" },
+  { title:"Bangla – MDC", cat:"language", tags:["language","bangla","MDC"], file:"1767847858_Bangla_MDC_compressed.pdf" },
+  { title:"Odia", cat:"language", tags:["language","odia"], file:"1767338843_Odia_compressed.pdf" },
+  { title:"Odia – MDC", cat:"language", tags:["language","odia","MDC"], file:"1767849512_Odia_MDC_compressed.pdf" },
+  { title:"Urdu – MDC", cat:"language", tags:["language","urdu","MDC"], file:"1767850191_Urdu_MDC_compressed.pdf" },
+  { title:"Kudmali", cat:"language", tags:["language","kudmali"], file:"1767852238_Kudmali_compressed.pdf" },
+  { title:"Kudmali – MDC", cat:"language", tags:["language","kudmali","MDC"], file:"1767849385_Kudmali_MDC_compressed.pdf" },
+  { title:"Kudmali – MJ 1 (Sem 1)", cat:"language", tags:["language","kudmali","sem1"], file:"1767852123_Kudmali_MJ%201_compressed.pdf" },
+  { title:"Kudmali – MN 1A (Sem 1)", cat:"language", tags:["language","kudmali","sem1"], file:"1767852179_Kudmali_MN-1A_compressed.pdf" },
+  { title:"Kudmali – MJ-2 & MJ-3 (Sem 1)", cat:"language", tags:["language","kudmali","sem1"], file:"1767852840_Kudmali_MJ-2%20%26%20MJ-3_compressed.pdf" },
+  { title:"Kudmali – MN 2A (Sem 2)", cat:"language", tags:["language","kudmali","sem2"], file:"1767852923_Kudmali_MN-2A_compressed.pdf" },
+
+  // ── VAC / SEC / AEC ──
+  { title:"Hindi – AEC-1 (Sem 1)", cat:"vac", tags:["AEC","hindi","sem1"], file:"1767815175_Hindi_AEC-1.pdf" },
+  { title:"AEC-2 English (Sem 2)", cat:"vac", tags:["AEC","english","sem2"], file:"1767853279_AEC-2_English_compressed.pdf" },
+  { title:"AEC-3 English (Sem 3)", cat:"vac", tags:["AEC","english","sem3"], file:"1767853317_AEC-3_English_Sem-III_compressed.pdf" },
+  { title:"AEC-4 English (Sem 4)", cat:"vac", tags:["AEC","english","sem4"], file:"1767853368_AEC-4_English_Sem-IV_compressed.pdf" },
+  { title:"AEC-4 Hindi (Sem 4)", cat:"vac", tags:["AEC","hindi","sem4"], file:"1767853432_AEC-4_Hindi_Sem-IV_compressed.pdf" },
+  { title:"VAC-1: Environmental Studies (Sem 1)", cat:"vac", tags:["VAC","environment","sem1"], file:"1767852376_VAC-1_Environmental%20Studies_compressed.pdf" },
+  { title:"VAC-1: Health & Wellness (Sem 1)", cat:"vac", tags:["VAC","health","sem1"], file:"1767852456_VAC-1_Health%20_%20Wellness_compressed.pdf" },
+  { title:"VAC-1: Understanding India (Sem 1)", cat:"vac", tags:["VAC","india","sem1"], file:"1767852554_VAC-1_Understanding%20India_compressed.pdf" },
+  { title:"VAC-1: Yoga (Sem 1)", cat:"vac", tags:["VAC","yoga","sem1"], file:"1767852616_VAC-1_Yoga_compressed.pdf" },
+  { title:"VAC-2: Global Citizenship Education (Sem 4)", cat:"vac", tags:["VAC","global","sem4"], file:"1767853034_VAC-2_Global%20Citizenship%20Education%20for%20Sustainable%20Development_Sem-IV_compressed.pdf" },
+  { title:"VAC-2: Global Citizenship (alt)", cat:"vac", tags:["VAC","global"], file:"1767337703_Global%20Citizenship%20Education%20%26%20Education%20for%20Sustainable%20Development_VAC-2_compressed.pdf" },
+  { title:"SEC-3: Mathematical & Computational Thinking", cat:"vac", tags:["SEC","maths","computing"], file:"1767338362_Mathematical%20%26%20Computational%20Thinking%20and%20Analysis_SEC-3_compressed.pdf" },
+];
+
+const catIcons = {
+  science: "🔬", commerce: "📊", arts: "🎨", language: "🗣️", vac: "📋"
+};
+const catTagClass = {
+  science: "tag-science", commerce: "tag-commerce", arts: "tag-arts", language: "tag-language", vac: "tag-vac"
+};
+const catLabels = {
+  science: "Science / IT", commerce: "Commerce", arts: "Arts", language: "Language", vac: "VAC/SEC/AEC"
+};
+
+let activeFilter = "all";
+
+function buildCards() {
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  syllabi.forEach((s, i) => {
+    const url = BASE + s.file;
+    const isMDC = s.title.toLowerCase().includes("mdc");
+    const semMatch = s.title.match(/sem\s*(\d)/i);
+    const sem = semMatch ? "Sem " + semMatch[1] : null;
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.dataset.cat = s.cat;
+    card.dataset.search = (s.title + " " + s.tags.join(" ")).toLowerCase();
+
+    const tagHTML = `
+      <span class="tag ${catTagClass[s.cat]}">${catLabels[s.cat]}</span>
+      ${isMDC ? '<span class="tag tag-mdc">MDC</span>' : ""}
+      ${sem ? `<span class="tag tag-sem">${sem}</span>` : ""}
+    `;
+
+    card.innerHTML = `
+      <div class="card-top">
+        <div class="card-icon">${catIcons[s.cat]}</div>
+        <div class="card-title">${s.title}</div>
+      </div>
+      <div class="card-meta">${tagHTML}</div>
+      <div class="card-actions">
+        <a class="btn btn-preview" href="${url}" target="_blank">👁 Preview</a>
+        <a class="btn btn-download" href="${url}" download>⬇ Download</a>
+        <button class="btn btn-copy" onclick="copyLink('${url}')" title="Copy link">🔗</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  document.getElementById("total-count").textContent = syllabi.length;
+  updateCount();
+}
+
+function filterCards() {
+  const q = document.getElementById("search").value.toLowerCase().trim();
+  let visible = 0;
+  document.querySelectorAll(".card").forEach(card => {
+    const matchCat = activeFilter === "all" || card.dataset.cat === activeFilter;
+    const matchSearch = !q || card.dataset.search.includes(q);
+    if (matchCat && matchSearch) { card.classList.remove("hidden"); visible++; }
+    else card.classList.add("hidden");
+  });
+  updateCount(visible);
+  const noRes = document.querySelector(".no-results");
+  if (noRes) noRes.remove();
+  if (visible === 0) {
+    const div = document.createElement("div");
+    div.className = "no-results";
+    div.innerHTML = `<span>😕</span>No syllabus found for "<strong>${q}</strong>"<br><small style="margin-top:8px;display:block">Try: BCA, Physics, Hindi, Commerce, Zoology…</small>`;
+    document.getElementById("grid").appendChild(div);
+  }
+}
+
+function updateCount(n) {
+  const cards = document.querySelectorAll(".card:not(.hidden)");
+  document.getElementById("showing-count").textContent = (n !== undefined ? n : cards.length) + " of " + syllabi.length;
+}
+
+function setFilter(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  filterCards();
+}
+
+function copyLink(url) {
+  navigator.clipboard.writeText(url).then(() => {
+    const t = document.getElementById("toast");
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 2200);
+  });
+}
+
+buildCards();
+</script>
+</body>
+</html>
