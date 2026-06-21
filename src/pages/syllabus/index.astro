@@ -71,6 +71,7 @@ const departments = Object.keys(deptGroups);
         <div style="display: flex; align-items: center; gap: 0.75rem;">
           <Compass style="color: var(--accent-primary); width: 20px; height: 20px;" />
           <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Major (Honours) Syllabus</span>
+          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(99,102,241,0.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">MJ · 100 Marks</span>
         </div>
         <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
       </button>
@@ -116,12 +117,13 @@ const departments = Object.keys(deptGroups);
       </div>
     </div>
 
-    <!-- Minor Accordion Item -->
+    <!-- Minor / Associated Core Accordion Item -->
     <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
       <button class="accordion-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; transition: background 0.25s;">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
           <Award style="color: var(--accent-success); width: 20px; height: 20px;" />
           <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Minor Syllabus</span>
+          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">AC · 100 Marks</span>
         </div>
         <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
       </button>
@@ -131,6 +133,11 @@ const departments = Object.keys(deptGroups);
           <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.5; margin-bottom: 0.25rem;">
             Official Kolhan University FYUGP Minor course credit requirement syllabuses.
           </p>
+          <!-- AC Rename Notice -->
+          <div style="display: flex; align-items: flex-start; gap: 0.6rem; background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-xs); padding: 0.75rem 1rem; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+            <span style="font-size: 1rem; flex-shrink: 0;">ℹ️</span>
+            <span><strong style="color: var(--accent-success);">Nomenclature update:</strong> From the <strong>2025 batch onwards</strong>, the "Minor" paper is officially renamed to <strong>Associated Core (AC)</strong> under Kolhan University's current NEP syllabus. The syllabus content remains the same — only the label has changed.</span>
+          </div>
           <div style="display: grid; grid-template-columns: 1fr; gap: 1.25rem;" class="md:grid-cols-2">
             {departments
               .filter(dept => dept.toLowerCase().includes('minor'))
@@ -244,6 +251,7 @@ const departments = Object.keys(deptGroups);
         <div style="display: flex; align-items: center; gap: 0.75rem;">
           <Compass style="color: var(--accent-success); width: 20px; height: 20px;" />
           <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Ability Enhancement Course (AEC) Syllabus</span>
+          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">AEC · 50 Marks</span>
         </div>
         <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
       </button>
@@ -322,6 +330,7 @@ const departments = Object.keys(deptGroups);
         <div style="display: flex; align-items: center; gap: 0.75rem;">
           <Award style="color: var(--accent-primary); width: 20px; height: 20px;" />
           <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Value Added Course (VAC) Syllabus</span>
+          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(99,102,241,0.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">VAC · 50 Marks</span>
         </div>
         <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
       </button>
@@ -395,6 +404,7 @@ const departments = Object.keys(deptGroups);
         <div style="display: flex; align-items: center; gap: 0.75rem;">
           <BookOpen style="color: var(--accent-warning); width: 20px; height: 20px;" />
           <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Skill Enhancement Course (SEC) Syllabus</span>
+          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">SEC · 75 Marks</span>
         </div>
         <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
       </button>

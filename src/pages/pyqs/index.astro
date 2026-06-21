@@ -11,6 +11,16 @@ const availablePyqs = pyqsData.filter(item => !!item.downloadUrl);
 // Categories list to display (ordered as in legacy screenshot)
 const categories = ['Major', 'Minor', 'MDC', 'SEC', 'VAC', 'AEC'];
 
+// Marks info per category
+const categoryInfo: Record<string, { marks: string; label: string; color: string; bg: string; border: string }> = {
+  Major: { marks: '100 Marks', label: 'MJ', color: 'var(--accent-primary)', bg: 'rgba(99,102,241,0.12)', border: 'rgba(99,102,241,0.25)' },
+  Minor: { marks: '100 Marks', label: 'AC', color: 'var(--accent-success)', bg: 'rgba(16,185,129,0.12)', border: 'rgba(16,185,129,0.25)' },
+  MDC:   { marks: '100 Marks', label: 'MDC', color: 'var(--accent-warning)', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)' },
+  SEC:   { marks: '75 Marks',  label: 'SEC', color: 'var(--accent-warning)', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)' },
+  VAC:   { marks: '50 Marks',  label: 'VAC', color: 'var(--accent-primary)', bg: 'rgba(99,102,241,0.12)', border: 'rgba(99,102,241,0.25)' },
+  AEC:   { marks: '50 Marks',  label: 'AEC', color: 'var(--accent-success)', bg: 'rgba(16,185,129,0.12)', border: 'rgba(16,185,129,0.25)' },
+};
+
 // Get unique subjects per category
 const getSubjectsForCategory = (cat: string) => {
   return [...new Set(availablePyqs.filter(p => p.category === cat).map(p => p.subject))].sort();
@@ -68,7 +78,14 @@ const popularPapers = [...availablePyqs]
                   data-cat={cat.toLowerCase()}
                   style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
                 >
-                  <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary);">{cat} Paper</span>
+                  <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                    <span style={`font-size: 1.05rem; font-weight: 700; color: ${categoryInfo[cat]?.color ?? 'var(--accent-primary)'};`}>{cat} Paper</span>
+                    {categoryInfo[cat] && (
+                      <span style={`font-size: 0.62rem; font-weight: 700; background: ${categoryInfo[cat].bg}; color: ${categoryInfo[cat].color}; border: 1px solid ${categoryInfo[cat].border}; border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;`}>
+                        {categoryInfo[cat].label} · {categoryInfo[cat].marks}
+                      </span>
+                    )}
+                  </div>
                   <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
                 </button>
 
@@ -76,6 +93,13 @@ const popularPapers = [...availablePyqs]
                 <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out; background-color: rgba(0,0,0,0.15);">
                   {hasData ? (
                     <div style="padding: 0.75rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                      {/* AC renaming notice inside Minor section */}
+                      {cat === 'Minor' && (
+                        <div style="display: flex; align-items: flex-start; gap: 0.55rem; background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-xs); padding: 0.65rem 0.9rem; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.25rem;">
+                          <span style="flex-shrink: 0;">ℹ️</span>
+                          <span><strong style="color: var(--accent-success);">2025 batch onwards:</strong> "Minor" is officially renamed <strong>Associated Core (AC)</strong>. Same papers, new name.</span>
+                        </div>
+                      )}
                       {catSubjects.map(sub => {
                         const sems = getSemestersForSubject(cat, sub);
                         return (
