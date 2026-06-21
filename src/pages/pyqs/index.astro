@@ -15,7 +15,7 @@ const categories = ['Major', 'Minor', 'MDC', 'SEC', 'VAC', 'AEC'];
 const categoryInfo: Record<string, { marks: string; label: string; color: string; bg: string; border: string }> = {
   Major: { marks: '100 Marks', label: 'MJ', color: 'var(--accent-primary)', bg: 'rgba(99,102,241,0.12)', border: 'rgba(99,102,241,0.25)' },
   Minor: { marks: '100 Marks', label: 'AC', color: 'var(--accent-success)', bg: 'rgba(16,185,129,0.12)', border: 'rgba(16,185,129,0.25)' },
-  MDC:   { marks: '100 Marks', label: 'MDC', color: 'var(--accent-warning)', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)' },
+  MDC:   { marks: '75 Marks',  label: 'MDC', color: 'var(--accent-warning)', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)' },
   SEC:   { marks: '75 Marks',  label: 'SEC', color: 'var(--accent-warning)', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)' },
   VAC:   { marks: '50 Marks',  label: 'VAC', color: 'var(--accent-primary)', bg: 'rgba(99,102,241,0.12)', border: 'rgba(99,102,241,0.25)' },
   AEC:   { marks: '50 Marks',  label: 'AEC', color: 'var(--accent-success)', bg: 'rgba(16,185,129,0.12)', border: 'rgba(16,185,129,0.25)' },
@@ -51,6 +51,53 @@ const popularPapers = [...availablePyqs]
       Download free <strong>Kolhan University previous year question papers</strong> (PYQ) for Tata College, Chaibasa.
       Browse semester-wise exam papers for the <strong>NEP 2020 FYUGP 2022 batch</strong> &mdash; Major, Minor, MDC, SEC, VAC &amp; AEC courses.
     </p>
+  </div>
+
+  <!-- Passing Marks Info Panel -->
+  <div style="background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(16,185,129,0.04) 100%); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1.35rem; margin-bottom: 1.75rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem;">
+      <span style="font-size: 1rem;">📊</span>
+      <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.06em; text-transform: uppercase;">Marks &amp; Passing Criteria (FYUGP)</span>
+      <span style="font-size: 0.7rem; color: var(--text-tertiary); margin-left: auto;">Qualifying: <strong style="color: var(--accent-success);">40% of total marks</strong></span>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+        <span style="font-weight: 700; color: var(--accent-primary);">MJ / AC</span>
+        <span style="color: var(--text-tertiary);">|</span>
+        <span style="color: var(--text-secondary);">100 marks</span>
+        <span style="color: var(--text-tertiary);">·</span>
+        <span style="color: var(--accent-success); font-weight: 600;">Pass: 40</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+        <span style="font-weight: 700; color: var(--accent-warning);">MDC</span>
+        <span style="color: var(--text-tertiary);">|</span>
+        <span style="color: var(--text-secondary);">75 marks</span>
+        <span style="color: var(--text-tertiary);">·</span>
+        <span style="color: var(--accent-success); font-weight: 600;">Pass: 30</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+        <span style="font-weight: 700; color: var(--accent-warning);">SEC</span>
+        <span style="color: var(--text-tertiary);">|</span>
+        <span style="color: var(--text-secondary);">75 marks</span>
+        <span style="color: var(--text-tertiary);">·</span>
+        <span style="color: var(--accent-success); font-weight: 600;">Pass: 30</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+        <span style="font-weight: 700; color: var(--accent-primary);">AEC / VAC</span>
+        <span style="color: var(--text-tertiary);">|</span>
+        <span style="color: var(--text-secondary);">50 marks</span>
+        <span style="color: var(--text-tertiary);">·</span>
+        <span style="color: var(--accent-success); font-weight: 600;">Pass: 20</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+        <span style="font-weight: 700; color: var(--text-secondary);">Practical / Lab</span>
+        <span style="color: var(--text-tertiary);">|</span>
+        <span style="color: var(--text-secondary);">25 marks</span>
+        <span style="color: var(--text-tertiary);">·</span>
+        <span style="color: var(--accent-success); font-weight: 600;">Pass: 10</span>
+      </div>
+    </div>
+    <p style="font-size: 0.72rem; color: var(--text-tertiary); margin-top: 0.75rem; line-height: 1.5;">* For 100-mark theory papers: 75 marks End-Semester + 25 marks Internal Assessment. Combined total must meet the passing threshold.</p>
   </div>
 
   <div style="display: grid; grid-template-columns: 1fr; gap: 2rem;" class="md:grid-cols-3">

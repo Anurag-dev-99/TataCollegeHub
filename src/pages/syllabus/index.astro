@@ -53,7 +53,7 @@ const departments = Object.keys(deptGroups);
 >
 
   <!-- Header -->
-  <div style="margin-bottom: 2.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
     <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">Kolhan University Syllabus</h1>
     <p style="color: var(--text-secondary); max-width: 650px; font-size: 1.05rem; line-height: 1.6;">
       Official <strong>Kolhan University NEP 2020 FYUGP syllabus</strong> for Tata College, Chaibasa students.
@@ -61,8 +61,54 @@ const departments = Object.keys(deptGroups);
     </p>
   </div>
 
+  <!-- Passing Marks Info Panel -->
+  <div style="background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(16,185,129,0.04) 100%); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1.35rem; margin-bottom: 1.75rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem;">
+      <span style="font-size: 1rem;">📊</span>
+      <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.06em; text-transform: uppercase;">Marks &amp; Passing Criteria (FYUGP)</span>
+      <span style="font-size: 0.7rem; color: var(--text-tertiary); margin-left: auto;">Qualifying: <strong style="color: var(--accent-success);">40% of total marks</strong></span>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+        <span style="font-weight: 700; color: var(--accent-primary);">MJ / AC</span>
+        <span style="color: var(--text-tertiary);">|</span>
+        <span style="color: var(--text-secondary);">100 marks</span>
+        <span style="color: var(--text-tertiary);">·</span>
+        <span style="color: var(--accent-success); font-weight: 600;">Pass: 40</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+        <span style="font-weight: 700; color: var(--accent-warning);">MDC</span>
+        <span style="color: var(--text-tertiary);">|</span>
+        <span style="color: var(--text-secondary);">75 marks</span>
+        <span style="color: var(--text-tertiary);">·</span>
+        <span style="color: var(--accent-success); font-weight: 600;">Pass: 30</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+        <span style="font-weight: 700; color: var(--accent-warning);">SEC</span>
+        <span style="color: var(--text-tertiary);">|</span>
+        <span style="color: var(--text-secondary);">75 marks</span>
+        <span style="color: var(--text-tertiary);">·</span>
+        <span style="color: var(--accent-success); font-weight: 600;">Pass: 30</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+        <span style="font-weight: 700; color: var(--accent-primary);">AEC / VAC</span>
+        <span style="color: var(--text-tertiary);">|</span>
+        <span style="color: var(--text-secondary);">50 marks</span>
+        <span style="color: var(--text-tertiary);">·</span>
+        <span style="color: var(--accent-success); font-weight: 600;">Pass: 20</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+        <span style="font-weight: 700; color: var(--text-secondary);">Practical / Lab</span>
+        <span style="color: var(--text-tertiary);">|</span>
+        <span style="color: var(--text-secondary);">25 marks</span>
+        <span style="color: var(--text-tertiary);">·</span>
+        <span style="color: var(--accent-success); font-weight: 600;">Pass: 10</span>
+      </div>
+    </div>
+    <p style="font-size: 0.72rem; color: var(--text-tertiary); margin-top: 0.75rem; line-height: 1.5;">* For 100-mark theory papers: 75 marks End-Semester + 25 marks Internal Assessment. Combined total must meet the passing threshold.</p>
+  </div>
+
   <!-- Course Types Selection Section -->
-  <!-- Course Types Selection Section (Accordion Layout matching PYQ) -->
   <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
     
     <!-- Major Honours Accordion Item -->
@@ -180,6 +226,7 @@ const departments = Object.keys(deptGroups);
         <div style="display: flex; align-items: center; gap: 0.75rem;">
           <Compass style="color: var(--accent-warning); width: 20px; height: 20px;" />
           <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Multidisciplinary Course (MDC) Syllabus</span>
+          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">MDC · 75 Marks</span>
         </div>
         <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
       </button>
