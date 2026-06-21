@@ -4,35 +4,99 @@ Welcome back! This file is your dashboard for immediate tasks, content creation,
 
 ---
 
-## 📅 Today's Must-Do List (June 20, 2026)
+## 📅 Today's Must-Do List (June 21, 2026)
 
-- [ ] **Create and Post Your First YouTube Short!** (See guide below — this is your #1 priority today 🚀)
+- [ ] **Upload Psychology MDC Short** — recheck syllabus PDF first before recording
+- [ ] **Confirm remaining 3 MDC subjects** (Political Science, Commerce, Kudmali) — check if PDFs exist on kolhanuniversity.ac.in
 - [ ] **Share the #1 Google Rank with Friends:** Ask 2-3 classmates to search "kolhan pyq" in Incognito and send you screenshots.
-- [ ] **Push the latest `seo_open_tabs.py` update to GitHub** so your local changes are backed up.
+- [ ] **Push latest changes to GitHub**
   ```powershell
-  git add seo_open_tabs.py
-  git commit -m "tool: update open tabs script to support Chrome Incognito & pws=0"
+  git add .
+  git commit -m "feat: add marks badges, AC renaming note, passing marks panel"
   git push
   ```
 
 ---
 
-## 🎥 YouTube Shorts: No-Face, High-Impact Plan
+## 📋 YouTube Upload Log
 
-Creating content can feel lazy/difficult when you think you need to show your face, record voiceovers, or do heavy editing. **You don't need to do any of that.** 
+> Track every video uploaded and every idea in the pipeline. Update this after each upload.
 
-Because your website is now **#1 on Google for "kolhan pyq"**, your first Short will write itself.
+### ✅ Uploaded Videos (Done)
 
-### 📝 30-Second Shorts Script (No Face Needed)
-* **Hook (0-5s):** Show a laptop or phone screen. Type on screen: *"Still asking seniors for Kolhan University PYQs?"*
-* **Body (5-15s):** Screen record yourself opening Google Chrome, typing `kolhan pyq`, and showing your website `kolhanhub.in` sitting proud at **#1**.
-* **Value (15-25s):** Click the link, show how fast the page loads, click on a semester, and download a paper in 1 tap.
-* **Call to Action (25-30s):** Text on screen: *"Stop wasting time. Search 'kolhan pyq' on Google or go to kolhanhub.in. Link in bio/comments."*
+| # | Title / Topic | Type | Notes |
+|---|---|---|---|
+| 1 | How to Download Kolhan University Syllabus | Tutorial Short | First upload |
+| 2 | How to Download Kolhan University Syllabus (v2) | Tutorial Short | Same topic, second version |
+| 3 | Semester 4 Maths PYQ Download | PYQ Short | — |
+| 4 | MDC History Syllabus Download | MDC Series | First MDC short ✅ |
 
-### ⚡ Why you should do this TODAY:
-1. **0 Subscribers is fine:** YouTube's Shorts algorithm pushes videos to random users' feeds based on interests, meaning you can easily get 500–2,000 views on your very first upload.
-2. **Backlink & Traffic Power:** If 50 students search "kolhan pyq" after seeing your video, it tells Google's algorithm that your site is highly clicked, locking in your #1 rank forever.
-3. **Takes 10 Minutes:** Use your phone to record your screen, add a trending audio track directly in the YouTube app, add some text, and hit post. **Do it today!**
+**Total Uploaded: 4 videos**
+
+---
+
+### 🗂️ MDC Syllabus Series — Upload Tracker
+
+> **Goal:** 1 Short per MDC subject = 32 total Shorts.
+> ⚠️ **Recheck each syllabus PDF before recording to make sure it's up-to-date.**
+> 💡 After each upload, pin a comment: *"Download karo: kolhanhub.in/syllabus → MDC section → [Subject]"*
+
+**Progress: 28 / 32 uploaded**
+
+#### ✅ MDC Shorts — Done (28)
+
+| # | Subject | Status |
+|---|---|---|
+| 1 | History | ✅ Uploaded |
+| 2 | Hindi | ✅ Uploaded |
+| 3 | English | ✅ Uploaded |
+| 4 | Bengali (Bangla) | ✅ Uploaded |
+| 5 | Odia | ✅ Uploaded |
+| 6 | Urdu | ✅ Uploaded |
+| 7 | Sanskrit | ✅ Uploaded |
+| 8 | Ho | ✅ Uploaded |
+| 9 | Santali | ✅ Uploaded |
+| 10 | Philosophy | ✅ Uploaded |
+| 11 | Public Administration | ✅ Uploaded |
+| 12 | Economics | ✅ Uploaded |
+| 13 | Sociology | ✅ Uploaded |
+| 14 | Geography | ✅ Uploaded |
+| 15 | Anthropology | ✅ Uploaded |
+| 16 | Home Science | ✅ Uploaded |
+| 17 | Physics | ✅ Uploaded |
+| 18 | Chemistry | ✅ Uploaded |
+| 19 | Mathematics | ✅ Uploaded |
+| 20 | Botany | ✅ Uploaded |
+| 21 | Zoology | ✅ Uploaded |
+| 22 | Geology | ✅ Uploaded |
+| 23 | Statistics | ✅ Uploaded |
+| 24 | BBA (Business Administration) | ✅ Uploaded |
+| 25 | Computer Application (CA) | ✅ Uploaded |
+| 26 | Information Technology (IT) | ✅ Uploaded |
+| 27 | Mass Communication | ✅ Uploaded |
+| 28 | Environmental Science | ✅ Uploaded |
+
+#### ⏳ MDC Shorts — Remaining (4)
+
+| # | Subject | Status | Action Needed |
+|---|---|---|---|
+| 29 | Psychology | ❌ Not uploaded | Recheck PDF → record → upload |
+| 30 | Political Science | ❓ Confirm | Check if MDC PDF exists on KU site |
+| 31 | Commerce (B.Com) | ❓ Confirm | Check if MDC PDF exists on KU site |
+| 32 | Kudmali | ❓ Confirm | Check if MDC PDF exists on KU site |
+
+---
+
+### 📌 Upcoming Video Ideas — Priority Queue
+
+| Priority | Idea | Status |
+|---|---|---|
+| 🔴 HIGH | Psychology MDC Syllabus Short | ⏳ Pending — recheck PDF first |
+| 🔴 HIGH | Results Like a Pro + Community Comment Drive | ⏳ Not started — best during result season |
+| 🟡 MED | CGPA Calculator Demo | ⏳ Not started |
+| 🟡 MED | Kolhan University PYQ Free Download | ⏳ Not started |
+| 🟢 LOW | All 32 MDC Syllabi in 30 Seconds | ⏳ Recording done, editing pending |
+| 🟢 LOW | Kolhan University Syllabus Guide (Hindi) | ⏳ Script ready, recording pending |
 
 ---
 
@@ -82,9 +146,9 @@ Google tracks **Dwell Time** (how long a user stays on your website). If a new s
 
 ---
 
-## 🎥 YouTube Shorts — Video Ideas Bank
+## 🎥 YouTube Shorts — Video Ideas Bank (Detailed)
 
-> All ideas for future YouTube Shorts to drive traffic to kolhanhub.in
+> All detailed scripts and notes for future YouTube Shorts.
 
 ---
 
@@ -93,12 +157,11 @@ Google tracks **Dwell Time** (how long a user stays on your website). If a new s
 **Concept:**
 Screen record yourself checking Kolhan University results on kolhanhub.in like a pro — fast roll number search, result appearing, CGPA shown. Then ask viewers in the pinned comment to drop their **batch + semester + college name** so you can add their result data to the website.
 
-**Why this is BRILLIANT (not ajeeb):**
+**Why this works:**
 - Comments = algorithm gold. Each comment tells YouTube "this video is engaging" → pushes it to more people
 - You get a **free data collection pipeline** — students tell you exactly what result data to add
 - Creates a **community feeling** — students feel ownership of your website
 - Results videos get massive search traffic during exam season (Nov, May)
-- One video can spark a chain: student comments → you add data → they share with batch → more traffic
 
 **Script Hook Ideas:**
 - Hindi: *"Kolhan University result dekho 10 second mein — aur comment karo apna batch aur semester!"*
@@ -148,3 +211,11 @@ Show the CGPA calculator on kolhanhub.in/cgpa — enter marks → result appears
 Show PYQ section — filter by department, semester — download a paper. Hook: *"Seniors se maangna band karo"*
 
 **Status:** [ ] Not yet started
+
+---
+
+## 📌 Notes & Reminders
+
+- **MDC syllabus accuracy:** KU updates PDFs silently. Always open the PDF and check the year/batch before making a video about it.
+- **YouTube SEO tip:** Title every MDC short as: `"[Subject] MDC Syllabus Download — Kolhan University FYUGP"` for max search visibility.
+- **Posting frequency:** Even 1 Short every 2 days = 15 Shorts/month. At that rate, all 32 MDC Shorts would be done in ~2 months.
