@@ -87,16 +87,60 @@ Welcome back! This file is your dashboard for immediate tasks, content creation,
 
 ---
 
+## ✅ AEC Syllabus Shorts — COMPLETED (June 22, 2026)
+
+All AEC syllabus short videos uploaded to YouTube. ✅
+
+---
+
+## 📅 Today's Upload Plan — June 22, 2026
+
+### 🎯 VAC Syllabus Shorts (5 videos — do today)
+
+| # | Subject | Semester | Type | Status |
+|---|---------|----------|------|--------|
+| 1 | VAC-1(A) Understanding India | Semester 1 | Compulsory | ❌ Not uploaded |
+| 2 | VAC-1(B) Environmental Studies | Semester 1 | Choose One | ❌ Not uploaded |
+| 3 | VAC-1(B) Health & Wellness | Semester 1 | Choose One | ❌ Not uploaded |
+| 4 | VAC-1(B) Yoga | Semester 1 | Choose One | ❌ Not uploaded |
+| 5 | VAC-2 Global Citizenship Education | Semester 4 | Compulsory | ❌ Not uploaded |
+
+**Title format:**
+```
+VAC [Subject] Syllabus Kolhan University [Semester] 📥 #shorts
+```
+**Example:** `VAC Understanding India Syllabus Kolhan University Semester 1 📥 #shorts`
+
+---
+
+### 🎯 SEC Syllabus Shorts (4 videos — do today)
+
+| # | Subject | Semester | Status |
+|---|---------|----------|--------|
+| 1 | SEC-1 Digital Education | Semester 1 | ❌ Not uploaded |
+| 2 | SEC-2 News Writing & Reporting | Semester 2 | ❌ Not uploaded |
+| 3 | SEC-2 Communication Skills & Personality Development | Semester 2 | ❌ Not uploaded |
+| 4 | SEC-3 Mathematical & Computational Thinking | Semester 3 | ❌ Not uploaded |
+
+**Title format:**
+```
+SEC [Subject] Syllabus Kolhan University Semester [X] 📥 #shorts
+```
+**Example:** `SEC Digital Education Syllabus Kolhan University Semester 1 📥 #shorts`
+
+---
+
 ### 📌 Upcoming Video Ideas — Priority Queue
 
 | Priority | Idea | Status |
 |---|---|---|
+| 🔴 HIGH | VAC Syllabus Shorts (5 videos) | ⏳ Today — June 22 |
+| 🔴 HIGH | SEC Syllabus Shorts (4 videos) | ⏳ Today — June 22 |
 | 🔴 HIGH | Psychology MDC Syllabus Short | ⏳ Pending — recheck PDF first |
 | 🔴 HIGH | Results Like a Pro + Community Comment Drive | ⏳ Not started — best during result season |
 | 🟡 MED | CGPA Calculator Demo | ⏳ Not started |
 | 🟡 MED | Kolhan University PYQ Free Download | ⏳ Not started |
 | 🟢 LOW | All 32 MDC Syllabi in 30 Seconds | ⏳ Recording done, editing pending |
-| 🟢 LOW | Kolhan University Syllabus Guide (Hindi) | ⏳ Script ready, recording pending |
 
 ---
 
