@@ -1,0 +1,122 @@
+{
+  "last_updated": "2026-06-24T07:03:37.361162",
+  "history": [
+    {
+      "timestamp": "2026-06-19T07:25:00",
+      "method": "selenium",
+      "rankings": {
+        "kolhan hub": 1,
+        "kolhanhub": 9,
+        "kolhan pyq": null,
+        "kolhan university pyq": null,
+        "kolhan university previous year papers": null,
+        "kolhan university question papers": null,
+        "kolhan university question papers download not found -": null,
+        "kolhan syllabus": null,
+        "kolhan university syllabus": null,
+        "kolhan university nep 2020 syllabus": null,
+        "kolhan university fyugp syllabus": null,
+        "kolhan result": null,
+        "kolhan university result": null,
+        "kolhan university exam result 2024": null,
+        "tata college pyq": null,
+        "tata college syllabus": null,
+        "tata college result": null,
+        "tata college chaibasa": null,
+        "tata college chaibasa result": null,
+        "tata college chaibasa pyq": null
+      }
+    },
+    {
+      "timestamp": "2026-06-19T07:34:00",
+      "method": "serpapi",
+      "rankings": {
+        "kolhanhub": 1,
+        "kolhan hub": 7,
+        "tata college syllabus": 12,
+        "tata college chaibasa pyq": 12,
+        "kolhan university nep 2020 syllabus": 18,
+        "kolhan university syllabus": 30,
+        "kolhan pyq": null,
+        "kolhan university pyq": null,
+        "kolhan university previous year papers": null,
+        "kolhan university question papers download": null,
+        "kolhan syllabus": null,
+        "kolhan result": null,
+        "kolhan university result": null,
+        "tata college pyq": null,
+        "tata college result": null,
+        "tata college chaibasa": null,
+        "tata college chaibasa result": null
+      }
+    },
+    {
+      "timestamp": "2026-06-19T08:20:00",
+      "method": "serpapi",
+      "rankings": {
+        "kolhanhub": 3,
+        "tata college pyq": 9,
+        "tata college chaibasa pyq": 9,
+        "kolhan hub": 13,
+        "tata college result": 13,
+        "kolhan university nep 2020 syllabus": 18,
+        "tata college syllabus": 22,
+        "kolhan syllabus": 27,
+        "kolhan university syllabus": 30,
+        "kolhan pyq": null,
+        "kolhan university pyq": null,
+        "kolhan university previous year papers": null,
+        "kolhan university question papers download": null,
+        "kolhan result": null,
+        "kolhan university result": null,
+        "tata college chaibasa": null,
+        "tata college chaibasa result": null
+      }
+    },
+    {
+      "timestamp": "2026-06-19T21:32:00",
+      "method": "serpapi",
+      "rankings": {
+        "kolhanhub": 2,
+        "tata college chaibasa pyq": 7,
+        "tata college chaibasa result": 9,
+        "tata college syllabus": 13,
+        "kolhan pyq": 14,
+        "kolhan university previous year papers": 16,
+        "tata college pyq": 16,
+        "kolhan university pyq": 17,
+        "kolhan university question papers download": 19,
+        "kolhan university nep 2020 syllabus": 20,
+        "kolhan syllabus": 24,
+        "kolhan university syllabus": 29,
+        "kolhan hub": null,
+        "kolhan result": null,
+        "kolhan university result": null,
+        "tata college result": null,
+        "tata college chaibasa": null
+      }
+    },
+    {
+      "timestamp": "2026-06-24T06:59:33+05:30",
+      "method": "manual",
+      "rankings": {
+        "kolhan hub": 1,
+        "kolhanhub": 1,
+        "tata college pyq": 8,
+        "tata college chaibasa pyq": 1,
+        "tata college result": 9,
+        "tata college syllabus": 11,
+        "kolhan university nep syllabus": 10,
+        "kolhan syllabus": 24,
+        "kolhan univerisy syllabus": 29,
+        "kolhan pyq": 1,
+        "kolhan university pyq": 8,
+        "kolhan university previous year question": 17,
+        "kolhan university question papers download": 18,
+        "kolhan university nep 2020 syllabus": 7,
+        "kolhan result": null,
+        "kolhan university result": null
+      }
+    }
+  ]
+}

@@ -134,7 +134,23 @@ def save_results(results):
             page_str = f"p.{page}" if isinstance(page, int) else "-"
             f.write(f"{kw:<44} {rank_str:<8} {page_str}\n")
     print(f"\n  [SAVED] Results saved to: {filename}")
+
+    # Log to JSON Database
+    try:
+        import seo_history_manager
+        rankings_dict = {}
+        for kw, rank, page, err in results:
+            if isinstance(rank, int):
+                rankings_dict[kw.strip().lower()] = rank
+            else:
+                rankings_dict[kw.strip().lower()] = None
+        seo_history_manager.log_run_externally("serpapi", rankings_dict)
+        print(f"  [DATABASE] Successfully appended run to JSON database and updated report.\n")
+    except Exception as e:
+        print(f"  [DATABASE ERROR] Could not save to database: {e}\n")
+
     return filename
+
 
 
 # ── Main ──────────────────────────────────────────────────
