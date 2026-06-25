@@ -4,6 +4,72 @@ Welcome back! This file is your dashboard for immediate tasks, content creation,
 
 ---
 
+## ✅ Request Completed Log — PYQ Uploads
+
+> Track every student request that came in and mark it as fulfilled. Update this after every new upload batch.
+
+| # | Request | Requested By | Completed | What Was Uploaded |
+|---|---------|-------------|-----------|-------------------|
+| 1 | Maths Major Sem 1 PYQ — all batches | Student (2022-2026 Batch) | ✅ June 25, 2026 | MJ-01 for 2022-26, 2023-27, 2024-28 batches |
+| 2 | Maths Major Sem 2 PYQ — all batches | Student (2022-2026 Batch) | ✅ June 25, 2026 | MJ-02 & MJ-03 for 2022-26, 2023-27, 2024-28 batches |
+| 3 | Maths Major Sem 3 PYQ — all batches | Student (2022-2026 Batch) | ✅ Already uploaded | MJ-04 & MJ-05 for 2022-26 and 2023-27 batches |
+| 4 | Maths Major Sem 4 PYQ — all batches | Student (2022-2026 Batch) | ✅ Already uploaded | MJ-06, MJ-07, MJ-08 for 2022-26 batch |
+| 5 | MDC Psychology PYQ | Student (2023-2027 Batch) | ✅ June 25, 2026 | Psychology MDC Sem 1, 2, 3 for 2023-27 batch |
+
+### 📋 Detailed Request Notes
+
+#### Request #1 — Maths Major Sem 1 PYQ
+> *"Sem 1 maths ka PYQ chahiye tha, 2022 batch ke liye"*
+
+- **Requested:** Student needed Semester 1 Maths Major papers
+- **Completed:** ✅ Uploaded MJ-01 for all 3 batches
+  - `maths_mj_01_sem1_pyq_2022-2026.pdf` → [Drive Link](https://drive.google.com/file/d/1-e8pP4E2eGdZQNtqu8NhkvKMlni1AODv/view?usp=drive_link)
+  - `maths_mj_01_sem1_pyq_2023-2027.pdf` → [Drive Link](https://drive.google.com/file/d/1rya3WjvUNev2fOqgW2dwR5DK1wEDPquL/view?usp=drive_link)
+  - `Maths_major_semester1_mj_01_pyq_2024_2028.pdf` → [Drive Link](https://drive.google.com/file/d/1AGYCLCHwppP9of9bVkq9sxwHB5-WopaR/view?usp=drive_link)
+
+---
+
+#### Request #2 — Maths Major Sem 2 PYQ
+> *"Sem 2 ke MJ-02 aur MJ-03 dono chahiye the, 2023 batch ke liye bhi"*
+
+- **Requested:** Student needed both Semester 2 Maths Major papers (2 papers per batch)
+- **Completed:** ✅ Uploaded MJ-02 & MJ-03 for all 3 batches
+  - **MJ-02:** 2022-26, 2023-27, 2024-28 → all 3 Drive links live
+  - **MJ-03:** 2022-26, 2023-27, 2024-28 → all 3 Drive links live
+
+---
+
+#### Request #3 & #4 — Maths Major Sem 3 & Sem 4 PYQ
+> *"Sem 3 aur Sem 4 ke papers bhi upload karo bhai"*
+
+- **Requested:** Student needed Semester 3 and Semester 4 Maths papers
+- **Completed:** ✅ Were already uploaded before this log was started
+  - **Sem 3:** MJ-04 & MJ-05 (2022-26, 2023-27 batches)
+  - **Sem 4:** MJ-06, MJ-07, MJ-08 (2022-26 batch)
+
+---
+
+#### Request #5 — MDC Psychology PYQ
+> *"Psychology MDC ka PYQ kahan milega? Please upload karo"*
+
+- **Requested:** Student needed Psychology MDC papers for 2023-2027 batch
+- **Completed:** ✅ Uploaded all 3 semesters
+  - `psychology_MDC_PYQ_2023_2027_semester1.pdf` → [Drive Link](https://drive.google.com/file/d/1PuzfFBjj_plPq-1wYojZ-wLcGuclSv9h/view?usp=drive_link)
+  - `psychology_MDC_PYQ_2023_2027_semester2.pdf` → [Drive Link](https://drive.google.com/file/d/1u4cFCHLcww2NBx20SF8nWQ9tH_cjFuRc/view?usp=drive_link)
+  - `psychology_MDC_PYQ_2023_2027_semester3.pdf` → [Drive Link](https://drive.google.com/file/d/1E3DLjLZjR2EjYSA8BAsbdZQfxOI4kpm3/view?usp=drive_link)
+
+---
+
+### 🚫 Request Banned / Rejected Log
+
+| # | Request | Reason | Action |
+|---|---------|--------|--------|
+| — | *(none yet)* | — | — |
+
+> Add here: requests that were spam, impossible, or out of scope for the site.
+
+---
+
 ## 📅 Today's Must-Do List (June 21, 2026)
 
 - [ ] **Upload Psychology MDC Short** — recheck syllabus PDF first before recording
