@@ -7,7 +7,7 @@ export async function getStaticPaths() {
   const getSlug = (dept: string) => dept.toLowerCase().replace(/\s+/g, '-');
   
   // Filter and only build departments that have active files
-  const activeDepartments = ['Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor'];
+  const activeDepartments = ['Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor', 'Botany'];
   const filteredSyllabus = syllabusData.filter(item => activeDepartments.includes(item.department));
   const departments = [...new Set(filteredSyllabus.map(item => item.department))];
   
@@ -37,6 +37,18 @@ const getLocalPdfPath = (deptName: string, semNum: number) => {
     return `${baseUrl}/pdf/physics_sem${semNum}_syllabus.pdf`;
   } else if (dept === 'physics minor') {
     return `${baseUrl}/pdf/physics_minor_sem${semNum}_syllabus.pdf`;
+  } else if (dept === 'botany') {
+    const botanyLinks: Record<number, string> = {
+      1: "https://drive.google.com/file/d/1poQNqRVC66Uq7iF9vfnKTrOX7qvk7bkv/view?usp=drive_link",
+      2: "https://drive.google.com/file/d/1tnkDxcPJOIMr1BM7p9DJAJMroJQAo5Sg/view?usp=drive_link",
+      3: "https://drive.google.com/file/d/1h4DtJAIXiynMuwIOFHyZxgsMMBMHmf_w/view?usp=drive_link",
+      4: "https://drive.google.com/file/d/1ruiM5UpCBVogVIaX9aQuIOzzIa8ka6IF/view?usp=drive_link",
+      5: "https://drive.google.com/file/d/1i19FZNRGr-hp6A0413lnsiWMypFmbrfY/view?usp=drive_link",
+      6: "https://drive.google.com/file/d/1b8yg6Irj38N50-qUEE_FmSYn3zlrZ4b4/view?usp=drive_link",
+      7: "https://drive.google.com/file/d/1reKqyaSLaGbtyS3qFzLzihWsge9JjVRj/view?usp=drive_link",
+      8: "https://drive.google.com/file/d/1KTexPjc33uYQD_g4bEkGNxe5oUrbuNS-/view?usp=drive_link"
+    };
+    return botanyLinks[semNum] || null;
   }
   return null; // Fallback to Coming Soon state
 };
@@ -128,6 +140,19 @@ const getModulesForSemester = (modules: string[], semNum: number) => {
                 <div>•</div>
                 <div>Avg Size: {syl.fileSize}</div>
               </div>
+              {(syl as any).downloadUrl && (
+                <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.875rem;">
+                  <a 
+                    href={(syl as any).downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-outline btn-sm"
+                    style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem;"
+                  >
+                    <Download size="14" /> Download Full Syllabus (Sem 1-8)
+                  </a>
+                </div>
+              )}
             </div>
 
             <!-- Semester Selection Tabs -->
@@ -188,11 +213,13 @@ const getModulesForSemester = (modules: string[], semNum: number) => {
                         {localPdf ? (
                           <a 
                             href={localPdf} 
-                            download 
+                            target={localPdf.startsWith('http') ? "_blank" : undefined}
+                            rel={localPdf.startsWith('http') ? "noopener noreferrer" : undefined}
+                            download={localPdf.startsWith('http') ? undefined : ""} 
                             class="btn btn-primary" 
                             style="flex: 1; justify-content: center; gap: 0.5rem; font-size: 0.9rem;"
                           >
-                            <Download size="16" /> Download PDF
+                            <Download size="16" /> {localPdf.startsWith('http') ? 'View Syllabus' : 'Download PDF'}
                           </a>
                         ) : (
                           <div style="display: flex; gap: 0.5rem; width: 100%;">

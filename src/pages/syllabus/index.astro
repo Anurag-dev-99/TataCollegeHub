@@ -19,7 +19,7 @@ const getSlug = (dept: string) => {
 };
 
 // Filter syllabus to only keep ones with actual PDF files
-const activeDepartments = ['Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor'];
+const activeDepartments = ['Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor', 'Botany'];
 const filteredSyllabusData = syllabusData.filter(item => activeDepartments.includes(item.department));
 
 // Group syllabuses by department to show summaries in card

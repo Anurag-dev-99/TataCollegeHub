@@ -142,5 +142,25 @@
       "Sem 7: MN-7 (Basic Electronics & Instrumentation)",
       "Sem 8: MN-8 (Computational Physics & Research Methodology)"
     ]
+  },
+  {
+    "id": "syl-botany-ug",
+    "title": "B.Sc Botany Honours Syllabus (FYUGP NEP-2020)",
+    "department": "Botany",
+    "semester": "All Semesters (1-8)",
+    "effectiveFrom": "2022 onwards",
+    "fileSize": "2.1 MB",
+    "description": "Complete Four Year Undergraduate Program (FYUGP) syllabus for Botany Honours under NEP-2020. Includes course outcomes, detailed topic breakdown (Microbiology, Mycology, Plant Anatomy, Physiology, Genetics, Molecular Biology, and Biotechnology) and list of recommended textbooks.",
+    "downloadUrl": "https://drive.google.com/file/d/1zpJuoOiLVOI3SckaQZKsPCqNnQo688hQ/view?usp=drive_link",
+    "modules": [
+      "Sem 1: MJ-1 (Phycology and Microbiology)",
+      "Sem 2: MJ-2 (Biomolecules and Cell Biology)",
+      "Sem 3: MJ-3 (Mycology and Phytopathology)",
+      "Sem 4: MJ-4 (Archegoniatae), MJ-5 (Anatomy of Angiosperms)",
+      "Sem 5: MJ-6 (Genetics), MJ-7 (Molecular Biology)",
+      "Sem 6: MJ-8 (Plant Ecology & Phytogeography), MJ-9 (Plant Systematics)",
+      "Sem 7: MJ-10 (Reproductive Biology of Angiosperms), MJ-11 (Plant Physiology)",
+      "Sem 8: MJ-12 (Plant Metabolism), MJ-13 (Research Methodology & Project)"
+    ]
   }
 ]
