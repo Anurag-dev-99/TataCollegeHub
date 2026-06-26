@@ -6,10 +6,11 @@ import { ChevronLeft, Calendar, Download, FileCode, AlertCircle, HelpCircle, Ext
 export async function getStaticPaths() {
   const pathsMap = new Map();
   
-  // Filter only available papers with download URLs
-  const availablePyqs = pyqsData.filter(item => !!item.downloadUrl);
-  
-  availablePyqs.forEach(item => {
+  // Include ALL papers — available ones AND missing AEC papers so those pages render
+  pyqsData.forEach(item => {
+    // For non-AEC categories, only show pages that have an actual downloadUrl
+    if (item.category !== 'AEC' && !item.downloadUrl) return;
+
     const key = `${item.category.toLowerCase()}|${item.subject.toLowerCase()}|${item.semester}`;
     if (!pathsMap.has(key)) {
       pathsMap.set(key, {
@@ -88,31 +89,46 @@ const matchingPapers = pyqsData.filter(p =>
     <div style="display: flex; flex-direction: column; gap: 1.25rem;">
       {matchingPapers.map(paper => {
         const hasUrl = !!paper.downloadUrl;
+        const isMissing = !!(paper as any).missing;
         
         return (
-          <div class="card" style="display: flex; flex-direction: column; gap: 1rem; border-color: var(--border-color);" class="animate-fade-in">
+          <div 
+            class="card animate-fade-in" 
+            style={`display: flex; flex-direction: column; gap: 1rem; border-color: ${isMissing ? 'rgba(245,158,11,0.3)' : 'var(--border-color)'}; ${isMissing ? 'background: linear-gradient(135deg, rgba(245,158,11,0.04) 0%, var(--bg-secondary) 100%);' : ''}`}
+          >
+
+            {/* Missing paper top-banner — AEC only */}
+            {isMissing && (
+              <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-xs); padding: 0.5rem 0.85rem; font-size: 0.78rem; color: #d97706; font-weight: 600; margin-bottom: -0.25rem;">
+                <AlertCircle size="14" style="flex-shrink:0;" />
+                <span>Not Available — This paper is missing from our archive.</span>
+              </div>
+            )}
             
             <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
               <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
-                <div style="background-color: var(--bg-tertiary); color: var(--accent-primary); width: 40px; height: 40px; border-radius: var(--radius-xs); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                  <FileCode size="20" />
+                <div style={`background-color: ${isMissing ? 'rgba(245,158,11,0.12)' : 'var(--bg-tertiary)'}; color: ${isMissing ? '#d97706' : 'var(--accent-primary)'}; width: 40px; height: 40px; border-radius: var(--radius-xs); display: flex; align-items: center; justify-content: center; flex-shrink: 0;`}>
+                  {isMissing ? <HelpCircle size="20" /> : <FileCode size="20" />}
                 </div>
                 <div>
                   <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary);">{paper.title}</h3>
-                  <div style="display: flex; gap: 0.75rem; font-size: 0.775rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                  <div style="display: flex; gap: 0.75rem; font-size: 0.775rem; color: var(--text-secondary); margin-top: 0.25rem; flex-wrap: wrap;">
                     <span>Year: <strong>{paper.year}</strong></span>
-                    <span>•</span>
-                    <span>Size: {paper.fileSize}</span>
-                    <span>•</span>
-                    <span style="display: flex; align-items: center; gap: 0.15rem;"><Download size="12" /> {paper.downloadCount || 0} downloads</span>
+                    {(paper as any).set && <><span>•</span><span>{(paper as any).set}</span></>}
+                    {!isMissing && <><span>•</span><span style="display: flex; align-items: center; gap: 0.15rem;"><Download size="12" /> {paper.downloadCount || 0} downloads</span></>}
                   </div>
                 </div>
               </div>
               
-              <span class="badge badge-primary" style="font-size: 0.7rem; flex-shrink: 0;">{paper.category}</span>
+              <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem; flex-shrink: 0;">
+                <span class="badge badge-primary" style="font-size: 0.7rem;">{paper.category}</span>
+                {isMissing && (
+                  <span style="font-size: 0.62rem; font-weight: 700; background: rgba(245,158,11,0.15); color: #d97706; border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 2px 7px; white-space: nowrap;">Missing</span>
+                )}
+              </div>
             </div>
 
-            <!-- "No Dead Ends" Download System Actions -->
+            <!-- Download / Upload CTA -->
             <div style="border-top: 1px solid var(--border-color); padding-top: 0.875rem; display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem;">
               {hasUrl ? (
                 <a 
@@ -124,12 +140,33 @@ const matchingPapers = pyqsData.filter(p =>
                 >
                   Download Paper <ExternalLink size="14" />
                 </a>
+              ) : isMissing ? (
+                <div style="display: flex; align-items: center; gap: 0.5rem; width: 100%; justify-content: space-between; flex-wrap: wrap;">
+                  <span style="font-size: 0.8rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.3rem;">
+                    <AlertCircle size="13" /> Paper not yet in our archive
+                  </span>
+                  <div style="display: flex; gap: 0.5rem;">
+                    <button 
+                      class="btn btn-sm" 
+                      style="font-size: 0.8rem; white-space: nowrap; background: rgba(245,158,11,0.12); color: #d97706; border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius-xs); padding: 0.35rem 0.85rem; cursor: pointer; transition: background 0.2s;"
+                      onclick={`document.dispatchEvent(new CustomEvent('open-submit-modal'));`}
+                    >
+                      📤 Upload if you have it
+                    </button>
+                    <button 
+                      class="btn btn-outline btn-sm" 
+                      style="font-size: 0.8rem; white-space: nowrap;"
+                      onclick={`document.dispatchEvent(new CustomEvent('open-request-modal', { detail: { subject: '${paper.title}', semester: '${paper.semester}', category: '${paper.category}' } }));`}
+                    >
+                      Request Paper
+                    </button>
+                  </div>
+                </div>
               ) : (
-                <div style="display: flex; align-items: center; gap: 0.5rem; width: 100%; justify-content: space-between;" class="md:w-auto">
+                <div style="display: flex; align-items: center; gap: 0.5rem; width: 100%; justify-content: space-between;">
                   <span style="font-size: 0.8rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.25rem;">
                     <AlertCircle size="14" /> PDF link awaiting upload
                   </span>
-                  
                   <div style="display: flex; gap: 0.5rem;">
                     <button 
                       disabled 
