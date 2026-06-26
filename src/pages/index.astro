@@ -62,12 +62,103 @@ const popularPapers = [...pyqsData]
 >
   
   <!-- Header welcome -->
-  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
-    <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">Tata College, Chaibasa — Student Hub</h1>
-    <p style="color: var(--text-secondary); max-width: 600px; font-size: 1.05rem;">
-      Your one-stop portal for <strong>Kolhan University PYQ</strong> (previous year question papers), 
-      NEP 2020 syllabus, exam results &amp; official notices — built for <strong>Tata College, Chaibasa</strong> students of the 2022 batch (FYUGP Sem 1–8).
+  <div style="margin-bottom: 2.25rem; display: flex; flex-direction: column; gap: 0.65rem;">
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.15); border-radius: var(--radius-full); padding: 0.35rem 0.95rem; width: fit-content; font-size: 0.75rem; font-weight: 700; color: var(--accent-primary); letter-spacing: 0.02em;">
+      🎓 Built by students, for students
+    </div>
+    <h1 style="font-size: 2.25rem; font-family: var(--font-display); tracking: -0.03em; font-weight: 850; background: linear-gradient(to right, var(--text-primary), var(--text-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;">
+      Tata College, Chaibasa &mdash; Student Hub
+    </h1>
+    <p style="color: var(--text-secondary); max-width: 650px; font-size: 1.08rem; line-height: 1.6; font-weight: 500; margin: 0;">
+      Saving your precious time with organized PYQs, syllabus, results, and more.
     </p>
+  </div>
+
+  <!-- Requests Completed Accordion -->
+  <div class="completed-requests-accordion" style="margin-bottom: 2rem; border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(16, 185, 129, 0.02) 0%, rgba(0, 0, 0, 0.15) 100%);">
+    <button 
+      id="completed-requests-trigger"
+      style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1.25rem; background: transparent; border: none; cursor: pointer; text-align: left; transition: background 0.25s;"
+    >
+      <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: rgba(16, 185, 129, 0.15); border-radius: 50%; font-size: 0.8rem; color: var(--accent-success);">✓</span>
+        <span style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Completed Student Requests</span>
+        <span style="font-size: 0.65rem; font-weight: 700; background: rgba(16, 185, 129, 0.12); color: var(--accent-success); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 20px; padding: 1px 7px; letter-spacing: 0.3px;">4 Tasks Resolved</span>
+      </div>
+      <ChevronRight id="completed-chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
+    </button>
+
+    <div id="completed-requests-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 0 solid var(--border-color);">
+      <div style="padding: 1.25rem; display: flex; flex-direction: column; gap: 0.85rem; background: rgba(0, 0, 0, 0.2);">
+        <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin: 0 0 0.25rem 0;">
+          Below are the recent requests submitted by students that have been successfully sourced, verified, and uploaded to the portal:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          
+          <!-- Item 4: Physics Major PYQ -->
+          <div style="display: flex; flex-direction: column; gap: 0.35rem; padding: 0.75rem 0.85rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">REQUESTED: 26 June 2026 (by Gopal)</span>
+              <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-success); background: rgba(16, 185, 129, 0.1); padding: 0.1rem 0.4rem; border-radius: var(--radius-full);">Done (26 June 2026)</span>
+            </div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Physics Major PYQs (Semester 1–6)</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.45;">
+              Requested Physics Major Semester 1 paper. Sourced and successfully uploaded papers for all semesters (1 to 6) for the 2022 and 2024 batches.
+            </div>
+            <div style="margin-top: 0.35rem; display: flex; justify-content: flex-end;">
+              <a href={`${baseUrl}/pyqs`} class="btn btn-outline btn-sm" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; height: auto;">View PYQ Database</a>
+            </div>
+          </div>
+
+          <!-- Item 3: Botany Syllabus Sem 4 -->
+          <div style="display: flex; flex-direction: column; gap: 0.35rem; padding: 0.75rem 0.85rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">REQUESTED: 26 June 2026</span>
+              <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-success); background: rgba(16, 185, 129, 0.1); padding: 0.1rem 0.4rem; border-radius: var(--radius-full);">Done (26 June 2026)</span>
+            </div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Botany Major Syllabus (Semester 1–8)</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.45;">
+              Requested Botany Semester 4 syllabus. Sourced and linked the complete all-semester (1 to 8) B.Sc Botany syllabus folder.
+            </div>
+            <div style="margin-top: 0.35rem; display: flex; justify-content: flex-end;">
+              <a href={`${baseUrl}/syllabus/botany`} class="btn btn-outline btn-sm" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; height: auto;">View Botany Syllabus</a>
+            </div>
+          </div>
+
+          <!-- Item 2: MDC Psychology PYQ -->
+          <div style="display: flex; flex-direction: column; gap: 0.35rem; padding: 0.75rem 0.85rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">REQUESTED: 22 June 2026</span>
+              <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-success); background: rgba(16, 185, 129, 0.1); padding: 0.1rem 0.4rem; border-radius: var(--radius-full);">Done (23 June 2026)</span>
+            </div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">MDC Psychology PYQ (Semester 1–3)</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.45;">
+              Requested MDC Psychology papers. All available Semester 1, 2, and 3 PYQs for the 2023 batch have been uploaded.
+            </div>
+            <div style="margin-top: 0.35rem; display: flex; justify-content: flex-end;">
+              <a href={`${baseUrl}/pyqs`} class="btn btn-outline btn-sm" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; height: auto;">View MDC Papers</a>
+            </div>
+          </div>
+
+          <!-- Item 1: Maths Major Sem 1 -->
+          <div style="display: flex; flex-direction: column; gap: 0.35rem; padding: 0.75rem 0.85rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">REQUESTED: 22 June 2026</span>
+              <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-success); background: rgba(16, 185, 129, 0.1); padding: 0.1rem 0.4rem; border-radius: var(--radius-full);">Done (23 June 2026)</span>
+            </div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Maths Major Semester 1 PYQs (All Batches)</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.45;">
+              Requested Mathematics Major Sem 1 papers. Sourced and successfully uploaded papers for all batches (2022, 2023, and 2024).
+            </div>
+            <div style="margin-top: 0.35rem; display: flex; justify-content: flex-end;">
+              <a href={`${baseUrl}/pyqs`} class="btn btn-outline btn-sm" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; height: auto;">View Mathematics Papers</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
 
 
@@ -1045,6 +1136,24 @@ const popularPapers = [...pyqsData]
       closeHolidaysDoneBtn?.addEventListener('click', closeHolidaysModal);
       holidaysModal?.addEventListener('click', (e) => {
         if (e.target === holidaysModal) closeHolidaysModal();
+      });
+
+      // 6. Completed Requests Accordion Toggle
+      const completedTrigger = document.getElementById('completed-requests-trigger');
+      const completedContent = document.getElementById('completed-requests-content');
+      const completedChevron = document.getElementById('completed-chevron');
+
+      completedTrigger?.addEventListener('click', () => {
+        const isOpen = completedContent.style.maxHeight && completedContent.style.maxHeight !== '0px';
+        if (isOpen) {
+          completedContent.style.maxHeight = '0px';
+          completedContent.style.borderTopWidth = '0px';
+          if (completedChevron) completedChevron.style.transform = 'rotate(0deg)';
+        } else {
+          completedContent.style.maxHeight = completedContent.scrollHeight + 'px';
+          completedContent.style.borderTopWidth = '1px';
+          if (completedChevron) completedChevron.style.transform = 'rotate(90deg)';
+        }
       });
 
       // Execute initial rendering
