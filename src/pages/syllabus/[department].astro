@@ -7,7 +7,7 @@ export async function getStaticPaths() {
   const getSlug = (dept: string) => dept.toLowerCase().replace(/\s+/g, '-');
   
   // Filter and only build departments that have active files
-  const activeDepartments = ['Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor', 'Botany'];
+  const activeDepartments = ['Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor', 'Botany', 'English'];
   const filteredSyllabus = syllabusData.filter(item => activeDepartments.includes(item.department));
   const departments = [...new Set(filteredSyllabus.map(item => item.department))];
   
@@ -49,6 +49,11 @@ const getLocalPdfPath = (deptName: string, semNum: number) => {
       8: "https://drive.google.com/file/d/1KTexPjc33uYQD_g4bEkGNxe5oUrbuNS-/view?usp=drive_link"
     };
     return botanyLinks[semNum] || null;
+  } else if (dept === 'english') {
+    const englishLinks: Record<number, string> = {
+      1: "https://drive.google.com/file/d/1k7ALhUt6X_Vz9x78_3o8tNiqPgzo2LJm/view?usp=drive_link"
+    };
+    return englishLinks[semNum] || null;
   }
   return null; // Fallback to Coming Soon state
 };
