@@ -83,80 +83,93 @@ const popularPapers = [...pyqsData]
       <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
         <span style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: rgba(16, 185, 129, 0.15); border-radius: 50%; font-size: 0.8rem; color: var(--accent-success);">✓</span>
         <span style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Completed Student Requests</span>
-        <span style="font-size: 0.65rem; font-weight: 700; background: rgba(16, 185, 129, 0.12); color: var(--accent-success); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 20px; padding: 1px 7px; letter-spacing: 0.3px;">4 Tasks Resolved</span>
+        <span style="font-size: 0.65rem; font-weight: 700; background: rgba(16, 185, 129, 0.12); color: var(--accent-success); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 20px; padding: 1px 7px; letter-spacing: 0.3px;">5 Tasks Resolved</span>
       </div>
       <ChevronRight id="completed-chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
     </button>
 
-    <div id="completed-requests-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 0 solid var(--border-color);">
-      <div style="padding: 1.25rem; display: flex; flex-direction: column; gap: 0.85rem; background: rgba(0, 0, 0, 0.2);">
-        <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin: 0 0 0.25rem 0;">
-          Below are the recent requests submitted by students that have been successfully sourced, verified, and uploaded to the portal:
-        </p>
+    <div id="completed-requests-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 1px solid rgba(16,185,129,0.12);">
+      <div style="padding: 0.85rem 1.1rem; display: flex; flex-direction: column; gap: 0; background: rgba(0,0,0,0.18);">
 
-        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-          
-          <!-- Item 4: Physics Major PYQ -->
-          <div style="display: flex; flex-direction: column; gap: 0.35rem; padding: 0.75rem 0.85rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs);">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-              <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">REQUESTED: 26 June 2026 (by Gopal)</span>
-              <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-success); background: rgba(16, 185, 129, 0.1); padding: 0.1rem 0.4rem; border-radius: var(--radius-full);">Done (26 June 2026)</span>
-            </div>
-            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Physics Major PYQs (Semester 1–6)</div>
-            <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.45;">
-              Requested Physics Major Semester 1 paper. Sourced and successfully uploaded papers for all semesters (1 to 6) for the 2022 and 2024 batches.
-            </div>
-            <div style="margin-top: 0.35rem; display: flex; justify-content: flex-end;">
-              <a href={`${baseUrl}/pyqs`} class="btn btn-outline btn-sm" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; height: auto;">View PYQ Database</a>
-            </div>
-          </div>
-
-          <!-- Item 3: Botany Syllabus Sem 4 -->
-          <div style="display: flex; flex-direction: column; gap: 0.35rem; padding: 0.75rem 0.85rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs);">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-              <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">REQUESTED: 26 June 2026</span>
-              <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-success); background: rgba(16, 185, 129, 0.1); padding: 0.1rem 0.4rem; border-radius: var(--radius-full);">Done (26 June 2026)</span>
-            </div>
-            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Botany Major Syllabus (Semester 1–8)</div>
-            <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.45;">
-              Requested Botany Semester 4 syllabus. Sourced and linked the complete all-semester (1 to 8) B.Sc Botany syllabus folder.
-            </div>
-            <div style="margin-top: 0.35rem; display: flex; justify-content: flex-end;">
-              <a href={`${baseUrl}/syllabus/botany`} class="btn btn-outline btn-sm" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; height: auto;">View Botany Syllabus</a>
-            </div>
-          </div>
-
-          <!-- Item 2: MDC Psychology PYQ -->
-          <div style="display: flex; flex-direction: column; gap: 0.35rem; padding: 0.75rem 0.85rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs);">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-              <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">REQUESTED: 22 June 2026</span>
-              <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-success); background: rgba(16, 185, 129, 0.1); padding: 0.1rem 0.4rem; border-radius: var(--radius-full);">Done (23 June 2026)</span>
-            </div>
-            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">MDC Psychology PYQ (Semester 1–3)</div>
-            <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.45;">
-              Requested MDC Psychology papers. All available Semester 1, 2, and 3 PYQs for the 2023 batch have been uploaded.
-            </div>
-            <div style="margin-top: 0.35rem; display: flex; justify-content: flex-end;">
-              <a href={`${baseUrl}/pyqs`} class="btn btn-outline btn-sm" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; height: auto;">View MDC Papers</a>
-            </div>
-          </div>
-
-          <!-- Item 1: Maths Major Sem 1 -->
-          <div style="display: flex; flex-direction: column; gap: 0.35rem; padding: 0.75rem 0.85rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs);">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-              <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">REQUESTED: 22 June 2026</span>
-              <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-success); background: rgba(16, 185, 129, 0.1); padding: 0.1rem 0.4rem; border-radius: var(--radius-full);">Done (23 June 2026)</span>
-            </div>
-            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Maths Major Semester 1 PYQs (All Batches)</div>
-            <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.45;">
-              Requested Mathematics Major Sem 1 papers. Sourced and successfully uploaded papers for all batches (2022, 2023, and 2024).
-            </div>
-            <div style="margin-top: 0.35rem; display: flex; justify-content: flex-end;">
-              <a href={`${baseUrl}/pyqs`} class="btn btn-outline btn-sm" style="font-size: 0.7rem; padding: 0.25rem 0.55rem; height: auto;">View Mathematics Papers</a>
-            </div>
-          </div>
-
+        <!-- Header row -->
+        <div style="display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; padding: 0.4rem 0.6rem; margin-bottom: 0.25rem;">
+          <span style="font-size: 0.65rem; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.07em; text-transform: uppercase;">What was requested</span>
+          <span style="font-size: 0.65rem; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.07em; text-transform: uppercase; text-align: right;">Requested → Uploaded</span>
         </div>
+
+        <!-- Chemistry Major PYQ -->
+        <div style="display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; align-items: center; padding: 0.6rem 0.6rem; border-radius: var(--radius-xs); transition: background 0.15s;" class="req-row">
+          <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+            <span style="font-size: 0.75rem; flex-shrink: 0;">🧪</span>
+            <div>
+              <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Chemistry Major PYQ</span>
+              <span style="font-size: 0.72rem; color: var(--text-tertiary); margin-left: 0.4rem;">Sem 1–3</span>
+            </div>
+          </div>
+          <span style="font-size: 0.72rem; color: var(--text-secondary); white-space: nowrap; text-align: right;">30 Jun &rarr; <strong style="color: var(--accent-success);">1 Jul</strong></span>
+        </div>
+
+        <div style="height: 1px; background: var(--border-color); margin: 0 0.2rem; opacity: 0.5;"></div>
+
+        <!-- Physics Major PYQ -->
+        <div style="display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; align-items: center; padding: 0.6rem 0.6rem; border-radius: var(--radius-xs); transition: background 0.15s;" class="req-row">
+          <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+            <span style="font-size: 0.75rem; flex-shrink: 0;">⚛️</span>
+            <div>
+              <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Physics Major PYQ</span>
+              <span style="font-size: 0.72rem; color: var(--text-tertiary); margin-left: 0.4rem;">Sem 1–6</span>
+            </div>
+          </div>
+          <span style="font-size: 0.72rem; color: var(--text-secondary); white-space: nowrap; text-align: right;">26 Jun &rarr; <strong style="color: var(--accent-success);">26 Jun</strong></span>
+        </div>
+
+        <div style="height: 1px; background: var(--border-color); margin: 0 0.2rem; opacity: 0.5;"></div>
+
+        <!-- Botany Major Syllabus -->
+        <div style="display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; align-items: center; padding: 0.6rem 0.6rem; border-radius: var(--radius-xs); transition: background 0.15s;" class="req-row">
+          <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+            <span style="font-size: 0.75rem; flex-shrink: 0;">🌿</span>
+            <div>
+              <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Botany Major Syllabus</span>
+              <span style="font-size: 0.72rem; color: var(--text-tertiary); margin-left: 0.4rem;">Sem 1–8</span>
+            </div>
+          </div>
+          <span style="font-size: 0.72rem; color: var(--text-secondary); white-space: nowrap; text-align: right;">26 Jun &rarr; <strong style="color: var(--accent-success);">26 Jun</strong></span>
+        </div>
+
+        <div style="height: 1px; background: var(--border-color); margin: 0 0.2rem; opacity: 0.5;"></div>
+
+        <!-- MDC Psychology PYQ -->
+        <div style="display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; align-items: center; padding: 0.6rem 0.6rem; border-radius: var(--radius-xs); transition: background 0.15s;" class="req-row">
+          <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+            <span style="font-size: 0.75rem; flex-shrink: 0;">🧠</span>
+            <div>
+              <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">MDC Psychology PYQ</span>
+              <span style="font-size: 0.72rem; color: var(--text-tertiary); margin-left: 0.4rem;">Sem 1–3</span>
+            </div>
+          </div>
+          <span style="font-size: 0.72rem; color: var(--text-secondary); white-space: nowrap; text-align: right;">22 Jun &rarr; <strong style="color: var(--accent-success);">23 Jun</strong></span>
+        </div>
+
+        <div style="height: 1px; background: var(--border-color); margin: 0 0.2rem; opacity: 0.5;"></div>
+
+        <!-- Maths Major PYQ -->
+        <div style="display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; align-items: center; padding: 0.6rem 0.6rem; border-radius: var(--radius-xs); transition: background 0.15s;" class="req-row">
+          <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+            <span style="font-size: 0.75rem; flex-shrink: 0;">📐</span>
+            <div>
+              <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Maths Major PYQ</span>
+              <span style="font-size: 0.72rem; color: var(--text-tertiary); margin-left: 0.4rem;">Sem 1 · All Batches</span>
+            </div>
+          </div>
+          <span style="font-size: 0.72rem; color: var(--text-secondary); white-space: nowrap; text-align: right;">22 Jun &rarr; <strong style="color: var(--accent-success);">23 Jun</strong></span>
+        </div>
+
+        <!-- Footer link -->
+        <div style="margin-top: 0.75rem; display: flex; justify-content: flex-end;">
+          <a href={`${baseUrl}/pyqs`} style="font-size: 0.72rem; color: var(--accent-primary); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; opacity: 0.85; transition: opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">View PYQ Database →</a>
+        </div>
+
       </div>
     </div>
   </div>
