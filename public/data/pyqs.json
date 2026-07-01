@@ -78,24 +78,59 @@
   },
 
   {
-    "id": "pyq-mj-chem1",
-    "title": "2024 Paper - Inorganic Chemistry - I",
-    "year": "2024",
+    "id": "pyq-mj-chem-sem1-mj01-2024",
+    "title": "MJ-01 Chemistry Sem 1 PYQ (2024-2028 Batch)",
+    "year": "2024-2028",
     "semester": 1,
     "category": "Major",
     "subject": "Chemistry",
-    "downloadCount": 125,
-    "fileSize": "1.3 MB"
+    "downloadCount": 0,
+    "fileSize": "PDF File",
+    "downloadUrl": "https://drive.google.com/file/d/16gtysvopXBLEyJSojrb99PRxlUQkwg5p/view?usp=drive_link"
   },
   {
-    "id": "pyq-mj-chem2",
-    "title": "2023 Paper - Inorganic Chemistry - I",
-    "year": "2023",
-    "semester": 1,
+    "id": "pyq-mj-chem-sem2-mj02-2022",
+    "title": "MJ-02 Chemistry Sem 2 PYQ (2022-2026 Batch)",
+    "year": "2022-2026",
+    "semester": 2,
     "category": "Major",
     "subject": "Chemistry",
-    "downloadCount": 94,
-    "fileSize": "1.2 MB"
+    "downloadCount": 0,
+    "fileSize": "PDF File",
+    "downloadUrl": "https://drive.google.com/file/d/15TFGyJjJ0CyQUqG6A17dKe3_oJFilOXe/view?usp=drive_link"
+  },
+  {
+    "id": "pyq-mj-chem-sem2-mj03-2022",
+    "title": "MJ-03 Chemistry Sem 2 PYQ (2022-2026 Batch)",
+    "year": "2022-2026",
+    "semester": 2,
+    "category": "Major",
+    "subject": "Chemistry",
+    "downloadCount": 0,
+    "fileSize": "PDF File",
+    "downloadUrl": "https://drive.google.com/file/d/1V0c1GLz0yGghKjvx67iKle6lb_HSAhxw/view?usp=drive_link"
+  },
+  {
+    "id": "pyq-mj-chem-sem3-mj04-2022",
+    "title": "MJ-04 Chemistry Sem 3 PYQ (2022-2026 Batch)",
+    "year": "2022-2026",
+    "semester": 3,
+    "category": "Major",
+    "subject": "Chemistry",
+    "downloadCount": 0,
+    "fileSize": "PDF File",
+    "downloadUrl": "https://drive.google.com/file/d/1wSJZsTiWJj8zfDUd7Znv-CiSedS85cmx/view?usp=drive_link"
+  },
+  {
+    "id": "pyq-mj-chem-sem3-mj05-2022",
+    "title": "MJ-05 Chemistry Sem 3 PYQ (2022-2026 Batch)",
+    "year": "2022-2026",
+    "semester": 3,
+    "category": "Major",
+    "subject": "Chemistry",
+    "downloadCount": 0,
+    "fileSize": "PDF File",
+    "downloadUrl": "https://drive.google.com/file/d/1I4rdO41zKBbUk4sr5hACHDNBDhesP_RG/view?usp=drive_link"
   },
   {
     "id": "pyq-mn-phy1",
