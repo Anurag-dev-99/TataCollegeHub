@@ -131,12 +131,13 @@ const matchingPapers = pyqsData.filter(p =>
             <!-- Download / Upload CTA -->
             <div style="border-top: 1px solid var(--border-color); padding-top: 0.875rem; display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem;">
               {hasUrl ? (
-                <a 
+              <a 
                   href={paper.downloadUrl} 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   class="btn btn-primary btn-sm" 
                   style="gap: 0.35rem; font-size: 0.85rem;"
+                  onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.title}', category: '${paper.category}', semester: '${paper.semester}' });`}
                 >
                   Download Paper <ExternalLink size="14" />
                 </a>

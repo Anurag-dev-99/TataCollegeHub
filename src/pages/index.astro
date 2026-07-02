@@ -13,8 +13,11 @@ const activeNotices = noticesData.filter(notice => !notice.isArchived);
 const pinnedNotices = activeNotices.filter(notice => notice.isPinned);
 const recentNotices = activeNotices.filter(notice => !notice.isPinned).slice(0, 3);
 
-// Calculate total downloads from pyqs
-const totalDownloads = pyqsData.reduce((acc, item) => acc + (item.downloadCount || 0), 0);
+// Real computed stats from pyqs.json (always accurate, built at deploy time)
+const pyqsWithUrl = pyqsData.filter((p: any) => p.downloadUrl);
+const totalPyqsAvailable = pyqsWithUrl.length;
+const uniqueSubjects = [...new Set(pyqsWithUrl.map((p: any) => p.subject))].length;
+const uniqueCategories = [...new Set(pyqsWithUrl.map((p: any) => p.category))];
 
 // Automated Deadline Parser
 interface Deadline {
@@ -429,35 +432,47 @@ const popularPapers = [...pyqsData]
       <h2 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
         <Clock style="color: var(--accent-success);" /> Activity Stats
       </h2>
-      
-      <!-- Stat items -->
-      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.25rem;">
-        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
-          <span style="font-size: 0.85rem; color: var(--text-secondary);">Total PYQ Downloads</span>
-          <span style="font-size: 0.9rem; font-weight: 700; color: var(--accent-success);">{totalDownloads} papers</span>
+
+      <!-- Section label: Database -->
+      <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-tertiary); margin-bottom: 0.6rem;">📁 What's available</p>
+
+      <!-- Real build-time stats from pyqs.json -->
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.6rem;">
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">PYQ Papers Available</span>
+          <span style="font-size: 0.9rem; font-weight: 800; color: var(--accent-primary);">{totalPyqsAvailable} papers</span>
         </div>
-        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
-          <span style="font-size: 0.85rem; color: var(--text-secondary);">NEP Batch Coverage</span>
-          <span style="font-size: 0.9rem; font-weight: 700; color: var(--accent-primary);">100% NEP 2020</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.6rem;">
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">Subjects Covered</span>
+          <span style="font-size: 0.9rem; font-weight: 800; color: var(--accent-primary);">{uniqueSubjects} subjects</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.6rem;">
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">Semesters Covered</span>
+          <span style="font-size: 0.9rem; font-weight: 800; color: var(--accent-primary);">Sem 1 – 6</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">Batch Coverage</span>
+          <span style="font-size: 0.9rem; font-weight: 800; color: var(--accent-primary);">100% NEP 2020</span>
         </div>
       </div>
 
-      <h3 style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-tertiary); letter-spacing: 0.05em; margin-bottom: 0.75rem;">
-        Trending Downloads
-      </h3>
-      
+      <!-- Section label: Live Downloads -->
+      <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-tertiary); margin-bottom: 0.6rem;">📥 Student downloads</p>
+
+      <!-- Live counters fetched from Google Sheets -->
       <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-        {popularPapers.map(paper => (
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
-            <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;">
-              <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-primary);">{paper.subject}</span>
-              <span style="font-size: 0.7rem; color: var(--text-secondary); display: block;">Sem {paper.semester} • {paper.year}</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.25rem; color: var(--text-secondary); font-size: 0.75rem; flex-shrink: 0; background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: var(--radius-xs);">
-              <Download size="12" /> {paper.downloadCount}
-            </div>
-          </div>
-        ))}
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.6rem;">
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">PYQ Downloads</span>
+          <span id="stat-pyq-downloads" style="font-size: 0.9rem; font-weight: 800; color: var(--accent-success); min-width: 60px; text-align: right;">
+            <span class="stat-skeleton">—</span>
+          </span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">Syllabus Downloads</span>
+          <span id="stat-syllabus-downloads" style="font-size: 0.9rem; font-weight: 800; color: var(--accent-success); min-width: 60px; text-align: right;">
+            <span class="stat-skeleton">—</span>
+          </span>
+        </div>
       </div>
     </div>
 
@@ -533,7 +548,32 @@ const popularPapers = [...pyqsData]
         </div>
   </div>
 
+
+  <!-- Live download stats fetcher -->
   <script is:inline>
+    (function() {
+      const STATS_URL = 'https://script.google.com/macros/s/AKfycbx3ZJ1VuRgNc71FSKnrIAzLsv3qxnUeBwA8HALHWhDxlpJC93YzOwCV5rmLLT-swLaXHQ/exec?action=stats';
+      const pyqEl      = document.getElementById('stat-pyq-downloads');
+      const syllabusEl = document.getElementById('stat-syllabus-downloads');
+
+      fetch(STATS_URL)
+        .then(r => r.json())
+        .then(data => {
+          if (data.status === 'ok') {
+            if (pyqEl)      pyqEl.textContent      = data.pyqDownloads.toLocaleString();
+            if (syllabusEl) syllabusEl.textContent = data.syllabusDownloads.toLocaleString();
+          }
+        })
+        .catch(() => {
+          // If fetch fails, show a neutral fallback silently
+          if (pyqEl)      pyqEl.textContent = '—';
+          if (syllabusEl) syllabusEl.textContent = '—';
+        });
+    })();
+  </script>
+
+  <script is:inline>
+
     const loadLocalRequests = () => {
       const container = document.getElementById('local-requests-container');
       const listEl = document.getElementById('local-requests-list');

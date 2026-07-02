@@ -223,6 +223,7 @@ const getModulesForSemester = (modules: string[], semNum: number) => {
                             download={localPdf.startsWith('http') ? undefined : ""} 
                             class="btn btn-primary" 
                             style="flex: 1; justify-content: center; gap: 0.5rem; font-size: 0.9rem;"
+                            onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${syl.title}', category: '${syl.department}', semester: '${sem}', department: '${syl.department}' });`}
                           >
                             <Download size="16" /> {localPdf.startsWith('http') ? 'View Syllabus' : 'Download PDF'}
                           </a>

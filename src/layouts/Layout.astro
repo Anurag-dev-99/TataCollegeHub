@@ -88,6 +88,28 @@ const webPageSchema = JSON.stringify({
     <noscript><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" /></noscript>
 
 
+    <!-- Download tracker: must be top-level so it's available on all pages immediately -->
+    <script is:inline>
+      window._WEBHOOK = 'https://script.google.com/macros/s/AKfycbx3ZJ1VuRgNc71FSKnrIAzLsv3qxnUeBwA8HALHWhDxlpJC93YzOwCV5rmLLT-swLaXHQ/exec';
+      window.trackDownload = function(fileType, meta) {
+        try {
+          fetch(window._WEBHOOK, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              type:       'download',
+              fileType:   fileType            || 'pyq',
+              subject:    (meta||{}).subject    || 'Unknown',
+              category:   (meta||{}).category   || 'Unknown',
+              semester:   (meta||{}).semester   || 'Unknown',
+              department: (meta||{}).department || ''
+            })
+          }).catch(function(){});
+        } catch(e) {}
+      };
+    </script>
+
     <!-- Google Analytics: deferred after page load to not block render -->
     <script is:inline>
       window.addEventListener('load', function() {
@@ -649,7 +671,7 @@ const webPageSchema = JSON.stringify({
         const successState = document.getElementById('modal-success-state');
         const successMsgEl = document.getElementById('success-message');
 
-        const webhookUrl = 'https://script.google.com/macros/s/AKfycbx3ZJ1VuRgNc71FSKnrIAzLsv3qxnUeBwA8HALHWhDxlpJC93YzOwCV5rmLLT-swLaXHQ/exec';
+        const webhookUrl = window._WEBHOOK;
 
         const handleSuccess = () => {
           // Hide form and show success state
