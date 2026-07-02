@@ -67,10 +67,10 @@ const popularPapers = [...pyqsData]
       🎓 Built by students, for students
     </div>
     <h1 style="font-size: 2.25rem; font-family: var(--font-display); tracking: -0.03em; font-weight: 850; background: linear-gradient(to right, var(--text-primary), var(--text-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;">
-      Tata College, Chaibasa &mdash; Student Hub
+      Kolhan University PYQs, Syllabus, Results &amp; Notices
     </h1>
     <p style="color: var(--text-secondary); max-width: 650px; font-size: 1.08rem; line-height: 1.6; font-weight: 500; margin: 0;">
-      Saving your precious time with organized PYQs, syllabus, results, and more.
+      in one place
     </p>
   </div>
 
@@ -231,19 +231,245 @@ const popularPapers = [...pyqsData]
     </div>
   </div>
 
-  <!-- Quick Grid Layout -->
-  <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2.5rem;" class="md:grid-cols-3">
-    
-    <!-- Primary Info Cards -->
-    <div class="md:col-span-2" style="display: flex; flex-direction: column; gap: 2rem;">
+  <!-- ===== QUICK ACTIONS (below headline) ===== -->
+  <div style="margin-bottom: 2rem;">
+    <h2 style="font-size: 1.25rem; margin-bottom: 1rem; font-family: var(--font-display);">Quick Actions</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
       
-      <!-- Event Calendar Section (Schedule & Calendar widget) -->
-      <div class="card" style="background-color: var(--bg-secondary); border-color: var(--border-color); padding: 1.5rem 1.25rem;">
-        <!-- Card Header with Navigation Tabs -->
-        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;">
-          <h2 style="font-size: 1.25rem; font-family: var(--font-display); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
-            <Calendar style="color: var(--accent-primary);" /> Schedule & Calendar
-          </h2>
+      <a href={`${baseUrl}/syllabus`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
+        <div style="background-color: rgba(99, 102, 241, 0.1); color: var(--accent-primary); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+          <FileSpreadsheet />
+        </div>
+        <div>
+          <h3 style="font-size: 1rem; font-weight: 700;">View Syllabus</h3>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">NEP FYUGP (Sem 1-8)</p>
+        </div>
+      </a>
+
+      <a href={`${baseUrl}/pyqs`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
+        <div style="background-color: rgba(16, 185, 129, 0.1); color: var(--accent-success); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+          <FileCode />
+        </div>
+        <div>
+          <h3 style="font-size: 1rem; font-weight: 700;">PYQ Database</h3>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Download previous papers</p>
+        </div>
+      </a>
+
+      <a href={`${baseUrl}/results`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
+        <div style="background-color: rgba(245, 158, 11, 0.1); color: var(--accent-warning); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+          <GraduationCap />
+        </div>
+        <div>
+          <h3 style="font-size: 1rem; font-weight: 700;">Results Portal</h3>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">CGPA &amp; toppers data</p>
+        </div>
+      </a>
+
+      <a href={`${baseUrl}/notices`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
+        <div style="background-color: rgba(239, 68, 68, 0.1); color: var(--accent-danger); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+          <Bell />
+        </div>
+        <div>
+          <h3 style="font-size: 1rem; font-weight: 700;">Notice Board</h3>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Latest KU announcements</p>
+        </div>
+      </a>
+
+      <a href={`${baseUrl}/cgpa`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
+        <div style="background-color: rgba(16, 185, 129, 0.1); color: var(--accent-success); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+          <Calculator />
+        </div>
+        <div>
+          <h3 style="font-size: 1rem; font-weight: 700;">CGPA Calculator</h3>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Check your SGPA to CGPA status</p>
+        </div>
+      </a>
+
+      <a href={`${baseUrl}/recheck`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
+        <div style="background-color: rgba(239, 68, 68, 0.1); color: var(--accent-danger); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+          <ClipboardCheck />
+        </div>
+        <div>
+          <h3 style="font-size: 1rem; font-weight: 700;">Recheck Guide</h3>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Scrutiny &amp; photocopy process</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ===== CAN'T FIND YOUR PAPER (below Quick Actions) ===== -->
+  <div class="card request-glow-card" style="display: flex; flex-direction: column; gap: 1.25rem; border-color: var(--accent-primary); position: relative; overflow: hidden; background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(99, 102, 241, 0.05) 100%); margin-bottom: 2rem;">
+    <div class="glow-border-highlight"></div>
+    <div style="display: flex; gap: 1rem; align-items: flex-start;">
+      <div style="background-color: rgba(99, 102, 241, 0.1); color: var(--accent-primary); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <HelpCircle size="22" />
+      </div>
+      <div>
+        <h2 style="font-size: 1.1rem; font-family: var(--font-display); font-weight: 800; margin-bottom: 0.25rem;">Can't find your paper?</h2>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4;">
+          Request any paper or syllabus. You can also submit papers you have to help your peers!
+        </p>
+      </div>
+    </div>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.25rem;">
+      <button class="btn btn-primary btn-sm" onclick="document.dispatchEvent(new CustomEvent('open-request-modal'));" style="font-weight: 700; flex: 1;">
+        Request Paper
+      </button>
+      <button class="btn btn-outline btn-sm" onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));" style="font-weight: 700; flex: 1; border-color: var(--border-color); color: var(--text-primary);">
+        Submit Paper
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== WHAT'S NEW + ACTIVITY STATS (side by side on wider screens) ===== -->
+  <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2rem;" class="md:grid-cols-2">
+
+    <!-- What's New — Recent PYQ Uploads -->
+    <div class="card" style="border-color: rgba(16,185,129,0.3); background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(16,185,129,0.03) 100%);">
+      <h2 style="font-size: 1.1rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:rgba(16,185,129,0.15);border-radius:50%;font-size:0.7rem;">🆕</span>
+        What's New
+      </h2>
+
+      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+
+        <!-- Entry: Botany Major Syllabus -->
+        <a href={`${baseUrl}/syllabus/botany`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
+          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📚</span>
+          <div style="flex:1;overflow:hidden;">
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Botany Major Syllabus</div>
+            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">Sem 1–8 · FYUGP NEP-2020</div>
+          </div>
+          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Added</span>
+        </a>
+
+        <!-- Entry: AEC Sanskrit Sem 3 -->
+        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
+          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
+          <div style="flex:1;overflow:hidden;">
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">AEC-3 Sanskrit PYQ</div>
+            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">Sem 3 · 2022 Batch</div>
+          </div>
+          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
+        </a>
+
+        <!-- Entry: Maths Major Sem 5 -->
+        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
+          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
+          <div style="flex:1;overflow:hidden;">
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 5 PYQ</div>
+            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-11 · 2022–2026 batch</div>
+          </div>
+          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
+        </a>
+
+        <!-- Entry: Maths Major Sem 4 -->
+        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
+          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
+          <div style="flex:1;overflow:hidden;">
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 4 PYQ</div>
+            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-06, MJ-07, MJ-08 · 2022–2026</div>
+          </div>
+          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
+        </a>
+
+        <!-- Entry: Maths Major Sem 3 -->
+        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
+          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
+          <div style="flex:1;overflow:hidden;">
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 3 PYQ</div>
+            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-04, MJ-05 · 2022–26 &amp; 2023–27</div>
+          </div>
+          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
+        </a>
+
+        <!-- Entry: Maths Major Sem 2 -->
+        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
+          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
+          <div style="flex:1;overflow:hidden;">
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 2 PYQ</div>
+            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-02, MJ-03 · all 3 batches</div>
+          </div>
+          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
+        </a>
+
+        <!-- Entry: Maths Major Sem 1 -->
+        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
+          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
+          <div style="flex:1;overflow:hidden;">
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 1 PYQ</div>
+            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-01 · all 3 batches</div>
+          </div>
+          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
+        </a>
+
+        <!-- Entry: MDC Psychology -->
+        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
+          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">🧠</span>
+          <div style="flex:1;overflow:hidden;">
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">MDC Psychology PYQ</div>
+            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">Sem 1, 2, 3 · 2023–2027 batch</div>
+          </div>
+          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
+        </a>
+
+      </div>
+
+      <div style="margin-top:0.85rem;padding-top:0.75rem;border-top:1px solid var(--border-color);text-align:center;">
+        <a href={`${baseUrl}/pyqs`} style="font-size:0.8rem;font-weight:700;color:var(--accent-primary);display:inline-flex;align-items:center;gap:0.25rem;">
+          Browse all PYQs <ChevronRight size="14" />
+        </a>
+      </div>
+    </div>
+
+    <!-- Activity Stats -->
+    <div class="card">
+      <h2 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <Clock style="color: var(--accent-success);" /> Activity Stats
+      </h2>
+      
+      <!-- Stat items -->
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">Total PYQ Downloads</span>
+          <span style="font-size: 0.9rem; font-weight: 700; color: var(--accent-success);">{totalDownloads} papers</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">NEP Batch Coverage</span>
+          <span style="font-size: 0.9rem; font-weight: 700; color: var(--accent-primary);">100% NEP 2020</span>
+        </div>
+      </div>
+
+      <h3 style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-tertiary); letter-spacing: 0.05em; margin-bottom: 0.75rem;">
+        Trending Downloads
+      </h3>
+      
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        {popularPapers.map(paper => (
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+            <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;">
+              <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-primary);">{paper.subject}</span>
+              <span style="font-size: 0.7rem; color: var(--text-secondary); display: block;">Sem {paper.semester} • {paper.year}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.25rem; color: var(--text-secondary); font-size: 0.75rem; flex-shrink: 0; background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: var(--radius-xs);">
+              <Download size="12" /> {paper.downloadCount}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== SCHEDULE & CALENDAR (bottom of home section) ===== -->
+  <div class="card" style="background-color: var(--bg-secondary); border-color: var(--border-color); padding: 1.5rem 1.25rem; margin-bottom: 2.5rem;">
+    <!-- Card Header with Navigation Tabs -->
+    <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;">
+      <h2 style="font-size: 1.25rem; font-family: var(--font-display); display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+        <Calendar style="color: var(--accent-primary);" /> Schedule &amp; Calendar
+      </h2>
           <!-- Tab Toggle Pills -->
           <div style="display: flex; background-color: var(--bg-tertiary); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-color);">
             <button id="tab-deadlines-btn" class="calendar-tab-btn active" style="flex: 1; text-align: center; font-size: 0.8rem; font-weight: 700; padding: 0.45rem 0; border-radius: var(--radius-full); transition: all var(--transition-fast);">
@@ -305,281 +531,6 @@ const popularPapers = [...pyqsData]
             </button>
           </div>
         </div>
-      </div>
-
-      <!-- Quick Navigation Grid (Quick Actions) -->
-      <div>
-        <h2 style="font-size: 1.25rem; margin-bottom: 1rem; font-family: var(--font-display);">Quick Actions</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-          
-          <a href={`${baseUrl}/syllabus`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
-            <div style="background-color: rgba(99, 102, 241, 0.1); color: var(--accent-primary); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
-              <FileSpreadsheet />
-            </div>
-            <div>
-              <h3 style="font-size: 1rem; font-weight: 700;">View Syllabus</h3>
-              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">NEP FYUGP (Sem 1-8)</p>
-            </div>
-          </a>
-
-          <a href={`${baseUrl}/pyqs`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
-            <div style="background-color: rgba(16, 185, 129, 0.1); color: var(--accent-success); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
-              <FileCode />
-            </div>
-            <div>
-              <h3 style="font-size: 1rem; font-weight: 700;">PYQ Database</h3>
-              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Download previous papers</p>
-            </div>
-          </a>
-
-          <a href={`${baseUrl}/results`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
-            <div style="background-color: rgba(245, 158, 11, 0.1); color: var(--accent-warning); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
-              <GraduationCap />
-            </div>
-            <div>
-              <h3 style="font-size: 1rem; font-weight: 700;">Results Portal</h3>
-              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">CGPA & toppers data</p>
-            </div>
-          </a>
-
-          <a href={`${baseUrl}/notices`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
-            <div style="background-color: rgba(239, 68, 68, 0.1); color: var(--accent-danger); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
-              <Bell />
-            </div>
-            <div>
-              <h3 style="font-size: 1rem; font-weight: 700;">Notice Board</h3>
-              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Latest KU announcements</p>
-            </div>
-          </a>
-
-          <a href={`${baseUrl}/cgpa`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
-            <div style="background-color: rgba(16, 185, 129, 0.1); color: var(--accent-success); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
-              <Calculator />
-            </div>
-            <div>
-              <h3 style="font-size: 1rem; font-weight: 700;">CGPA Calculator</h3>
-              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Check your SGPA to CGPA status</p>
-            </div>
-          </a>
-
-          <a href={`${baseUrl}/recheck`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
-            <div style="background-color: rgba(239, 68, 68, 0.1); color: var(--accent-danger); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
-              <ClipboardCheck />
-            </div>
-            <div>
-              <h3 style="font-size: 1rem; font-weight: 700;">Recheck Guide</h3>
-              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Scrutiny & photocopy process</p>
-            </div>
-          </a>
-
-        </div>
-      </div>
-
-      <!-- Recent Notices Section -->
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-          <h2 style="font-size: 1.25rem; font-family: var(--font-display);">Latest Notifications</h2>
-          <a href={`${baseUrl}/notices`} style="font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
-            View All <ChevronRight size="16" />
-          </a>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 1rem;">
-          
-          <!-- Pinned Notices First -->
-          {pinnedNotices.map(notice => (
-            <div class="card" style="border-left: 4px solid var(--accent-primary); position: relative;">
-              <div style="position: absolute; top: 1rem; right: 1rem;">
-                <span class="badge badge-primary">Pinned</span>
-              </div>
-              <span style="font-size: 0.75rem; color: var(--text-tertiary); font-weight: 600;">{notice.date} • {notice.category}</span>
-              <h3 style="font-size: 1.05rem; font-weight: 700; margin: 0.25rem 0 0.5rem 0; line-height: 1.3; padding-right: 4rem;">{notice.title}</h3>
-              <p style="font-size: 0.875rem; color: var(--text-secondary); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                {notice.description}
-              </p>
-            </div>
-          ))}
-
-          <!-- Regular Notices -->
-          {recentNotices.map(notice => (
-            <div class="card">
-              <span style="font-size: 0.75rem; color: var(--text-tertiary); font-weight: 600;">{notice.date} • {notice.category}</span>
-              <h3 style="font-size: 1.05rem; font-weight: 700; margin: 0.25rem 0 0.5rem 0; line-height: 1.3;">{notice.title}</h3>
-              <p style="font-size: 0.875rem; color: var(--text-secondary); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                {notice.description}
-              </p>
-            </div>
-          ))}
-
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Sidebar Info Column (Calendar, Recent Activity) -->
-    <div style="display: flex; flex-direction: column; gap: 2rem;">
-      
-      <!-- Dedicated Request & Contribution Section -->
-      <div class="card request-glow-card" style="display: flex; flex-direction: column; gap: 1.25rem; border-color: var(--accent-primary); position: relative; overflow: hidden; background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(99, 102, 241, 0.05) 100%);">
-        <div class="glow-border-highlight"></div>
-        <div style="display: flex; gap: 1rem; align-items: flex-start;">
-          <div style="background-color: rgba(99, 102, 241, 0.1); color: var(--accent-primary); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-            <HelpCircle size="22" />
-          </div>
-          <div>
-            <h2 style="font-size: 1.1rem; font-family: var(--font-display); font-weight: 800; margin-bottom: 0.25rem;">Can't find your paper?</h2>
-            <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4;">
-              Request any paper or syllabus. You can also submit papers you have to help your peers!
-            </p>
-          </div>
-        </div>
-        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.25rem;">
-          <button class="btn btn-primary btn-sm" onclick="document.dispatchEvent(new CustomEvent('open-request-modal'));" style="font-weight: 700; flex: 1;">
-            Request Paper
-          </button>
-          <button class="btn btn-outline btn-sm" onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));" style="font-weight: 700; flex: 1; border-color: var(--border-color); color: var(--text-primary);">
-            Submit Paper
-          </button>
-        </div>
-      </div>
-
-      <!-- Quick Platform Stats & Activity -->
-      <div class="card">
-        <h2 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <Clock style="color: var(--accent-success);" /> Activity Stats
-        </h2>
-        
-        <!-- Stat items -->
-        <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.25rem;">
-          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
-            <span style="font-size: 0.85rem; color: var(--text-secondary);">Total PYQ Downloads</span>
-            <span style="font-size: 0.9rem; font-weight: 700; color: var(--accent-success);">{totalDownloads} papers</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
-            <span style="font-size: 0.85rem; color: var(--text-secondary);">NEP Batch Coverage</span>
-            <span style="font-size: 0.9rem; font-weight: 700; color: var(--accent-primary);">100% NEP 2020</span>
-          </div>
-        </div>
-
-        <h3 style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-tertiary); letter-spacing: 0.05em; margin-bottom: 0.75rem;">
-          Trending Downloads
-        </h3>
-        
-        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-          {popularPapers.map(paper => (
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
-              <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;">
-                <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-primary);">{paper.subject}</span>
-                <span style="font-size: 0.7rem; color: var(--text-secondary); display: block;">Sem {paper.semester} • {paper.year}</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.25rem; color: var(--text-secondary); font-size: 0.75rem; flex-shrink: 0; background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: var(--radius-xs);">
-                <Download size="12" /> {paper.downloadCount}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <!-- What's New — Recent PYQ Uploads -->
-      <div class="card" style="border-color: rgba(16,185,129,0.3); background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(16,185,129,0.03) 100%);">
-        <h2 style="font-size: 1.1rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:rgba(16,185,129,0.15);border-radius:50%;font-size:0.7rem;">🆕</span>
-          What's New
-        </h2>
-
-        <div style="display: flex; flex-direction: column; gap: 0.6rem;">
-
-          <!-- Entry: Botany Major Syllabus -->
-          <a href={`${baseUrl}/syllabus/botany`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-            <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📚</span>
-            <div style="flex:1;overflow:hidden;">
-              <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Botany Major Syllabus</div>
-              <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">Sem 1–8 · FYUGP NEP-2020</div>
-            </div>
-            <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Added</span>
-          </a>
-
-          <!-- Entry: AEC Sanskrit Sem 3 -->
-          <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-            <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
-            <div style="flex:1;overflow:hidden;">
-              <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">AEC-3 Sanskrit PYQ</div>
-              <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">Sem 3 · 2022 Batch</div>
-            </div>
-            <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-          </a>
-
-          <!-- Entry: Maths Major Sem 5 -->
-          <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-            <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
-            <div style="flex:1;overflow:hidden;">
-              <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 5 PYQ</div>
-              <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-11 · 2022–2026 batch</div>
-            </div>
-            <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-          </a>
-
-          <!-- Entry: Maths Major Sem 4 -->
-          <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-            <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
-            <div style="flex:1;overflow:hidden;">
-              <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 4 PYQ</div>
-              <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-06, MJ-07, MJ-08 · 2022–2026</div>
-            </div>
-            <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-          </a>
-
-          <!-- Entry: Maths Major Sem 3 -->
-          <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-            <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
-            <div style="flex:1;overflow:hidden;">
-              <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 3 PYQ</div>
-              <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-04, MJ-05 · 2022–26 &amp; 2023–27</div>
-            </div>
-            <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-          </a>
-
-          <!-- Entry: Maths Major Sem 2 -->
-          <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-            <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
-            <div style="flex:1;overflow:hidden;">
-              <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 2 PYQ</div>
-              <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-02, MJ-03 · all 3 batches</div>
-            </div>
-            <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-          </a>
-
-          <!-- Entry: Maths Major Sem 1 -->
-          <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-            <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
-            <div style="flex:1;overflow:hidden;">
-              <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 1 PYQ</div>
-              <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-01 · all 3 batches</div>
-            </div>
-            <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-          </a>
-
-          <!-- Entry: MDC Psychology -->
-          <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-            <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">🧠</span>
-            <div style="flex:1;overflow:hidden;">
-              <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">MDC Psychology PYQ</div>
-              <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">Sem 1, 2, 3 · 2023–2027 batch</div>
-            </div>
-            <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-          </a>
-
-        </div>
-
-        <div style="margin-top:0.85rem;padding-top:0.75rem;border-top:1px solid var(--border-color);text-align:center;">
-          <a href={`${baseUrl}/pyqs`} style="font-size:0.8rem;font-weight:700;color:var(--accent-primary);display:inline-flex;align-items:center;gap:0.25rem;">
-            Browse all PYQs <ChevronRight size="14" />
-          </a>
-        </div>
-      </div>
-
-    </div>
-
   </div>
 
   <script is:inline>
