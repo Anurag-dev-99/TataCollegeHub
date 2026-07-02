@@ -267,6 +267,7 @@ const departments = Object.keys(deptGroups);
                   data-name={item.name.toLowerCase()} 
                   data-category={item.category} 
                   style="padding: 1rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; transition: all 0.2s;"
+                  onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'MDC', semester: '${item.semester || 'Unknown'}', department: 'MDC' });`}
                 >
                   <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
                     <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
@@ -346,6 +347,7 @@ const departments = Object.keys(deptGroups);
                   data-name={item.name.toLowerCase()} 
                   data-semester={item.semester} 
                   style="padding: 1rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; transition: all 0.2s;"
+                  onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'AEC', semester: '${item.semester || 'Unknown'}', department: 'AEC' });`}
                 >
                   <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
                     <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
@@ -419,6 +421,7 @@ const departments = Object.keys(deptGroups);
                   data-name={item.name.toLowerCase()} 
                   data-semester={item.semester} 
                   style="padding: 1rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; transition: all 0.2s;"
+                  onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'VAC', semester: '${item.semester || 'Unknown'}', department: 'VAC' });`}
                 >
                   <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
                     <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
@@ -496,6 +499,7 @@ const departments = Object.keys(deptGroups);
                   data-name={item.name.toLowerCase()} 
                   data-semester={item.semester} 
                   style="padding: 1rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; transition: all 0.2s;"
+                  onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'SEC', semester: '${item.semester || 'Unknown'}', department: 'SEC' });`}
                 >
                   <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
                     <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
