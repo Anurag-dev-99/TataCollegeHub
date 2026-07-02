@@ -28,29 +28,7 @@ const aecPapers = availablePyqs
 
 const aecTotal = aecPapers.length;
 
-// Non-AEC categories for the generic accordion
-// Non-AEC/non-SEC/non-VAC categories for the generic accordion
-const nonAecCategories = ['Major', 'Minor', 'MDC'];
 
-// Marks info per category
-const categoryInfo: Record<string, { marks: string; label: string; color: string; bg: string; border: string }> = {
-  Major: { marks: '100 Marks', label: 'MJ', color: 'var(--accent-primary)', bg: 'rgba(99,102,241,0.12)', border: 'rgba(99,102,241,0.25)' },
-  Minor: { marks: '100 Marks', label: 'AC', color: 'var(--accent-success)', bg: 'rgba(16,185,129,0.12)', border: 'rgba(16,185,129,0.25)' },
-  MDC:   { marks: '75 Marks',  label: 'MDC', color: 'var(--accent-warning)', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)' },
-  SEC:   { marks: '75 Marks',  label: 'SEC', color: 'var(--accent-warning)', bg: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)' },
-  VAC:   { marks: '50 Marks',  label: 'VAC', color: 'var(--accent-primary)', bg: 'rgba(99,102,241,0.12)', border: 'rgba(99,102,241,0.25)' },
-  AEC:   { marks: '50 Marks',  label: 'AEC', color: 'var(--accent-success)', bg: 'rgba(16,185,129,0.12)', border: 'rgba(16,185,129,0.25)' },
-};
-
-// Get unique subjects per non-AEC category (only papers with downloadUrl)
-const getSubjectsForCategory = (cat: string) => {
-  return [...new Set(availablePyqs.filter(p => p.category === cat && !!p.downloadUrl).map(p => p.subject))].sort();
-};
-
-// Get unique semesters for category + subject (only papers with downloadUrl)
-const getSemestersForSubject = (cat: string, sub: string) => {
-  return [...new Set(availablePyqs.filter(p => p.category === cat && p.subject === sub && !!p.downloadUrl).map(p => p.semester))].sort((a, b) => a - b);
-};
 
 // ── VAC PYQ subject groups ────────────────────────────────────────────────────
 const vacPapers = availablePyqs.filter(p => p.category === 'VAC' && !!p.downloadUrl);
@@ -91,6 +69,26 @@ const getSecPapersForSubject = (subject: string) =>
     if (a.semester !== b.semester) return a.semester - b.semester;
     return String(a.year || '').localeCompare(String(b.year || ''));
   });
+
+// ── Generic category helpers (Major, Minor, MDC) ─────────────────────────
+// Builds structured data for a given category: { subject, semesters[], totalPapers }
+const buildCatData = (cat: string) => {
+  const papers = availablePyqs.filter(p => p.category === cat && !!p.downloadUrl);
+  const subjects = [...new Set(papers.map(p => p.subject))].sort();
+  return subjects.map(subject => {
+    const subPapers = papers.filter(p => p.subject === subject);
+    const sems = [...new Set(subPapers.map(p => p.semester))].sort((a, b) => a - b);
+    return { subject, sems, totalPapers: subPapers.length };
+  });
+};
+
+const majorData   = buildCatData('Major');
+const minorData   = buildCatData('Minor');
+const mdcData     = buildCatData('MDC');
+
+const majorSems   = [...new Set(availablePyqs.filter(p => p.category === 'Major' && !!p.downloadUrl).map(p => p.semester))].sort((a, b) => a - b);
+const minorSems   = [...new Set(availablePyqs.filter(p => p.category === 'Minor' && !!p.downloadUrl).map(p => p.semester))].sort((a, b) => a - b);
+const mdcSems     = [...new Set(availablePyqs.filter(p => p.category === 'MDC'   && !!p.downloadUrl).map(p => p.semester))].sort((a, b) => a - b);
 
 // Popular papers (non-AEC, has downloadUrl)
 const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
@@ -174,75 +172,306 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
         
         <!-- Accordion Category List (non-AEC) -->
         <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-          {nonAecCategories.map(cat => {
-            const catSubjects = getSubjectsForCategory(cat);
-            const hasData = catSubjects.length > 0;
-            
-            return (
-              <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden;">
-                <!-- Row Trigger -->
-                <button 
-                  class="accordion-trigger" 
-                  data-cat={cat.toLowerCase()}
-                  style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
-                >
-                  <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-                    <span style={`font-size: 1.05rem; font-weight: 700; color: ${categoryInfo[cat]?.color ?? 'var(--accent-primary)'};`}>{cat} Paper</span>
-                    {categoryInfo[cat] && (
-                      <span style={`font-size: 0.62rem; font-weight: 700; background: ${categoryInfo[cat].bg}; color: ${categoryInfo[cat].color}; border: 1px solid ${categoryInfo[cat].border}; border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;`}>
-                        {categoryInfo[cat].label} · {categoryInfo[cat].marks}
-                      </span>
-                    )}
-                  </div>
-                  <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
-                </button>
+          <!-- ─── Major PYQ Widget ──────────────────────────────────────────────── -->
+          {majorData.length > 0 && (
+            <div class="accordion-item" style="border: 1px solid rgba(99,102,241,0.25); border-radius: var(--radius-sm); overflow: hidden;">
+              <button
+                id="major-pyq-trigger"
+                class="accordion-trigger"
+                data-cat="major"
+                style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
+              >
+                <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                  <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary);">Major Paper</span>
+                  <span style="font-size: 0.62rem; font-weight: 700; background: rgba(99,102,241,0.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
+                    MJ · 100 Marks
+                  </span>
+                  <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{majorData.length} subjects</span>
+                </div>
+                <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
+              </button>
 
-                <!-- Subjects list (Collapsible) -->
-                <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out; background-color: rgba(0,0,0,0.15);">
-                  {hasData ? (
-                    <div style="padding: 0.75rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;">
-                      {cat === 'Minor' && (
-                        <div style="display: flex; align-items: flex-start; gap: 0.55rem; background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-xs); padding: 0.65rem 0.9rem; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.25rem;">
-                          <span style="flex-shrink: 0;">ℹ️</span>
-                          <span><strong style="color: var(--accent-success);">2025 batch onwards:</strong> "Minor" is officially renamed <strong>Associated Core (AC)</strong>. Same papers, new name.</span>
-                        </div>
-                      )}
-                      {catSubjects.map(sub => {
-                        const sems = getSemestersForSubject(cat, sub);
+              <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
+                <div style="padding: 1rem 1.25rem 1.25rem;">
+                  <p style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-bottom: 1rem;">
+                    Major Honours (MJ) papers are 100-mark end-semester exams. Select a department below and choose a semester to browse all available PYQ papers.
+                  </p>
+                  <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
+                    <!-- Major Semester Filter Tabs + Search -->
+                    <div id="major-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
+                      <button class="btn btn-secondary major-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
+                        All ({majorData.length})
+                      </button>
+                      {majorSems.map(sem => (
+                        <button class="btn btn-secondary major-pyq-tab" data-sem={String(sem)} style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
+                          Sem {sem}
+                        </button>
+                      ))}
+                      <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="major-pyq-search-wrapper">
+                        <input type="text" id="major-pyq-search" class="form-input" placeholder="Search subjects..." style="height: 34px; padding-left: 2.1rem; font-size: 0.8rem; width: 200px; border-radius: var(--radius-xs);" />
+                        <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
+                      </div>
+                    </div>
+
+                    <!-- Major Subject Card Grid -->
+                    <div id="major-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
+                      {majorData.map(({ subject, sems, totalPapers }) => {
+                        const minSem = sems[0];
+                        const subjectSlug = subject.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                        const cardId = `major-card-${subjectSlug}`;
+                        const panelId = `major-panel-${subjectSlug}`;
+                        // For tab filter: card shows for any semester in its sems list
+                        const semAttr = sems.join(',');
                         return (
-                          <div style="border-bottom: 1px dashed var(--border-color); padding-bottom: 0.75rem;">
-                            <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">{sub}</h4>
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                              {sems.map(sem => (
-                                <a 
-                                  href={`${baseUrl}/pyqs/${cat.toLowerCase()}/${sub.toLowerCase()}/${sem}`} 
-                                  class="btn btn-secondary btn-sm"
-                                  style="padding: 0.35rem 0.75rem; font-size: 0.8rem; border-radius: var(--radius-xs);"
-                                >
-                                  Semester {sem}
-                                </a>
-                              ))}
+                          <div
+                            class="major-pyq-subject-card card"
+                            data-sems={semAttr}
+                            data-search={subject.toLowerCase()}
+                            style="padding: 0; overflow: hidden; border-color: var(--border-color); transition: border-color 0.2s;"
+                          >
+                            <button
+                              id={cardId}
+                              class="major-pyq-subject-btn"
+                              data-panel={panelId}
+                              style="width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: space-between; text-align: left; background: transparent; border: none; cursor: pointer; transition: background 0.2s;"
+                            >
+                              <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
+                                <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={subject}>
+                                  {subject}
+                                </span>
+                                <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.1rem;">
+                                  <span>Sem {sems.join(', ')}</span>
+                                  <span style="font-size: 0.65rem; color: var(--accent-primary); font-weight: 600;">{totalPapers} paper{totalPapers !== 1 ? 's' : ''} available</span>
+                                </span>
+                              </div>
+                              <span class="major-subject-icon" style="color: var(--accent-primary); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;">📥</span>
+                            </button>
+
+                            <!-- Expandable semesters list -->
+                            <div id={panelId} class="major-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
+                              <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
+                                {sems.map(sem => (
+                                  <a
+                                    href={`${baseUrl}/pyqs/major/${subject.toLowerCase()}/${sem}`}
+                                    class="btn btn-primary btn-sm"
+                                    style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none;"
+                                  >
+                                    <span>📚 Semester {sem}</span>
+                                    <ChevronRight size="12" />
+                                  </a>
+                                ))}
+                              </div>
                             </div>
                           </div>
                         );
                       })}
                     </div>
-                  ) : (
-                    <div style="padding: 1.25rem; text-align: center; color: var(--text-secondary); font-size: 0.875rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-                      <span>No active exam papers uploaded yet.</span>
-                      <button 
-                        class="btn btn-outline btn-sm" 
-                        style="margin-top: 0.25rem;"
-                        onclick={`document.dispatchEvent(new CustomEvent('open-request-modal', { detail: { category: '${cat}' } }));`}
-                      >
-                        Request Paper
-                      </button>
+
+                    <div id="major-pyq-empty" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+                      No matching Major papers found.
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          )}
+
+          <!-- ─── Minor PYQ Widget ──────────────────────────────────────────────── -->
+          {minorData.length > 0 && (
+            <div class="accordion-item" style="border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-sm); overflow: hidden;">
+              <button
+                id="minor-pyq-trigger"
+                class="accordion-trigger"
+                data-cat="minor"
+                style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
+              >
+                <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                  <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-success);">Minor Paper</span>
+                  <span style="font-size: 0.62rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
+                    AC · 100 Marks
+                  </span>
+                  <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{minorData.length} subjects</span>
+                </div>
+                <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
+              </button>
+
+              <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
+                <div style="padding: 1rem 1.25rem 1.25rem;">
+                  <div style="display: flex; align-items: flex-start; gap: 0.55rem; background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-xs); padding: 0.65rem 0.9rem; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.85rem;">
+                    <span style="flex-shrink: 0;">ℹ️</span>
+                    <span><strong style="color: var(--accent-success);">2025 batch onwards:</strong> "Minor" is officially renamed <strong>Associated Core (AC)</strong>. Same papers, new name.</span>
+                  </div>
+                  <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
+                    <div id="minor-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
+                      <button class="btn btn-secondary minor-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
+                        All ({minorData.length})
+                      </button>
+                      {minorSems.map(sem => (
+                        <button class="btn btn-secondary minor-pyq-tab" data-sem={String(sem)} style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
+                          Sem {sem}
+                        </button>
+                      ))}
+                      <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="minor-pyq-search-wrapper">
+                        <input type="text" id="minor-pyq-search" class="form-input" placeholder="Search subjects..." style="height: 34px; padding-left: 2.1rem; font-size: 0.8rem; width: 200px; border-radius: var(--radius-xs);" />
+                        <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
+                      </div>
+                    </div>
+
+                    <div id="minor-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
+                      {minorData.map(({ subject, sems, totalPapers }) => {
+                        const subjectSlug = subject.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                        const cardId = `minor-card-${subjectSlug}`;
+                        const panelId = `minor-panel-${subjectSlug}`;
+                        const semAttr = sems.join(',');
+                        return (
+                          <div
+                            class="minor-pyq-subject-card card"
+                            data-sems={semAttr}
+                            data-search={subject.toLowerCase()}
+                            style="padding: 0; overflow: hidden; border-color: var(--border-color); transition: border-color 0.2s;"
+                          >
+                            <button
+                              id={cardId}
+                              class="minor-pyq-subject-btn"
+                              data-panel={panelId}
+                              style="width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: space-between; text-align: left; background: transparent; border: none; cursor: pointer; transition: background 0.2s;"
+                            >
+                              <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
+                                <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={subject}>
+                                  {subject}
+                                </span>
+                                <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.1rem;">
+                                  <span>Sem {sems.join(', ')}</span>
+                                  <span style="font-size: 0.65rem; color: var(--accent-success); font-weight: 600;">{totalPapers} paper{totalPapers !== 1 ? 's' : ''} available</span>
+                                </span>
+                              </div>
+                              <span class="minor-subject-icon" style="color: var(--accent-success); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;">📥</span>
+                            </button>
+
+                            <div id={panelId} class="minor-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
+                              <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
+                                {sems.map(sem => (
+                                  <a
+                                    href={`${baseUrl}/pyqs/minor/${subject.toLowerCase()}/${sem}`}
+                                    class="btn btn-sm"
+                                    style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.3); border-radius: var(--radius-xs);">
+                                    <span>📚 Semester {sem}</span>
+                                    <ChevronRight size="12" />
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div id="minor-pyq-empty" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+                      No matching Minor papers found.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <!-- ─── MDC PYQ Widget ─────────────────────────────────────────────────── -->
+          {mdcData.length > 0 && (
+            <div class="accordion-item" style="border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-sm); overflow: hidden;">
+              <button
+                id="mdc-pyq-trigger"
+                class="accordion-trigger"
+                data-cat="mdc"
+                style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
+              >
+                <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                  <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-warning);">MDC Paper</span>
+                  <span style="font-size: 0.62rem; font-weight: 700; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
+                    MDC · 75 Marks
+                  </span>
+                  <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{mdcData.length} subjects</span>
+                </div>
+                <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
+              </button>
+
+              <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
+                <div style="padding: 1rem 1.25rem 1.25rem;">
+                  <p style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-bottom: 1rem;">
+                    Multidisciplinary Courses (MDC) are 75-mark papers designed to expose students to diverse disciplines outside their major.
+                  </p>
+                  <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
+                    <div id="mdc-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
+                      <button class="btn btn-secondary mdc-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
+                        All ({mdcData.length})
+                      </button>
+                      {mdcSems.map(sem => (
+                        <button class="btn btn-secondary mdc-pyq-tab" data-sem={String(sem)} style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
+                          Sem {sem}
+                        </button>
+                      ))}
+                      <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="mdc-pyq-search-wrapper">
+                        <input type="text" id="mdc-pyq-search" class="form-input" placeholder="Search subjects..." style="height: 34px; padding-left: 2.1rem; font-size: 0.8rem; width: 200px; border-radius: var(--radius-xs);" />
+                        <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
+                      </div>
+                    </div>
+
+                    <div id="mdc-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
+                      {mdcData.map(({ subject, sems, totalPapers }) => {
+                        const subjectSlug = subject.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                        const cardId = `mdc-card-${subjectSlug}`;
+                        const panelId = `mdc-panel-${subjectSlug}`;
+                        const semAttr = sems.join(',');
+                        return (
+                          <div
+                            class="mdc-pyq-subject-card card"
+                            data-sems={semAttr}
+                            data-search={subject.toLowerCase()}
+                            style="padding: 0; overflow: hidden; border-color: var(--border-color); transition: border-color 0.2s;"
+                          >
+                            <button
+                              id={cardId}
+                              class="mdc-pyq-subject-btn"
+                              data-panel={panelId}
+                              style="width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: space-between; text-align: left; background: transparent; border: none; cursor: pointer; transition: background 0.2s;"
+                            >
+                              <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
+                                <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={subject}>
+                                  {subject}
+                                </span>
+                                <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.1rem;">
+                                  <span>Sem {sems.join(', ')}</span>
+                                  <span style="font-size: 0.65rem; color: var(--accent-warning); font-weight: 600;">{totalPapers} paper{totalPapers !== 1 ? 's' : ''} available</span>
+                                </span>
+                              </div>
+                              <span class="mdc-subject-icon" style="color: var(--accent-warning); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;">📥</span>
+                            </button>
+
+                            <div id={panelId} class="mdc-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
+                              <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
+                                {sems.map(sem => (
+                                  <a
+                                    href={`${baseUrl}/pyqs/mdc/${subject.toLowerCase()}/${sem}`}
+                                    class="btn btn-sm"
+                                    style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius-xs);">
+                                    <span>📚 Semester {sem}</span>
+                                    <ChevronRight size="12" />
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div id="mdc-pyq-empty" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+                      No matching MDC papers found.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <!-- ─── AEC Accordion (Syllabus-style widget) ──────────────────────── -->
           <div class="accordion-item" style="border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-sm); overflow: hidden;">
@@ -717,6 +946,37 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
       border-color: var(--accent-warning) !important;
       font-weight: 700;
     }
+    /* Major PYQ tab active */
+    .major-pyq-tab.active {
+      background-color: rgba(99,102,241,0.12) !important;
+      color: var(--accent-primary) !important;
+      border-color: var(--accent-primary) !important;
+      font-weight: 700;
+    }
+    /* Minor PYQ tab active */
+    .minor-pyq-tab.active {
+      background-color: rgba(16,185,129,0.12) !important;
+      color: var(--accent-success) !important;
+      border-color: var(--accent-success) !important;
+      font-weight: 700;
+    }
+    /* MDC PYQ tab active */
+    .mdc-pyq-tab.active {
+      background-color: rgba(245,158,11,0.12) !important;
+      color: var(--accent-warning) !important;
+      border-color: var(--accent-warning) !important;
+      font-weight: 700;
+    }
+    /* Major/Minor/MDC subject card hover + open */
+    .major-pyq-subject-card:hover { border-color: rgba(99,102,241,0.45) !important; box-shadow: 0 0 0 1px rgba(99,102,241,0.12); }
+    .major-pyq-subject-card.is-open { border-color: var(--accent-primary) !important; }
+    .minor-pyq-subject-card:hover { border-color: rgba(16,185,129,0.45) !important; box-shadow: 0 0 0 1px rgba(16,185,129,0.12); }
+    .minor-pyq-subject-card.is-open { border-color: var(--accent-success) !important; }
+    .mdc-pyq-subject-card:hover { border-color: rgba(245,158,11,0.45) !important; box-shadow: 0 0 0 1px rgba(245,158,11,0.12); }
+    .mdc-pyq-subject-card.is-open { border-color: var(--accent-warning) !important; }
+    .major-pyq-subject-btn:hover { background: rgba(99,102,241,0.06) !important; }
+    .minor-pyq-subject-btn:hover { background: rgba(16,185,129,0.06) !important; }
+    .mdc-pyq-subject-btn:hover { background: rgba(245,158,11,0.06) !important; }
     /* Subject card hover effects */
     .vac-pyq-subject-card:hover {
       border-color: rgba(99,102,241,0.45) !important;
@@ -817,6 +1077,88 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
       searchTerm = aecSearch.value.toLowerCase().trim();
       filterAec();
     });
+
+    // ── Generic card-grid widget factory for Major / Minor / MDC ────────────
+    type CatConfig = {
+      prefix: string;
+      triggerId: string;
+      accentColor: string;
+    };
+
+    function initCatWidget(cfg: CatConfig) {
+      const tabs   = document.querySelectorAll(`.${cfg.prefix}-pyq-tab`) as NodeListOf<HTMLButtonElement>;
+      const cards  = document.querySelectorAll(`.${cfg.prefix}-pyq-subject-card`) as NodeListOf<HTMLElement>;
+      const search = document.getElementById(`${cfg.prefix}-pyq-search`) as HTMLInputElement | null;
+      const empty  = document.getElementById(`${cfg.prefix}-pyq-empty`) as HTMLElement | null;
+
+      let activeSem = 'all';
+      let searchVal = '';
+
+      function filter() {
+        let visible = 0;
+        cards.forEach(card => {
+          const cardSems   = (card.getAttribute('data-sems') || '').split(',');
+          const cardSearch = card.getAttribute('data-search') || '';
+          const semMatch   = activeSem === 'all' || cardSems.includes(activeSem);
+          const txtMatch   = searchVal === '' || cardSearch.includes(searchVal);
+          const show = semMatch && txtMatch;
+          card.style.display = show ? '' : 'none';
+          if (show) visible++;
+        });
+        if (empty) empty.style.display = visible === 0 ? 'block' : 'none';
+        // Re-measure parent accordion height
+        const trigger = document.getElementById(cfg.triggerId);
+        const content = trigger?.nextElementSibling as HTMLElement | null;
+        if (content && content.style.maxHeight && content.style.maxHeight !== '0px') {
+          content.style.maxHeight = 'none';
+        }
+      }
+
+      tabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabs.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeSem = btn.getAttribute('data-sem') || 'all';
+          filter();
+        });
+      });
+
+      search?.addEventListener('input', () => {
+        searchVal = search.value.toLowerCase().trim();
+        filter();
+      });
+
+      // Card expand/collapse
+      document.querySelectorAll(`.${cfg.prefix}-pyq-subject-btn`).forEach(btn => {
+        btn.addEventListener('click', () => {
+          const panelId = (btn as HTMLElement).getAttribute('data-panel');
+          const panel = panelId ? document.getElementById(panelId) : null;
+          const card = btn.closest(`.${cfg.prefix}-pyq-subject-card`) as HTMLElement;
+          const icon = btn.querySelector(`.${cfg.prefix}-subject-icon`) as HTMLElement;
+          if (!panel) return;
+          const isOpen = panel.style.maxHeight && panel.style.maxHeight !== '0px';
+          if (isOpen) {
+            panel.style.maxHeight = '0px';
+            card?.classList.remove('is-open');
+            if (icon) { icon.textContent = '📥'; icon.style.transform = ''; }
+          } else {
+            panel.style.maxHeight = panel.scrollHeight + 'px';
+            card?.classList.add('is-open');
+            if (icon) { icon.textContent = '📂'; icon.style.transform = 'rotate(-10deg)'; }
+          }
+          // Re-measure parent accordion
+          const trigger = document.getElementById(cfg.triggerId);
+          const content = trigger?.nextElementSibling as HTMLElement | null;
+          if (content && content.style.maxHeight && content.style.maxHeight !== '0px') {
+            content.style.maxHeight = 'none';
+          }
+        });
+      });
+    }
+
+    initCatWidget({ prefix: 'major', triggerId: 'major-pyq-trigger', accentColor: 'var(--accent-primary)' });
+    initCatWidget({ prefix: 'minor', triggerId: 'minor-pyq-trigger', accentColor: 'var(--accent-success)' });
+    initCatWidget({ prefix: 'mdc',   triggerId: 'mdc-pyq-trigger',   accentColor: 'var(--accent-warning)' });
 
     // ── VAC PYQ: Tab filter + Search + Card expand ─────────────────────────
     const vacTabs    = document.querySelectorAll('.vac-pyq-tab') as NodeListOf<HTMLButtonElement>;
