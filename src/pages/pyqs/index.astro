@@ -1005,6 +1005,125 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
   </style>
 
   <script>
+    // ══════════════════════════════════════════════════════════════════════════
+    // STATE PERSISTENCE — save open accordion + card before navigating away,
+    // restore when user presses Back so they land exactly where they were.
+    //
+    // Root cause of earlier failures:
+    //   • Reading sessionStorage / history.state in the MAIN script body
+    //     does NOT work for bfcache restores (scripts don't re-run).
+    //
+    // Correct approach:
+    //   1. SAVE  → sessionStorage on semester-link click (survives navigation).
+    //   2. READ  → inside window 'pageshow' handler (fires for BOTH fresh loads
+    //              AND bfcache restores — scripts don't re-run on bfcache, but
+    //              already-registered event listeners still fire).
+    //   3. BFCACHE (event.persisted=true): DOM is already correct, just scroll.
+    //   4. FRESH  (event.persisted=false): read sessionStorage, restore full state.
+    // ══════════════════════════════════════════════════════════════════════════
+
+    // Helper: open an accordion trigger programmatically
+    function openAccordionById(triggerId: string) {
+      const trigger = document.getElementById(triggerId) as HTMLButtonElement | null;
+      if (!trigger) return;
+      const content = trigger.nextElementSibling as HTMLElement;
+      const chevron = trigger.querySelector('.chevron') as HTMLElement;
+      document.querySelectorAll('.accordion-content').forEach(c => {
+        (c as HTMLElement).style.maxHeight = '0px';
+      });
+      document.querySelectorAll('.chevron').forEach(ch => {
+        (ch as HTMLElement).style.transform = 'rotate(0deg)';
+      });
+      document.querySelectorAll('.accordion-trigger').forEach(tr => {
+        (tr as HTMLElement).style.backgroundColor = 'transparent';
+      });
+      if (content) {
+        content.style.maxHeight = 'none';
+        trigger.style.backgroundColor = 'rgba(99,102,241,0.08)';
+        if (chevron) chevron.style.transform = 'rotate(90deg)';
+      }
+    }
+
+    // Helper: open a subject card panel programmatically
+    function openSubjectPanel(panelId: string) {
+      const panel = document.getElementById(panelId) as HTMLElement | null;
+      if (!panel) return;
+      panel.style.maxHeight = 'none';
+      const prefixes = ['major', 'minor', 'mdc', 'vac', 'sec'];
+      for (const prefix of prefixes) {
+        const btn = document.querySelector(`.${prefix}-pyq-subject-btn[data-panel="${panelId}"]`) as HTMLElement | null;
+        if (btn) {
+          const card = btn.closest(`.${prefix}-pyq-subject-card`) as HTMLElement | null;
+          if (card) card.classList.add('is-open');
+          const icon = btn.querySelector(`.${prefix}-subject-icon`) as HTMLElement | null;
+          if (icon) { icon.textContent = '📂'; icon.style.transform = 'rotate(-10deg)'; }
+          break;
+        }
+      }
+    }
+
+    // ── STEP 1: Save to sessionStorage on semester-link click ───────────────
+    const catPanelSelectors = [
+      '.major-pyq-papers-panel a',
+      '.minor-pyq-papers-panel a',
+      '.mdc-pyq-papers-panel a',
+    ];
+    document.querySelectorAll(catPanelSelectors.join(', ')).forEach(link => {
+      link.addEventListener('click', () => {
+        const panel = link.closest('.major-pyq-papers-panel, .minor-pyq-papers-panel, .mdc-pyq-papers-panel') as HTMLElement | null;
+        if (!panel) return;
+        const accordionContent = link.closest('.accordion-content') as HTMLElement | null;
+        const trigger = accordionContent?.previousElementSibling as HTMLElement | null;
+        if (panel.id && trigger?.id) {
+          sessionStorage.setItem('pyq_restore', JSON.stringify({
+            trigger: trigger.id,
+            panel: panel.id,
+            ts: Date.now(),
+          }));
+        }
+      });
+    });
+
+    // ── STEP 2: Read sessionStorage INSIDE pageshow (the only place it works) ─
+    window.addEventListener('pageshow', (event: PageTransitionEvent) => {
+      let saved: { trigger: string; panel: string; ts: number } | null = null;
+      try {
+        const raw = sessionStorage.getItem('pyq_restore');
+        if (raw) saved = JSON.parse(raw);
+      } catch { /* ignore */ }
+
+      if (!saved?.trigger || !saved?.panel) return;
+      // Ignore stale saves older than 60 seconds (user opened a new tab etc.)
+      if (Date.now() - (saved.ts || 0) > 60000) {
+        sessionStorage.removeItem('pyq_restore');
+        return;
+      }
+
+      const { trigger: triggerId, panel: panelId } = saved;
+
+      if (event.persisted) {
+        // ─ bfcache restore ─────────────────────────────────────────────────
+        // DOM is FROZEN as it was when user left (accordion open, card open).
+        // Don't touch the DOM — just scroll smoothly to the card.
+        setTimeout(() => {
+          document.getElementById(panelId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+        // Keep sessionStorage intact (if bfcache is later evicted, the fresh
+        // load path below will handle it).
+      } else {
+        // ─ Fresh load (bfcache evicted / not supported / first load) ───────
+        // Remove the save so a subsequent fresh visit doesn't re-trigger.
+        sessionStorage.removeItem('pyq_restore');
+        requestAnimationFrame(() => {
+          openAccordionById(triggerId);
+          openSubjectPanel(panelId);
+          setTimeout(() => {
+            document.getElementById(panelId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 150);
+        });
+      }
+    });
+
     // ── Accordion script (non-AEC categories) ──────────────────────────────
     const triggers = document.querySelectorAll('.accordion-trigger');
 
