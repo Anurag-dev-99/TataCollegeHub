@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import pyqsData from '../../../public/data/pyqs.json';
-import { ChevronRight, FileText, Download, HelpCircle, GraduationCap, Search } from '@lucide/astro';
+import { ChevronRight, FileText, Download, HelpCircle, GraduationCap, Search, Award, BookOpen } from '@lucide/astro';
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -29,7 +29,8 @@ const aecPapers = availablePyqs
 const aecTotal = aecPapers.length;
 
 // Non-AEC categories for the generic accordion
-const nonAecCategories = ['Major', 'Minor', 'MDC', 'SEC', 'VAC'];
+// Non-AEC/non-SEC/non-VAC categories for the generic accordion
+const nonAecCategories = ['Major', 'Minor', 'MDC'];
 
 // Marks info per category
 const categoryInfo: Record<string, { marks: string; label: string; color: string; bg: string; border: string }> = {
@@ -50,6 +51,46 @@ const getSubjectsForCategory = (cat: string) => {
 const getSemestersForSubject = (cat: string, sub: string) => {
   return [...new Set(availablePyqs.filter(p => p.category === cat && p.subject === sub && !!p.downloadUrl).map(p => p.semester))].sort((a, b) => a - b);
 };
+
+// ── VAC PYQ subject groups ────────────────────────────────────────────────────
+const vacPapers = availablePyqs.filter(p => p.category === 'VAC' && !!p.downloadUrl);
+
+// Get unique VAC subjects sorted by semester then name
+const vacSubjects = [...new Set(vacPapers.map(p => p.subject))].sort((a, b) => {
+  const semA = Math.min(...vacPapers.filter(p => p.subject === a).map(p => p.semester));
+  const semB = Math.min(...vacPapers.filter(p => p.subject === b).map(p => p.semester));
+  return semA !== semB ? semA - semB : a.localeCompare(b);
+});
+
+// Get all unique semesters for VAC
+const vacSemesters = [...new Set(vacPapers.map(p => p.semester))].sort((a, b) => a - b);
+
+// Get papers for a specific VAC subject
+const getVacPapersForSubject = (subject: string) =>
+  vacPapers.filter(p => p.subject === subject).sort((a, b) => {
+    if (a.semester !== b.semester) return a.semester - b.semester;
+    return String(a.year || '').localeCompare(String(b.year || ''));
+  });
+
+// ── SEC PYQ subject groups ────────────────────────────────────────────────────
+const secPapers = availablePyqs.filter(p => p.category === 'SEC' && !!p.downloadUrl);
+
+// Get unique SEC subjects sorted by semester then name
+const secSubjects = [...new Set(secPapers.map(p => p.subject))].sort((a, b) => {
+  const semA = Math.min(...secPapers.filter(p => p.subject === a).map(p => p.semester));
+  const semB = Math.min(...secPapers.filter(p => p.subject === b).map(p => p.semester));
+  return semA !== semB ? semA - semB : a.localeCompare(b);
+});
+
+// Get all unique semesters for SEC
+const secSemesters = [...new Set(secPapers.map(p => p.semester))].sort((a, b) => a - b);
+
+// Get papers for a specific SEC subject
+const getSecPapersForSubject = (subject: string) =>
+  secPapers.filter(p => p.subject === subject).sort((a, b) => {
+    if (a.semester !== b.semester) return a.semester - b.semester;
+    return String(a.year || '').localeCompare(String(b.year || ''));
+  });
 
 // Popular papers (non-AEC, has downloadUrl)
 const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
@@ -343,10 +384,253 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
           </div>
           <!-- ─────────────────────────────────────────────────────────────────── -->
 
+          <!-- ─── VAC PYQ Widget (Syllabus-style) ──────────────────────────────── -->
+          <div class="accordion-item" style="border: 1px solid rgba(99,102,241,0.25); border-radius: var(--radius-sm); overflow: hidden;">
+            <!-- VAC Trigger -->
+            <button
+              id="vac-pyq-trigger"
+              class="accordion-trigger"
+              data-cat="vac"
+              style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
+            >
+              <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                <Award style="color: var(--accent-primary); width: 18px; height: 18px;" />
+                <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary);">VAC Paper</span>
+                <span style="font-size: 0.62rem; font-weight: 700; background: rgba(99,102,241,0.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
+                  VAC · 50 Marks
+                </span>
+                <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{vacSubjects.length} subjects · {vacPapers.length} papers</span>
+              </div>
+              <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
+            </button>
+
+            <!-- VAC Collapsible Content -->
+            <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
+              <div style="padding: 1rem 1.25rem 1.25rem;">
+                <p style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-bottom: 1rem;">
+                  Under NEP 2020, Value Added Courses (VAC) are designed to provide holistic education. In Semester 1, students take VAC-1 (Understanding India). In Semester 4, students take VAC-2 (Global Citizenship Education).
+                </p>
+
+                <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
+                  <!-- VAC Semester Filter Tabs + Search -->
+                  <div id="vac-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
+                    <button class="btn btn-secondary vac-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
+                      All ({vacSubjects.length})
+                    </button>
+                    {vacSemesters.map(sem => (
+                      <button class="btn btn-secondary vac-pyq-tab" data-sem={String(sem)} style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
+                        Sem {sem}
+                      </button>
+                    ))}
+                    <!-- Search -->
+                    <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="vac-pyq-search-wrapper">
+                      <input
+                        type="text"
+                        id="vac-pyq-search"
+                        class="form-input"
+                        placeholder="Search VAC papers..."
+                        style="height: 34px; padding-left: 2.1rem; font-size: 0.8rem; width: 200px; border-radius: var(--radius-xs);"
+                      />
+                      <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
+                    </div>
+                  </div>
+
+                  <!-- VAC Subject Card Grid -->
+                  <div id="vac-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
+                    {vacSubjects.map(subject => {
+                      const papers = getVacPapersForSubject(subject);
+                      const sem = Math.min(...papers.map(p => p.semester));
+                      const subjectSlug = subject.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                      const cardId = `vac-card-${subjectSlug}`;
+                      const panelId = `vac-panel-${subjectSlug}`;
+                      return (
+                        <div
+                          class="vac-pyq-subject-card card"
+                          data-sem={String(sem)}
+                          data-search={subject.toLowerCase()}
+                          style="padding: 0; overflow: hidden; border-color: var(--border-color); transition: border-color 0.2s;"
+                        >
+                          <!-- Card Header (clickable) -->
+                          <button
+                            id={cardId}
+                            class="vac-pyq-subject-btn"
+                            data-panel={panelId}
+                            style="width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: space-between; text-align: left; background: transparent; border: none; cursor: pointer; transition: background 0.2s;"
+                          >
+                            <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
+                              <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={subject}>
+                                {subject}
+                              </span>
+                              <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.1rem;">
+                                <span>Semester {sem}</span>
+                                <span style="font-size: 0.65rem; color: var(--accent-primary); font-weight: 600;">{papers.length} paper{papers.length !== 1 ? 's' : ''} available</span>
+                              </span>
+                            </div>
+                            <span class="vac-subject-icon" style="color: var(--accent-primary); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;">📥</span>
+                          </button>
+
+                          <!-- Expandable papers list -->
+                          <div id={panelId} class="vac-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
+                            <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
+                              {papers.map(paper => (
+                                <a
+                                  href={paper.downloadUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  class="btn btn-primary btn-sm"
+                                  style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none;"
+                                  onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.subject}', category: 'VAC', semester: '${paper.semester}' });`}
+                                >
+                                  <span>📄 {paper.year}{(paper as any).set ? ` — ${(paper as any).set}` : ''}</span>
+                                  <Download size="12" />
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <!-- Empty state -->
+                  <div id="vac-pyq-empty" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+                    No matching VAC papers found.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ─────────────────────────────────────────────────────────────────── -->
+
+          <!-- ─── SEC PYQ Widget (Syllabus-style) ──────────────────────────────── -->
+          <div class="accordion-item" style="border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-sm); overflow: hidden;">
+            <!-- SEC Trigger -->
+            <button
+              id="sec-pyq-trigger"
+              class="accordion-trigger"
+              data-cat="sec"
+              style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
+            >
+              <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                <BookOpen style="color: var(--accent-warning); width: 18px; height: 18px;" />
+                <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-warning);">SEC Paper</span>
+                <span style="font-size: 0.62rem; font-weight: 700; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
+                  SEC · 75 Marks
+                </span>
+                <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{secSubjects.length} subjects · {secPapers.length} papers</span>
+              </div>
+              <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
+            </button>
+
+            <!-- SEC Collapsible Content -->
+            <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
+              <div style="padding: 1rem 1.25rem 1.25rem;">
+                <p style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-bottom: 1rem;">
+                  Skill Enhancement Courses (SEC) are designed to provide hands-on training and skills. In Semester 2, students choose either Communication Skills or News Writing. Browse papers by semester below.
+                </p>
+
+                <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
+                  <!-- SEC Semester Filter Tabs + Search -->
+                  <div id="sec-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
+                    <button class="btn btn-secondary sec-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
+                      All ({secSubjects.length})
+                    </button>
+                    {secSemesters.map(sem => (
+                      <button class="btn btn-secondary sec-pyq-tab" data-sem={String(sem)} style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
+                        Sem {sem}
+                      </button>
+                    ))}
+                    <!-- Search -->
+                    <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="sec-pyq-search-wrapper">
+                      <input
+                        type="text"
+                        id="sec-pyq-search"
+                        class="form-input"
+                        placeholder="Search SEC papers..."
+                        style="height: 34px; padding-left: 2.1rem; font-size: 0.8rem; width: 200px; border-radius: var(--radius-xs);"
+                      />
+                      <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
+                    </div>
+                  </div>
+
+                  <!-- SEC Note for Sem 2 choice -->
+                  <div style="display: flex; align-items: flex-start; gap: 0.5rem; background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-xs); padding: 0.6rem 0.85rem; font-size: 0.77rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.85rem;">
+                    <span style="flex-shrink: 0;">ℹ️</span>
+                    <span><strong style="color: var(--accent-warning);">Semester 2 choice:</strong> Students pick <em>either</em> Communication Skill & Personality Development <em>or</em> News Writing — both papers are listed below.</span>
+                  </div>
+
+                  <!-- SEC Subject Card Grid -->
+                  <div id="sec-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
+                    {secSubjects.map(subject => {
+                      const papers = getSecPapersForSubject(subject);
+                      const sem = Math.min(...papers.map(p => p.semester));
+                      const subjectSlug = subject.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                      const cardId = `sec-card-${subjectSlug}`;
+                      const panelId = `sec-panel-${subjectSlug}`;
+                      return (
+                        <div
+                          class="sec-pyq-subject-card card"
+                          data-sem={String(sem)}
+                          data-search={subject.toLowerCase()}
+                          style="padding: 0; overflow: hidden; border-color: var(--border-color); transition: border-color 0.2s;"
+                        >
+                          <!-- Card Header (clickable) -->
+                          <button
+                            id={cardId}
+                            class="sec-pyq-subject-btn"
+                            data-panel={panelId}
+                            style="width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: space-between; text-align: left; background: transparent; border: none; cursor: pointer; transition: background 0.2s;"
+                          >
+                            <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
+                              <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={subject}>
+                                {subject}
+                              </span>
+                              <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.1rem;">
+                                <span>Semester {sem}</span>
+                                <span style="font-size: 0.65rem; color: var(--accent-warning); font-weight: 600;">{papers.length} paper{papers.length !== 1 ? 's' : ''} available</span>
+                              </span>
+                            </div>
+                            <span class="sec-subject-icon" style="color: var(--accent-warning); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;">📥</span>
+                          </button>
+
+                          <!-- Expandable papers list -->
+                          <div id={panelId} class="sec-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
+                            <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
+                              {papers.map(paper => (
+                                <a
+                                  href={paper.downloadUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  class="btn btn-sm"
+                                  style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius-xs);"
+                                  onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.subject}', category: 'SEC', semester: '${paper.semester}' });`}
+                                >
+                                  <span>📄 {paper.year}{(paper as any).set ? ` — ${(paper as any).set}` : ''}</span>
+                                  <Download size="12" />
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <!-- Empty state -->
+                  <div id="sec-pyq-empty" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+                    No matching SEC papers found.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ─────────────────────────────────────────────────────────────────── -->
+
         </div>
       </div>
 
     </div>
+
 
     <!-- Right 1 Col: Popular downloads & Quick request -->
     <div style="display: flex; flex-direction: column; gap: 2rem;">
@@ -419,9 +703,44 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
     .aec-pyq-card[data-missing="true"]:hover {
       border-color: rgba(245,158,11,0.5) !important;
     }
+    /* VAC PYQ tab active */
+    .vac-pyq-tab.active {
+      background-color: rgba(99,102,241,0.12) !important;
+      color: var(--accent-primary) !important;
+      border-color: var(--accent-primary) !important;
+      font-weight: 700;
+    }
+    /* SEC PYQ tab active */
+    .sec-pyq-tab.active {
+      background-color: rgba(245,158,11,0.12) !important;
+      color: var(--accent-warning) !important;
+      border-color: var(--accent-warning) !important;
+      font-weight: 700;
+    }
+    /* Subject card hover effects */
+    .vac-pyq-subject-card:hover {
+      border-color: rgba(99,102,241,0.45) !important;
+      box-shadow: 0 0 0 1px rgba(99,102,241,0.12);
+    }
+    .vac-pyq-subject-card.is-open {
+      border-color: var(--accent-primary) !important;
+    }
+    .sec-pyq-subject-card:hover {
+      border-color: rgba(245,158,11,0.45) !important;
+      box-shadow: 0 0 0 1px rgba(245,158,11,0.12);
+    }
+    .sec-pyq-subject-card.is-open {
+      border-color: var(--accent-warning) !important;
+    }
+    .vac-pyq-subject-btn:hover { background: rgba(99,102,241,0.06) !important; }
+    .sec-pyq-subject-btn:hover { background: rgba(245,158,11,0.06) !important; }
     @media (max-width: 600px) {
       .aec-pyq-search-wrapper { width: 100% !important; margin-top: 0.5rem; }
       .aec-pyq-search-wrapper input { width: 100% !important; }
+      .vac-pyq-search-wrapper { width: 100% !important; margin-top: 0.5rem; }
+      .vac-pyq-search-wrapper input { width: 100% !important; }
+      .sec-pyq-search-wrapper { width: 100% !important; margin-top: 0.5rem; }
+      .sec-pyq-search-wrapper input { width: 100% !important; }
     }
   </style>
 
@@ -497,6 +816,142 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
     aecSearch?.addEventListener('input', () => {
       searchTerm = aecSearch.value.toLowerCase().trim();
       filterAec();
+    });
+
+    // ── VAC PYQ: Tab filter + Search + Card expand ─────────────────────────
+    const vacTabs    = document.querySelectorAll('.vac-pyq-tab') as NodeListOf<HTMLButtonElement>;
+    const vacCards   = document.querySelectorAll('.vac-pyq-subject-card') as NodeListOf<HTMLElement>;
+    const vacSearch  = document.getElementById('vac-pyq-search') as HTMLInputElement;
+    const vacEmpty   = document.getElementById('vac-pyq-empty') as HTMLElement;
+
+    let vacActiveSem  = 'all';
+    let vacSearchTerm = '';
+
+    function filterVac() {
+      let visible = 0;
+      vacCards.forEach(card => {
+        const cardSem    = card.getAttribute('data-sem') || '';
+        const cardSearch = card.getAttribute('data-search') || '';
+        const semMatch   = vacActiveSem === 'all' || cardSem === vacActiveSem;
+        const txtMatch   = vacSearchTerm === '' || cardSearch.includes(vacSearchTerm);
+        const show       = semMatch && txtMatch;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (vacEmpty) vacEmpty.style.display = visible === 0 ? 'block' : 'none';
+      // Re-measure accordion height
+      const vacContent = document.getElementById('vac-pyq-trigger')?.nextElementSibling as HTMLElement | null;
+      if (vacContent && vacContent.style.maxHeight && vacContent.style.maxHeight !== '0px') {
+        vacContent.style.maxHeight = 'none';
+      }
+    }
+
+    vacTabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        vacTabs.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        vacActiveSem = btn.getAttribute('data-sem') || 'all';
+        filterVac();
+      });
+    });
+
+    vacSearch?.addEventListener('input', () => {
+      vacSearchTerm = vacSearch.value.toLowerCase().trim();
+      filterVac();
+    });
+
+    // VAC subject card expand/collapse
+    document.querySelectorAll('.vac-pyq-subject-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const panelId = (btn as HTMLElement).getAttribute('data-panel');
+        const panel = panelId ? document.getElementById(panelId) : null;
+        const card = btn.closest('.vac-pyq-subject-card') as HTMLElement;
+        const icon = btn.querySelector('.vac-subject-icon') as HTMLElement;
+        if (!panel) return;
+        const isOpen = panel.style.maxHeight && panel.style.maxHeight !== '0px';
+        if (isOpen) {
+          panel.style.maxHeight = '0px';
+          card?.classList.remove('is-open');
+          if (icon) { icon.textContent = '📥'; icon.style.transform = ''; }
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+          card?.classList.add('is-open');
+          if (icon) { icon.textContent = '📂'; icon.style.transform = 'rotate(-10deg)'; }
+        }
+        // Re-measure parent accordion
+        const vacContent = document.getElementById('vac-pyq-trigger')?.nextElementSibling as HTMLElement | null;
+        if (vacContent && vacContent.style.maxHeight && vacContent.style.maxHeight !== '0px') {
+          vacContent.style.maxHeight = 'none';
+        }
+      });
+    });
+
+    // ── SEC PYQ: Tab filter + Search + Card expand ─────────────────────────
+    const secTabs    = document.querySelectorAll('.sec-pyq-tab') as NodeListOf<HTMLButtonElement>;
+    const secCards   = document.querySelectorAll('.sec-pyq-subject-card') as NodeListOf<HTMLElement>;
+    const secSearch  = document.getElementById('sec-pyq-search') as HTMLInputElement;
+    const secEmpty   = document.getElementById('sec-pyq-empty') as HTMLElement;
+
+    let secActiveSem  = 'all';
+    let secSearchTerm = '';
+
+    function filterSec() {
+      let visible = 0;
+      secCards.forEach(card => {
+        const cardSem    = card.getAttribute('data-sem') || '';
+        const cardSearch = card.getAttribute('data-search') || '';
+        const semMatch   = secActiveSem === 'all' || cardSem === secActiveSem;
+        const txtMatch   = secSearchTerm === '' || cardSearch.includes(secSearchTerm);
+        const show       = semMatch && txtMatch;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      if (secEmpty) secEmpty.style.display = visible === 0 ? 'block' : 'none';
+      // Re-measure accordion height
+      const secContent = document.getElementById('sec-pyq-trigger')?.nextElementSibling as HTMLElement | null;
+      if (secContent && secContent.style.maxHeight && secContent.style.maxHeight !== '0px') {
+        secContent.style.maxHeight = 'none';
+      }
+    }
+
+    secTabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        secTabs.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        secActiveSem = btn.getAttribute('data-sem') || 'all';
+        filterSec();
+      });
+    });
+
+    secSearch?.addEventListener('input', () => {
+      secSearchTerm = secSearch.value.toLowerCase().trim();
+      filterSec();
+    });
+
+    // SEC subject card expand/collapse
+    document.querySelectorAll('.sec-pyq-subject-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const panelId = (btn as HTMLElement).getAttribute('data-panel');
+        const panel = panelId ? document.getElementById(panelId) : null;
+        const card = btn.closest('.sec-pyq-subject-card') as HTMLElement;
+        const icon = btn.querySelector('.sec-subject-icon') as HTMLElement;
+        if (!panel) return;
+        const isOpen = panel.style.maxHeight && panel.style.maxHeight !== '0px';
+        if (isOpen) {
+          panel.style.maxHeight = '0px';
+          card?.classList.remove('is-open');
+          if (icon) { icon.textContent = '📥'; icon.style.transform = ''; }
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+          card?.classList.add('is-open');
+          if (icon) { icon.textContent = '📂'; icon.style.transform = 'rotate(-10deg)'; }
+        }
+        // Re-measure parent accordion
+        const secContent = document.getElementById('sec-pyq-trigger')?.nextElementSibling as HTMLElement | null;
+        if (secContent && secContent.style.maxHeight && secContent.style.maxHeight !== '0px') {
+          secContent.style.maxHeight = 'none';
+        }
+      });
     });
   </script>
 
