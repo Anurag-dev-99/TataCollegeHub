@@ -302,10 +302,39 @@ const webPageSchema = JSON.stringify({
         </main>
 
         <!-- Footer -->
-        <footer style="background-color: var(--bg-secondary); border-top: 1px solid var(--border-color); padding: 2.5rem 1rem 6.5rem 1rem; text-align: center; font-size: 0.825rem; color: var(--text-secondary);" class="md:pb-8">
-          <p>© {new Date().getFullYear()} Tata Hub. Rebuilt in Astro.</p>
-          <p style="margin-top: 0.5rem; color: var(--text-tertiary);">Disclaimer: Reference syllabus & PYQs source for student study. Verify with official administration.</p>
+        <footer style="background-color: var(--bg-secondary); border-top: 1px solid var(--border-color); padding: 2rem 1.5rem 6.5rem 1.5rem; font-size: 0.825rem; color: var(--text-secondary);" class="md:pb-8">
+          <div style="max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem;">
+
+            <!-- Line 1: Brand -->
+            <div>
+              <p style="font-weight: 800; font-size: 1rem; color: var(--text-primary); font-family: var(--font-display);">KolhanHub</p>
+              <p style="color: var(--text-tertiary); font-size: 0.8rem; margin-top: 0.2rem;">Student-made resource portal for Kolhan University students.</p>
+            </div>
+
+            <!-- Line 2: Quick Links -->
+            <div>
+              <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); margin-bottom: 0.4rem;">Quick Links</p>
+              <p style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.75rem; align-items: center;">
+                <button onclick="document.dispatchEvent(new CustomEvent('open-request-modal'))" style="background:none; border:none; padding:0; color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; cursor:pointer;">Request Paper</button>
+                <span style="color: var(--text-tertiary);">•</span>
+                <button onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'))" style="background:none; border:none; padding:0; color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; cursor:pointer;">Submit Resource</button>
+                <span style="color: var(--text-tertiary);">•</span>
+                <button onclick="document.dispatchEvent(new CustomEvent('open-request-modal', {detail: {subject: 'Wrong/Broken Paper', category: 'Report'}}))" style="background:none; border:none; padding:0; color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; cursor:pointer;">Report Wrong Paper</button>
+              </p>
+            </div>
+
+            <!-- Line 3: Disclaimer -->
+            <div>
+              <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); margin-bottom: 0.4rem;">Disclaimer</p>
+              <p style="color: var(--text-tertiary); font-size: 0.78rem; line-height: 1.55;">Unofficial student resource website. Verify notices, results, and deadlines from official university/college sources.</p>
+            </div>
+
+            <!-- Line 4: Copyright -->
+            <p style="color: var(--text-tertiary); font-size: 0.78rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">© {new Date().getFullYear()} KolhanHub</p>
+
+          </div>
         </footer>
+
 
       </div>
 

@@ -1,12 +1,13 @@
 /**
  * Google Sheets Apps Script — Tata College Hub
  *
- * Handles 3 actions:
+ * Handles 4 actions:
  *   1. POST { type: "request",  ... }  → appends to "Requests" sheet tab
  *   2. POST { type: "download", ... }  → appends to "Downloads" sheet tab
  *   3. GET  ?action=stats              → returns JSON with live download totals
+ *   4. GET  ?action=top                → returns top 5 most-downloaded papers
  *
- * Downloads sheet columns (Row 1 = headers you already created):
+ * Downloads sheet columns (Row 1 = headers):
  *   A: Timestamp  B: Type  C: Subject  D: Category  E: Semester  F: Department
  */
 
@@ -61,33 +62,70 @@ function doPost(e) {
   }
 }
 
-// ─── GET Handler — returns live download stats ────────────────────────────────
+// ─── GET Handler ──────────────────────────────────────────────────────────────
 function doGet(e) {
   try {
+    var action  = (e.parameter.action || 'stats').toLowerCase();
     var ss      = SpreadsheetApp.getActiveSpreadsheet();
     var dlSheet = ss.getSheetByName('Downloads');
 
-    var pyqCount      = 0;
-    var syllabusCount = 0;
+    // ── action=stats: total pyq vs syllabus counts ────────────────────────
+    if (action === 'stats') {
+      var pyqCount      = 0;
+      var syllabusCount = 0;
 
-    if (dlSheet && dlSheet.getLastRow() > 1) {
-      // Column B (col index 2) = Type; skip row 1 (header)
-      var typeValues = dlSheet.getRange(2, 2, dlSheet.getLastRow() - 1, 1).getValues();
-      typeValues.forEach(function(row) {
-        var t = (row[0] || '').toString().toLowerCase().trim();
-        if (t === 'syllabus') { syllabusCount++; }
-        else                  { pyqCount++;       }
-      });
+      if (dlSheet && dlSheet.getLastRow() > 1) {
+        var typeValues = dlSheet.getRange(2, 2, dlSheet.getLastRow() - 1, 1).getValues();
+        typeValues.forEach(function(row) {
+          var t = (row[0] || '').toString().toLowerCase().trim();
+          if (t === 'syllabus') { syllabusCount++; }
+          else                  { pyqCount++;       }
+        });
+      }
+
+      return ContentService
+        .createTextOutput(JSON.stringify({
+          status:            'ok',
+          pyqDownloads:      pyqCount,
+          syllabusDownloads: syllabusCount,
+          total:             pyqCount + syllabusCount,
+          updatedAt:         new Date().toISOString()
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // ── action=top: top 5 most-downloaded papers ──────────────────────────
+    if (action === 'top') {
+      var counts = {};  // key = "subject||category||semester||fileType"
+
+      if (dlSheet && dlSheet.getLastRow() > 1) {
+        var rows = dlSheet.getRange(2, 1, dlSheet.getLastRow() - 1, 6).getValues();
+        rows.forEach(function(row) {
+          var fileType = (row[1] || 'pyq').toString().toLowerCase().trim();
+          var subject  = (row[2] || 'Unknown').toString().trim();
+          var category = (row[3] || 'Unknown').toString().trim();
+          var semester = (row[4] || '').toString().trim();
+          var key = subject + '||' + category + '||' + semester + '||' + fileType;
+          counts[key] = (counts[key] || 0) + 1;
+        });
+      }
+
+      // Sort descending by count, take top 5
+      var top = Object.keys(counts)
+        .map(function(k) {
+          var parts = k.split('||');
+          return { subject: parts[0], category: parts[1], semester: parts[2], fileType: parts[3], count: counts[k] };
+        })
+        .sort(function(a, b) { return b.count - a.count; })
+        .slice(0, 5);
+
+      return ContentService
+        .createTextOutput(JSON.stringify({ status: 'ok', top: top, updatedAt: new Date().toISOString() }))
+        .setMimeType(ContentService.MimeType.JSON);
     }
 
     return ContentService
-      .createTextOutput(JSON.stringify({
-        status:           'ok',
-        pyqDownloads:     pyqCount,
-        syllabusDownloads: syllabusCount,
-        total:            pyqCount + syllabusCount,
-        updatedAt:        new Date().toISOString()
-      }))
+      .createTextOutput(JSON.stringify({ status: 'error', message: 'Unknown action' }))
       .setMimeType(ContentService.MimeType.JSON);
 
   } catch (err) {

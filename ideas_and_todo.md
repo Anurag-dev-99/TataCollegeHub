@@ -454,3 +454,35 @@ Show PYQ section — filter by department, semester — download a paper. Hook: 
 - **MDC syllabus accuracy:** KU updates PDFs silently. Always open the PDF and check the year/batch before making a video about it.
 - **YouTube SEO tip:** Title every MDC short as: `"[Subject] MDC Syllabus Download — Kolhan University FYUGP"` for max search visibility.
 - **Posting frequency:** Even 1 Short every 2 days = 15 Shorts/month. At that rate, all 32 MDC Shorts would be done in ~2 months.
+
+---
+
+## 🔧 Feature Ideas — UI / UX Improvements
+
+### 💡 Report Wrong Paper / Broken Link (Near Bottom of PYQ Pages)
+
+**Idea:** Add a small, subtle action near the bottom of each PYQ page (and the PYQ index) that lets students quickly report:
+- A paper that is wrong (wrong subject/semester/year)
+- A broken download link (PDF doesn't open or gives 404)
+
+**Why it matters:**
+- We currently have no way to know when a Google Drive link breaks or a paper is mislabeled
+- Students silently leave frustrated instead of reporting — this turns them into active contributors
+- Keeps the database self-correcting without requiring manual audits
+
+**Preferred UI:**
+- Simple text link at the bottom: *"Something wrong? Report it →"*
+- On click: opens a lightweight modal / inline form with:
+  - Pre-filled: Subject, Semester, Category (from page context)
+  - User selects: "Wrong paper" | "Broken link" | "Other"
+  - Optional message field (max 200 chars)
+  - Submit → logs to Google Sheets "Reports" tab (new tab)
+- Show confirmation: *"Thanks! We'll fix it soon."*
+
+**Implementation approach:**
+- Reuse the existing Apps Script webhook — add a new POST `type: "report"` → appends to "Reports" tab
+- Reports tab columns: Timestamp | Subject | Category | Semester | Issue Type | Message
+- Footer already has "Report Wrong Paper" quick link → opens this modal
+
+**Status:** 💡 Idea logged — not started
+

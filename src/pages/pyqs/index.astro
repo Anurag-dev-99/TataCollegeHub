@@ -105,61 +105,12 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
   activeTab="pyqs"
 >
 
-  <!-- Title & Description -->
-  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+
+  <!-- Title only -->
+  <div style="margin-bottom: 1.5rem;">
     <h1 style="font-size: 2.25rem; font-family: var(--font-display); font-weight: 800; tracking: -0.02em;">Kolhan University PYQ</h1>
-    <p style="color: var(--text-secondary); font-size: 1.05rem; font-weight: 500; max-width: 650px; line-height: 1.6;">
-      Download free <strong>Kolhan University previous year question papers</strong> (PYQ) for Tata College, Chaibasa.
-      Browse semester-wise exam papers for the <strong>NEP 2020 FYUGP 2022 batch</strong> &mdash; Major, Minor, MDC, SEC, VAC &amp; AEC courses.
-    </p>
   </div>
 
-  <!-- Passing Marks Info Panel -->
-  <div style="background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(16,185,129,0.04) 100%); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1.35rem; margin-bottom: 1.75rem;">
-    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem;">
-      <span style="font-size: 1rem;">📊</span>
-      <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.06em; text-transform: uppercase;">Marks &amp; Passing Criteria (FYUGP)</span>
-      <span style="font-size: 0.7rem; color: var(--text-tertiary); margin-left: auto;">Qualifying: <strong style="color: var(--accent-success);">40% of total marks</strong></span>
-    </div>
-    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-        <span style="font-weight: 700; color: var(--accent-primary);">MJ / AC</span>
-        <span style="color: var(--text-tertiary);">|</span>
-        <span style="color: var(--text-secondary);">100 marks</span>
-        <span style="color: var(--text-tertiary);">·</span>
-        <span style="color: var(--accent-success); font-weight: 600;">Pass: 40</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-        <span style="font-weight: 700; color: var(--accent-warning);">MDC</span>
-        <span style="color: var(--text-tertiary);">|</span>
-        <span style="color: var(--text-secondary);">75 marks</span>
-        <span style="color: var(--text-tertiary);">·</span>
-        <span style="color: var(--accent-success); font-weight: 600;">Pass: 30</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-        <span style="font-weight: 700; color: var(--accent-warning);">SEC</span>
-        <span style="color: var(--text-tertiary);">|</span>
-        <span style="color: var(--text-secondary);">75 marks</span>
-        <span style="color: var(--text-tertiary);">·</span>
-        <span style="color: var(--accent-success); font-weight: 600;">Pass: 30</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-        <span style="font-weight: 700; color: var(--accent-primary);">AEC / VAC</span>
-        <span style="color: var(--text-tertiary);">|</span>
-        <span style="color: var(--text-secondary);">50 marks</span>
-        <span style="color: var(--text-tertiary);">·</span>
-        <span style="color: var(--accent-success); font-weight: 600;">Pass: 20</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-        <span style="font-weight: 700; color: var(--text-secondary);">Practical / Lab</span>
-        <span style="color: var(--text-tertiary);">|</span>
-        <span style="color: var(--text-secondary);">25 marks</span>
-        <span style="color: var(--text-tertiary);">·</span>
-        <span style="color: var(--accent-success); font-weight: 600;">Pass: 10</span>
-      </div>
-    </div>
-    <p style="font-size: 0.72rem; color: var(--text-tertiary); margin-top: 0.75rem; line-height: 1.5;">* For 100-mark theory papers: 75 marks End-Semester + 25 marks Internal Assessment. Combined total must meet the passing threshold.</p>
-  </div>
 
   <div style="display: grid; grid-template-columns: 1fr; gap: 2rem;" class="md:grid-cols-3">
     
@@ -195,9 +146,6 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
 
               <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
                 <div style="padding: 1rem 1.25rem 1.25rem;">
-                  <p style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-bottom: 1rem;">
-                    Major Honours (MJ) papers are 100-mark end-semester exams. Select a department below and choose a semester to browse all available PYQ papers.
-                  </p>
                   <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
                     <!-- Major Semester Filter Tabs + Search -->
                     <div id="major-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
@@ -398,9 +346,6 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
 
               <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
                 <div style="padding: 1rem 1.25rem 1.25rem;">
-                  <p style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-bottom: 1rem;">
-                    Multidisciplinary Courses (MDC) are 75-mark papers designed to expose students to diverse disciplines outside their major.
-                  </p>
                   <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
                     <div id="mdc-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
                       <button class="btn btn-secondary mdc-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
@@ -839,35 +784,76 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
       </div>
 
     </div>
+      <!-- Passing Marks Info Panel (below categories) -->
+      <div style="background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(16,185,129,0.04) 100%); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1.35rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem;">
+          <span style="font-size: 1rem;">📊</span>
+          <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.06em; text-transform: uppercase;">Marks &amp; Passing Criteria (FYUGP)</span>
+          <span style="font-size: 0.7rem; color: var(--text-tertiary); margin-left: auto;">Qualifying: <strong style="color: var(--accent-success);">40% of total marks</strong></span>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+            <span style="font-weight: 700; color: var(--accent-primary);">MJ / AC</span>
+            <span style="color: var(--text-tertiary);">|</span>
+            <span style="color: var(--text-secondary);">100 marks</span>
+            <span style="color: var(--text-tertiary);">·</span>
+            <span style="color: var(--accent-success); font-weight: 600;">Pass: 40</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+            <span style="font-weight: 700; color: var(--accent-warning);">MDC</span>
+            <span style="color: var(--text-tertiary);">|</span>
+            <span style="color: var(--text-secondary);">75 marks</span>
+            <span style="color: var(--text-tertiary);">·</span>
+            <span style="color: var(--accent-success); font-weight: 600;">Pass: 30</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+            <span style="font-weight: 700; color: var(--accent-warning);">SEC</span>
+            <span style="color: var(--text-tertiary);">|</span>
+            <span style="color: var(--text-secondary);">75 marks</span>
+            <span style="color: var(--text-tertiary);">·</span>
+            <span style="color: var(--accent-success); font-weight: 600;">Pass: 30</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+            <span style="font-weight: 700; color: var(--accent-primary);">AEC / VAC</span>
+            <span style="color: var(--text-tertiary);">|</span>
+            <span style="color: var(--text-secondary);">50 marks</span>
+            <span style="color: var(--text-tertiary);">·</span>
+            <span style="color: var(--accent-success); font-weight: 600;">Pass: 20</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
+            <span style="font-weight: 700; color: var(--text-secondary);">Practical / Lab</span>
+            <span style="color: var(--text-tertiary);">|</span>
+            <span style="color: var(--text-secondary);">25 marks</span>
+            <span style="color: var(--text-tertiary);">·</span>
+            <span style="color: var(--accent-success); font-weight: 600;">Pass: 10</span>
+          </div>
+        </div>
+        <p style="font-size: 0.72rem; color: var(--text-tertiary); margin-top: 0.75rem; line-height: 1.5;">* For 100-mark theory papers: 75 marks End-Semester + 25 marks Internal Assessment.</p>
+      </div>
+
+    </div>
 
 
     <!-- Right 1 Col: Popular downloads & Quick request -->
     <div style="display: flex; flex-direction: column; gap: 2rem;">
       
-      <!-- Popular Downloads -->
+      <!-- Most Downloaded (live from Google Sheets) -->
       <div class="card">
         <h2 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
           <GraduationCap style="color: var(--accent-success);" /> Most Downloaded
         </h2>
-        
-        <div style="display: flex; flex-direction: column; gap: 1rem;">
-          {popularPapers.map(paper => {
-            const path = `${baseUrl}/pyqs/${paper.category.toLowerCase()}/${paper.subject.toLowerCase()}/${paper.semester}`;
-            return (
-              <a href={path} style="display: flex; flex-direction: column; gap: 0.25rem; text-decoration: none; color: inherit; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);" class="hover-trigger">
-                <div style="font-weight: 700; font-size: 0.875rem; color: var(--text-primary);" class="hover-text-primary">
-                  {paper.subject} ({paper.category})
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.15rem;">
-                  <span>Sem {paper.semester} • {paper.year}</span>
-                  <span style="display: flex; align-items: center; gap: 0.2rem; color: var(--accent-success); font-weight: 600;">
-                    <Download size="12" /> {paper.downloadCount}
-                  </span>
-                </div>
-              </a>
-            );
-          })}
+
+        <!-- Live list — filled by JS below -->
+        <div id="most-downloaded-list" style="display: flex; flex-direction: column; gap: 1rem;">
+          <!-- skeleton rows while loading -->
+          {[1,2,3,4,5].map(() => (
+            <div style="display:flex; flex-direction:column; gap:0.25rem; padding-bottom:0.75rem; border-bottom:1px solid var(--border-color);">
+              <div style="height:0.875rem; width:65%; background:var(--bg-tertiary); border-radius:4px; animation: pulse 1.5s infinite;"></div>
+              <div style="height:0.75rem; width:45%; background:var(--bg-tertiary); border-radius:4px; animation: pulse 1.5s infinite;"></div>
+            </div>
+          ))}
         </div>
+        <p id="most-downloaded-note" style="display:none; font-size:0.75rem; color:var(--text-tertiary); margin-top:0.75rem; text-align:center;">Based on real student downloads</p>
       </div>
 
       <!-- Quick Contribution Card -->
@@ -985,7 +971,46 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
       .sec-pyq-search-wrapper { width: 100% !important; margin-top: 0.5rem; }
       .sec-pyq-search-wrapper input { width: 100% !important; }
     }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
   </style>
+
+  <!-- Live Most Downloaded fetch from Google Sheets -->
+  <script is:inline>
+    (function() {
+      var STATS_URL = 'https://script.google.com/macros/s/AKfycbx3ZJ1VuRgNc71FSKnrIAzLsv3qxnUeBwA8HALHWhDxlpJC93YzOwCV5rmLLT-swLaXHQ/exec?action=top';
+      var listEl = document.getElementById('most-downloaded-list');
+      var noteEl = document.getElementById('most-downloaded-note');
+
+      fetch(STATS_URL)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!listEl) return;
+          if (data.status !== 'ok' || !data.top || data.top.length === 0) {
+            listEl.innerHTML = '<p style="font-size:0.8rem; color:var(--text-tertiary); text-align:center;">Not enough data yet.</p>';
+            return;
+          }
+          var html = '';
+          data.top.forEach(function(item, i) {
+            var isLast = i === data.top.length - 1;
+            html += '<div style="display:flex;flex-direction:column;gap:0.25rem;padding-bottom:0.75rem;' + (!isLast ? 'border-bottom:1px solid var(--border-color);' : '') + '">' +
+              '<div style="font-weight:700;font-size:0.875rem;color:var(--text-primary);">' + item.subject + ' (' + item.category + ')</div>' +
+              '<div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-secondary);">' +
+                '<span>Sem ' + item.semester + ' &bull; ' + (item.fileType === 'pyq' ? 'PYQ' : 'Syllabus') + '</span>' +
+                '<span style="display:flex;align-items:center;gap:0.2rem;color:var(--accent-success);font-weight:600;">↓ ' + item.count + '</span>' +
+              '</div>' +
+            '</div>';
+          });
+          listEl.innerHTML = html;
+          if (noteEl) noteEl.style.display = 'block';
+        })
+        .catch(function() {
+          if (listEl) listEl.innerHTML = '<p style="font-size:0.8rem;color:var(--text-tertiary);text-align:center;">Could not load data.</p>';
+        });
+    })();
+  </script>
 
   <script>
     // ══════════════════════════════════════════════════════════════════════════
