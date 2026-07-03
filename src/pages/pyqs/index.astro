@@ -5,27 +5,29 @@ import { ChevronRight, FileText, Download, HelpCircle, GraduationCap, Search, Aw
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// For AEC: include ALL papers (including missing ones)
-// For other categories: only show papers with downloadUrl
-const availablePyqs = pyqsData.filter(item => {
-  if (item.category === 'AEC') return true;
-  return !!item.downloadUrl;
-});
+// Only show papers that have a download URL (all categories)
+const availablePyqs = pyqsData.filter(item => !!item.downloadUrl);
 
-// All AEC papers sorted by semester then subject then year
-const aecPapers = availablePyqs
-  .filter(p => p.category === 'AEC')
-  .sort((a, b) => {
-    if (a.semester !== b.semester) return a.semester - b.semester;
-    if (a.subject !== b.subject) return a.subject.localeCompare(b.subject);
-    const yearA = parseInt(String((a as any).batch || a.year || '0'));
-    const yearB = parseInt(String((b as any).batch || b.year || '0'));
-    if (yearA !== yearB) return yearA - yearB;
-    const setA = String((a as any).set || '');
-    const setB = String((b as any).set || '');
-    return setA.localeCompare(setB);
-  });
+// ── AEC PYQ subject groups ────────────────────────────────────────────────────
+// AEC groups by (semester, subject) — e.g. (1,'Hindi'), (2,'English'), (3,'Hindi'), …
+const aecPapers = availablePyqs.filter(p => p.category === 'AEC');
 
+const aecGroupsRaw = [...new Map(
+  aecPapers.map(p => [`${p.semester}-${p.subject}`, { semester: p.semester, subject: p.subject }])
+).values()].sort((a, b) =>
+  a.semester !== b.semester ? a.semester - b.semester : a.subject.localeCompare(b.subject)
+);
+
+const getAecGroupPapers = (sem: number, subject: string) =>
+  aecPapers
+    .filter(p => p.semester === sem && p.subject === subject)
+    .sort((a, b) => {
+      const yA = String(a.year || ''), yB = String(b.year || '');
+      if (yA !== yB) return yA.localeCompare(yB);
+      return String((a as any).set || '').localeCompare(String((b as any).set || ''));
+    });
+
+const aecSemesters = [...new Set(aecPapers.map(p => p.semester))].sort((a, b) => a - b);
 const aecTotal = aecPapers.length;
 
 
@@ -473,7 +475,7 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
             </div>
           )}
 
-          <!-- ─── AEC Accordion (Syllabus-style widget) ──────────────────────── -->
+          <!-- ─── AEC PYQ Widget (Syllabus-style) ──────────────────────────────── -->
           <div class="accordion-item" style="border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-sm); overflow: hidden;">
             <!-- AEC Trigger -->
             <button
@@ -483,11 +485,12 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
               style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
             >
               <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                <GraduationCap style="color: var(--accent-success); width: 18px; height: 18px;" />
                 <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-success);">AEC Paper</span>
                 <span style="font-size: 0.62rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
                   AEC · 50 Marks
                 </span>
-                <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{aecTotal} papers</span>
+                <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{aecGroupsRaw.length} subjects · {aecTotal} papers</span>
               </div>
               <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
             </button>
@@ -495,31 +498,21 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
             <!-- AEC Collapsible Content -->
             <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
               <div style="padding: 1rem 1.25rem 1.25rem;">
-
-                <!-- Description -->
                 <p style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-bottom: 1rem;">
-                  Ability Enhancement Courses (AEC) run across Semesters 1–4. Filter by semester to browse all available and missing papers. Available papers link directly to Google Drive. Missing ones show an upload prompt.
+                  Ability Enhancement Courses (AEC) run across Semesters 1–4. AEC-1 (Hindi) in Sem 1, AEC-2 (English) in Sem 2, and AEC-3 &amp; AEC-4 offer Hindi, English, or Sanskrit options. Browse by semester below.
                 </p>
 
-                <!-- Semester filter tabs + search -->
                 <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
+                  <!-- AEC Semester Filter Tabs + Search -->
                   <div id="aec-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
                     <button class="btn btn-secondary aec-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                      All ({aecTotal})
+                      All ({aecGroupsRaw.length})
                     </button>
-                    <button class="btn btn-secondary aec-pyq-tab" data-sem="1" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                      Sem 1 — AEC-1 ({aecPapers.filter(p => p.semester === 1).length})
-                    </button>
-                    <button class="btn btn-secondary aec-pyq-tab" data-sem="2" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                      Sem 2 — AEC-2 ({aecPapers.filter(p => p.semester === 2).length})
-                    </button>
-                    <button class="btn btn-secondary aec-pyq-tab" data-sem="3" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                      Sem 3 — AEC-3 ({aecPapers.filter(p => p.semester === 3).length})
-                    </button>
-                    <button class="btn btn-secondary aec-pyq-tab" data-sem="4" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                      Sem 4 — AEC-4 ({aecPapers.filter(p => p.semester === 4).length})
-                    </button>
-
+                    {aecSemesters.map(sem => (
+                      <button class="btn btn-secondary aec-pyq-tab" data-sem={String(sem)} style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
+                        Sem {sem} — AEC-{sem}
+                      </button>
+                    ))}
                     <!-- Search -->
                     <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="aec-pyq-search-wrapper">
                       <input
@@ -533,70 +526,57 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
                     </div>
                   </div>
 
-                  <!-- Paper card grid -->
-                  <div id="aec-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.75rem;">
-                    {aecPapers.map(paper => {
-                      const isMissing = !!(paper as any).missing;
-                      const hasUrl = !!paper.downloadUrl;
-                      const semNum = paper.semester;
-                      const setBadge = (paper as any).set ? ` · ${(paper as any).set}` : '';
-                      const batchLabel = (paper as any).batch ? `${(paper as any).batch} Batch` : paper.year;
-                      const cardLabel = `AEC-${semNum} ${paper.subject}`;
-                      const searchStr = `${cardLabel} ${batchLabel} ${setBadge} sem${semNum}`.toLowerCase();
-
+                  <!-- AEC Subject Card Grid -->
+                  <div id="aec-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
+                    {aecGroupsRaw.map(group => {
+                      const papers = getAecGroupPapers(group.semester, group.subject);
+                      const label  = `AEC-${group.semester} ${group.subject}`;
+                      const slug   = `${group.subject.toLowerCase()}-sem${group.semester}`;
+                      const cardId = `aec-card-${slug}`;
+                      const panelId = `aec-panel-${slug}`;
                       return (
                         <div
-                          class="aec-pyq-card card"
-                          data-sem={String(semNum)}
-                          data-search={searchStr}
-                          style={`padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 0.6rem; border-color: ${isMissing ? 'rgba(245,158,11,0.25)' : 'var(--border-color)'}; ${isMissing ? 'background: linear-gradient(135deg, rgba(245,158,11,0.03) 0%, var(--bg-secondary) 100%);' : ''} transition: border-color 0.2s;`}
+                          class="aec-pyq-subject-card card"
+                          data-sems={String(group.semester)}
+                          data-search={label.toLowerCase()}
+                          style="padding: 0; overflow: hidden; border-color: var(--border-color); transition: border-color 0.2s;"
                         >
-                          <!-- Card Header -->
-                          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;">
-                            <div>
-                              <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); line-height: 1.3;">{cardLabel}</div>
-                              <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 0.2rem;">
-                                {batchLabel}{setBadge}
-                              </div>
+                          <!-- Card Header (clickable) -->
+                          <button
+                            id={cardId}
+                            class="aec-pyq-subject-btn"
+                            data-panel={panelId}
+                            style="width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: space-between; text-align: left; background: transparent; border: none; cursor: pointer; transition: background 0.2s;"
+                          >
+                            <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
+                              <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={label}>
+                                {label}
+                              </span>
+                              <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.1rem;">
+                                <span>Semester {group.semester}</span>
+                                <span style="font-size: 0.65rem; color: var(--accent-success); font-weight: 600;">{papers.length} paper{papers.length !== 1 ? 's' : ''} available</span>
+                              </span>
                             </div>
-                            {isMissing ? (
-                              <span style="font-size: 0.6rem; font-weight: 700; background: rgba(245,158,11,0.15); color: #d97706; border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 2px 6px; white-space: nowrap; flex-shrink: 0;">Missing</span>
-                            ) : (
-                              <span style="font-size: 0.6rem; font-weight: 700; background: rgba(16,185,129,0.1); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 2px 6px; white-space: nowrap; flex-shrink: 0;">Available</span>
-                            )}
-                          </div>
+                            <span class="aec-subject-icon" style="color: var(--accent-success); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;">📥</span>
+                          </button>
 
-                          <!-- Card Footer Action -->
-                          <div style="border-top: 1px solid var(--border-color); padding-top: 0.55rem; display: flex; justify-content: flex-end;">
-                            {hasUrl ? (
-                              <a
-                                href={paper.downloadUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="btn btn-primary btn-sm"
-                                style="font-size: 0.75rem; padding: 0.3rem 0.75rem; gap: 0.3rem;"
-                                onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.subject}', category: '${paper.category}', semester: '${paper.semester}' });`}
-                              >
-                                📥 Download
-                              </a>
-                            ) : (
-                              <div style="display: flex; gap: 0.4rem;">
-                                <button
-                                  class="btn btn-sm"
-                                  style="font-size: 0.72rem; padding: 0.3rem 0.6rem; background: rgba(245,158,11,0.12); color: #d97706; border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius-xs); cursor: pointer;"
-                                  onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));"
+                          <!-- Expandable papers list -->
+                          <div id={panelId} class="aec-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
+                            <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
+                              {papers.map(paper => (
+                                <a
+                                  href={paper.downloadUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  class="btn btn-primary btn-sm"
+                                  style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none;"
+                                  onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.subject}', category: 'AEC', semester: '${paper.semester}' });`}
                                 >
-                                  📤 Upload
-                                </button>
-                                <button
-                                  class="btn btn-outline btn-sm"
-                                  style="font-size: 0.72rem; padding: 0.3rem 0.6rem;"
-                                  onclick={`document.dispatchEvent(new CustomEvent('open-request-modal', { detail: { subject: '${paper.title}', semester: '${paper.semester}', category: 'AEC' } }));`}
-                                >
-                                  Request
-                                </button>
-                              </div>
-                            )}
+                                  <span>📄 {paper.year}{(paper as any).set ? ` — ${(paper as any).set}` : ''}</span>
+                                  <Download size="12" />
+                                </a>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       );
@@ -925,12 +905,15 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
       border-color: var(--accent-success) !important;
       font-weight: 700;
     }
-    .aec-pyq-card:hover {
+    .aec-pyq-subject-card:hover {
       border-color: var(--accent-success) !important;
       box-shadow: 0 0 0 1px rgba(16,185,129,0.15);
     }
-    .aec-pyq-card[data-missing="true"]:hover {
-      border-color: rgba(245,158,11,0.5) !important;
+    .aec-pyq-subject-card.is-open {
+      border-color: rgba(16,185,129,0.4) !important;
+    }
+    .aec-pyq-subject-btn:hover {
+      background: rgba(16,185,129,0.06) !important;
     }
     /* VAC PYQ tab active */
     .vac-pyq-tab.active {
@@ -1154,48 +1137,7 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
       });
     });
 
-    // ── AEC PYQ: Tab filter + Search ───────────────────────────────────────
-    const aecTabs    = document.querySelectorAll('.aec-pyq-tab') as NodeListOf<HTMLButtonElement>;
-    const aecCards   = document.querySelectorAll('.aec-pyq-card') as NodeListOf<HTMLElement>;
-    const aecSearch  = document.getElementById('aec-pyq-search') as HTMLInputElement;
-    const aecEmpty   = document.getElementById('aec-pyq-empty') as HTMLElement;
-
-    let activeSem  = 'all';
-    let searchTerm = '';
-
-    function filterAec() {
-      let visible = 0;
-      aecCards.forEach(card => {
-        const cardSem    = card.getAttribute('data-sem') || '';
-        const cardSearch = card.getAttribute('data-search') || '';
-        const semMatch   = activeSem === 'all' || cardSem === activeSem;
-        const txtMatch   = searchTerm === '' || cardSearch.includes(searchTerm);
-        const show       = semMatch && txtMatch;
-        card.style.display = show ? '' : 'none';
-        if (show) visible++;
-      });
-      aecEmpty.style.display = visible === 0 ? 'block' : 'none';
-
-      // Re-measure accordion height after filter so it doesn't clip
-      const aecContent = document.getElementById('aec-pyq-trigger')?.nextElementSibling as HTMLElement | null;
-      if (aecContent && aecContent.style.maxHeight && aecContent.style.maxHeight !== '0px') {
-        aecContent.style.maxHeight = 'none';
-      }
-    }
-
-    aecTabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        aecTabs.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeSem = btn.getAttribute('data-sem') || 'all';
-        filterAec();
-      });
-    });
-
-    aecSearch?.addEventListener('input', () => {
-      searchTerm = aecSearch.value.toLowerCase().trim();
-      filterAec();
-    });
+    // ── AEC PYQ: handled via initCatWidget below ──────────────────────────────
 
     // ── Generic card-grid widget factory for Major / Minor / MDC ────────────
     type CatConfig = {
@@ -1278,6 +1220,7 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
     initCatWidget({ prefix: 'major', triggerId: 'major-pyq-trigger', accentColor: 'var(--accent-primary)' });
     initCatWidget({ prefix: 'minor', triggerId: 'minor-pyq-trigger', accentColor: 'var(--accent-success)' });
     initCatWidget({ prefix: 'mdc',   triggerId: 'mdc-pyq-trigger',   accentColor: 'var(--accent-warning)' });
+    initCatWidget({ prefix: 'aec',   triggerId: 'aec-pyq-trigger',   accentColor: 'var(--accent-success)' });
 
     // ── VAC PYQ: Tab filter + Search + Card expand ─────────────────────────
     const vacTabs    = document.querySelectorAll('.vac-pyq-tab') as NodeListOf<HTMLButtonElement>;
