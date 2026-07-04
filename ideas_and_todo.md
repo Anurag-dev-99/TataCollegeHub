@@ -15,6 +15,7 @@ Welcome back! This file is your dashboard for immediate tasks, content creation,
 | 3 | Maths Major Sem 3 PYQ — all batches | Student (2022-2026 Batch) | ✅ Already uploaded | MJ-04 & MJ-05 for 2022-26 and 2023-27 batches |
 | 4 | Maths Major Sem 4 PYQ — all batches | Student (2022-2026 Batch) | ✅ Already uploaded | MJ-06, MJ-07, MJ-08 for 2022-26 batch |
 | 5 | MDC Psychology PYQ | Student (2023-2027 Batch) | ✅ June 25, 2026 | Psychology MDC Sem 1, 2, 3 for 2023-27 batch |
+| 6 | MDC Statistics PYQ | Student | ✅ July 4, 2026 (Req: July 3) | Statistics MDC Sem 1 for 2022 and 2023 batches |
 
 ### 📋 Detailed Request Notes
 
@@ -57,6 +58,16 @@ Welcome back! This file is your dashboard for immediate tasks, content creation,
   - `psychology_MDC_PYQ_2023_2027_semester1.pdf` → [Drive Link](https://drive.google.com/file/d/1PuzfFBjj_plPq-1wYojZ-wLcGuclSv9h/view?usp=drive_link)
   - `psychology_MDC_PYQ_2023_2027_semester2.pdf` → [Drive Link](https://drive.google.com/file/d/1u4cFCHLcww2NBx20SF8nWQ9tH_cjFuRc/view?usp=drive_link)
   - `psychology_MDC_PYQ_2023_2027_semester3.pdf` → [Drive Link](https://drive.google.com/file/d/1E3DLjLZjR2EjYSA8BAsbdZQfxOI4kpm3/view?usp=drive_link)
+
+---
+
+#### Request #6 — MDC Statistics PYQ
+> *"Stats MDC PYQ semester 1 for 2022 and 2023 batches"*
+
+- **Requested:** Student needed Statistics MDC papers (requested on 3 July)
+- **Completed:** ✅ Uploaded on 4 July
+  - `MDC_stat_sem_1_2022.pdf` → [Drive Link](https://drive.google.com/file/d/1FoEtDtpB_2xf8UB80rxc591Ue6WY4v6d/view?usp=drive_link)
+  - `MDC_stat_sem_1_2023.pdf` → [Drive Link](https://drive.google.com/file/d/1KhFi2DgtoVQWvOBw3gGChGWlXpgEUzmY/view?usp=drive_link)
 
 ---
 

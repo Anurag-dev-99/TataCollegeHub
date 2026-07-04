@@ -1,4 +1,4 @@
-﻿[
+[
     {
         "id":  "pyq-mj-math-sem3-mj04-2022",
         "title":  "maths_mj_04_sem3_pyq_2022-2026.pdf",
@@ -1156,5 +1156,27 @@
         "downloadCount":  0,
         "fileSize":  "PDF File",
         "downloadUrl":  "https://drive.google.com/file/d/1I9vkx1sc0m-bzG0F8lFt7DRf6onuKpG0/view?usp=drive_link"
+    },
+    {
+        "id": "pyq-mdc-stat-sem1-2022",
+        "title": "MDC Statistics Sem 1 PYQ (2022 Batch)",
+        "year": "2022",
+        "semester": 1,
+        "category": "MDC",
+        "subject": "Statistics",
+        "downloadCount": 0,
+        "fileSize": "PDF File",
+        "downloadUrl": "https://drive.google.com/file/d/1FoEtDtpB_2xf8UB80rxc591Ue6WY4v6d/view?usp=drive_link"
+    },
+    {
+        "id": "pyq-mdc-stat-sem1-2023",
+        "title": "MDC Statistics Sem 1 PYQ (2023 Batch)",
+        "year": "2023",
+        "semester": 1,
+        "category": "MDC",
+        "subject": "Statistics",
+        "downloadCount": 0,
+        "fileSize": "PDF File",
+        "downloadUrl": "https://drive.google.com/file/d/1KhFi2DgtoVQWvOBw3gGChGWlXpgEUzmY/view?usp=drive_link"
     }
 ]
