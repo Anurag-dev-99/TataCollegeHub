@@ -17,7 +17,13 @@ const pageDescription = Astro.props.description ?? 'Free Kolhan University PYQ (
 
 const pageKeywords = Astro.props.keywords ?? 'Kolhan University PYQ, Kolhan University result, Kolhan University syllabus, Kolhan University Chaibasa, Kolhan University question papers download, Tata College Chaibasa, NEP 2020 Kolhan University, FYUGP syllabus Kolhan University, Tata College PYQ, 2022 batch Kolhan University';
 
-const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
+// Strip BASE_URL prefix from pathname so canonical always points to kolhanhub.in
+// When served from GitHub Pages, Astro.url.pathname includes /TataCollegeHub/ prefix
+// which would generate a broken canonical like https://kolhanhub.in/TataCollegeHub/pyqs/
+const cleanPath = Astro.url.pathname.startsWith(baseUrl) && baseUrl !== ''
+  ? Astro.url.pathname.slice(baseUrl.length) || '/'
+  : Astro.url.pathname;
+const canonicalUrl = `${siteUrl}${cleanPath}`;
 const pageTitle = `${title} | Kolhan University — Tata College, Chaibasa`;
 
 // Breadcrumb & per-page WebPage structured data
