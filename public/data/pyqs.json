@@ -1,4 +1,4 @@
-[
+﻿[
     {
         "id":  "pyq-mj-math-sem3-mj04-2022",
         "title":  "maths_mj_04_sem3_pyq_2022-2026.pdf",
@@ -214,7 +214,7 @@
     },
     {
         "id":  "pyq-aec-1-hindi-2022-set1",
-        "title":  "AEC-1 Hindi PYQ 2022 — Set 1",
+        "title":  "AEC-1 Hindi PYQ 2022 â€” Set 1",
         "year":  "2022",
         "semester":  1,
         "category":  "AEC",
@@ -226,7 +226,7 @@
     },
     {
         "id":  "pyq-aec-1-hindi-2022-set2",
-        "title":  "AEC-1 Hindi PYQ 2022 — Set 2",
+        "title":  "AEC-1 Hindi PYQ 2022 â€” Set 2",
         "year":  "2022",
         "semester":  1,
         "category":  "AEC",
@@ -238,7 +238,7 @@
     },
     {
         "id":  "pyq-aec-1-hindi-2023-set1",
-        "title":  "AEC-1 Hindi PYQ 2023 — Set 1",
+        "title":  "AEC-1 Hindi PYQ 2023 â€” Set 1",
         "year":  "2023",
         "semester":  1,
         "category":  "AEC",
@@ -250,7 +250,7 @@
     },
     {
         "id":  "pyq-aec-1-hindi-2023-set2",
-        "title":  "AEC-1 Hindi PYQ 2023 — Set 2",
+        "title":  "AEC-1 Hindi PYQ 2023 â€” Set 2",
         "year":  "2023",
         "semester":  1,
         "category":  "AEC",
@@ -262,7 +262,7 @@
     },
     {
         "id":  "pyq-aec-1-hindi-2024-set1",
-        "title":  "AEC-1 Hindi PYQ 2024 — Set 1",
+        "title":  "AEC-1 Hindi PYQ 2024 â€” Set 1",
         "year":  "2024",
         "semester":  1,
         "category":  "AEC",
@@ -274,7 +274,7 @@
     },
     {
         "id":  "pyq-aec-1-hindi-2024-set3",
-        "title":  "AEC-1 Hindi PYQ 2024 — Set 3",
+        "title":  "AEC-1 Hindi PYQ 2024 â€” Set 3",
         "year":  "2024",
         "semester":  1,
         "category":  "AEC",
@@ -286,7 +286,7 @@
     },
     {
         "id":  "pyq-aec-2-eng-2022-set1",
-        "title":  "AEC-2 English PYQ 2022 — Set 1",
+        "title":  "AEC-2 English PYQ 2022 â€” Set 1",
         "year":  "2022",
         "semester":  2,
         "category":  "AEC",
@@ -298,7 +298,7 @@
     },
     {
         "id":  "pyq-aec-2-eng-2022-set2",
-        "title":  "AEC-2 English PYQ 2022 — Set 2",
+        "title":  "AEC-2 English PYQ 2022 â€” Set 2",
         "year":  "2022",
         "semester":  2,
         "category":  "AEC",
@@ -310,7 +310,7 @@
     },
     {
         "id":  "pyq-aec-2-eng-2023-set1",
-        "title":  "AEC-2 English PYQ 2023 — Set 1",
+        "title":  "AEC-2 English PYQ 2023 â€” Set 1",
         "year":  "2023",
         "semester":  2,
         "category":  "AEC",
@@ -322,7 +322,7 @@
     },
     {
         "id":  "pyq-aec-2-eng-2023-set2",
-        "title":  "AEC-2 English PYQ 2023 — Set 2",
+        "title":  "AEC-2 English PYQ 2023 â€” Set 2",
         "year":  "2023",
         "semester":  2,
         "category":  "AEC",
@@ -334,7 +334,7 @@
     },
     {
         "id":  "pyq-aec-2-eng-2023-set3",
-        "title":  "AEC-2 English PYQ 2023 — Set 3",
+        "title":  "AEC-2 English PYQ 2023 â€” Set 3",
         "year":  "2023",
         "semester":  2,
         "category":  "AEC",
@@ -346,7 +346,7 @@
     },
     {
         "id":  "pyq-aec-2-eng-2024-set2",
-        "title":  "AEC-2 English PYQ 2024 — Set 2",
+        "title":  "AEC-2 English PYQ 2024 â€” Set 2",
         "year":  "2024",
         "semester":  2,
         "category":  "AEC",
@@ -1158,25 +1158,311 @@
         "downloadUrl":  "https://drive.google.com/file/d/1I9vkx1sc0m-bzG0F8lFt7DRf6onuKpG0/view?usp=drive_link"
     },
     {
-        "id": "pyq-mdc-stat-sem1-2022",
-        "title": "MDC Statistics Sem 1 PYQ (2022 Batch)",
-        "year": "2022",
-        "semester": 1,
-        "category": "MDC",
-        "subject": "Statistics",
-        "downloadCount": 0,
-        "fileSize": "PDF File",
-        "downloadUrl": "https://drive.google.com/file/d/1FoEtDtpB_2xf8UB80rxc591Ue6WY4v6d/view?usp=drive_link"
+        "id":  "pyq-mdc-stat-sem1-2022",
+        "title":  "MDC Statistics Sem 1 PYQ (2022 Batch)",
+        "year":  "2022",
+        "semester":  1,
+        "category":  "MDC",
+        "subject":  "Statistics",
+        "downloadCount":  0,
+        "fileSize":  "PDF File",
+        "downloadUrl":  "https://drive.google.com/file/d/1FoEtDtpB_2xf8UB80rxc591Ue6WY4v6d/view?usp=drive_link"
     },
     {
-        "id": "pyq-mdc-stat-sem1-2023",
-        "title": "MDC Statistics Sem 1 PYQ (2023 Batch)",
-        "year": "2023",
-        "semester": 1,
-        "category": "MDC",
-        "subject": "Statistics",
-        "downloadCount": 0,
-        "fileSize": "PDF File",
-        "downloadUrl": "https://drive.google.com/file/d/1KhFi2DgtoVQWvOBw3gGChGWlXpgEUzmY/view?usp=drive_link"
+        "id":  "pyq-mdc-stat-sem1-2023",
+        "title":  "MDC Statistics Sem 1 PYQ (2023 Batch)",
+        "year":  "2023",
+        "semester":  1,
+        "category":  "MDC",
+        "subject":  "Statistics",
+        "downloadCount":  0,
+        "fileSize":  "PDF File",
+        "downloadUrl":  "https://drive.google.com/file/d/1KhFi2DgtoVQWvOBw3gGChGWlXpgEUzmY/view?usp=drive_link"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/1BIjZ5l5YNnY6mGuQIUqSbtuF9dHctvhO/view?usp=drive_link",
+        "id":  "pyq-mdc-anthro-sem2-2022",
+        "category":  "MDC",
+        "semester":  2,
+        "subject":  "Anthropology",
+        "downloadCount":  0,
+        "title":  "MDC Anthropology Sem 2 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023",
+        "downloadUrl":  "https://drive.google.com/file/d/1Rv7ngAFvaj4SV1yHtKg7wYbzssuRw73E/view?usp=drive_link",
+        "id":  "pyq-mdc-anthro-sem2-2023",
+        "category":  "MDC",
+        "semester":  2,
+        "subject":  "Anthropology",
+        "downloadCount":  0,
+        "title":  "MDC Anthropology Sem 2 PYQ (2023 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/1emZYd2AupxUs8OijU8PEejtAMGpfQsjM/view?usp=drive_link",
+        "id":  "pyq-mdc-bba-sem2-2022",
+        "category":  "MDC",
+        "semester":  2,
+        "subject":  "BBA",
+        "downloadCount":  0,
+        "title":  "MDC BBA Sem 2 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/11I5Ifp-Qwuw41RR7USIGLmMsVywCb8jf/view?usp=drive_link",
+        "id":  "pyq-mdc-eco-sem1-2022",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "Economics",
+        "downloadCount":  0,
+        "title":  "MDC Economics Sem 1 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023",
+        "downloadUrl":  "https://drive.google.com/file/d/1X3Lc0uF2sC1ifJ6gxYWpFFOn84HLbNRu/view?usp=drive_link",
+        "id":  "pyq-mdc-eco-sem1-2023",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "Economics",
+        "downloadCount":  0,
+        "title":  "MDC Economics Sem 1 PYQ (2023 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/1VtGXKXhrOuutwijgQV5y92Zus7T9WfeO/view?usp=drive_link",
+        "id":  "pyq-mdc-eco-sem2-2022",
+        "category":  "MDC",
+        "semester":  2,
+        "subject":  "Economics",
+        "downloadCount":  0,
+        "title":  "MDC Economics Sem 2 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/1K800RglMCVIGFm-_aZiZAYyIAc8GyVUj/view?usp=drive_link",
+        "id":  "pyq-mdc-geo-sem1-2022",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "Geography",
+        "downloadCount":  0,
+        "title":  "MDC Geography Sem 1 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023",
+        "downloadUrl":  "https://drive.google.com/file/d/1gCRaqaP5RgIBg6R0zuXlmMGQyqbyKgc9/view?usp=drive_link",
+        "id":  "pyq-mdc-geo-sem1-2023",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "Geography",
+        "downloadCount":  0,
+        "title":  "MDC Geography Sem 1 PYQ (2023 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2024",
+        "downloadUrl":  "https://drive.google.com/file/d/1RBDQUG_VKKD4BoBLyCIrPWYkHgfjkr8g/view?usp=drive_link",
+        "id":  "pyq-mdc-geo-sem1-2024",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "Geography",
+        "downloadCount":  0,
+        "title":  "MDC Geography Sem 1 PYQ (2024 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023",
+        "downloadUrl":  "https://drive.google.com/file/d/1fu-heGUe0ru6wxYzA_Fh9vlcAm0GlkoD/view?usp=drive_link",
+        "id":  "pyq-mdc-geo-sem2-2023",
+        "category":  "MDC",
+        "semester":  2,
+        "subject":  "Geography",
+        "downloadCount":  0,
+        "title":  "MDC Geography Sem 2 PYQ (2023 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/1jx-LvlIkcvt3L4UCSKkdCibu4JqdTwiz/view?usp=drive_link",
+        "id":  "pyq-mdc-geo-sem3-2022",
+        "category":  "MDC",
+        "semester":  3,
+        "subject":  "Geography",
+        "downloadCount":  0,
+        "title":  "MDC Geography Sem 3 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2024",
+        "downloadUrl":  "https://drive.google.com/file/d/1AM8FtegRMkotVepRQZpZWCwk8HDSlmIU/view?usp=drive_link",
+        "id":  "pyq-mdc-geol-sem2-2024",
+        "category":  "MDC",
+        "semester":  2,
+        "subject":  "Geology",
+        "downloadCount":  0,
+        "title":  "MDC Geology Sem 2 PYQ (2024 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/1dqo9ZqGknDpySh1fsDsBXmDXoK3SoJjrF/view?usp=drive_link",
+        "id":  "pyq-mdc-hist-sem1-2022",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "History",
+        "downloadCount":  0,
+        "title":  "MDC History Sem 1 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023",
+        "downloadUrl":  "https://drive.google.com/file/d/1f9fZDw4cBvuXl0a8pU09duZGXMpz1xtj/view?usp=drive_link",
+        "id":  "pyq-mdc-hist-sem1-2023",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "History",
+        "downloadCount":  0,
+        "title":  "MDC History Sem 1 PYQ (2023 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023",
+        "downloadUrl":  "https://drive.google.com/file/d/1I9z1UuEyOO_LxvgFCoV6psgUyTqYUMao/view?usp=drive_link",
+        "id":  "pyq-mdc-hist-sem2-2023",
+        "category":  "MDC",
+        "semester":  2,
+        "subject":  "History",
+        "downloadCount":  0,
+        "title":  "MDC History Sem 2 PYQ (2023 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023",
+        "downloadUrl":  "https://drive.google.com/file/d/1QhEijLloPPekvj4EykyA6euceKdAVkgU/view?usp=drive_link",
+        "id":  "pyq-mdc-homesci-sem2-2023",
+        "category":  "MDC",
+        "semester":  2,
+        "subject":  "Home Science",
+        "downloadCount":  0,
+        "title":  "MDC Home Science Sem 2 PYQ (2023 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/1qibZ2xa4x4TRIVDeGOLDfzJDloI2PUYx/view?usp=drive_link",
+        "id":  "pyq-mdc-homesci-sem3-2022",
+        "category":  "MDC",
+        "semester":  3,
+        "subject":  "Home Science",
+        "downloadCount":  0,
+        "title":  "MDC Home Science Sem 3 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/1AKHPRxx3Dc6ap91rVBqL9L1BjEbpaMZn/view?usp=drive_link",
+        "id":  "pyq-mdc-it-sem1-2022",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "Information Technology",
+        "downloadCount":  0,
+        "title":  "MDC Information Technology Sem 1 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/1Hh4z3IMz2vWSc-S1mFF30e2klY15-fd2/view?usp=drive_link",
+        "id":  "pyq-mdc-phil-sem1-2022",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "Philosophy",
+        "downloadCount":  0,
+        "title":  "MDC Philosophy Sem 1 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/1oWQWlUvbD3Qujh9EwzfRE_InKU71xsgG/view?usp=drive_link",
+        "id":  "pyq-mdc-phil-sem2-2022",
+        "category":  "MDC",
+        "semester":  2,
+        "subject":  "Philosophy",
+        "downloadCount":  0,
+        "title":  "MDC Philosophy Sem 2 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023",
+        "downloadUrl":  "https://drive.google.com/file/d/1GdzBb6EPK0rGgiLY1vuAyKBAGAFWlqce/view?usp=drive_link",
+        "id":  "pyq-mdc-phil-sem1-2023",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "Philosophy",
+        "downloadCount":  0,
+        "title":  "MDC Philosophy Sem 1 PYQ (2023 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/1OYoK3dlmU4qktcYRjLYmnnRAMfg4d-Be/view?usp=drive_link",
+        "id":  "pyq-mdc-pol-sem1-2022",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "Political Science",
+        "downloadCount":  0,
+        "title":  "MDC Political Science Sem 1 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023",
+        "downloadUrl":  "https://drive.google.com/file/d/1LaBYTr_iMI4YLkFGk9Tu-hiuEW4WyPAU/view?usp=drive_link",
+        "id":  "pyq-mdc-pol-sem1-2023",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "Political Science",
+        "downloadCount":  0,
+        "title":  "MDC Political Science Sem 1 PYQ (2023 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/1E_q2afSL5PQ0HPkW_dTjXCB8QVlvMlV0/view?usp=drive_link",
+        "id":  "pyq-mdc-pol-sem2-2022",
+        "category":  "MDC",
+        "semester":  2,
+        "subject":  "Political Science",
+        "downloadCount":  0,
+        "title":  "MDC Political Science Sem 2 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022",
+        "downloadUrl":  "https://drive.google.com/file/d/11RrCwDz9LmKehJdUvqXIkghWxhr66xKQ/view?usp=drive_link",
+        "id":  "pyq-mdc-socio-sem2-2022",
+        "category":  "MDC",
+        "semester":  2,
+        "subject":  "Sociology",
+        "downloadCount":  0,
+        "title":  "MDC Sociology Sem 2 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023",
+        "downloadUrl":  "https://drive.google.com/file/d/1tMG1nXwxAB3gso5Rb7ip_EKZa1tDOHnD/view?usp=drive_link",
+        "id":  "pyq-mdc-socio-sem3-2023",
+        "category":  "MDC",
+        "semester":  3,
+        "subject":  "Sociology",
+        "downloadCount":  0,
+        "title":  "MDC Sociology Sem 3 PYQ (2023 Batch)",
+        "fileSize":  "PDF File"
     }
 ]
