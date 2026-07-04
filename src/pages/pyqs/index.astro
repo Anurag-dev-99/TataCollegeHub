@@ -977,37 +977,54 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
     }
   </style>
 
-  <!-- Live Most Downloaded fetch from Google Sheets -->
+  <!-- Live Most Downloaded — stale-while-revalidate via localStorage -->
   <script is:inline>
     (function() {
       var STATS_URL = 'https://script.google.com/macros/s/AKfycbx3ZJ1VuRgNc71FSKnrIAzLsv3qxnUeBwA8HALHWhDxlpJC93YzOwCV5rmLLT-swLaXHQ/exec?action=top';
+      var CACHE_KEY = 'tch_most_downloaded_v1';
       var listEl = document.getElementById('most-downloaded-list');
       var noteEl = document.getElementById('most-downloaded-note');
 
+      function renderTop(top) {
+        if (!listEl) return;
+        var html = '';
+        top.forEach(function(item, i) {
+          var isLast = i === top.length - 1;
+          html += '<div style="display:flex;flex-direction:column;gap:0.25rem;padding-bottom:0.75rem;' + (!isLast ? 'border-bottom:1px solid var(--border-color);' : '') + '">' +
+            '<div style="font-weight:700;font-size:0.875rem;color:var(--text-primary);">' + item.subject + ' (' + item.category + ')</div>' +
+            '<div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-secondary);">' +
+              '<span>Sem ' + item.semester + ' &bull; ' + (item.fileType === 'pyq' ? 'PYQ' : 'Syllabus') + '</span>' +
+              '<span style="display:flex;align-items:center;gap:0.2rem;color:var(--accent-success);font-weight:600;">↓ ' + item.count + '</span>' +
+            '</div>' +
+          '</div>';
+        });
+        listEl.innerHTML = html;
+        if (noteEl) noteEl.style.display = 'block';
+      }
+
+      // STEP 1: Show cached data immediately if available — skips the skeleton entirely
+      var cached = null;
+      try { cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); } catch(e) {}
+      if (cached && cached.top && cached.top.length > 0) {
+        renderTop(cached.top);
+      }
+
+      // STEP 2: Always fetch fresh data in background — update UI + cache when done
       fetch(STATS_URL)
         .then(function(r) { return r.json(); })
         .then(function(data) {
-          if (!listEl) return;
-          if (data.status !== 'ok' || !data.top || data.top.length === 0) {
-            listEl.innerHTML = '<p style="font-size:0.8rem; color:var(--text-tertiary); text-align:center;">Not enough data yet.</p>';
-            return;
+          if (data.status === 'ok' && data.top && data.top.length > 0) {
+            renderTop(data.top);
+            try { localStorage.setItem(CACHE_KEY, JSON.stringify({ top: data.top, ts: Date.now() })); } catch(e) {}
+          } else if (!cached) {
+            if (listEl) listEl.innerHTML = '<p style="font-size:0.8rem;color:var(--text-tertiary);text-align:center;">Not enough data yet.</p>';
           }
-          var html = '';
-          data.top.forEach(function(item, i) {
-            var isLast = i === data.top.length - 1;
-            html += '<div style="display:flex;flex-direction:column;gap:0.25rem;padding-bottom:0.75rem;' + (!isLast ? 'border-bottom:1px solid var(--border-color);' : '') + '">' +
-              '<div style="font-weight:700;font-size:0.875rem;color:var(--text-primary);">' + item.subject + ' (' + item.category + ')</div>' +
-              '<div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-secondary);">' +
-                '<span>Sem ' + item.semester + ' &bull; ' + (item.fileType === 'pyq' ? 'PYQ' : 'Syllabus') + '</span>' +
-                '<span style="display:flex;align-items:center;gap:0.2rem;color:var(--accent-success);font-weight:600;">↓ ' + item.count + '</span>' +
-              '</div>' +
-            '</div>';
-          });
-          listEl.innerHTML = html;
-          if (noteEl) noteEl.style.display = 'block';
         })
         .catch(function() {
-          if (listEl) listEl.innerHTML = '<p style="font-size:0.8rem;color:var(--text-tertiary);text-align:center;">Could not load data.</p>';
+          // Only show error if nothing was rendered from cache
+          if (!cached && listEl && listEl.querySelector('[style*="animation"]')) {
+            listEl.innerHTML = '<p style="font-size:0.8rem;color:var(--text-tertiary);text-align:center;">Could not load data.</p>';
+          }
         });
     })();
   </script>
