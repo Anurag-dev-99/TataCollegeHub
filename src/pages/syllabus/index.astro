@@ -677,17 +677,26 @@ const departments = Object.keys(deptGroups);
   </style>
 
   <script>
-    // Syllabus compact panel accordions
-    ['syl-req', 'syl-contrib'].forEach(function(id) {
-      var t = document.getElementById(id + '-trigger');
-      var c = document.getElementById(id + '-content');
-      var ch = document.getElementById(id + '-chevron');
-      if (t && c) t.addEventListener('click', function() {
-        var open = c.style.maxHeight && c.style.maxHeight !== '0px';
-        c.style.maxHeight = open ? '0px' : c.scrollHeight + 'px';
-        if (ch) ch.style.transform = open ? 'rotate(0deg)' : 'rotate(90deg)';
-      });
-    });
+    // Syllabus community panels — both open/close together
+    (function() {
+      var reqT  = document.getElementById('syl-req-trigger');
+      var reqC  = document.getElementById('syl-req-content');
+      var reqCh = document.getElementById('syl-req-chevron');
+      var conT  = document.getElementById('syl-contrib-trigger');
+      var conC  = document.getElementById('syl-contrib-content');
+      var conCh = document.getElementById('syl-contrib-chevron');
+      function toggleBoth() {
+        if (!reqC || !conC) return;
+        var open = reqC.style.maxHeight && reqC.style.maxHeight !== '0px';
+        reqC.style.maxHeight = open ? '0px' : reqC.scrollHeight + 'px';
+        conC.style.maxHeight = open ? '0px' : conC.scrollHeight + 'px';
+        var rot = open ? 'rotate(0deg)' : 'rotate(90deg)';
+        if (reqCh) reqCh.style.transform = rot;
+        if (conCh) conCh.style.transform = rot;
+      }
+      if (reqT) reqT.addEventListener('click', toggleBoth);
+      if (conT) conT.addEventListener('click', toggleBoth);
+    })();
 
     // Accordion Toggle Logic
     const accordionTriggers = document.querySelectorAll('.accordion-trigger');

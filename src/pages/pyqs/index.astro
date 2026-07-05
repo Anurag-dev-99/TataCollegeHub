@@ -1026,27 +1026,25 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
 
   <!-- Live Most Downloaded — stale-while-revalidate via localStorage -->
   <script is:inline>
-    // PYQ Requests accordion
+    // PYQ community panels — both open/close together
     (function() {
-      var t = document.getElementById('pyq-req-trigger');
-      var c = document.getElementById('pyq-req-content');
-      var ch = document.getElementById('pyq-req-chevron');
-      if (t && c) t.addEventListener('click', function() {
-        var open = c.style.maxHeight && c.style.maxHeight !== '0px';
-        c.style.maxHeight = open ? '0px' : c.scrollHeight + 'px';
-        if (ch) ch.style.transform = open ? 'rotate(0deg)' : 'rotate(90deg)';
-      });
-    })();
-    // PYQ Contributors accordion
-    (function() {
-      var t = document.getElementById('pyq-contrib-trigger');
-      var c = document.getElementById('pyq-contrib-content');
-      var ch = document.getElementById('pyq-contrib-chevron');
-      if (t && c) t.addEventListener('click', function() {
-        var open = c.style.maxHeight && c.style.maxHeight !== '0px';
-        c.style.maxHeight = open ? '0px' : c.scrollHeight + 'px';
-        if (ch) ch.style.transform = open ? 'rotate(0deg)' : 'rotate(90deg)';
-      });
+      var reqT  = document.getElementById('pyq-req-trigger');
+      var reqC  = document.getElementById('pyq-req-content');
+      var reqCh = document.getElementById('pyq-req-chevron');
+      var conT  = document.getElementById('pyq-contrib-trigger');
+      var conC  = document.getElementById('pyq-contrib-content');
+      var conCh = document.getElementById('pyq-contrib-chevron');
+      function toggleBoth() {
+        if (!reqC || !conC) return;
+        var open = reqC.style.maxHeight && reqC.style.maxHeight !== '0px';
+        reqC.style.maxHeight = open ? '0px' : reqC.scrollHeight + 'px';
+        conC.style.maxHeight = open ? '0px' : conC.scrollHeight + 'px';
+        var rot = open ? 'rotate(0deg)' : 'rotate(90deg)';
+        if (reqCh) reqCh.style.transform = rot;
+        if (conCh) conCh.style.transform = rot;
+      }
+      if (reqT) reqT.addEventListener('click', toggleBoth);
+      if (conT) conT.addEventListener('click', toggleBoth);
     })();
     (function() {
       var STATS_URL = 'https://script.google.com/macros/s/AKfycbx3ZJ1VuRgNc71FSKnrIAzLsv3qxnUeBwA8HALHWhDxlpJC93YzOwCV5rmLLT-swLaXHQ/exec?action=top';
