@@ -197,6 +197,7 @@ const getModulesForSemester = (modules: string[], semNum: number) => {
                     rel="noopener noreferrer"
                     class="btn btn-outline btn-sm"
                     style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem;"
+                    onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${syl.title} Full Syllabus (Sem 1-8)', category: '${syl.department}', semester: 'All', department: '${syl.department}' });`}
                   >
                     <Download size="14" /> Download Full Syllabus (Sem 1-8)
                   </a>
