@@ -498,47 +498,36 @@ const webPageSchema = JSON.stringify({
         <div class="modal-close" id="close-submit-modal-btn">
           <X size="20" />
         </div>
-        <h2 style="font-size: 1.4rem; margin-bottom: 0.5rem; font-family: var(--font-display); text-align: center; font-weight: 800;">Submit a Paper</h2>
-        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.75rem; text-align: center; line-height: 1.5;">
-          Help fellow college students by contributing syllabus or previous year exam papers. Select your preferred method to submit:
-        </p>
-
-        <div class="submit-grid">
-          <!-- Google Form Card Option -->
-          <a 
-            href="https://docs.google.com/forms/d/e/1FAIpQLSdBj3G1eQnF6zIrHjc5VtudcCzknOV1wsUXT2dE4xE11P9Qgg/viewform" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            class="submit-card-btn"
-            style="text-decoration: none;"
-          >
-            <div class="submit-card-icon" style="color: var(--accent-success); background-color: rgba(16, 185, 129, 0.1);">
-              📝
-            </div>
-            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">Google Form</h3>
-            <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">Upload PDFs, images, or files. 100% anonymous & private.</p>
-            <span class="submit-card-badge" style="background-color: var(--accent-success); color: white;">Recommended</span>
-          </a>
-          
-          <!-- WhatsApp Card Option -->
-          <a 
-            href="https://api.whatsapp.com/send?phone=918002059887&text=Hi%20Admin!%20I%20want%20to%20submit%20a%20syllabus%20or%20PYQ%20paper." 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            class="submit-card-btn"
-            style="text-decoration: none;"
-          >
-            <div class="submit-card-icon" style="color: var(--accent-primary); background-color: rgba(99, 102, 241, 0.1);">
-              💬
-            </div>
-            <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">WhatsApp</h3>
-            <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">Send files directly to the admin. Fast & interactive chat.</p>
-            <span class="submit-card-badge" style="background: var(--bg-tertiary); color: var(--text-secondary); border: 1px solid var(--border-color);">Direct Message</span>
-          </a>
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📚</div>
+          <h2 style="font-size: 1.35rem; font-family: var(--font-display); font-weight: 800; margin-bottom: 0.4rem;">Share Your Files</h2>
+          <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.55;">
+            Have a PYQ, syllabus, or notes? Share it and help hundreds of Kolhan University students — just one WhatsApp message away.
+          </p>
         </div>
 
+        <a
+          href="https://api.whatsapp.com/send?phone=918002059887&text=Hi!%20I%20have%20some%20study%20material%20to%20share%20for%20Kolhan%20University%20students%20%F0%9F%93%9A"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="display: flex; align-items: center; gap: 1rem; background: linear-gradient(135deg, rgba(37,211,102,0.12) 0%, rgba(37,211,102,0.04) 100%); border: 1.5px solid rgba(37,211,102,0.35); border-radius: var(--radius-sm); padding: 1rem 1.25rem; text-decoration: none; transition: border-color 0.2s;"
+          onmouseover="this.style.borderColor='rgba(37,211,102,0.7)'"
+          onmouseout="this.style.borderColor='rgba(37,211,102,0.35)'"
+        >
+          <div style="font-size: 2rem; flex-shrink: 0;">💬</div>
+          <div style="flex: 1;">
+            <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 0.15rem;">Send on WhatsApp</div>
+            <div style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">Just tap, attach your file, and send. No login, no form, no hassle.</div>
+          </div>
+          <div style="font-size: 1.1rem; color: rgba(37,211,102,0.8);">→</div>
+        </a>
+
+        <p style="text-align: center; font-size: 0.72rem; color: var(--text-tertiary); margin-top: 0.85rem;">
+          Any file works — PYQ, syllabus, notes, or anything helpful for Kolhan students.
+        </p>
+
         <button id="close-submit-done-btn" class="btn btn-secondary" style="width: 100%; margin-top: 1.5rem; border-radius: var(--radius-sm); font-weight: 600;">
-          Cancel
+          Maybe Later
         </button>
       </div>
     </div>
