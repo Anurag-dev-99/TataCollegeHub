@@ -115,7 +115,7 @@ const matchingPapers = pyqsData.filter(p =>
                   <div style="display: flex; gap: 0.75rem; font-size: 0.775rem; color: var(--text-secondary); margin-top: 0.25rem; flex-wrap: wrap;">
                     <span>Year: <strong>{paper.year}</strong></span>
                     {(paper as any).set && <><span>•</span><span>{(paper as any).set}</span></>}
-                    {!isMissing && <><span>•</span><span style="display: flex; align-items: center; gap: 0.15rem;"><Download size="12" /> {paper.downloadCount || 0} downloads</span></>}
+                    {!isMissing && <><span>•</span><span style="display: flex; align-items: center; gap: 0.15rem;"><Download size="12" /> <span class="live-paper-download-count" data-subject-title={paper.title}>—</span> downloads</span></>}
                   </div>
                 </div>
               </div>
@@ -194,4 +194,27 @@ const matchingPapers = pyqsData.filter(p =>
     </div>
   )}
 
+  <script is:inline>
+    (function() {
+      var elements = document.querySelectorAll('.live-paper-download-count');
+      if (!elements.length) return;
+      var url = 'https://script.google.com/macros/s/AKfycbx3ZJ1VuRgNc71FSKnrIAzLsv3qxnUeBwA8HALHWhDxlpJC93YzOwCV5rmLLT-swLaXHQ/exec?action=papercounts';
+      fetch(url)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.status === 'ok' && data.counts) {
+            elements.forEach(function(el) {
+              var title = el.getAttribute('data-subject-title');
+              var count = data.counts[title] || 0;
+              el.textContent = count.toLocaleString();
+            });
+          }
+        })
+        .catch(function() {
+          elements.forEach(function(el) {
+            el.textContent = '0';
+          });
+        });
+    })();
+  </script>
 </Layout>

@@ -124,6 +124,23 @@ function doGet(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
+    // ── action=papercounts: counts for all papers ────────────────────────
+    if (action === 'papercounts') {
+      var counts = {};
+      if (dlSheet && dlSheet.getLastRow() > 1) {
+        var rows = dlSheet.getRange(2, 3, dlSheet.getLastRow() - 1, 1).getValues(); // Column C = Subject
+        rows.forEach(function(row) {
+          var subject = (row[0] || '').toString().trim();
+          if (subject) {
+            counts[subject] = (counts[subject] || 0) + 1;
+          }
+        });
+      }
+      return ContentService
+        .createTextOutput(JSON.stringify({ status: 'ok', counts: counts }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
     return ContentService
       .createTextOutput(JSON.stringify({ status: 'error', message: 'Unknown action' }))
       .setMimeType(ContentService.MimeType.JSON);
