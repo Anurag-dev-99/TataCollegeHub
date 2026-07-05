@@ -325,7 +325,7 @@ const webPageSchema = JSON.stringify({
                 <span style="color: var(--text-tertiary);">•</span>
                 <button onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'))" style="background:none; border:none; padding:0; color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; cursor:pointer;">Submit Resource</button>
                 <span style="color: var(--text-tertiary);">•</span>
-                <button onclick="document.dispatchEvent(new CustomEvent('open-request-modal', {detail: {subject: 'Wrong/Broken Paper', category: 'Report'}}))" style="background:none; border:none; padding:0; color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; cursor:pointer;">Report Wrong Paper</button>
+                <button onclick="document.dispatchEvent(new CustomEvent('open-report-modal'))" style="background:none; border:none; padding:0; color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; cursor:pointer;">Report Wrong Paper</button>
               </p>
             </div>
 
@@ -529,6 +529,54 @@ const webPageSchema = JSON.stringify({
         <button id="close-submit-done-btn" class="btn btn-secondary" style="width: 100%; margin-top: 1.5rem; border-radius: var(--radius-sm); font-weight: 600;">
           Maybe Later
         </button>
+      </div>
+    </div>
+
+    <!-- Report Problem Modal -->
+    <div id="report-modal" class="modal-overlay">
+      <div class="modal-container" style="max-width: 450px;">
+        <div class="modal-close" id="close-report-modal-btn">
+          <X size="20" />
+        </div>
+        
+        <!-- Form State -->
+        <form id="report-form" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div style="text-align: center; margin-bottom: 0.5rem;">
+            <div style="font-size: 2.2rem; margin-bottom: 0.4rem;">⚠️</div>
+            <h2 style="font-size: 1.35rem; font-family: var(--font-display); font-weight: 800; margin-bottom: 0.3rem;">Report an Issue</h2>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5;">
+              Help us keep the study materials accurate. Please describe what's wrong with this page or download links (e.g. broken link, wrong paper, typo).
+            </p>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" for="report-message" style="margin-bottom: 0.4rem; display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">What is the issue? (Max 250 characters)</label>
+            <textarea 
+              id="report-message" 
+              placeholder="e.g. The download link for Physics Sem 3 Major is giving a 404 error." 
+              rows="4" 
+              maxlength="250" 
+              required
+              style="width: 100%; resize: none; font-family: inherit; font-size: 0.875rem; line-height: 1.5; padding: 0.75rem; border-radius: var(--radius-xs); border: 1px solid var(--border-color); background: var(--bg-tertiary); color: var(--text-primary); outline: none; transition: border-color 0.15s;"
+            ></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; border-radius: var(--radius-sm); font-weight: 700; height: 42px;">
+            Submit Report
+          </button>
+        </form>
+
+        <!-- Success State -->
+        <div id="report-success-state" style="display: none; flex-direction: column; align-items: center; text-align: center; padding: 1.5rem 0.5rem;">
+          <div style="font-size: 2.5rem; margin-bottom: 0.75rem; color: var(--accent-success);">✓</div>
+          <h3 style="font-size: 1.25rem; font-family: var(--font-display); font-weight: 800; margin-bottom: 0.5rem; color: var(--text-primary);">Report Submitted</h3>
+          <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.5; margin-bottom: 1.5rem;">
+            Thank you for reporting this issue. We will review it and fix the link/paper as soon as possible! ❤️
+          </p>
+          <button id="close-report-done-btn" class="btn btn-secondary" style="width: 100%; border-radius: var(--radius-sm); font-weight: 600;">
+            Close
+          </button>
+        </div>
       </div>
     </div>
 
@@ -791,6 +839,92 @@ const webPageSchema = JSON.stringify({
       // Handle custom events for submit
       document.addEventListener('open-submit-modal', () => {
         openSubmitModal();
+      });
+
+      // 2d. Global Report Modal logic
+      const reportModal = document.getElementById('report-modal');
+      const closeReportBtn = document.getElementById('close-report-modal-btn');
+      const closeReportDoneBtn = document.getElementById('close-report-done-btn');
+      const reportForm = document.getElementById('report-form');
+      const reportSuccessState = document.getElementById('report-success-state');
+
+      const openReportModal = () => {
+        if (!reportModal) return;
+        reportModal.classList.add('open');
+        if (reportSuccessState) reportSuccessState.style.display = 'none';
+        if (reportForm) {
+          reportForm.reset();
+          reportForm.style.display = 'flex';
+        }
+      };
+
+      const closeReportModal = () => {
+        reportModal?.classList.remove('open');
+      };
+
+      closeReportBtn?.addEventListener('click', closeReportModal);
+      closeReportDoneBtn?.addEventListener('click', closeReportModal);
+
+      reportModal?.addEventListener('click', (e) => {
+        if (e.target === reportModal) closeReportModal();
+      });
+
+      document.addEventListener('open-report-modal', () => {
+        openReportModal();
+      });
+
+      reportForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const submitBtn = reportForm.querySelector('button[type="submit"]');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '⏳ Submitting...';
+        }
+
+        const message = document.getElementById('report-message').value;
+        const pageUrl = window.location.href;
+        const webhookUrl = window._WEBHOOK;
+
+        const handleSuccess = () => {
+          if (reportForm) reportForm.style.display = 'none';
+          if (reportSuccessState) reportSuccessState.style.display = 'flex';
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Submit Report';
+          }
+        };
+
+        if (!webhookUrl || webhookUrl === 'YOUR_GOOGLE_SHEETS_WEB_APP_URL') {
+          // Simulated submission in Demo Mode
+          setTimeout(() => {
+            try {
+              const mockReports = JSON.parse(localStorage.getItem('reports') || '[]');
+              mockReports.push({ url: pageUrl, message, date: new Date().toISOString() });
+              localStorage.setItem('reports', JSON.stringify(mockReports));
+            } catch (err) {
+              console.error('Error saving local mock report:', err);
+            }
+            handleSuccess();
+          }, 800);
+        } else {
+          try {
+            const response = await fetch(webhookUrl, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ type: 'report', url: pageUrl, message })
+            });
+            handleSuccess();
+          } catch (err) {
+            console.error('Report submission error:', err);
+            alert('Submission failed. Please check your internet connection or try again later.');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = 'Submit Report';
+            }
+          }
+        }
       });
 
       // 2c. Floating Request Toast logic

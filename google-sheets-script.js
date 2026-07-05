@@ -31,6 +31,20 @@ function doPost(e) {
         data.department  || ''              // F: Department (syllabus only)
       ]);
 
+    } else if (data.type === 'report') {
+      // ── Log a wrong paper / broken link report ─────────────────────────────
+      var repSheet = ss.getSheetByName('Reports');
+      if (!repSheet) {
+        repSheet = ss.insertSheet('Reports');
+        repSheet.appendRow(['Timestamp', 'Page URL', 'Issue Details']);
+      }
+
+      repSheet.appendRow([
+        new Date(),
+        data.url || 'Unknown page',
+        data.message || ''
+      ]);
+
     } else {
       // ── Log a paper request ───────────────────────────────────────────────
       var reqSheet = ss.getSheetByName('Requests');
