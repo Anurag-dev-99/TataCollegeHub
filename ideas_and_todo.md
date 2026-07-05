@@ -497,3 +497,100 @@ Show PYQ section — filter by department, semester — download a paper. Hook: 
 
 **Status:** 💡 Idea logged — not started
 
+---
+
+## 📊 Feature Idea — Subject Comparison & Scoring Intelligence
+
+> *"Which MDC/AEC/SEC paper should I choose?" — answer this with real data.*
+
+### 🎯 The Core Concept
+
+Use real result data from Batch 2022 and Batch 2023 (already available) to build a **Subject Comparison Hub** where students can:
+- See average marks, highest marks, and lowest marks for each paper
+- Compare two papers side-by-side (e.g. SEC-2 Communication Skills vs News Writing)
+- Read real tips from seniors who took that paper
+- Make an informed choice instead of guessing
+
+### 📋 Where This Feature Applies
+
+| Section | Student Decision | What We Show |
+|---|---|---|
+| **MDC** (Sem 1, 2, 3) | Which MDC subject to choose? | Avg marks, pass %, difficulty, senior tips |
+| **AEC** (Sem 1-4) | Which AEC paper? (Sanskrit, Hindi, Bengali etc.) | Most scoring paper data, Sem 3 → Sem 4 continuity warning |
+| **SEC** (Sem 2) | Communication Skills vs News Writing? | Side-by-side stats for both papers |
+| **Minor** (Sem 1+) | Which Minor to pick? | Average marks by subject across batches |
+
+### 💡 Special Insights to Highlight
+
+- **AEC Warning:** Students in Sem 3 must continue the same AEC paper in Sem 4 — many don't know this! Show this as a prominent alert.
+- **SEC-2 Side-by-Side:** Show Communication Skills and News Writing stats next to each other — which has higher average, which is "safer" to attempt.
+- **MDC Scoring Leaders:** Show a simple ranking of MDC subjects by average marks — e.g., "Sanskrit MDC avg: 62/75 • Psychology MDC avg: 57/75"
+
+### 🏗️ How to Implement (Technical Plan)
+
+**Step 1 — Data Preparation (Your Job)**
+- Take your existing result Excel/CSV files for Batch 2022 and 2023
+- For each subject, extract: student marks → calculate average, highest, lowest
+- Create a structured JSON file: `public/data/subject_stats.json`
+
+Example structure:
+```json
+{
+  "MDC": {
+    "Psychology": {
+      "batches": {
+        "2022-2026": { "avg": 57, "highest": 72, "lowest": 28, "passRate": 91 },
+        "2023-2027": { "avg": 59, "highest": 74, "lowest": 30, "passRate": 93 }
+      },
+      "tips": [
+        "Short notes from NCERT Class 11-12 Psychology are enough",
+        "Focus on Unit 1 and Unit 3 — they come every year",
+        "Easy to score 55+ with just 2 weeks of focused study"
+      ]
+    }
+  },
+  "AEC": {
+    "Sanskrit": {
+      "batches": { ... },
+      "continuityNote": "This paper continues in Sem 4. Choose wisely in Sem 3.",
+      "tips": [ ... ]
+    }
+  }
+}
+```
+
+**Step 2 — Build the Page (Agent's Job)**
+- Create `src/pages/compare.astro` or integrate into existing subject pages
+- Filter by category: MDC | AEC | SEC | Minor
+- Show visual stats: CSS bar chart for avg marks (no library needed)
+- Side-by-side comparison for SEC papers
+- Tips section below each subject
+- AEC continuity warning badge
+
+**Step 3 — Link from FAQ/Guide**
+- In the Sem 1 Guide page, link to this comparison for MDC, AEC choices
+- Add "View Scoring Data →" button on syllabus pages too
+
+### 📊 Difficulty Rating (Honest Breakdown)
+
+| Task | Difficulty | Time Estimate |
+|---|---|---|
+| Processing result Excel → JSON | ⭐⭐⭐ (3/5) | 2-4 hours (manual data work) |
+| Building comparison UI page | ⭐⭐ (2/5) | 3-4 hours (agent builds it) |
+| CSS bar charts / side-by-side | ⭐⭐ (2/5) | Included in UI build |
+| Writing senior tips (JSON) | ⭐ (1/5) | 1 hour (you write, agent formats) |
+| Linking from FAQ + syllabus pages | ⭐ (1/5) | 30 mins |
+| **Total** | **⭐⭐ Overall** | **~1 day of focused work** |
+
+> 💡 The hardest part is **your data preparation** — processing the result Excel files into structured JSON. The UI build is straightforward once data is ready.
+
+### ✅ Why This Is Worth Building
+
+1. **Zero competition** — No other Kolhan resource has this
+2. **High dwell time** — Students spend 5-10 minutes comparing papers → great SEO signal
+3. **Viral potential** — Students will share "kolhanhub.in/compare" with juniors every year
+4. **Grows automatically** — Every new batch result you upload makes it richer
+5. **Integrates with FAQ** — Answers the #1 Sem 1 question: *"Which MDC should I take?"*
+
+**Status:** 💡 Idea logged — awaiting result data preparation
+

@@ -7,7 +7,7 @@ export async function getStaticPaths() {
   const getSlug = (dept: string) => dept.toLowerCase().replace(/\s+/g, '-');
   
   // Filter and only build departments that have active files
-  const activeDepartments = ['Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor', 'Botany', 'English'];
+  const activeDepartments = ['Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor', 'Botany', 'English', 'Geography', 'Geography Minor'];
   const filteredSyllabus = syllabusData.filter(item => activeDepartments.includes(item.department));
   const departments = [...new Set(filteredSyllabus.map(item => item.department))];
   
@@ -54,8 +54,52 @@ const getLocalPdfPath = (deptName: string, semNum: number) => {
       1: "https://drive.google.com/file/d/1k7ALhUt6X_Vz9x78_3o8tNiqPgzo2LJm/view?usp=drive_link"
     };
     return englishLinks[semNum] || null;
+  } else if (dept === 'geography') {
+    const geoMajorLinks: Record<number, string> = {
+      1: "https://drive.google.com/file/d/18886Pqr-YphYYYNa1KzL3gcMLsvDLaJZ/view?usp=drive_link",
+      2: "https://drive.google.com/file/d/1YiP2IMW66M59o1-XQpd1cvJTX5MzYBwc/view?usp=drive_link",
+      3: "https://drive.google.com/file/d/1DgNf7f69R7y2XL9MFIxNDCzB39MKzEZz/view?usp=drive_link",
+      4: "https://drive.google.com/file/d/1Xf5xnWiOXz1VxeU7AYoTu4N5UkCydxFO/view?usp=drive_link",
+      5: "https://drive.google.com/file/d/1oGhZs0Z0P8T0Qwr3H0zDz3Q0kXOjf5Hm/view?usp=drive_link",
+      6: "https://drive.google.com/file/d/1CytAzRBh7mu63YdGMuA63ASR4FZbsAxf/view?usp=drive_link",
+      7: "https://drive.google.com/file/d/1wyfk33jn-IPgcPwaw9it4jMtItK-Zu2c/view?usp=drive_link",
+      8: "https://drive.google.com/file/d/1BdlLVUSFR-Rn0d2SK7oLp15pJZs8gLIq/view?usp=drive_link"
+    };
+    return geoMajorLinks[semNum] || null;
+  } else if (dept === 'geography minor') {
+    const geoMinorLinks: Record<number, string> = {
+      1: "https://drive.google.com/file/d/1h8JvqiAE6t_RR0uCIoyX3_RoqTt3soy_/view?usp=drive_link",
+      2: "https://drive.google.com/file/d/19TYVhm2IjCYwzK-yOyVAqC0544xxOHCe/view?usp=drive_link",
+      3: "https://drive.google.com/file/d/1j7Q9jxSBSZy2w0NnMn3IWSkNMwPtg9QY/view?usp=drive_link",
+      4: "https://drive.google.com/file/d/1VByn3uF54IoVOg3vnXsCpq7oDnE_pkHT/view?usp=drive_link",
+      5: "https://drive.google.com/file/d/1FFqUhVaduf0zoCV1y7moY2xEVa0LlTyB/view?usp=drive_link",
+      6: "https://drive.google.com/file/d/1S0XyKgN3pIM5Rku4U11OAVednW_nxqiB/view?usp=drive_link",
+      7: "https://drive.google.com/file/d/1OCmFH6V9XxjFDVcFmqVEDijz-7rfK-nQ/view?usp=drive_link",
+      8: "https://drive.google.com/file/d/1hG1kL_RWARAyZ7gboltIkMwdHradUZ3j/view?usp=drive_link"
+    };
+    return geoMinorLinks[semNum] || null;
   }
   return null; // Fallback to Coming Soon state
+};
+
+// Returns the semester-wise course FORMAT/STRUCTURE PDF (paper codes, credits table)
+// Currently only Geography Major has this — other departments return null
+const getFormatPdfPath = (deptName: string, semNum: number): string | null => {
+  const dept = deptName.toLowerCase();
+  if (dept === 'geography') {
+    const geoFormatLinks: Record<number, string> = {
+      1: "https://drive.google.com/file/d/14oMDpMIo-PVnKA8R-lSVr8Oxt5WytmhU/view?usp=drive_link",
+      2: "https://drive.google.com/file/d/1xHDQwthE1XTQ6IwKtd7UG7J3RwVOgyu-/view?usp=drive_link",
+      3: "https://drive.google.com/file/d/1EYcHhN6VtoqbihxHZ3polArmCLSfNJss/view?usp=drive_link",
+      4: "https://drive.google.com/file/d/1VJLI1v5TuED0ZSpKVggQxVj9mgPH7ymz/view?usp=drive_link",
+      5: "https://drive.google.com/file/d/14WK5e6wltgHh0y7xIBRkpbQRR9BKsyse/view?usp=drive_link",
+      6: "https://drive.google.com/file/d/1i_hY2dhToPdomeVvLSbsaL_uO0LV7JAw/view?usp=drive_link",
+      7: "https://drive.google.com/file/d/1V7TdoRHqq9B16Ot5_TwBx9SuC3HULrcj/view?usp=drive_link",
+      8: "https://drive.google.com/file/d/1FJBDtpMOAhRixqJF3WwxvJUIINFeDuK-/view?usp=drive_link"
+    };
+    return geoFormatLinks[semNum] || null;
+  }
+  return null;
 };
 
 // Parse modules text into human readable form
@@ -177,6 +221,7 @@ const getModulesForSemester = (modules: string[], semNum: number) => {
             {[1, 2, 3, 4, 5, 6, 7, 8].map(sem => {
               const semModules = getModulesForSemester(syl.modules, sem);
               const localPdf = getLocalPdfPath(syl.department, sem);
+              const formatPdf = getFormatPdfPath(syl.department, sem);
               const paperTitle = `${syl.title.replace(/Syllabus.*/gi, '')} Sem ${sem}`;
               const category = syl.department.toLowerCase().includes('minor') ? 'Minor' : 'Major';
               
@@ -206,15 +251,17 @@ const getModulesForSemester = (modules: string[], semNum: number) => {
                     </div>
 
                     <!-- PDF Download Action System (No Dead Ends) -->
-                    <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; display: flex; flex-direction: column; gap: 1rem; align-items: center;" class="md:flex-row md:justify-between">
-                      <div style="text-align: center;" class="md:text-left">
-                        <h4 style="font-size: 0.95rem; font-weight: 700;">Official Curriculum PDF</h4>
-                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.15rem;">
-                          {localPdf ? `Includes syllabus structure & book references (${syl.fileSize})` : 'Syllabus PDF file is currently awaiting upload from KU counters.'}
-                        </p>
+                    <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; display: flex; flex-direction: column; gap: 1rem;">
+                      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+                        <div>
+                          <h4 style="font-size: 0.95rem; font-weight: 700;">Official Curriculum PDFs</h4>
+                          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.15rem;">
+                            {localPdf ? `Detailed syllabus & book references (${syl.fileSize})` : 'Syllabus PDF is currently awaiting upload.'}
+                          </p>
+                        </div>
                       </div>
 
-                      <div style="display: flex; gap: 0.5rem; width: 100%;" class="md:w-auto">
+                      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
                         {localPdf ? (
                           <a 
                             href={localPdf} 
@@ -222,28 +269,43 @@ const getModulesForSemester = (modules: string[], semNum: number) => {
                             rel={localPdf.startsWith('http') ? "noopener noreferrer" : undefined}
                             download={localPdf.startsWith('http') ? undefined : ""} 
                             class="btn btn-primary" 
-                            style="flex: 1; justify-content: center; gap: 0.5rem; font-size: 0.9rem;"
+                            style="flex: 1; min-width: 140px; justify-content: center; gap: 0.5rem; font-size: 0.9rem;"
                             onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${syl.title}', category: '${syl.department}', semester: '${sem}', department: '${syl.department}' });`}
                           >
                             <Download size="16" /> {localPdf.startsWith('http') ? 'View Syllabus' : 'Download PDF'}
                           </a>
                         ) : (
-                          <div style="display: flex; gap: 0.5rem; width: 100%;">
+                          <>
                             <button 
                               disabled 
                               class="btn btn-secondary" 
-                              style="flex: 1.5; opacity: 0.6; cursor: not-allowed; font-size: 0.85rem; padding: 0.5rem; background: var(--bg-hover);"
+                              style="flex: 1.5; min-width: 120px; opacity: 0.6; cursor: not-allowed; font-size: 0.85rem; padding: 0.5rem; background: var(--bg-hover);"
                             >
                               Coming Soon
                             </button>
                             <button 
                               class="btn btn-outline" 
-                              style="flex: 2; font-size: 0.85rem; white-space: nowrap; justify-content: center;"
+                              style="flex: 2; min-width: 130px; font-size: 0.85rem; white-space: nowrap; justify-content: center;"
                               onclick={`document.dispatchEvent(new CustomEvent('open-request-modal', { detail: { subject: '${paperTitle} Syllabus', semester: '${sem}', category: '${category}' } }));`}
                             >
                               Request Paper
                             </button>
-                          </div>
+                          </>
+                        )}
+
+                        {/* Course Format button — shows semester paper structure/credit table */}
+                        {formatPdf && (
+                          <a
+                            href={formatPdf}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="btn btn-outline"
+                            style="flex: 1; min-width: 150px; justify-content: center; gap: 0.5rem; font-size: 0.85rem; border-color: rgba(99,102,241,0.4); color: var(--accent-primary);"
+                            title="View the semester course structure: paper codes, names and credit points"
+                            onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${syl.title} Course Format', category: '${syl.department}', semester: '${sem}', department: '${syl.department}' });`}
+                          >
+                            📋 View Course Format
+                          </a>
                         )}
                       </div>
                     </div>
