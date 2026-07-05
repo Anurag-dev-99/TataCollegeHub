@@ -599,6 +599,16 @@ const departments = Object.keys(deptGroups);
         Request a Paper
       </button>
     </div>
+    <div style="margin-top: 0.5rem; text-align: center;">
+      <button 
+        onclick="document.dispatchEvent(new CustomEvent('open-report-modal'));" 
+        style="background:none; border:none; padding:0; color: var(--accent-danger); font-size: 0.75rem; font-weight: 700; cursor:pointer; opacity: 0.85; transition: opacity 0.15s; display: inline-flex; align-items: center; gap: 0.25rem;"
+        onmouseover="this.style.opacity='1'"
+        onmouseout="this.style.opacity='0.85'"
+      >
+        ⚠️ Report wrong paper or broken link
+      </button>
+    </div>
   </div>
 
   <style>
