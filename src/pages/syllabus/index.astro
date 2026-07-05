@@ -53,7 +53,7 @@ const departments = Object.keys(deptGroups);
 >
 
   <!-- Header -->
-  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+  <div style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
     <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">Kolhan University Syllabus</h1>
     <p style="color: var(--text-secondary); max-width: 650px; font-size: 1.05rem; line-height: 1.6;">
       Official <strong>Kolhan University NEP 2020 FYUGP syllabus</strong> for Tata College, Chaibasa students.
@@ -61,8 +61,60 @@ const departments = Object.keys(deptGroups);
     </p>
   </div>
 
+  <!-- Compact Syllabus Community Row -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem;">
+
+    <!-- Completed Syllabus Requests -->
+    <div style="border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(16,185,129,0.02) 0%, rgba(0,0,0,0.12) 100%);">
+      <button id="syl-req-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; background: transparent; border: none; cursor: pointer; text-align: left;">
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; background: rgba(16,185,129,0.15); border-radius: 50%; font-size: 0.65rem;">✓</span>
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">Syllabus Requests Done</span>
+          <span style="font-size: 0.6rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 1px 5px;">4</span>
+        </div>
+        <svg id="syl-req-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+      <div id="syl-req-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 1px solid rgba(16,185,129,0.12);">
+        <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; background: rgba(0,0,0,0.15);">
+          {[{e:'🗺️',t:'Geography Major Syllabus',s:'Sem 1–8'},{e:'📖',t:'English Major Syllabus',s:'Sem 1'},{e:'🌿',t:'Botany Major Syllabus',s:'Sem 1–8'},{e:'🔬',t:'Zoology Major Syllabus',s:'Sem 1–8'}].map(r => (
+            <div style="display: flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0;">
+              <span style="font-size: 0.65rem;">{r.e}</span>
+              <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-primary); flex: 1;">{r.t}</span>
+              <span style="font-size: 0.65rem; color: var(--accent-success); font-weight: 600;">{r.s}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Syllabus File Contributors -->
+    <div style="border: 1px solid rgba(37,211,102,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(37,211,102,0.02) 0%, rgba(0,0,0,0.12) 100%);">
+      <button id="syl-contrib-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; background: transparent; border: none; cursor: pointer; text-align: left;">
+        <div style="display: flex; align-items: center; gap: 0.4rem;">
+          <span style="font-size: 0.75rem;">📚</span>
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">Syllabus Contributors</span>
+        </div>
+        <svg id="syl-contrib-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+      <div id="syl-contrib-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 1px solid rgba(37,211,102,0.12);">
+        <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; background: rgba(0,0,0,0.15);">
+          {[{i:'K',bg:'#ec4899,#db2777',n:'Kirti Arya',f:'Botany Major Syllabus'},{i:'D',bg:'#6366f1,#8b5cf6',n:'Deepika',f:'AEC Hindi Syllabus'},{i:'N',bg:'#34d399,#059669',n:'Neha Kumari',f:'Geography Syllabus'},{i:'R',bg:'#0ea5e9,#0284c7',n:'Ravi Kumar',f:'English Syllabus'}].map(c => (
+            <div style="display: flex; align-items: center; gap: 0.45rem; padding: 0.25rem 0;">
+              <div style={`width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, ${c.bg.split(',')[0]}, ${c.bg.split(',')[1]}); display: flex; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 800; color: white; flex-shrink: 0;`}>{c.i}</div>
+              <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-primary); flex-shrink: 0;">{c.n}</span>
+              <span style="font-size: 0.65rem; color: var(--text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{c.f}</span>
+            </div>
+          ))}
+          <a href="https://api.whatsapp.com/send?phone=918002059887&text=Hi!%20I%20have%20a%20syllabus%20PDF%20to%20share%20for%20Kolhan%20University%20%F0%9F%93%9A" target="_blank" rel="noopener noreferrer" style="font-size: 0.7rem; color: rgba(37,211,102,0.9); font-weight: 600; text-decoration: none; margin-top: 0.25rem;">💬 Share syllabus files →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <!-- Passing Marks Info Panel -->
   <div style="background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(16,185,129,0.04) 100%); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1.35rem; margin-bottom: 1.75rem;">
+
     <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem;">
       <span style="font-size: 1rem;">📊</span>
       <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.06em; text-transform: uppercase;">Marks &amp; Passing Criteria (FYUGP)</span>
@@ -625,6 +677,18 @@ const departments = Object.keys(deptGroups);
   </style>
 
   <script>
+    // Syllabus compact panel accordions
+    ['syl-req', 'syl-contrib'].forEach(function(id) {
+      var t = document.getElementById(id + '-trigger');
+      var c = document.getElementById(id + '-content');
+      var ch = document.getElementById(id + '-chevron');
+      if (t && c) t.addEventListener('click', function() {
+        var open = c.style.maxHeight && c.style.maxHeight !== '0px';
+        c.style.maxHeight = open ? '0px' : c.scrollHeight + 'px';
+        if (ch) ch.style.transform = open ? 'rotate(0deg)' : 'rotate(90deg)';
+      });
+    });
+
     // Accordion Toggle Logic
     const accordionTriggers = document.querySelectorAll('.accordion-trigger');
     
