@@ -1475,5 +1475,27 @@
         "downloadCount":  0,
         "title":  "Physics Major Sem 1 PYQ (MJ-01) 2024 Batch",
         "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/18iFFy0BhEl2H0iw14E6FzW_Hioh3fAIN/view?usp=drive_link",
+        "id":  "pyq-mj-hist-sem1-mj01-2022",
+        "category":  "Major",
+        "semester":  1,
+        "subject":  "History",
+        "downloadCount":  0,
+        "title":  "History Major Sem 1 PYQ 2022 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023-2027",
+        "downloadUrl":  "https://drive.google.com/file/d/1NZVooc0ROfEr7yUiDKh0umiE1Wh3m6Np/view?usp=drive_link",
+        "id":  "pyq-mj-hist-sem1-mj01-2023",
+        "category":  "Major",
+        "semester":  1,
+        "subject":  "History",
+        "downloadCount":  0,
+        "title":  "History Major Sem 1 PYQ 2023 Batch",
+        "fileSize":  "PDF File"
     }
 ]
