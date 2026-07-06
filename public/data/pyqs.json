@@ -153,16 +153,6 @@
         "downloadUrl":  "https://drive.google.com/file/d/1IQDTvoWNyAf6b1BRoTjt9xVj5Cugml4J/view?usp=sharing"
     },
     {
-        "id":  "pyq-mn-chem1",
-        "title":  "2024 Paper - General Chemistry Minor",
-        "year":  "2024",
-        "semester":  1,
-        "category":  "Minor",
-        "subject":  "Chemistry",
-        "downloadCount":  154,
-        "fileSize":  "1.5 MB"
-    },
-    {
         "id":  "pyq-mdc-eng1",
         "title":  "2024 Paper - Multidisciplinary English Literature",
         "year":  "2024",
@@ -1496,6 +1486,28 @@
         "subject":  "History",
         "downloadCount":  0,
         "title":  "History Major Sem 1 PYQ 2023 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023-2027",
+        "downloadUrl":  "https://drive.google.com/file/d/1ILwxKTLbbxMC54vilMh2Arr4ro9Svyyn/view?usp=drive_link",
+        "id":  "pyq-mn-chem-sem1-mn01-2023",
+        "category":  "Minor",
+        "semester":  1,
+        "subject":  "Chemistry",
+        "downloadCount":  0,
+        "title":  "Chemistry Minor Sem 1 PYQ 2023 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2024-2028",
+        "downloadUrl":  "https://drive.google.com/file/d/1IqVeVzNTDmSpESaPh35Cuk-4brOgGYW3/view?usp=drive_link",
+        "id":  "pyq-mn-chem-sem1-mn01-2024",
+        "category":  "Minor",
+        "semester":  1,
+        "subject":  "Chemistry",
+        "downloadCount":  0,
+        "title":  "Chemistry Minor Sem 1 PYQ 2024 Batch",
         "fileSize":  "PDF File"
     }
 ]
