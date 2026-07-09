@@ -31,6 +31,7 @@ KEYWORDS = [
     # Syllabus (target: Top 10)
     "kolhan syllabus",
     "kolhan university syllabus",
+    "kolhan university nep syllabus",
     "kolhan university nep 2020 syllabus",
 
     # Result (target: Top 10)
@@ -39,6 +40,7 @@ KEYWORDS = [
 
     # Tata College (should be Page 1 already)
     "tata college pyq",
+    "tata college chaibasa pyq",
     "tata college syllabus",
     "tata college result",
     "tata college chaibasa",
