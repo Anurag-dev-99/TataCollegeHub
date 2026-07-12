@@ -1718,5 +1718,60 @@
         "downloadCount":  0,
         "title":  "Botany Minor Sem 2 PYQ (MN-2A) 2023 Batch",
         "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023-2027",
+        "downloadUrl":  "https://drive.google.com/file/d/14OnQZt2xMrVb5Q53vdhC1CMUGSS6KQ1L/view?usp=drive_link",
+        "id":  "pyq-mn-math-sem1-mn1a-2023",
+        "category":  "Minor",
+        "semester":  1,
+        "subject":  "Mathematics",
+        "downloadCount":  0,
+        "title":  "Mathematics Minor Sem 1 PYQ (MN-1A) 2023 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/13ibuPDAQ1S2m6IQTcdxU_PAnTDN3ljqv/view?usp=drive_link",
+        "id":  "pyq-mn-math-sem2-mn2a-2022",
+        "category":  "Minor",
+        "semester":  2,
+        "subject":  "Mathematics",
+        "downloadCount":  0,
+        "title":  "Mathematics Minor Sem 2 PYQ (MN-2A) 2022 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/1GoVd0Jfx8_5H1Iw9M0JhapP62c79gTn5/view?usp=drive_link",
+        "id":  "pyq-mn-math-sem3-mn1b-2022",
+        "category":  "Minor",
+        "semester":  3,
+        "subject":  "Mathematics",
+        "downloadCount":  0,
+        "title":  "Mathematics Minor Sem 3 PYQ (MN-1B) 2022 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/17UvuZPkxlYmzEuL8tDWPCkq5NJhm5eEe/view?usp=drive_link",
+        "id":  "pyq-mn-math-sem4-mn2b-2022",
+        "category":  "Minor",
+        "semester":  4,
+        "subject":  "Mathematics",
+        "downloadCount":  0,
+        "title":  "Mathematics Minor Sem 4 PYQ (MN-2B) 2022 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/13sSMrtnC39NC8cWsQVWZynVUeg4OKdHi/view?usp=drive_link",
+        "id":  "pyq-mn-math-sem5-mn1c-2022",
+        "category":  "Minor",
+        "semester":  5,
+        "subject":  "Mathematics",
+        "downloadCount":  0,
+        "title":  "Mathematics Minor Sem 5 PYQ (MN-1C) 2022 Batch",
+        "fileSize":  "PDF File"
     }
 ]
