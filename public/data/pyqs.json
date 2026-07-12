@@ -1509,5 +1509,27 @@
         "downloadCount":  0,
         "title":  "Chemistry Minor Sem 1 PYQ 2024 Batch",
         "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2024",
+        "downloadUrl":  "https://drive.google.com/file/d/1P00GuY6_67BEB8OiIPv5dtIT4oHTOnhM/view?usp=drive_link",
+        "id":  "pyq-mdc-homesci-sem1-2024",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "Home Science",
+        "downloadCount":  0,
+        "title":  "MDC Home Science Sem 1 PYQ (2024 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2024",
+        "downloadUrl":  "https://drive.google.com/file/d/1YKrWrVCJXHvbP_W7bONgGSEFKOLzRsLr/view?usp=drive_link",
+        "id":  "pyq-mdc-homesci-sem3-2024",
+        "category":  "MDC",
+        "semester":  3,
+        "subject":  "Home Science",
+        "downloadCount":  0,
+        "title":  "MDC Home Science Sem 3 PYQ (2024 Batch)",
+        "fileSize":  "PDF File"
     }
 ]
