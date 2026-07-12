@@ -1641,5 +1641,27 @@
         "downloadCount":  0,
         "title":  "Zoology Major Sem 3 PYQ (MJ-05) 2023 Batch",
         "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023-2027",
+        "downloadUrl":  "https://drive.google.com/file/d/1FG5echDb4HWJ6l4bKuNTNGI5U-8_eU1P/view?usp=drive_link",
+        "id":  "pyq-mn-zoo-sem1-mn1a-2023",
+        "category":  "Minor",
+        "semester":  1,
+        "subject":  "Zoology",
+        "downloadCount":  0,
+        "title":  "Zoology Minor Sem 1 PYQ (MN-1A) 2023 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/1N1qOAGTy6e42TC4IqMWZDl8ndQ3d0-z-/view?usp=drive_link",
+        "id":  "pyq-mn-zoo-sem2-mn2a-2022",
+        "category":  "Minor",
+        "semester":  2,
+        "subject":  "Zoology",
+        "downloadCount":  0,
+        "title":  "Zoology Minor Sem 2 PYQ (MN-2A) 2022 Batch",
+        "fileSize":  "PDF File"
     }
 ]
