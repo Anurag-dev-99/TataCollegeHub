@@ -1663,5 +1663,60 @@
         "downloadCount":  0,
         "title":  "Zoology Minor Sem 2 PYQ (MN-2A) 2022 Batch",
         "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023-2027",
+        "downloadUrl":  "https://drive.google.com/file/d/1E0ci3StoP9jKBuKYxOxGAJrn4P_Ber3J/view?usp=drive_link",
+        "id":  "pyq-mj-bot-sem1-mj01-2023",
+        "category":  "Major",
+        "semester":  1,
+        "subject":  "Botany",
+        "downloadCount":  0,
+        "title":  "Botany Major Sem 1 PYQ (MJ-01) 2023 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/1mIlHfttUgG18NuI-k7SjuQbG5tU8lRaT/view?usp=drive_link",
+        "id":  "pyq-mj-bot-sem2-mj02-2022",
+        "category":  "Major",
+        "semester":  2,
+        "subject":  "Botany",
+        "downloadCount":  0,
+        "title":  "Botany Major Sem 2 PYQ (MJ-02) 2022 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/1rYvAJIE5z8sbgz1OXQ1eR5sR7M9wy2nH/view?usp=drive_link",
+        "id":  "pyq-mj-bot-sem2-mj03-2022",
+        "category":  "Major",
+        "semester":  2,
+        "subject":  "Botany",
+        "downloadCount":  0,
+        "title":  "Botany Major Sem 2 PYQ (MJ-03) 2022 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2024-2028",
+        "downloadUrl":  "https://drive.google.com/file/d/16M-wP9Bhl72GZ8kigHhColuBN8655fO6/view?usp=drive_link",
+        "id":  "pyq-mn-bot-sem1-mn1a-2024",
+        "category":  "Minor",
+        "semester":  1,
+        "subject":  "Botany",
+        "downloadCount":  0,
+        "title":  "Botany Minor Sem 1 PYQ (MN-1A) 2024 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023-2027",
+        "downloadUrl":  "https://drive.google.com/file/d/1c2NeO09LWouOwmVlIIzY6S0bLLgUOPWC/view?usp=drive_link",
+        "id":  "pyq-mn-bot-sem2-mn2a-2023",
+        "category":  "Minor",
+        "semester":  2,
+        "subject":  "Botany",
+        "downloadCount":  0,
+        "title":  "Botany Minor Sem 2 PYQ (MN-2A) 2023 Batch",
+        "fileSize":  "PDF File"
     }
 ]
