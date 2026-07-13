@@ -1773,5 +1773,27 @@
         "downloadCount":  0,
         "title":  "Mathematics Minor Sem 5 PYQ (MN-1C) 2022 Batch",
         "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/1rC0lWrTnf4Y1_90tGH3z6dXMdBSfVNp5/view?usp=drive_link",
+        "id":  "pyq-mn-polsci-sem1-mn1a-2022",
+        "category":  "Minor",
+        "semester":  1,
+        "subject":  "Political Science",
+        "downloadCount":  0,
+        "title":  "Political Science Minor Sem 1 PYQ (MN-1A) 2022 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023-2027",
+        "downloadUrl":  "https://drive.google.com/file/d/1vQz1QsBbURYLCLSBdUm39hvO6WG8yTZJ/view?usp=drive_link",
+        "id":  "pyq-mn-polsci-sem1-mn1a-2023",
+        "category":  "Minor",
+        "semester":  1,
+        "subject":  "Political Science",
+        "downloadCount":  0,
+        "title":  "Political Science Minor Sem 1 PYQ (MN-1A) 2023 Batch",
+        "fileSize":  "PDF File"
     }
 ]
