@@ -2007,4 +2007,152 @@ const popularPapers = [...pyqsData]
       renderHolidaysWidget();
     });
   </script>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       BUY ME A CHAI — DONATION SECTION
+  ════════════════════════════════════════════════════════════ -->
+  <div style="margin-top:2.5rem;margin-bottom:1rem;">
+    <button id="donate-btn" style="display:flex;align-items:center;gap:0.65rem;width:100%;padding:0.85rem 1.15rem;border:1px solid rgba(251,191,36,0.28);border-radius:14px;background:linear-gradient(135deg,rgba(251,191,36,0.06),rgba(245,158,11,0.03));cursor:pointer;text-align:left;transition:border-color 0.25s,box-shadow 0.25s;" onmouseover="this.style.borderColor='rgba(251,191,36,0.5)';this.style.boxShadow='0 0 18px rgba(251,191,36,0.1)'" onmouseout="this.style.borderColor='rgba(251,191,36,0.28)';this.style.boxShadow='none'">
+      <span style="font-size:1.4rem;flex-shrink:0;">☕</span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:0.9rem;font-weight:800;color:#fbbf24;font-family:var(--font-display);">Buy me a chai</div>
+        <div style="font-size:0.72rem;color:var(--text-secondary);line-height:1.4;margin-top:1px;">Free forever — your support keeps this site alive ♥</div>
+      </div>
+      <span style="font-size:0.65rem;font-weight:700;color:#fbbf24;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.22);border-radius:20px;padding:3px 9px;white-space:nowrap;flex-shrink:0;">Support ♥</span>
+    </button>
+  </div>
+
+  <!-- ── Donate Modal ────────────────────────────────────── -->
+  <div id="donate-modal-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem;">
+    <div style="background:var(--bg-secondary);border:1px solid rgba(251,191,36,0.28);border-radius:18px;width:100%;max-width:320px;box-shadow:0 0 50px rgba(251,191,36,0.12),0 20px 50px rgba(0,0,0,0.5);animation:donateModalIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both;overflow:hidden;">
+
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1rem 0.7rem;border-bottom:1px solid rgba(251,191,36,0.1);">
+        <div style="display:flex;align-items:center;gap:0.45rem;">
+          <span style="font-size:1rem;">☕</span>
+          <span style="font-size:0.88rem;font-weight:800;color:#fbbf24;font-family:var(--font-display);">Buy me a chai</span>
+        </div>
+        <button id="donate-close" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);font-size:0.78rem;flex-shrink:0;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.14)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">✕</button>
+      </div>
+
+      <!-- Body -->
+      <div style="padding:0.9rem 1rem;display:flex;flex-direction:column;align-items:center;gap:0.7rem;text-align:center;">
+
+        <!-- Cat GIF small -->
+        <div style="width:72px;height:72px;border-radius:50%;overflow:hidden;border:2px solid rgba(251,191,36,0.35);box-shadow:0 0 16px rgba(251,191,36,0.18);flex-shrink:0;">
+          <div class="tenor-gif-embed" data-postid="2313827382029791821" data-share-method="host" data-aspect-ratio="1" data-width="100%" style="margin:0;padding:0;line-height:0;">
+            <a href="https://tenor.com/view/cat-kiss-catkiss-cat-kiss-cat-kissing-gif-2313827382029791821">Cat Kiss GIF</a>
+          </div>
+          <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+        </div>
+
+        <!-- Tagline -->
+        <div>
+          <div style="font-size:0.88rem;font-weight:900;color:#fbbf24;font-family:var(--font-display);">You're amazing! 💛</div>
+          <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:2px;">Pick a chai and support KolhanHub ☕</div>
+        </div>
+
+        <!-- ── Chai Amount Buttons ── -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;width:100%;">
+
+          <button class="chai-btn" data-amount="10" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:0.6rem 0.3rem;border:1px solid rgba(251,191,36,0.25);border-radius:12px;background:rgba(251,191,36,0.05);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(251,191,36,0.14)';this.style.borderColor='rgba(251,191,36,0.5)'" onmouseout="this.style.background='rgba(251,191,36,0.05)';this.style.borderColor='rgba(251,191,36,0.25)'">
+            <span style="font-size:1.3rem;">☕</span>
+            <span style="font-size:0.6rem;font-weight:700;color:#fbbf24;">Normal Chai</span>
+            <span style="font-size:0.8rem;font-weight:900;color:var(--text-primary);">₹10</span>
+          </button>
+
+          <button class="chai-btn" data-amount="25" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:0.6rem 0.3rem;border:1px solid rgba(251,191,36,0.35);border-radius:12px;background:rgba(251,191,36,0.08);cursor:pointer;transition:all 0.2s;position:relative;" onmouseover="this.style.background='rgba(251,191,36,0.18)';this.style.borderColor='rgba(251,191,36,0.6)'" onmouseout="this.style.background='rgba(251,191,36,0.08)';this.style.borderColor='rgba(251,191,36,0.35)'">
+            <span style="position:absolute;top:-8px;font-size:0.5rem;font-weight:800;background:#fbbf24;color:#1a1a1a;border-radius:20px;padding:1px 6px;">POPULAR</span>
+            <span style="font-size:1.3rem;">🏺</span>
+            <span style="font-size:0.6rem;font-weight:700;color:#fbbf24;">Kulhad Chai</span>
+            <span style="font-size:0.8rem;font-weight:900;color:var(--text-primary);">₹25</span>
+          </button>
+
+          <button class="chai-btn" data-amount="100" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:0.6rem 0.3rem;border:1px solid rgba(251,191,36,0.25);border-radius:12px;background:rgba(251,191,36,0.05);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(251,191,36,0.14)';this.style.borderColor='rgba(251,191,36,0.5)'" onmouseout="this.style.background='rgba(251,191,36,0.05)';this.style.borderColor='rgba(251,191,36,0.25)'">
+            <span style="font-size:1.3rem;">👑</span>
+            <span style="font-size:0.6rem;font-weight:700;color:#fbbf24;">Dolly Special</span>
+            <span style="font-size:0.8rem;font-weight:900;color:var(--text-primary);">₹100</span>
+          </button>
+
+        </div>
+
+        <!-- UPI ID copy -->
+        <div id="upi-id-pill" title="Tap to copy UPI ID" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.18);border-radius:20px;padding:3px 11px;font-size:0.68rem;color:#fbbf24;font-family:monospace;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(251,191,36,0.13)'" onmouseout="this.style.background='rgba(251,191,36,0.07)'">
+          <span>💳</span><span>8002059887@ibl</span>
+          <span id="copy-tick" style="display:none;color:#34d399;font-size:0.68rem;">✓ copied</span>
+        </div>
+
+        <!-- QR toggle -->
+        <div style="width:100%;">
+          <button id="qr-toggle" style="width:100%;background:transparent;border:none;font-size:0.65rem;color:var(--text-tertiary);cursor:pointer;padding:2px 0;transition:color 0.2s;" onmouseover="this.style.color='var(--text-secondary)'" onmouseout="this.style.color='var(--text-tertiary)'">📷 Show QR to scan instead ▼</button>
+          <div id="qr-panel" style="display:none;margin-top:0.5rem;display:none;flex-direction:column;align-items:center;gap:0.35rem;">
+            <img src={`${baseUrl}/images/qr_phonepe.jpg`} alt="PhonePe QR" style="width:160px;height:auto;border-radius:10px;border:1px solid rgba(251,191,36,0.18);" onerror="this.style.display='none'" />
+            <a href={`${baseUrl}/images/qr_phonepe.jpg`} download="KolhanHub_PhonePe_QR.jpg" style="font-size:0.62rem;color:var(--text-tertiary);text-decoration:none;" onmouseover="this.style.color='var(--text-secondary)'" onmouseout="this.style.color='var(--text-tertiary)'">⬇ Download QR</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes donateModalIn {
+      from { opacity:0; transform:scale(0.88) translateY(16px); }
+      to   { opacity:1; transform:scale(1) translateY(0); }
+    }
+  </style>
+
+  <script>
+    (() => {
+      const btn      = document.getElementById('donate-btn');
+      const overlay  = document.getElementById('donate-modal-overlay');
+      const closeBtn = document.getElementById('donate-close');
+      const upiPill  = document.getElementById('upi-id-pill');
+      const copyTick = document.getElementById('copy-tick');
+      const qrToggle = document.getElementById('qr-toggle');
+      const qrPanel  = document.getElementById('qr-panel');
+      if (!btn || !overlay) return;
+
+      const open  = () => { overlay.style.display = 'flex'; document.body.style.overflow = 'hidden'; };
+      const close = () => { overlay.style.display = 'none';  document.body.style.overflow = ''; };
+
+      btn.addEventListener('click', open);
+      closeBtn?.addEventListener('click', close);
+      overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+
+      // Copy UPI ID
+      upiPill?.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('8002059887@ibl');
+          if (copyTick) { copyTick.style.display = 'inline'; setTimeout(() => { copyTick.style.display = 'none'; }, 2000); }
+        } catch(_) {}
+      });
+
+      // QR panel toggle
+      let qrOpen = false;
+      qrToggle?.addEventListener('click', () => {
+        qrOpen = !qrOpen;
+        qrPanel.style.display = qrOpen ? 'flex' : 'none';
+        qrToggle.textContent = qrOpen ? '📷 Hide QR ▲' : '📷 Show QR to scan instead ▼';
+      });
+
+      // Chai buttons → UPI redirect with selected amount
+      document.querySelectorAll('.chai-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const amount = btn.getAttribute('data-amount');
+          const params = new URLSearchParams({
+            pa: '8002059887@ibl',
+            pn: 'Anurag Nishad',
+            tn: 'Chai for KolhanHub',
+            am: amount,
+            cu: 'INR'
+          });
+          window.location.href = 'upi://pay?' + params.toString();
+        });
+      });
+    })();
+  </script>
+
 </Layout>
+
