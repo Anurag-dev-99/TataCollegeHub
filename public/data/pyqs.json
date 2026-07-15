@@ -1795,5 +1795,93 @@
         "downloadCount":  0,
         "title":  "Political Science Minor Sem 1 PYQ (MN-1A) 2023 Batch",
         "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023",
+        "downloadUrl":  "https://drive.google.com/file/d/1bmUrCQTpTEogxfSQ9Hz62EZbzmr5M-nA/view?usp=drive_link",
+        "id":  "pyq-mdc-polsci-sem2-2023",
+        "category":  "MDC",
+        "semester":  2,
+        "subject":  "Political Science",
+        "downloadCount":  0,
+        "title":  "Political Science MDC Sem 2 PYQ (2023 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023-2027",
+        "downloadUrl":  "https://drive.google.com/file/d/1G5Pp5zRMGwZsZNv8l9y8s3xp90hRwIL6/view?usp=drive_link",
+        "id":  "pyq-mj-phy-sem1-mj01-2023",
+        "category":  "Major",
+        "semester":  1,
+        "subject":  "Physics",
+        "downloadCount":  0,
+        "title":  "Physics Major Sem 1 PYQ (MJ-01) 2023 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023-2027",
+        "downloadUrl":  "https://drive.google.com/file/d/1QS6lQ3DBRZURI22tGiAGJCKlKRuI21ZH/view?usp=drive_link",
+        "id":  "pyq-mj-phy-sem2-mj02-2023",
+        "category":  "Major",
+        "semester":  2,
+        "subject":  "Physics",
+        "downloadCount":  0,
+        "title":  "Physics Major Sem 2 PYQ (MJ-02) 2023 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023-2027",
+        "downloadUrl":  "https://drive.google.com/file/d/1CwfV5N8t7Ua95GIbtBwY5TOSznpLpfRv/view?usp=drive_link",
+        "id":  "pyq-mj-phy-sem2-mj03-2023",
+        "category":  "Major",
+        "semester":  2,
+        "subject":  "Physics",
+        "downloadCount":  0,
+        "title":  "Physics Major Sem 2 PYQ (MJ-03) 2023 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023-2027",
+        "downloadUrl":  "https://drive.google.com/file/d/1DAa-R6kzxWM14Kvk6XY-4Uy-q29FbV-A/view?usp=drive_link",
+        "id":  "pyq-mj-phy-sem3-mj04-2023",
+        "category":  "Major",
+        "semester":  3,
+        "subject":  "Physics",
+        "downloadCount":  0,
+        "title":  "Physics Major Sem 3 PYQ (MJ-04) 2023 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/14jeXTNOWCObt3R085t7buiXiurhU4Eer/view?usp=drive_link",
+        "id":  "pyq-mn-econ-sem3-2022",
+        "category":  "Minor",
+        "semester":  3,
+        "subject":  "Economics",
+        "downloadCount":  0,
+        "title":  "Economics Minor Sem 3 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2024-2028",
+        "downloadUrl":  "https://drive.google.com/file/d/1nd01OCJv2YfkxWcxHSZYoK_6-zIUzMVq/view?usp=drive_link",
+        "id":  "pyq-mn-bot-sem2-mn2a-2024",
+        "category":  "Minor",
+        "semester":  2,
+        "subject":  "Botany",
+        "downloadCount":  0,
+        "title":  "Botany Minor Sem 2 PYQ (MN-2A) 2024 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2023-2027",
+        "downloadUrl":  "https://drive.google.com/file/d/1FCncNJxgmuoGMOIVGi4Wb_0pEUuzWp-E/view?usp=drive_link",
+        "id":  "pyq-mn-hist-sem3-mn1b-2023",
+        "category":  "Minor",
+        "semester":  3,
+        "subject":  "History",
+        "downloadCount":  0,
+        "title":  "History Minor Sem 3 PYQ (MN-1B) 2023 Batch",
+        "fileSize":  "PDF File"
     }
 ]
