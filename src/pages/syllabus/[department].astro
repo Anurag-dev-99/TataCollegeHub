@@ -7,7 +7,16 @@ export async function getStaticPaths() {
   const getSlug = (dept: string) => dept.toLowerCase().replace(/\s+/g, '-');
   
   // Filter and only build departments that have active files
-  const activeDepartments = ['Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor', 'Botany', 'English', 'Geography', 'Geography Minor'];
+  const activeDepartments = [
+    'Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor',
+    'Botany', 'English', 'Geography', 'Geography Minor',
+    'Chemistry', 'Commerce', 'History', 'Political Science',
+    'Zoology', 'Economics', 'Psychology',
+    'Hindi', 'Bangla', 'Odia', 'Philosophy', 'Urdu',
+    'Santhali', 'Ho', 'Kudmali', 'Sanskrit',
+    'Geology', 'Home Science', 'Statistics', 'Environmental Science',
+    'BBA', 'BCA', 'Information Technology', 'Mass Communication',
+  ];
   const filteredSyllabus = syllabusData.filter(item => activeDepartments.includes(item.department));
   const departments = [...new Set(filteredSyllabus.map(item => item.department))];
   
