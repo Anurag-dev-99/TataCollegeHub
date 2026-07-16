@@ -1,224 +1,694 @@
-﻿[
+[
     {
-        "id":  "syl-math-ug",
-        "title":  "B.Sc Mathematics Honours Syllabus (FYUGP NEP-2020)",
-        "department":  "Mathematics",
-        "semester":  "All Semesters (1-8)",
-        "effectiveFrom":  "2022 onwards",
-        "fileSize":  "2.4 MB",
-        "description":  "Complete Four Year Undergraduate Program (FYUGP) syllabus for Mathematics under NEP-2020. Includes course outcomes, detailed topic breakdown (Calculus, Algebra, Real Analysis, Differential Equations, Topology, etc.) and list of recommended textbooks.",
-        "modules":  [
-                        "Sem 1: MJ-1 (Calculus \u0026 Analytical Geometry)",
-                        "Sem 2: MJ-2 (Real Analysis - I)",
-                        "Sem 3: MJ-3 (Abstract Algebra - I), MN-1 (Introductory Mathematics)",
-                        "Sem 4: MJ-4 (Differential Equations), MJ-5 (Numerical Methods)",
-                        "Sem 5: MJ-6 (Real Analysis - II), MJ-7 (Linear Algebra)",
-                        "Sem 6: MJ-8 (Complex Analysis), MJ-9 (Metric Spaces)",
-                        "Sem 7: MJ-10 (Syllabus Outline Sem 7)",
-                        "Sem 8: MJ-11 (Syllabus Outline Sem 8)"
-                    ]
+        "id": "syl-math-ug",
+        "title": "B.Sc Mathematics Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Mathematics",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "2.4 MB",
+        "description": "Complete Four Year Undergraduate Program (FYUGP) syllabus for Mathematics under NEP-2020. Includes course outcomes, detailed topic breakdown (Calculus, Algebra, Real Analysis, Differential Equations, Topology, etc.) and list of recommended textbooks.",
+        "modules": [
+            "Sem 1: MJ-1 (Calculus & Analytical Geometry)",
+            "Sem 2: MJ-2 (Real Analysis - I)",
+            "Sem 3: MJ-3 (Abstract Algebra - I), MN-1 (Introductory Mathematics)",
+            "Sem 4: MJ-4 (Differential Equations), MJ-5 (Numerical Methods)",
+            "Sem 5: MJ-6 (Real Analysis - II), MJ-7 (Linear Algebra)",
+            "Sem 6: MJ-8 (Complex Analysis), MJ-9 (Metric Spaces)",
+            "Sem 7: MJ-10 (Syllabus Outline Sem 7)",
+            "Sem 8: MJ-11 (Syllabus Outline Sem 8)"
+        ]
     },
     {
-        "id":  "syl-phy-ug",
-        "title":  "B.Sc Physics Honours Syllabus (FYUGP NEP-2020)",
-        "department":  "Physics",
-        "semester":  "All Semesters (1-8)",
-        "effectiveFrom":  "2022 onwards",
-        "fileSize":  "3.1 MB",
-        "description":  "Standard Kolhan University NEP Physics Honours Syllabus containing theoretical and practical schedules for Mechanics, Electricity \u0026 Magnetism, Waves \u0026 Optics, Thermodynamics, Quantum Mechanics, and Solid State Physics.",
-        "modules":  [
-                        "Sem 1: MJ-1 (Mathematical Physics-I \u0026 Mechanics)",
-                        "Sem 2: MJ-2 (Electricity \u0026 Magnetism)",
-                        "Sem 3: MJ-3 (Thermal Physics \u0026 Waves)",
-                        "Sem 4: MJ-4 (Mathematical Physics-II), MJ-5 (Digital Electronics)",
-                        "Sem 5: MJ-6 (Quantum Mechanics), MJ-7 (Solid State Physics)",
-                        "Sem 6: MJ-8 (Electromagnetic Theory), MJ-9 (Statistical Mechanics)",
-                        "Sem 7: MJ-10 (Nuclear \u0026 Particle Physics), MJ-11 (Atomic \u0026 Molecular Physics)",
-                        "Sem 8: MJ-12 (Electrodynamics), MJ-13 (Advanced Spectroscopy \u0026 Research Project)"
-                    ]
+        "id": "syl-phy-ug",
+        "title": "B.Sc Physics Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Physics",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "3.1 MB",
+        "description": "Standard Kolhan University NEP Physics Honours Syllabus containing theoretical and practical schedules for Mechanics, Electricity & Magnetism, Waves & Optics, Thermodynamics, Quantum Mechanics, and Solid State Physics.",
+        "modules": [
+            "Sem 1: MJ-1 (Mathematical Physics-I & Mechanics)",
+            "Sem 2: MJ-2 (Electricity & Magnetism)",
+            "Sem 3: MJ-3 (Thermal Physics & Waves)",
+            "Sem 4: MJ-4 (Mathematical Physics-II), MJ-5 (Digital Electronics)",
+            "Sem 5: MJ-6 (Quantum Mechanics), MJ-7 (Solid State Physics)",
+            "Sem 6: MJ-8 (Electromagnetic Theory), MJ-9 (Statistical Mechanics)",
+            "Sem 7: MJ-10 (Nuclear & Particle Physics), MJ-11 (Atomic & Molecular Physics)",
+            "Sem 8: MJ-12 (Electrodynamics), MJ-13 (Advanced Spectroscopy & Research Project)"
+        ]
     },
     {
-        "id":  "syl-chem-ug",
-        "title":  "B.Sc Chemistry Honours Syllabus (FYUGP NEP-2020)",
-        "department":  "Chemistry",
-        "semester":  "All Semesters (1-8)",
-        "effectiveFrom":  "2022 onwards",
-        "fileSize":  "2.8 MB",
-        "description":  "FYUGP syllabus for Chemistry Honours. Covers Inorganic, Organic, Physical, and Analytical Chemistry, complete with laboratory experiments and safety guidelines.",
-        "modules":  [
-                        "Sem 1: MJ-1 (Inorganic Chemistry-I \u0026 Organic Chemistry-I)",
-                        "Sem 2: MJ-2 (Physical Chemistry-I)",
-                        "Sem 3: MJ-3 (Inorganic Chemistry-II)",
-                        "Sem 4: MJ-4 (Organic Chemistry-II), MJ-5 (Physical Chemistry-II)",
-                        "Sem 5: MJ-6 (Inorganic Chemistry-III), MJ-7 (Organic Chemistry-III)",
-                        "Sem 6: MJ-8 (Physical Chemistry-III), MJ-9 (Analytical Chemistry)"
-                    ]
+        "id": "syl-chem-ug",
+        "title": "B.Sc Chemistry Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Chemistry",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "2.8 MB",
+        "description": "FYUGP syllabus for Chemistry Honours. Covers Inorganic, Organic, Physical, and Analytical Chemistry, complete with laboratory experiments and safety guidelines.",
+        "modules": [
+            "Sem 1: MJ-1 (Inorganic Chemistry-I & Organic Chemistry-I)",
+            "Sem 2: MJ-2 (Physical Chemistry-I)",
+            "Sem 3: MJ-3 (Inorganic Chemistry-II)",
+            "Sem 4: MJ-4 (Organic Chemistry-II), MJ-5 (Physical Chemistry-II)",
+            "Sem 5: MJ-6 (Inorganic Chemistry-III), MJ-7 (Organic Chemistry-III)",
+            "Sem 6: MJ-8 (Physical Chemistry-III), MJ-9 (Analytical Chemistry)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/15ewmRt5zfmMHuL1f8306m0Mt0ry2Gv7O/view?usp=drive_link",
+            "https://drive.google.com/file/d/1OBh-AJE2vx2Q89eGZGgFRrhW3MoI0SQI/view?usp=drive_link"
+        ]
     },
     {
-        "id":  "syl-comm-ug",
-        "title":  "B.Com Honours Syllabus (FYUGP NEP-2020)",
-        "department":  "Commerce",
-        "semester":  "All Semesters (1-8)",
-        "effectiveFrom":  "2022 onwards",
-        "fileSize":  "2.6 MB",
-        "description":  "Detailed syllabus for Bachelor of Commerce (Honours). Includes detailed guidelines for Financial Accounting, Business Law, Corporate Accounting, Income Tax, Management Accounting, and Auditing.",
-        "modules":  [
-                        "Sem 1: MJ-1 (Financial Accounting \u0026 Business Organisation)",
-                        "Sem 2: MJ-2 (Business Law)",
-                        "Sem 3: MJ-3 (Corporate Accounting)",
-                        "Sem 4: MJ-4 (Income Tax Law \u0026 Practice), MJ-5 (Business Mathematics)",
-                        "Sem 5: MJ-6 (Management Accounting), MJ-7 (Indirect Taxes)",
-                        "Sem 6: MJ-8 (Auditing \u0026 Corporate Governance), MJ-9 (Financial Management)"
-                    ]
+        "id": "syl-comm-ug",
+        "title": "B.Com Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Commerce",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "2.6 MB",
+        "description": "Detailed syllabus for Bachelor of Commerce (Honours). Includes detailed guidelines for Financial Accounting, Business Law, Corporate Accounting, Income Tax, Management Accounting, and Auditing.",
+        "modules": [
+            "Sem 1: MJ-1 (Financial Accounting & Business Organisation)",
+            "Sem 2: MJ-2 (Business Law)",
+            "Sem 3: MJ-3 (Corporate Accounting)",
+            "Sem 4: MJ-4 (Income Tax Law & Practice), MJ-5 (Business Mathematics)",
+            "Sem 5: MJ-6 (Management Accounting), MJ-7 (Indirect Taxes)",
+            "Sem 6: MJ-8 (Auditing & Corporate Governance), MJ-9 (Financial Management)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/172T8QegKZujxTqIrisHx09cnWkEOZI2y/view?usp=drive_link",
+            "https://drive.google.com/file/d/1hTUChxtPY5C31xdrJqqMW76N_jvsz_zQ/view?usp=drive_link"
+        ]
     },
     {
-        "id":  "syl-arts-hist",
-        "title":  "B.A History Honours Syllabus (FYUGP NEP-2020)",
-        "department":  "Arts",
-        "semester":  "All Semesters (1-8)",
-        "effectiveFrom":  "2022 onwards",
-        "fileSize":  "1.9 MB",
-        "description":  "Kolhan University Bachelor of Arts History Honours FYUGP curriculum. Spans Ancient Indian History, Medieval Europe, Modern India, and World History.",
-        "modules":  [
-                        "Sem 1: MJ-1 (Idea of Bharat \u0026 Ancient Indian History)",
-                        "Sem 2: MJ-2 (Social Formations \u0026 Cultural Patterns of Ancient World)",
-                        "Sem 3: MJ-3 (History of India II: c. 300 to 750 CE)",
-                        "Sem 4: MJ-4 (Medieval India), MJ-5 (Rise of Modern West)",
-                        "Sem 5: MJ-6 (History of India: 1750-1857), MJ-7 (Modern World)",
-                        "Sem 6: MJ-8 (History of India: 1857-1947), MJ-9 (Contemporary India)"
-                    ]
+        "id": "syl-arts-hist",
+        "title": "B.A History Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Arts",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "1.9 MB",
+        "description": "Kolhan University Bachelor of Arts History Honours FYUGP curriculum. Spans Ancient Indian History, Medieval Europe, Modern India, and World History.",
+        "modules": [
+            "Sem 1: MJ-1 (Idea of Bharat & Ancient Indian History)",
+            "Sem 2: MJ-2 (Social Formations & Cultural Patterns of Ancient World)",
+            "Sem 3: MJ-3 (History of India II: c. 300 to 750 CE)",
+            "Sem 4: MJ-4 (Medieval India), MJ-5 (Rise of Modern West)",
+            "Sem 5: MJ-6 (History of India: 1750-1857), MJ-7 (Modern World)",
+            "Sem 6: MJ-8 (History of India: 1857-1947), MJ-9 (Contemporary India)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1A6Qd0au83NSqS9RUUdTJnKUbQNWk2h5d/view?usp=drive_link"
+        ]
     },
     {
-        "id":  "syl-arts-polsci",
-        "title":  "B.A Political Science Syllabus (FYUGP)",
-        "department":  "Arts",
-        "semester":  "All Semesters (1-8)",
-        "effectiveFrom":  "2022 onwards",
-        "fileSize":  "2.1 MB",
-        "description":  "FYUGP syllabus for Political Science Honours. Covers political theories, comparative government, public administration, international relations, and Indian political thought.",
-        "modules":  [
-                        "Sem 1: MJ-1 (Understanding Political Theory)",
-                        "Sem 2: MJ-2 (Constitutional Government and Democracy in India)",
-                        "Sem 3: MJ-3 (Political Theory: Concepts and Debates)",
-                        "Sem 4: MJ-4 (Comparative Government \u0026 Politics), MJ-5 (Public Administration)",
-                        "Sem 5: MJ-6 (International Relations), MJ-7 (Western Political Thought)",
-                        "Sem 6: MJ-8 (Indian Political Thought), MJ-9 (Public Policy in India)"
-                    ]
+        "id": "syl-arts-polsci",
+        "title": "B.A Political Science Syllabus (FYUGP)",
+        "department": "Arts",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "2.1 MB",
+        "description": "FYUGP syllabus for Political Science Honours. Covers political theories, comparative government, public administration, international relations, and Indian political thought.",
+        "modules": [
+            "Sem 1: MJ-1 (Understanding Political Theory)",
+            "Sem 2: MJ-2 (Constitutional Government and Democracy in India)",
+            "Sem 3: MJ-3 (Political Theory: Concepts and Debates)",
+            "Sem 4: MJ-4 (Comparative Government & Politics), MJ-5 (Public Administration)",
+            "Sem 5: MJ-6 (International Relations), MJ-7 (Western Political Thought)",
+            "Sem 6: MJ-8 (Indian Political Thought), MJ-9 (Public Policy in India)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1cWiWZshDxqDtP6zpzV9ZMCmbjy-Rp5jd/view?usp=drive_link"
+        ]
     },
     {
-        "id":  "syl-math-minor",
-        "title":  "B.Sc Mathematics Minor Syllabus (FYUGP NEP-2020)",
-        "department":  "Mathematics Minor",
-        "semester":  "All Semesters (1-8)",
-        "effectiveFrom":  "2022 onwards",
-        "fileSize":  "1.8 MB",
-        "description":  "Four Year Undergraduate Program (FYUGP) Minor syllabus for Mathematics under NEP-2020. Spans topics for minor credit requirements, designed for students majoring in Physics, Chemistry, etc.",
-        "modules":  [
-                        "Sem 1: MN-1 (Introductory Mathematics / Calculus)",
-                        "Sem 2: MN-2 (Real Analysis \u0026 Algebra)",
-                        "Sem 3: MN-3 (Ordinary Differential Equations)",
-                        "Sem 4: MN-4 (Advanced Mathematics \u0026 Linear Algebra)",
-                        "Sem 5: MN-5 (Complex Variables \u0026 Numerical Methods)",
-                        "Sem 6: MN-6 (Probability \u0026 Mathematical Statistics)",
-                        "Sem 7: MN-7 (Syllabus Outline Sem 7)",
-                        "Sem 8: MN-8 (Syllabus Outline Sem 8)"
-                    ]
+        "id": "syl-math-minor",
+        "title": "B.Sc Mathematics Minor Syllabus (FYUGP NEP-2020)",
+        "department": "Mathematics Minor",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "1.8 MB",
+        "description": "Four Year Undergraduate Program (FYUGP) Minor syllabus for Mathematics under NEP-2020. Spans topics for minor credit requirements, designed for students majoring in Physics, Chemistry, etc.",
+        "modules": [
+            "Sem 1: MN-1 (Introductory Mathematics / Calculus)",
+            "Sem 2: MN-2 (Real Analysis & Algebra)",
+            "Sem 3: MN-3 (Ordinary Differential Equations)",
+            "Sem 4: MN-4 (Advanced Mathematics & Linear Algebra)",
+            "Sem 5: MN-5 (Complex Variables & Numerical Methods)",
+            "Sem 6: MN-6 (Probability & Mathematical Statistics)",
+            "Sem 7: MN-7 (Syllabus Outline Sem 7)",
+            "Sem 8: MN-8 (Syllabus Outline Sem 8)"
+        ]
     },
     {
-        "id":  "syl-phy-minor",
-        "title":  "B.Sc Physics Minor Syllabus (FYUGP NEP-2020)",
-        "department":  "Physics Minor",
-        "semester":  "All Semesters (1-8)",
-        "effectiveFrom":  "2022 onwards",
-        "fileSize":  "3.3 MB",
-        "description":  "Four Year Undergraduate Program (FYUGP) Minor syllabus for Physics under NEP-2020. Spans core topics for minor credit requirements, designed for students majoring in Mathematics, Chemistry, etc.",
-        "modules":  [
-                        "Sem 1: MN-1 (Introductory Physics / Mechanics)",
-                        "Sem 2: MN-2 (Electricity \u0026 Magnetism)",
-                        "Sem 3: MN-3 (Thermal Physics \u0026 Waves)",
-                        "Sem 4: MN-4 (Digital Electronics \u0026 Modern Physics)",
-                        "Sem 5: MN-5 (Quantum Mechanics \u0026 Solid State Physics)",
-                        "Sem 6: MN-6 (Electromagnetic Theory \u0026 Statistical Mechanics)",
-                        "Sem 7: MN-7 (Basic Electronics \u0026 Instrumentation)",
-                        "Sem 8: MN-8 (Computational Physics \u0026 Research Methodology)"
-                    ]
+        "id": "syl-phy-minor",
+        "title": "B.Sc Physics Minor Syllabus (FYUGP NEP-2020)",
+        "department": "Physics Minor",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "3.3 MB",
+        "description": "Four Year Undergraduate Program (FYUGP) Minor syllabus for Physics under NEP-2020. Spans core topics for minor credit requirements, designed for students majoring in Mathematics, Chemistry, etc.",
+        "modules": [
+            "Sem 1: MN-1 (Introductory Physics / Mechanics)",
+            "Sem 2: MN-2 (Electricity & Magnetism)",
+            "Sem 3: MN-3 (Thermal Physics & Waves)",
+            "Sem 4: MN-4 (Digital Electronics & Modern Physics)",
+            "Sem 5: MN-5 (Quantum Mechanics & Solid State Physics)",
+            "Sem 6: MN-6 (Electromagnetic Theory & Statistical Mechanics)",
+            "Sem 7: MN-7 (Basic Electronics & Instrumentation)",
+            "Sem 8: MN-8 (Computational Physics & Research Methodology)"
+        ]
     },
     {
-        "id":  "syl-botany-ug",
-        "title":  "B.Sc Botany Honours Syllabus (FYUGP NEP-2020)",
-        "department":  "Botany",
-        "semester":  "All Semesters (1-8)",
-        "effectiveFrom":  "2022 onwards",
-        "fileSize":  "2.1 MB",
-        "description":  "Complete Four Year Undergraduate Program (FYUGP) syllabus for Botany Honours under NEP-2020. Includes course outcomes, detailed topic breakdown (Microbiology, Mycology, Plant Anatomy, Physiology, Genetics, Molecular Biology, and Biotechnology) and list of recommended textbooks.",
-        "downloadUrl":  "https://drive.google.com/file/d/1zpJuoOiLVOI3SckaQZKsPCqNnQo688hQ/view?usp=drive_link",
-        "modules":  [
-                        "Sem 1: MJ-1 (Phycology and Microbiology)",
-                        "Sem 2: MJ-2 (Biomolecules and Cell Biology)",
-                        "Sem 3: MJ-3 (Mycology and Phytopathology)",
-                        "Sem 4: MJ-4 (Archegoniatae), MJ-5 (Anatomy of Angiosperms)",
-                        "Sem 5: MJ-6 (Genetics), MJ-7 (Molecular Biology)",
-                        "Sem 6: MJ-8 (Plant Ecology \u0026 Phytogeography), MJ-9 (Plant Systematics)",
-                        "Sem 7: MJ-10 (Reproductive Biology of Angiosperms), MJ-11 (Plant Physiology)",
-                        "Sem 8: MJ-12 (Plant Metabolism), MJ-13 (Research Methodology \u0026 Project)"
-                    ]
+        "id": "syl-botany-ug",
+        "title": "B.Sc Botany Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Botany",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "2.1 MB",
+        "description": "Complete Four Year Undergraduate Program (FYUGP) syllabus for Botany Honours under NEP-2020. Includes course outcomes, detailed topic breakdown (Microbiology, Mycology, Plant Anatomy, Physiology, Genetics, Molecular Biology, and Biotechnology) and list of recommended textbooks.",
+        "downloadUrl": "https://drive.google.com/file/d/1zpJuoOiLVOI3SckaQZKsPCqNnQo688hQ/view?usp=drive_link",
+        "modules": [
+            "Sem 1: MJ-1 (Phycology and Microbiology)",
+            "Sem 2: MJ-2 (Biomolecules and Cell Biology)",
+            "Sem 3: MJ-3 (Mycology and Phytopathology)",
+            "Sem 4: MJ-4 (Archegoniatae), MJ-5 (Anatomy of Angiosperms)",
+            "Sem 5: MJ-6 (Genetics), MJ-7 (Molecular Biology)",
+            "Sem 6: MJ-8 (Plant Ecology & Phytogeography), MJ-9 (Plant Systematics)",
+            "Sem 7: MJ-10 (Reproductive Biology of Angiosperms), MJ-11 (Plant Physiology)",
+            "Sem 8: MJ-12 (Plant Metabolism), MJ-13 (Research Methodology & Project)"
+        ]
     },
     {
-        "id":  "syl-eng-ug",
-        "title":  "B.A English Honours Syllabus (FYUGP NEP-2020)",
-        "department":  "English",
-        "semester":  "All Semesters (1-8)",
-        "effectiveFrom":  "2022 onwards",
-        "fileSize":  "1.5 MB",
-        "description":  "Complete Four Year Undergraduate Program (FYUGP) syllabus for English Honours under NEP-2020. Covers history of English literature, poetry, drama, prose, fiction, and literary criticism.",
-        "modules":  [
-                        "Sem 1: MJ-1 (Introduction to Literature \u0026 History of English Literature)",
-                        "Sem 2: MJ-2 (European Classical Literature)",
-                        "Sem 3: MJ-3 (Indian Classical Literature \u0026 Indian Writing in English)",
-                        "Sem 4: MJ-4 (British Poetry and Drama: 14th to 17th Centuries), MJ-5 (American Literature)",
-                        "Sem 5: MJ-6 (Popular Literature), MJ-7 (British Poetry and Drama: 17th and 18th Centuries)",
-                        "Sem 6: MJ-8 (Postcolonial Literatures), MJ-9 (Women\u0027s Writing)",
-                        "Sem 7: MJ-10 (British Literature: 19th Century), MJ-11 (Literary Criticism)",
-                        "Sem 8: MJ-12 (Literary Theory), MJ-13 (Research Methodology \u0026 Project)"
-                    ]
+        "id": "syl-eng-ug",
+        "title": "B.A English Honours Syllabus (FYUGP NEP-2020)",
+        "department": "English",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "1.5 MB",
+        "description": "Complete Four Year Undergraduate Program (FYUGP) syllabus for English Honours under NEP-2020. Covers history of English literature, poetry, drama, prose, fiction, and literary criticism.",
+        "modules": [
+            "Sem 1: MJ-1 (Introduction to Literature & History of English Literature)",
+            "Sem 2: MJ-2 (European Classical Literature)",
+            "Sem 3: MJ-3 (Indian Classical Literature & Indian Writing in English)",
+            "Sem 4: MJ-4 (British Poetry and Drama: 14th to 17th Centuries), MJ-5 (American Literature)",
+            "Sem 5: MJ-6 (Popular Literature), MJ-7 (British Poetry and Drama: 17th and 18th Centuries)",
+            "Sem 6: MJ-8 (Postcolonial Literatures), MJ-9 (Women's Writing)",
+            "Sem 7: MJ-10 (British Literature: 19th Century), MJ-11 (Literary Criticism)",
+            "Sem 8: MJ-12 (Literary Theory), MJ-13 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1rkE22L_az-4yJQPMqCRxhaQCLQCmwgCP/view?usp=drive_link"
+        ]
     },
     {
-        "fileSize":  "PDF File",
-        "id":  "syl-geography-major",
-        "effectiveFrom":  "2022 onwards",
-        "semester":  "All Semesters (1-8)",
-        "modules":  [
-                        "Sem 1: MJ-1 Geomorphology Theory, MJ-1(P) Practical Geomorphology, MDC-1 Geography: An Introduction",
-                        "Sem 2: MJ-2 Climatology \u0026 Oceanography Theory, MJ-2(P) Practical Climatology",
-                        "Sem 3: MJ-3 Human Geography, MJ-4 Economic Geography",
-                        "Sem 4: MJ-5 Population \u0026 Settlement Geography, MJ-6 Regional Geography of India",
-                        "Sem 5: MJ-7 Agricultural Geography, MJ-8 Urban Geography, MJ-8(P) Urban Field Survey",
-                        "Sem 6: MJ-9 Environmental Geography, MJ-10 Geographical Thought \u0026 Research Methods",
-                        "Sem 7: MJ-11 GIS \u0026 Remote Sensing, MJ-12 Applied Geography \u0026 Planning",
-                        "Sem 8: MJ-13 Research Project / Dissertation, Applied Regional Geography"
-                    ],
-        "title":  "B.A/B.Sc Geography Major Syllabus (FYUGP NEP-2020)",
-        "description":  "Complete Four Year Undergraduate Program (FYUGP) syllabus for Geography Major under NEP-2020 at Kolhan University, Chaibasa. Covers Geomorphology, Climatology, Human \u0026 Economic Geography, GIS \u0026 Remote Sensing, and Research Project across 8 semesters.",
-        "department":  "Geography",
-        "downloadUrl":  "https://drive.google.com/file/d/1-JXZmtsQRGZFYs2vcz_27wD4yQUPXBPX/view?usp=drive_link"
+        "fileSize": "PDF File",
+        "id": "syl-geography-major",
+        "effectiveFrom": "2022 onwards",
+        "semester": "All Semesters (1-8)",
+        "modules": [
+            "Sem 1: MJ-1 Geomorphology Theory, MJ-1(P) Practical Geomorphology, MDC-1 Geography: An Introduction",
+            "Sem 2: MJ-2 Climatology & Oceanography Theory, MJ-2(P) Practical Climatology",
+            "Sem 3: MJ-3 Human Geography, MJ-4 Economic Geography",
+            "Sem 4: MJ-5 Population & Settlement Geography, MJ-6 Regional Geography of India",
+            "Sem 5: MJ-7 Agricultural Geography, MJ-8 Urban Geography, MJ-8(P) Urban Field Survey",
+            "Sem 6: MJ-9 Environmental Geography, MJ-10 Geographical Thought & Research Methods",
+            "Sem 7: MJ-11 GIS & Remote Sensing, MJ-12 Applied Geography & Planning",
+            "Sem 8: MJ-13 Research Project / Dissertation, Applied Regional Geography"
+        ],
+        "title": "B.A/B.Sc Geography Major Syllabus (FYUGP NEP-2020)",
+        "description": "Complete Four Year Undergraduate Program (FYUGP) syllabus for Geography Major under NEP-2020 at Kolhan University, Chaibasa. Covers Geomorphology, Climatology, Human & Economic Geography, GIS & Remote Sensing, and Research Project across 8 semesters.",
+        "department": "Geography",
+        "downloadUrl": "https://drive.google.com/file/d/1-JXZmtsQRGZFYs2vcz_27wD4yQUPXBPX/view?usp=drive_link"
     },
     {
-        "fileSize":  "PDF File",
-        "id":  "syl-geography-minor",
-        "effectiveFrom":  "2022 onwards",
-        "semester":  "All Semesters (1-8)",
-        "modules":  [
-                        "Sem 1: MN-1A Disaster Management Theory, MN-1A(P) Disaster Management Practical",
-                        "Sem 2: MN-2 Physical Geography \u0026 Climatology",
-                        "Sem 3: MN-3 Human Geography Fundamentals",
-                        "Sem 4: MN-4 Geography of India \u0026 Resource Management",
-                        "Sem 5: MN-5 Environmental Geography \u0026 Conservation",
-                        "Sem 6: MN-6 Regional Planning \u0026 Development",
-                        "Sem 7: MN-7 GIS \u0026 Remote Sensing Basics",
-                        "Sem 8: MN-8 Urban \u0026 Rural Geography, Field Study Project"
-                    ],
-        "title":  "B.A/B.Sc Geography Minor Syllabus (FYUGP NEP-2020)",
-        "description":  "Geography as a Minor subject under NEP-2020 FYUGP at Kolhan University. Covers foundational physical and human geography, disaster management, environment, GIS basics, and regional geography across 8 semesters for students from other disciplines.",
-        "department":  "Geography Minor"
+        "fileSize": "PDF File",
+        "id": "syl-geography-minor",
+        "effectiveFrom": "2022 onwards",
+        "semester": "All Semesters (1-8)",
+        "modules": [
+            "Sem 1: MN-1A Disaster Management Theory, MN-1A(P) Disaster Management Practical",
+            "Sem 2: MN-2 Physical Geography & Climatology",
+            "Sem 3: MN-3 Human Geography Fundamentals",
+            "Sem 4: MN-4 Geography of India & Resource Management",
+            "Sem 5: MN-5 Environmental Geography & Conservation",
+            "Sem 6: MN-6 Regional Planning & Development",
+            "Sem 7: MN-7 GIS & Remote Sensing Basics",
+            "Sem 8: MN-8 Urban & Rural Geography, Field Study Project"
+        ],
+        "title": "B.A/B.Sc Geography Minor Syllabus (FYUGP NEP-2020)",
+        "description": "Geography as a Minor subject under NEP-2020 FYUGP at Kolhan University. Covers foundational physical and human geography, disaster management, environment, GIS basics, and regional geography across 8 semesters for students from other disciplines.",
+        "department": "Geography Minor"
+    },
+    {
+        "id": "syl-zoology-ug",
+        "title": "B.Sc Zoology Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Zoology",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "Complete FYUGP syllabus for Zoology Honours under NEP-2020 at Kolhan University. Covers Animal Diversity, Cell Biology, Genetics, Ecology, Physiology, Biochemistry, and Developmental Biology.",
+        "modules": [
+            "Sem 1: MJ-1 (Animal Diversity - Non-Chordata)",
+            "Sem 2: MJ-2 (Animal Diversity - Chordata)",
+            "Sem 3: MJ-3 (Cell Biology & Genetics)",
+            "Sem 4: MJ-4 (Ecology & Environmental Biology), MJ-5 (Animal Physiology)",
+            "Sem 5: MJ-6 (Developmental Biology), MJ-7 (Biochemistry)",
+            "Sem 6: MJ-8 (Immunology), MJ-9 (Molecular Biology)",
+            "Sem 7: MJ-10 (Evolutionary Biology), MJ-11 (Biotechnology & Biostatistics)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1qtpabSf0HgMxMbtJWKUAUSxdVs31_Czc/view?usp=drive_link",
+            "https://drive.google.com/file/d/1CEOpgn0qJYF4g1UlA6YHU8wKlBFnYrCZ/view?usp=drive_link",
+            "https://drive.google.com/file/d/1uE04VkkDn3liNP-aK0_SGyZVvD-kEPVR/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-economics-ug",
+        "title": "B.A/B.Sc Economics Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Economics",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Economics Honours at Kolhan University. Covers Microeconomics, Macroeconomics, Statistics, Econometrics, Development Economics, International Trade, and Public Finance.",
+        "modules": [
+            "Sem 1: MJ-1 (Introductory Microeconomics)",
+            "Sem 2: MJ-2 (Introductory Macroeconomics)",
+            "Sem 3: MJ-3 (Intermediate Microeconomics)",
+            "Sem 4: MJ-4 (Intermediate Macroeconomics), MJ-5 (Statistics for Economics)",
+            "Sem 5: MJ-6 (Indian Economy), MJ-7 (Development Economics)",
+            "Sem 6: MJ-8 (International Trade), MJ-9 (Public Finance)",
+            "Sem 7: MJ-10 (Econometrics), MJ-11 (Environmental Economics)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1uzHlwAQpcymmA3UFCj9HyOmanxbrG3UZ/view?usp=drive_link",
+            "https://drive.google.com/file/d/1oJiATzR6dbcdxH0MqakhIYzEyybIGCSq/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-psychology-ug",
+        "title": "B.A Psychology Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Psychology",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Psychology Honours at Kolhan University. Covers General Psychology, Social Psychology, Developmental Psychology, Clinical Psychology, Counseling, and Research Methods.",
+        "modules": [
+            "Sem 1: MJ-1 (General Psychology)",
+            "Sem 2: MJ-2 (Social Psychology)",
+            "Sem 3: MJ-3 (Developmental Psychology)",
+            "Sem 4: MJ-4 (Biological Basis of Behaviour), MJ-5 (Statistics in Psychology)",
+            "Sem 5: MJ-6 (Cognitive Psychology), MJ-7 (Abnormal Psychology)",
+            "Sem 6: MJ-8 (Clinical Psychology), MJ-9 (Industrial & Organisational Psychology)",
+            "Sem 7: MJ-10 (Counselling Psychology), MJ-11 (Health Psychology)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1EWj7UrFSDHOcO3S164-bwhV4ZdDSmDIL/view?usp=drive_link",
+            "https://drive.google.com/file/d/13505-7OhZi_IV7mDRWQRLwTGj4C_4n0t/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-hindi-ug",
+        "title": "B.A Hindi Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Hindi",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Hindi Honours at Kolhan University. Covers classical and modern Hindi literature, poetry, prose, drama, and linguistic studies.",
+        "modules": [
+            "Sem 1: MJ-1 (Hindi Kavita - Adi Kaal & Bhakti Kaal)",
+            "Sem 2: MJ-2 (Hindi Gadya Sahitya)",
+            "Sem 3: MJ-3 (Hindi Kavita - Riti Kaal & Adhunik Kaal)",
+            "Sem 4: MJ-4 (Hindi Natak & Ekanki), MJ-5 (Hindi Upanyas)",
+            "Sem 5: MJ-6 (Hindi Kahani & Nibandh), MJ-7 (Bhasha Vigyan)",
+            "Sem 6: MJ-8 (Hindi Sahitya ka Itihas), MJ-9 (Prayojanmoolak Hindi)",
+            "Sem 7: MJ-10 (Dalit Sahitya & Nari Vimarsh), MJ-11 (Adhunik Hindi Kavita)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/12Yojil2KGEVzhtdrYqLSiOo3_HwhVQ4q/view?usp=drive_link",
+            "https://drive.google.com/file/d/1opshJZbJ9_A0jeoLd9AMQeNbE_pBiBwR/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-bangla-ug",
+        "title": "B.A Bangla Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Bangla",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Bangla Honours at Kolhan University. Covers classical and modern Bengali literature, poetry, prose, drama, and linguistics.",
+        "modules": [
+            "Sem 1: MJ-1 (Prachin O Madhyayuger Bangla Sahitya)",
+            "Sem 2: MJ-2 (Adhunik Bangla Kavita)",
+            "Sem 3: MJ-3 (Bangla Gadya Sahitya)",
+            "Sem 4: MJ-4 (Bangla Natak), MJ-5 (Bangla Upanyas)",
+            "Sem 5: MJ-6 (Bangla Chhoto Galpo), MJ-7 (Bhasha Vigyan - Bangla)",
+            "Sem 6: MJ-8 (Sahitya Tattva), MJ-9 (Prayogik Bangla)",
+            "Sem 7: MJ-10 (Samkalin Bangla Sahitya), MJ-11 (Bangla Sahityer Itihas)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1dZe0J63xC7ppRZWkB_GIU8qh-77-PdCQ/view?usp=drive_link",
+            "https://drive.google.com/file/d/1Q2zOG9prgGTR8DI9xlHaWjQxIrV-Wf1F/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-odia-ug",
+        "title": "B.A Odia Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Odia",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Odia Honours at Kolhan University. Covers classical and modern Odia literature, poetry, prose, drama, and Odia linguistics.",
+        "modules": [
+            "Sem 1: MJ-1 (Prachin O Madhyakalia Odia Sahitya)",
+            "Sem 2: MJ-2 (Adhunik Odia Kavita)",
+            "Sem 3: MJ-3 (Odia Gadya Sahitya)",
+            "Sem 4: MJ-4 (Odia Natak & Drama), MJ-5 (Odia Upanyas)",
+            "Sem 5: MJ-6 (Odia Chhota Galpa), MJ-7 (Bhasha Bigyan)",
+            "Sem 6: MJ-8 (Sahitya Shastra), MJ-9 (Prayogik Odia)",
+            "Sem 7: MJ-10 (Samakala Odia Sahitya), MJ-11 (Odia Sahityara Itihasa)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/19IT1_OJ_bK0nJqsvrQO5TzQTjavhJIM4/view?usp=drive_link",
+            "https://drive.google.com/file/d/1D3Ye6zbDMF4FmxCcdsxXTS6gdumlWygb/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-philosophy-ug",
+        "title": "B.A Philosophy Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Philosophy",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Philosophy Honours at Kolhan University. Covers Indian philosophy, Western philosophy, logic, ethics, metaphysics, and epistemology.",
+        "modules": [
+            "Sem 1: MJ-1 (Introduction to Philosophy & Indian Philosophy-I)",
+            "Sem 2: MJ-2 (Western Philosophy-I)",
+            "Sem 3: MJ-3 (Indian Philosophy-II: Nyaya, Vaisheshika, Samkhya)",
+            "Sem 4: MJ-4 (Western Philosophy-II), MJ-5 (Logic)",
+            "Sem 5: MJ-6 (Ethics), MJ-7 (Metaphysics & Epistemology)",
+            "Sem 6: MJ-8 (Philosophy of Religion), MJ-9 (Contemporary Western Philosophy)",
+            "Sem 7: MJ-10 (Social & Political Philosophy), MJ-11 (Philosophy of Language)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1pulVFtXobCuB0WYOM2ucS7KB6VNPIdOd/view?usp=drive_link",
+            "https://drive.google.com/file/d/1934xVB8bGnhD2OLDZQJkmpxLPLpseGbf/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-urdu-ug",
+        "title": "B.A Urdu Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Urdu",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Urdu Honours at Kolhan University. Covers classical and modern Urdu poetry, prose, drama, and Urdu linguistics.",
+        "modules": [
+            "Sem 1: MJ-1 (Urdu Zaban-o-Adab Ka Irteqa)",
+            "Sem 2: MJ-2 (Classical Urdu Poetry - Ghazal & Qasida)",
+            "Sem 3: MJ-3 (Urdu Dastan & Novel)",
+            "Sem 4: MJ-4 (Modern Urdu Poetry - Nazm), MJ-5 (Urdu Drama)",
+            "Sem 5: MJ-6 (Urdu Afsana & Khaka), MJ-7 (Urdu Linguistics)",
+            "Sem 6: MJ-8 (Urdu Tanqeed), MJ-9 (Applied Urdu)",
+            "Sem 7: MJ-10 (Urdu Journalism & Mass Media), MJ-11 (Comparative Literature)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1EUy7wtNtqintvbRd6pWkeJO-NwXIuyL3/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-santhali-ug",
+        "title": "B.A Santhali Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Santhali",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Santhali Honours at Kolhan University. Covers Santhali language, Ol Chiki script, classical and folk literature, Santhali culture and linguistics.",
+        "modules": [
+            "Sem 1: MJ-1 (Santhali Bhasha - Ol Chiki Script & Grammar)",
+            "Sem 2: MJ-2 (Santhali Folk Literature & Oral Tradition)",
+            "Sem 3: MJ-3 (Santhali Written Literature)",
+            "Sem 4: MJ-4 (Santhali Poetry & Song), MJ-5 (Santhali Society & Culture)",
+            "Sem 5: MJ-6 (Santhali Drama & Narrative), MJ-7 (Santhali Linguistics)",
+            "Sem 6: MJ-8 (Comparative Tribal Literature), MJ-9 (Applied Santhali)",
+            "Sem 7: MJ-10 (Santhali Sahitya ka Itihas), MJ-11 (Translation Studies)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1iYoopyqhfn5IQwEfxjZvaEUVRd9vSBc8/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-ho-ug",
+        "title": "B.A Ho Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Ho",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Ho language and literature Honours at Kolhan University. Covers Ho language, Warang Citi script, folk and written literature, culture, and linguistics.",
+        "modules": [
+            "Sem 1: MJ-1 (Ho Bhasha - Warang Citi Script & Grammar)",
+            "Sem 2: MJ-2 (Ho Folk Literature & Oral Tradition)",
+            "Sem 3: MJ-3 (Ho Written Literature)",
+            "Sem 4: MJ-4 (Ho Poetry & Song), MJ-5 (Ho Society & Culture)",
+            "Sem 5: MJ-6 (Ho Drama & Narrative), MJ-7 (Ho Linguistics)",
+            "Sem 6: MJ-8 (Comparative Tribal Literature), MJ-9 (Applied Ho)",
+            "Sem 7: MJ-10 (Ho Sahitya ka Itihas), MJ-11 (Translation Studies)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1fXEu8w5HQo-NXdc3X7ngDSXkhXxZC6Tp/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-kudmali-ug",
+        "title": "B.A Kudmali Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Kudmali",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Kudmali language and literature Honours at Kolhan University. Covers Kudmali language, folk and written literature, culture, and linguistics.",
+        "modules": [
+            "Sem 1: MJ-1 (Kudmali Bhasha - Lipi & Vyakaran)",
+            "Sem 2: MJ-2 (Kudmali Lokokti & Lok Sahitya)",
+            "Sem 3: MJ-3 (Kudmali Gadya Sahitya)",
+            "Sem 4: MJ-4 (Kudmali Kavya), MJ-5 (Kudmali Sanskriti & Samaj)",
+            "Sem 5: MJ-6 (Kudmali Natak & Katha), MJ-7 (Kudmali Bhasha Vigyan)",
+            "Sem 6: MJ-8 (Tulanatmak Adivasi Sahitya), MJ-9 (Prayogik Kudmali)",
+            "Sem 7: MJ-10 (Kudmali Sahitya ka Itihas), MJ-11 (Anuvad Adhyayan)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/19s9hVffYWaCgpEgsuuo0D74NsxfAMBf3/view?usp=drive_link",
+            "https://drive.google.com/file/d/16BD6QACvnxNkozkK4gQeoWGxDNm5vWtv/view?usp=drive_link",
+            "https://drive.google.com/file/d/17fjDLo6rxSs9bvVb9PrphldNhLvub50q/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-sanskrit-ug",
+        "title": "B.A Sanskrit Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Sanskrit",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Sanskrit Honours at Kolhan University. Covers Vedic and classical Sanskrit literature, grammar, poetry, drama, philosophy, and Indian knowledge traditions.",
+        "modules": [
+            "Sem 1: MJ-1 (Vedic Literature & Sanskrit Grammar - I)",
+            "Sem 2: MJ-2 (Classical Sanskrit Poetry - Kalidasa)",
+            "Sem 3: MJ-3 (Sanskrit Drama - Natya Shastra & Major Plays)",
+            "Sem 4: MJ-4 (Sanskrit Prose - Panchatantra & Katha Sahitya), MJ-5 (Sanskrit Grammar - II)",
+            "Sem 5: MJ-6 (Indian Philosophy in Sanskrit), MJ-7 (Sanskrit Linguistics)",
+            "Sem 6: MJ-8 (Sanskrit Criticism - Sahitya Shastra), MJ-9 (Applied Sanskrit)",
+            "Sem 7: MJ-10 (Post-Classical Sanskrit Literature), MJ-11 (Comparative Literature)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1Ndjq0zw2bP-rHLKb0J1PRTdhNAfz7A2Q/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-geology-ug",
+        "title": "B.Sc Geology Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Geology",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Geology Honours at Kolhan University. Covers Physical Geology, Mineralogy, Petrology, Structural Geology, Stratigraphy, Palaeontology, Economic Geology, and Remote Sensing.",
+        "modules": [
+            "Sem 1: MJ-1 (Physical Geology & Geomorphology)",
+            "Sem 2: MJ-2 (Crystallography & Mineralogy)",
+            "Sem 3: MJ-3 (Petrology - Igneous & Sedimentary)",
+            "Sem 4: MJ-4 (Structural Geology), MJ-5 (Stratigraphy & Palaeontology)",
+            "Sem 5: MJ-6 (Metamorphic Petrology), MJ-7 (Economic Geology)",
+            "Sem 6: MJ-8 (Hydrogeology & Engineering Geology), MJ-9 (Remote Sensing & GIS)",
+            "Sem 7: MJ-10 (Geochemistry), MJ-11 (Environmental Geology)",
+            "Sem 8: MJ-12 (Research Methodology & Field Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1_VRqmU7f1xZaYmXAbgd1FhT0zhSjaZin/view?usp=drive_link",
+            "https://drive.google.com/file/d/1W4BtwDIMxpLvantfx1VlL9MwFB17G9Ff/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-homescience-ug",
+        "title": "B.Sc Home Science Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Home Science",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Home Science Honours at Kolhan University. Covers Food Science & Nutrition, Human Development, Textiles & Clothing, Resource Management, and Extension Education.",
+        "modules": [
+            "Sem 1: MJ-1 (Food Science & Nutrition - I)",
+            "Sem 2: MJ-2 (Human Development & Family Studies)",
+            "Sem 3: MJ-3 (Textiles & Clothing - I)",
+            "Sem 4: MJ-4 (Resource Management), MJ-5 (Food Science & Nutrition - II)",
+            "Sem 5: MJ-6 (Textiles & Clothing - II), MJ-7 (Child Development & Education)",
+            "Sem 6: MJ-8 (Extension Education & Communication), MJ-9 (Community Nutrition)",
+            "Sem 7: MJ-10 (Entrepreneurship Development), MJ-11 (Applied Home Science)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1UOxn1WQ_Uh5M6Xy3DEQe0y5mR_PsSusm/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-statistics-ug",
+        "title": "B.Sc Statistics Honours Syllabus (FYUGP NEP-2020)",
+        "department": "Statistics",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Statistics Honours at Kolhan University. Covers Probability Theory, Statistical Inference, Regression, Sampling Theory, Stochastic Processes, and Applied Statistics.",
+        "modules": [
+            "Sem 1: MJ-1 (Descriptive Statistics & Probability)",
+            "Sem 2: MJ-2 (Probability Distributions)",
+            "Sem 3: MJ-3 (Statistical Inference - I)",
+            "Sem 4: MJ-4 (Statistical Inference - II), MJ-5 (Sampling Theory)",
+            "Sem 5: MJ-6 (Linear Models & Regression), MJ-7 (Design of Experiments)",
+            "Sem 6: MJ-8 (Time Series & Index Numbers), MJ-9 (Stochastic Processes)",
+            "Sem 7: MJ-10 (Multivariate Analysis), MJ-11 (Applied Statistics)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1WJRFuICL_Ou3P7bq29A1t-dczOIgMwnT/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-envsci-ug",
+        "title": "B.Sc Environmental Science (Water Management) Syllabus (FYUGP NEP-2020)",
+        "department": "Environmental Science",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for Environmental Science (Water Management) at Kolhan University. Covers Ecology, Environmental Chemistry, Water Resource Management, Pollution Control, and Sustainable Development.",
+        "modules": [
+            "Sem 1: MJ-1 (Introduction to Environmental Science & Ecology)",
+            "Sem 2: MJ-2 (Environmental Chemistry & Water Quality)",
+            "Sem 3: MJ-3 (Water Resource Management)",
+            "Sem 4: MJ-4 (Pollution Control & Environmental Engineering), MJ-5 (Remote Sensing & GIS for Environment)",
+            "Sem 5: MJ-6 (Environmental Impact Assessment), MJ-7 (Biodiversity & Conservation)",
+            "Sem 6: MJ-8 (Environmental Law & Policy), MJ-9 (Sustainable Development)",
+            "Sem 7: MJ-10 (Climate Change & Disaster Management), MJ-11 (Environmental Biotechnology)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1lqGTqcCLazwFuWhTRnuE3HzyYy7Dki2d/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-bba-ug",
+        "title": "BBA (Business Administration) Syllabus (FYUGP NEP-2020)",
+        "department": "BBA",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for BBA at Kolhan University. Covers Management Principles, Marketing, Finance, HR, Operations, and Entrepreneurship.",
+        "modules": [
+            "Sem 1: MJ-1 (Principles of Management)",
+            "Sem 2: MJ-2 (Business Communication & Accounting)",
+            "Sem 3: MJ-3 (Marketing Management)",
+            "Sem 4: MJ-4 (Financial Management), MJ-5 (Human Resource Management)",
+            "Sem 5: MJ-6 (Operations Management), MJ-7 (Business Law)",
+            "Sem 6: MJ-8 (Entrepreneurship Development), MJ-9 (Strategic Management)",
+            "Sem 7: MJ-10 (International Business), MJ-11 (Business Analytics)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/121FuAtaPzwQKCnh2fYRggFXjfGyyCmKj/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-bca-ug",
+        "title": "BCA (Computer Applications) Syllabus (FYUGP NEP-2020)",
+        "department": "BCA",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for BCA at Kolhan University. Covers Programming, Data Structures, Databases, Networking, Web Development, and Software Engineering.",
+        "modules": [
+            "Sem 1: MJ-1 (Programming in C & Problem Solving)",
+            "Sem 2: MJ-2 (Data Structures using C++)",
+            "Sem 3: MJ-3 (Database Management Systems)",
+            "Sem 4: MJ-4 (Operating Systems), MJ-5 (Computer Networks)",
+            "Sem 5: MJ-6 (Web Technologies & Java Programming), MJ-7 (Software Engineering)",
+            "Sem 6: MJ-8 (Mobile Application Development), MJ-9 (Cloud Computing)",
+            "Sem 7: MJ-10 (Artificial Intelligence & Machine Learning), MJ-11 (Cyber Security)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/197aoJ6--80ZXWnzU_rw4u1WphG3X16wf/view?usp=drive_link",
+            "https://drive.google.com/file/d/1jtPxcNZ3kKD0Zyg4a_erxmgZWsqXe406/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-it-ug",
+        "title": "B.Sc Information Technology Syllabus (FYUGP NEP-2020)",
+        "department": "Information Technology",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "FYUGP syllabus for B.Sc Information Technology at Kolhan University. Covers Programming, Databases, Networking, Web Technologies, Software Development, and Emerging Technologies.",
+        "modules": [
+            "Sem 1: MJ-1 (Fundamentals of IT & Programming in Python)",
+            "Sem 2: MJ-2 (Data Structures & Algorithms)",
+            "Sem 3: MJ-3 (Database Management Systems & SQL)",
+            "Sem 4: MJ-4 (Computer Networks & Security), MJ-5 (Web Development)",
+            "Sem 5: MJ-6 (Object-Oriented Programming with Java), MJ-7 (Operating Systems)",
+            "Sem 6: MJ-8 (Software Engineering), MJ-9 (Cloud Computing & Virtualization)",
+            "Sem 7: MJ-10 (Artificial Intelligence), MJ-11 (Data Science & Analytics)",
+            "Sem 8: MJ-12 (Research Methodology & Project)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1o93n_5tQe0k3TQBn47S7WNvE6q-aHZJg/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-masscmn-ug",
+        "title": "Bachelor of Mass Communication (Video Production) Syllabus",
+        "department": "Mass Communication",
+        "semester": "All Semesters (1-8)",
+        "effectiveFrom": "2022 onwards",
+        "fileSize": "PDF File",
+        "description": "Syllabus for Bachelor of Mass Communication with specialization in Video Production at Kolhan University. Covers Journalism, Media Theory, Video Production, Editing, Broadcasting, and Digital Media.",
+        "modules": [
+            "Sem 1: MJ-1 (Introduction to Mass Communication & Journalism)",
+            "Sem 2: MJ-2 (Media Writing & Reporting)",
+            "Sem 3: MJ-3 (Television Production - I)",
+            "Sem 4: MJ-4 (Television Production - II), MJ-5 (Photography & Photojournalism)",
+            "Sem 5: MJ-6 (Film Studies & Screenwriting), MJ-7 (Radio Broadcasting)",
+            "Sem 6: MJ-8 (Digital Media & Social Media), MJ-9 (Media Law & Ethics)",
+            "Sem 7: MJ-10 (Advertising & Public Relations), MJ-11 (Documentary Filmmaking)",
+            "Sem 8: MJ-12 (Research Methodology & Project / Thesis Film)"
+        ],
+        "downloadUrls": [
+            "https://drive.google.com/file/d/16-krwj4164-vs5xEU6dZpaRvgU4IRsxw/view?usp=drive_link",
+            "https://drive.google.com/file/d/1HYyS8u7_6Oh5fiRmL2deYXMXC41R1eDN/view?usp=drive_link"
+        ]
     }
 ]

@@ -19,7 +19,16 @@ const getSlug = (dept: string) => {
 };
 
 // Filter syllabus to only keep ones with actual PDF files
-const activeDepartments = ['Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor', 'Botany', 'English', 'Geography', 'Geography Minor'];
+const activeDepartments = [
+  'Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor',
+  'Botany', 'English', 'Geography', 'Geography Minor',
+  'Chemistry', 'Commerce', 'Arts',
+  'Zoology', 'Economics', 'Psychology',
+  'Hindi', 'Bangla', 'Odia', 'Philosophy', 'Urdu',
+  'Santhali', 'Ho', 'Kudmali', 'Sanskrit',
+  'Geology', 'Home Science', 'Statistics', 'Environmental Science',
+  'BBA', 'BCA', 'Information Technology', 'Mass Communication',
+];
 const filteredSyllabusData = syllabusData.filter(item => activeDepartments.includes(item.department));
 
 // Group syllabuses by department to show summaries in card

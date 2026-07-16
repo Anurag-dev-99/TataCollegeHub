@@ -189,7 +189,8 @@ const getModulesForSemester = (modules: string[], semNum: number) => {
                 <div>•</div>
                 <div>Avg Size: {syl.fileSize}</div>
               </div>
-              {(syl as any).downloadUrl && (
+              {/* Single legacy downloadUrl (Botany, Geography) */}
+              {(syl as any).downloadUrl && !(syl as any).downloadUrls && (
                 <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.875rem;">
                   <a 
                     href={(syl as any).downloadUrl}
@@ -201,6 +202,29 @@ const getModulesForSemester = (modules: string[], semNum: number) => {
                   >
                     <Download size="14" /> Download Full Syllabus (Sem 1-8)
                   </a>
+                </div>
+              )}
+              {/* Multiple downloadUrls — one button per file */}
+              {(syl as any).downloadUrls && (syl as any).downloadUrls.length > 0 && (
+                <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.875rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
+                  {((syl as any).downloadUrls as string[]).map((url: string, idx: number) => {
+                    const total = ((syl as any).downloadUrls as string[]).length;
+                    const label = total === 1
+                      ? 'Download Full Syllabus (Sem 1-8)'
+                      : `Download Part ${idx + 1}`;
+                    return (
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-outline btn-sm"
+                        style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem;"
+                        onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${syl.title} ${label}', category: '${syl.department}', semester: 'All', department: '${syl.department}' });`}
+                      >
+                        <Download size="14" /> {label}
+                      </a>
+                    );
+                  })}
                 </div>
               )}
             </div>
