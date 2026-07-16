@@ -200,7 +200,7 @@ const getModulesForSemester = (modules: string[], semNum: number) => {
               </div>
               {/* Single legacy downloadUrl (Botany, Geography) */}
               {(syl as any).downloadUrl && !(syl as any).downloadUrls && (
-                <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.875rem;">
+                <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.875rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
                   <a 
                     href={(syl as any).downloadUrl}
                     target="_blank"
@@ -211,27 +211,35 @@ const getModulesForSemester = (modules: string[], semNum: number) => {
                   >
                     <Download size="14" /> Download Full Syllabus (Sem 1-8)
                   </a>
+                  <span style="font-size: 0.75rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.25rem;">
+                    <Download size="12" /> <span class="live-paper-download-count" data-subject-title={`${syl.title} Full Syllabus (Sem 1-8)`}>—</span> downloads
+                  </span>
                 </div>
               )}
               {/* Multiple downloadUrls — one button per file */}
               {(syl as any).downloadUrls && (syl as any).downloadUrls.length > 0 && (
-                <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.875rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
+                <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.875rem; display: flex; flex-direction: column; gap: 0.75rem;">
                   {((syl as any).downloadUrls as string[]).map((url: string, idx: number) => {
                     const total = ((syl as any).downloadUrls as string[]).length;
                     const label = total === 1
                       ? 'Download Full Syllabus (Sem 1-8)'
                       : `Download Part ${idx + 1}`;
                     return (
-                      <a
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="btn btn-outline btn-sm"
-                        style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem;"
-                        onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${syl.title} ${label}', category: '${syl.department}', semester: 'All', department: '${syl.department}' });`}
-                      >
-                        <Download size="14" /> {label}
-                      </a>
+                      <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="btn btn-outline btn-sm"
+                          style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem;"
+                          onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${syl.title} ${label}', category: '${syl.department}', semester: 'All', department: '${syl.department}' });`}
+                        >
+                          <Download size="14" /> {label}
+                        </a>
+                        <span style="font-size: 0.75rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.25rem;">
+                          <Download size="12" /> <span class="live-paper-download-count" data-subject-title={`${syl.title} ${label}`}>—</span> downloads
+                        </span>
+                      </div>
                     );
                   })}
                 </div>
@@ -431,4 +439,27 @@ const getModulesForSemester = (modules: string[], semNum: number) => {
     }
   </style>
 
+  <script is:inline>
+    (function() {
+      var elements = document.querySelectorAll('.live-paper-download-count');
+      if (!elements.length) return;
+      var url = 'https://script.google.com/macros/s/AKfycbx3ZJ1VuRgNc71FSKnrIAzLsv3qxnUeBwA8HALHWhDxlpJC93YzOwCV5rmLLT-swLaXHQ/exec?action=papercounts';
+      fetch(url)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.status === 'ok' && data.counts) {
+            elements.forEach(function(el) {
+              var title = el.getAttribute('data-subject-title');
+              var count = data.counts[title] || 0;
+              el.textContent = count.toLocaleString();
+            });
+          }
+        })
+        .catch(function() {
+          elements.forEach(function(el) {
+            el.textContent = '0';
+          });
+        });
+    })();
+  </script>
 </Layout>
