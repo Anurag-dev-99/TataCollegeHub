@@ -120,26 +120,6 @@
         ]
     },
     {
-        "id": "syl-arts-hist",
-        "title": "B.A History Honours Syllabus (FYUGP NEP-2020)",
-        "department": "History",
-        "semester": "All Semesters (1-8)",
-        "effectiveFrom": "2022 onwards",
-        "fileSize": "1.9 MB",
-        "description": "Kolhan University Bachelor of Arts History Honours FYUGP curriculum. Spans Ancient Indian History, Medieval Europe, Modern India, and World History.",
-        "modules": [
-            "Sem 1: MJ-1 (Idea of Bharat & Ancient Indian History)",
-            "Sem 2: MJ-2 (Social Formations & Cultural Patterns of Ancient World)",
-            "Sem 3: MJ-3 (History of India II: c. 300 to 750 CE)",
-            "Sem 4: MJ-4 (Medieval India), MJ-5 (Rise of Modern West)",
-            "Sem 5: MJ-6 (History of India: 1750-1857), MJ-7 (Modern World)",
-            "Sem 6: MJ-8 (History of India: 1857-1947), MJ-9 (Contemporary India)"
-        ],
-        "downloadUrls": [
-            "https://drive.google.com/file/d/1A6Qd0au83NSqS9RUUdTJnKUbQNWk2h5d/view?usp=drive_link"
-        ]
-    },
-    {
         "id": "syl-arts-polsci",
         "title": "B.A Political Science Syllabus (FYUGP)",
         "department": "Political Science",
@@ -846,6 +826,48 @@
         "downloadUrls": [
             "https://drive.google.com/file/d/16-krwj4164-vs5xEU6dZpaRvgU4IRsxw/view?usp=drive_link",
             "https://drive.google.com/file/d/1HYyS8u7_6Oh5fiRmL2deYXMXC41R1eDN/view?usp=drive_link"
+        ]
+    },
+    {
+        "id": "syl-arts-hist",
+        "department": "History",
+        "title": "History Syllabus (FYUGP NEP-2020)",
+        "description": "FYUGP syllabus for History at Kolhan University. Explores ancient, medieval, and modern Indian history, alongside world history and historical methodology.",
+        "effectiveFrom": "2022 onwards",
+        "semester": "All Semesters (1-8)",
+        "fileSize": "PDF File",
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1C2lqr0hqhR7zT1bR8R2tI-JOqwXnHXjO/view?usp=drive_link",
+            "https://drive.google.com/file/d/13-iZ2RYWw5W5UwsvIl4x-rkXNvFUg-0k/view?usp=drive_link",
+            "https://drive.google.com/file/d/1GaxmNEGd_DBSvtnx3ed4Wa40dL8S3wjR/view?usp=drive_link",
+            "https://drive.google.com/file/d/1qPFlbCcn2PiqqRmh31kunD0DUrfh5Z6y/view?usp=drive_link",
+            "https://drive.google.com/file/d/1jyDz3PHkHVoXnn9V_z_h_9TPPgDHCy0W/view?usp=drive_link"
+        ],
+        "downloadLabels": [
+            "Download Full Syllabus (Sem 1-8)",
+            "Download Sem 1",
+            "Download Sem 2",
+            "Download Sem 3",
+            "Download Sem 4"
+        ]
+    },
+    {
+        "id": "syl-arts-hist-minor",
+        "department": "History Minor",
+        "title": "History Minor Syllabus (FYUGP NEP-2020)",
+        "description": "FYUGP Minor syllabus for History at Kolhan University.",
+        "effectiveFrom": "2022 onwards",
+        "semester": "Semesters 1-3",
+        "fileSize": "PDF File",
+        "downloadUrls": [
+            "https://drive.google.com/file/d/1P9a0ZYBW15OdSoEOETh0HAlOxWXqj0uz/view?usp=drive_link",
+            "https://drive.google.com/file/d/1q-hu0IDjsqbzYCW1uTLEDGmFig2VIX-m/view?usp=drive_link",
+            "https://drive.google.com/file/d/13Z6RZMHH1843HKARN1vvfM6BHTPuwoQ1/view?usp=drive_link"
+        ],
+        "downloadLabels": [
+            "Download Sem 1",
+            "Download Sem 2",
+            "Download Sem 3"
         ]
     }
 ]
