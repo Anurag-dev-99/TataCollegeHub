@@ -109,7 +109,9 @@ const webPageSchema = JSON.stringify({
               subject:    (meta||{}).subject    || 'Unknown',
               category:   (meta||{}).category   || 'Unknown',
               semester:   (meta||{}).semester   || 'Unknown',
-              department: (meta||{}).department || ''
+              department: (meta||{}).department || '',
+              language:   (meta||{}).language   || '',
+              medium:     (meta||{}).medium     || ''
             })
           }).catch(function(){});
         } catch(e) {}

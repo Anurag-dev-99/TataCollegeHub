@@ -1,7 +1,7 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
 import pyqsData from '../../../../../public/data/pyqs.json';
-import { ChevronLeft, Calendar, Download, FileCode, AlertCircle, HelpCircle, ExternalLink } from '@lucide/astro';
+import { ChevronLeft, Calendar, Download, FileCode, AlertCircle, HelpCircle, ExternalLink, BookOpen, Globe } from '@lucide/astro';
 
 export async function getStaticPaths() {
   const pathsMap = new Map();
@@ -191,6 +191,79 @@ const matchingPapers = pyqsData.filter(p =>
           </div>
         );
       })}
+    </div>
+  )}
+
+  {/* ── Study Notes Section (MDC Psychology only) ─────────────────────── */}
+  {category === 'mdc' && subject === 'psychology' && (
+    <div style="margin-top: 2rem;">
+      <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem;">
+        <BookOpen size="18" style="color: #06b6d4; flex-shrink: 0;" />
+        <h2 style="font-size: 1rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.01em;">Study Notes Available</h2>
+        <span style="font-size: 0.6rem; font-weight: 700; background: rgba(6,182,212,0.12); color: #06b6d4; border: 1px solid rgba(6,182,212,0.3); border-radius: 20px; padding: 2px 7px; white-space: nowrap;">FREE</span>
+      </div>
+
+      <div style="background: linear-gradient(135deg, rgba(6,182,212,0.06) 0%, rgba(245,158,11,0.04) 100%); border: 1px solid rgba(6,182,212,0.2); border-radius: var(--radius-sm); padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.85rem;">
+
+        <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+          Handwritten study notes for <strong style="color: var(--text-primary);">MDC Psychology</strong> — covering key concepts, important questions, and exam-focused summaries. Available in Hindi &amp; English.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+
+          {/* Hindi Notes */}
+          <a
+            href="https://drive.google.com/file/d/14pbl6LnBudXXh4G7i6zU4cCFKiypkrVO/view?usp=drive_link"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.65rem 1rem; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.25); border-radius: var(--radius-xs); text-decoration: none; transition: background 0.2s; cursor: pointer;"
+            onmouseover="this.style.background='rgba(6,182,212,0.18)'"
+            onmouseout="this.style.background='rgba(6,182,212,0.1)'"
+            onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Psychology', language: 'Hindi', category: 'MDC', medium: 'HI' });"
+          >
+            <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+              <span style="font-size: 1rem; flex-shrink: 0;">📝</span>
+              <div style="min-width: 0;">
+                <div style="font-size: 0.85rem; font-weight: 700; color: #06b6d4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Psychology Notes — Hindi</div>
+                <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 0.05rem;">हिंदी माध्यम में नोट्स</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
+              <span style="font-size: 0.65rem; font-weight: 700; background: rgba(6,182,212,0.15); color: #06b6d4; border: 1px solid rgba(6,182,212,0.25); border-radius: 10px; padding: 1px 6px;">HI</span>
+              <ExternalLink size="13" style="color: #06b6d4;" />
+            </div>
+          </a>
+
+          {/* English Notes */}
+          <a
+            href="https://drive.google.com/file/d/1HF_YhACN2FaNEYe-twiVsl5gxjXoFmfl/view?usp=drive_link"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.65rem 1rem; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.22); border-radius: var(--radius-xs); text-decoration: none; transition: background 0.2s; cursor: pointer;"
+            onmouseover="this.style.background='rgba(245,158,11,0.16)'"
+            onmouseout="this.style.background='rgba(245,158,11,0.08)'"
+            onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Psychology', language: 'English', category: 'MDC', medium: 'EN' });"
+          >
+            <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+              <span style="font-size: 1rem; flex-shrink: 0;">📝</span>
+              <div style="min-width: 0;">
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-warning); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Psychology Notes — English</div>
+                <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 0.05rem;">English medium notes</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
+              <span style="font-size: 0.65rem; font-weight: 700; background: rgba(245,158,11,0.15); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 10px; padding: 1px 6px;">EN</span>
+              <ExternalLink size="13" style="color: var(--accent-warning);" />
+            </div>
+          </a>
+
+        </div>
+
+        <p style="font-size: 0.7rem; color: var(--text-tertiary); margin: 0; display: flex; align-items: center; gap: 0.3rem;">
+          <Globe size="11" />
+          Notes open in Google Drive. No account required to view.
+        </p>
+      </div>
     </div>
   )}
 

@@ -1,14 +1,19 @@
 /**
  * Google Sheets Apps Script — Tata College Hub
  *
- * Handles 4 actions:
+ * Handles 5 actions:
  *   1. POST { type: "request",  ... }  → appends to "Requests" sheet tab
  *   2. POST { type: "download", ... }  → appends to "Downloads" sheet tab
- *   3. GET  ?action=stats              → returns JSON with live download totals
- *   4. GET  ?action=top                → returns top 5 most-downloaded papers
+ *   3. POST { type: "download", fileType: "note", ... } → appends to "Notes" sheet tab
+ *   4. GET  ?action=stats              → returns JSON with live download totals
+ *   5. GET  ?action=top                → returns top 5 most-downloaded papers
+ *   6. GET  ?action=papercounts        → returns per-paper download counts
  *
  * Downloads sheet columns (Row 1 = headers):
  *   A: Timestamp  B: Type  C: Subject  D: Category  E: Semester  F: Department
+ *
+ * Notes sheet columns (Row 1 = headers):
+ *   A: Timestamp  B: Subject  C: Language  D: Category  E: Medium
  */
 
 // ─── POST Handler ─────────────────────────────────────────────────────────────
@@ -18,18 +23,37 @@ function doPost(e) {
     var data = JSON.parse(e.postData.contents);
 
     if (data.type === 'download') {
-      // ── Log a download event ──────────────────────────────────────────────
-      var dlSheet = ss.getSheetByName('Downloads');
-      if (!dlSheet) dlSheet = ss.insertSheet('Downloads');
 
-      dlSheet.appendRow([
-        new Date(),                         // A: Timestamp
-        data.fileType    || 'pyq',          // B: Type ("pyq" or "syllabus")
-        data.subject     || 'Unknown',      // C: Subject
-        data.category    || 'Unknown',      // D: Category
-        data.semester    || 'Unknown',      // E: Semester
-        data.department  || ''              // F: Department (syllabus only)
-      ]);
+      if (data.fileType === 'note') {
+        // ── Log a note open/download ───────────────────────────────────────
+        var notesSheet = ss.getSheetByName('Notes');
+        if (!notesSheet) {
+          notesSheet = ss.insertSheet('Notes');
+          notesSheet.appendRow(['Timestamp', 'Subject', 'Language', 'Category', 'Medium']);
+        }
+
+        notesSheet.appendRow([
+          new Date(),                         // A: Timestamp
+          data.subject  || 'Unknown',         // B: Subject (e.g. "Psychology")
+          data.language || 'Unknown',         // C: Language (e.g. "Hindi")
+          data.category || 'MDC',             // D: Category
+          data.medium   || ''                 // E: Medium code (e.g. "HI" / "EN")
+        ]);
+
+      } else {
+        // ── Log a PYQ / Syllabus download ────────────────────────────────────
+        var dlSheet = ss.getSheetByName('Downloads');
+        if (!dlSheet) dlSheet = ss.insertSheet('Downloads');
+
+        dlSheet.appendRow([
+          new Date(),                         // A: Timestamp
+          data.fileType    || 'pyq',          // B: Type ("pyq" or "syllabus")
+          data.subject     || 'Unknown',      // C: Subject
+          data.category    || 'Unknown',      // D: Category
+          data.semester    || 'Unknown',      // E: Semester
+          data.department  || ''              // F: Department (syllabus only)
+        ]);
+      }
 
     } else if (data.type === 'report') {
       // ── Log a wrong paper / broken link report ─────────────────────────────
