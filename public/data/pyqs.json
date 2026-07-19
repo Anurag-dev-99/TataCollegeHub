@@ -2039,5 +2039,49 @@
         "downloadCount":  0,
         "title":  "Political Science MDC Sem 1 PYQ (2024 Batch)",
         "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/1IE9OT5R-hIqOPwEbEh7nO4Z7-NYLzmp_/view?usp=drive_link",
+        "id":  "pyq-mj-psy-sem1-mj01-2022",
+        "category":  "Major",
+        "semester":  1,
+        "subject":  "Psychology",
+        "downloadCount":  0,
+        "title":  "Psychology Major Sem 1 PYQ (MJ-01) 2022 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/1I6ZJpcJr_Utyzl87LlvA00etWmYy8Y7h/view?usp=drive_link",
+        "id":  "pyq-mj-hist-sem2-mj02-2022",
+        "category":  "Major",
+        "semester":  2,
+        "subject":  "History",
+        "downloadCount":  0,
+        "title":  "History Major Sem 2 PYQ (MJ-02) 2022 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/1NKqPg4sQBu_W5zUsqYAgXDnd4o14PtEP/view?usp=drive_link",
+        "id":  "pyq-mj-hist-sem2-mj03-2022",
+        "category":  "Major",
+        "semester":  2,
+        "subject":  "History",
+        "downloadCount":  0,
+        "title":  "History Major Sem 2 PYQ (MJ-03) 2022 Batch",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/17iWQqWFnyiE-EpvTa57SfclgyLmGqQ7E/view?usp=drive_link",
+        "id":  "pyq-mj-hist-sem4-mj09-2022",
+        "category":  "Major",
+        "semester":  4,
+        "subject":  "History",
+        "downloadCount":  0,
+        "title":  "History Major Sem 4 PYQ (MJ-09) 2022 Batch",
+        "fileSize":  "PDF File"
     }
 ]
