@@ -2017,5 +2017,27 @@
         "downloadCount":  0,
         "title":  "Economics Major Sem 1 PYQ (MJ-01) 2024 Batch",
         "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2022-2026",
+        "downloadUrl":  "https://drive.google.com/file/d/12BAtU33S_yLST3XVnJEOT2AemoUvDF-B/view?usp=drive_link",
+        "id":  "pyq-mdc-polsci-sem3-2022",
+        "category":  "MDC",
+        "semester":  3,
+        "subject":  "Political Science",
+        "downloadCount":  0,
+        "title":  "Political Science MDC Sem 3 PYQ (2022 Batch)",
+        "fileSize":  "PDF File"
+    },
+    {
+        "year":  "2024-2028",
+        "downloadUrl":  "https://drive.google.com/file/d/1nqDRC7EcAfEzrrQps8kZKEQSk0V0932l/view?usp=drive_link",
+        "id":  "pyq-mdc-polsci-sem1-2024",
+        "category":  "MDC",
+        "semester":  1,
+        "subject":  "Political Science",
+        "downloadCount":  0,
+        "title":  "Political Science MDC Sem 1 PYQ (2024 Batch)",
+        "fileSize":  "PDF File"
     }
 ]
