@@ -2138,5 +2138,27 @@
         "downloadUrl": "https://drive.google.com/file/d/17pHLHdWukWj-bE58qdSKvYlpPByqqjdw/view?usp=drive_link",
         "fileSize": "PDF File",
         "downloadCount": 0
+    },
+    {
+        "id": "pyq-mdc-phil-sem1-2024",
+        "category": "MDC",
+        "semester": 1,
+        "subject": "Philosophy",
+        "title": "Philosophy MDC Sem 1 PYQ 2024 Batch",
+        "year": "2024",
+        "downloadUrl": "https://drive.google.com/file/d/1M5OVpmmVAO6Z8JzLl6O_VD_rw1PU6DcU/view?usp=drive_link",
+        "fileSize": "PDF File",
+        "downloadCount": 0
+    },
+    {
+        "id": "pyq-mn-bot-sem1-2022",
+        "category": "Minor",
+        "semester": 1,
+        "subject": "Botany",
+        "title": "Botany Minor Sem 1 PYQ 2022 Batch",
+        "year": "2022-2026",
+        "downloadUrl": "https://drive.google.com/file/d/1mlD5KUMfAnSXYw95HOILoDWpTK-HaRaq/view?usp=drive_link",
+        "fileSize": "PDF File",
+        "downloadCount": 0
     }
 ]
