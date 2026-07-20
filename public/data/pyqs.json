@@ -2083,5 +2083,60 @@
         "downloadCount":  0,
         "title":  "History Major Sem 4 PYQ (MJ-09) 2022 Batch",
         "fileSize":  "PDF File"
+    },
+    {
+        "id": "pyq-mdc-hist-sem1-2025",
+        "category": "MDC",
+        "semester": 1,
+        "subject": "History",
+        "title": "History MDC Sem 1 PYQ 2025 Batch",
+        "year": "2024-2028",
+        "downloadUrl": "https://drive.google.com/file/d/1cZMqf2MkEQnBoC3P8ggaX87MC0Rou84v/view?usp=drive_link",
+        "fileSize": "PDF File",
+        "downloadCount": 0
+    },
+    {
+        "id": "pyq-mj-geo-sem1-2025",
+        "category": "Major",
+        "semester": 1,
+        "subject": "Geography",
+        "title": "Geography Major Sem 1 PYQ 2025 Batch",
+        "year": "2024-2028",
+        "downloadUrl": "https://drive.google.com/file/d/1iHK22thXCl2Bu7KUQQ2D_zak37Xfl61j/view?usp=drive_link",
+        "fileSize": "PDF File",
+        "downloadCount": 0
+    },
+    {
+        "id": "pyq-mn-polsci-sem1-2025",
+        "category": "Minor",
+        "semester": 1,
+        "subject": "Political Science",
+        "title": "Political Science Minor Sem 1 PYQ 2025 Batch",
+        "year": "2024-2028",
+        "downloadUrl": "https://drive.google.com/file/d/1NeElAa383V4P0NE-5a-7oJcC3iacbpk4/view?usp=drive_link",
+        "fileSize": "PDF File",
+        "downloadCount": 0
+    },
+    {
+        "id": "pyq-mn-eco-sem1-2025",
+        "category": "Minor",
+        "semester": 1,
+        "subject": "Economics",
+        "title": "Economics Minor Sem 1 PYQ 2025 Batch",
+        "year": "2024-2028",
+        "downloadUrl": "https://drive.google.com/file/d/1kwF6iDmIC3Dpxi4Kq-FDIOBLkeg1SYQB/view?usp=drive_link",
+        "fileSize": "PDF File",
+        "downloadCount": 0
+    },
+    {
+        "id": "pyq-mn-math-sem1-2025",
+        "category": "Minor",
+        "semester": 1,
+        "subject": "Mathematics",
+        "title": "Mathematics Minor Sem 1 PYQ 2025 Batch",
+        "year": "2024-2028",
+        "downloadUrl": "https://drive.google.com/file/d/17pHLHdWukWj-bE58qdSKvYlpPByqqjdw/view?usp=drive_link",
+        "fileSize": "PDF File",
+        "downloadCount": 0
     }
 ]
