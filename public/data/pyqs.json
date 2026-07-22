@@ -2211,5 +2211,27 @@
         "downloadUrl": "https://drive.google.com/file/d/1TD4lj-IcujhjJOarM3YoHuxBUB1cc-Vb/view?usp=drive_link",
         "fileSize": "PDF File",
         "downloadCount": 0
+    },
+    {
+        "id": "pyq-sec-digind-sem1-2025-set1",
+        "category": "SEC",
+        "semester": 1,
+        "subject": "Digital India",
+        "title": "Digital India SEC Sem 1 PYQ 2025 Batch (Set 1)",
+        "year": "2024-2028",
+        "downloadUrl": "https://drive.google.com/file/d/1yDdIEJ78vAeLHFnQ9cZHReeJVshN355c/view?usp=drive_link",
+        "fileSize": "PDF File",
+        "downloadCount": 0
+    },
+    {
+        "id": "pyq-mdc-phil-sem1-2025",
+        "category": "MDC",
+        "semester": 1,
+        "subject": "Philosophy",
+        "title": "Philosophy MDC Sem 1 PYQ 2025 Batch",
+        "year": "2024-2028",
+        "downloadUrl": "https://drive.google.com/file/d/1kzVBtA1jdZlEKqj2ldYZvhSnfMinpyLk/view?usp=drive_link",
+        "fileSize": "PDF File",
+        "downloadCount": 0
     }
 ]
