@@ -37,8 +37,8 @@
     },
     {
       "id": "res-ug-sem3-science",
-      "title": "UG Semester 3 Science Streams (Session 2023-27) [Updated]",
-      "date": "2026-06-12",
+      "title": "UG Semester 3 All Streams (Session 2023-27) [Science + Arts Live]",
+      "date": "2026-07-23",
       "status": "Declared",
       "link": "#results?exam=sem3_master_2023-2027"
     }
@@ -160,10 +160,10 @@
     },
     {
       "id": "sem3_master_2023-2027",
-      "title": "Semester 3 — Science Streams (Updated)",
+      "title": "Semester 3 — All Streams (Science + Arts)",
       "batch": "Session 2023-2027",
       "university": "Kolhan University",
-      "date": "2026-06-12",
+      "date": "2026-07-23",
       "status": "Declared",
       "file": "results_sem3_master.json",
       "hasImages": true,
@@ -183,6 +183,11 @@
           "version": "3.0",
           "title": "Marksheet Photos",
           "desc": "Integrated original marksheet screenshots directly in student search profiles."
+        },
+        {
+          "version": "4.0",
+          "title": "Arts & Science Departments Added",
+          "desc": "Added Zoology (39), Psychology (89), Urdu (14), and Computer Application (18) results. Total students: 274. More departments coming soon."
         }
       ]
     },
