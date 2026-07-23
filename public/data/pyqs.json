@@ -2233,5 +2233,16 @@
         "downloadUrl": "https://drive.google.com/file/d/1kzVBtA1jdZlEKqj2ldYZvhSnfMinpyLk/view?usp=drive_link",
         "fileSize": "PDF File",
         "downloadCount": 0
+    },
+    {
+        "id": "pyq-mdc-psych-sem1-2025",
+        "category": "MDC",
+        "semester": 1,
+        "subject": "Psychology",
+        "title": "Psychology MDC Sem 1 PYQ 2025 Batch",
+        "year": "2024-2028",
+        "downloadUrl": "https://drive.google.com/file/d/1c2NO_NoKAMP6SBDpzNhabs2Yu_iE5rV-/view?usp=drive_link",
+        "fileSize": "PDF File",
+        "downloadCount": 0
     }
 ]
