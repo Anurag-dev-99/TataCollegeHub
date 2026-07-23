@@ -1,4 +1,4 @@
-﻿---
+---
 import Layout from '../../layouts/Layout.astro';
 import pyqsData from '../../../public/data/pyqs.json';
 import { ChevronRight, FileText, Download, HelpCircle, GraduationCap, Search, Award, BookOpen } from '@lucide/astro';
@@ -1658,6 +1658,33 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
         mdcGuideArrow.style.transform = mdcGuideDetails.open ? 'rotate(180deg)' : 'rotate(0deg)';
       });
     }
+
+    // ── Auto-open accordion and cards based on URL hash ─────────────────────────────────
+    setTimeout(() => {
+      if (window.location.hash) {
+        const hashId = window.location.hash.substring(1);
+        const targetElement = document.getElementById(hashId);
+        
+        if (targetElement) {
+          // If it's a sub-card, we must open its parent accordion first
+          if (!targetElement.classList.contains('accordion-trigger')) {
+            const parentAccordion = targetElement.closest('.accordion-item');
+            if (parentAccordion) {
+              const trigger = parentAccordion.querySelector('.accordion-trigger');
+              if (trigger) trigger.click();
+            }
+          }
+          
+          // Now click the target element (either the main accordion or the sub-card)
+          targetElement.click();
+          
+          // Scroll it into view smoothly (with a slight offset if needed)
+          setTimeout(() => {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 400);
+        }
+      }
+    }, 150);
   </script>
 
 </Layout>
