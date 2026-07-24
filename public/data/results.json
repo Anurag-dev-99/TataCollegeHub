@@ -8,6 +8,13 @@
       "link": "#results?exam=sem6_master_2022-2026"
     },
     {
+      "id": "res-ug-sem4-2022",
+      "title": "UG Semester 4 All Streams (Session 2022-26) [Science + Arts Live]",
+      "date": "2026-07-24",
+      "status": "Declared",
+      "link": "#results?exam=sem4_master_2022-2026"
+    },
+    {
       "id": "res-ug-sem2",
       "title": "UG Semester 2 Examination Results (Session 2025-28)",
       "date": "2026-05-28",
@@ -141,13 +148,35 @@
   ],
   "datasets": [
     {
-      "id": "sem4_maths_2022-2026",
-      "title": "Semester 4 — Mathematics Major",
+      "id": "sem4_master_2022-2026",
+      "title": "Semester 4 — All Streams (Science + Arts)",
       "batch": "Session 2022-2026",
       "university": "Kolhan University",
-      "date": "2026-06-06",
+      "date": "2026-07-24",
       "status": "Declared",
-      "file": "sem4_maths_results.json"
+      "file": "results_sem4_master.json",
+      "updates": [
+        {
+          "version": "1.0",
+          "title": "All Science Departments Live",
+          "desc": "Full Science stream results: Mathematics (72), Chemistry (49), Physics (47), Zoology (39), Computer Application (18), Botany (9). Total: 234 students."
+        },
+        {
+          "version": "2.0",
+          "title": "Arts Departments Added",
+          "desc": "Added Political Science (136), Ho (87), Psychology (67), Philosophy (10), Urdu (7), Odia (1). Grand total: 542 students across 12 departments."
+        },
+        {
+          "version": "3.0",
+          "title": "History & Hindi Added",
+          "desc": "Added History (261) and Hindi (147). Grand total: 950 students across 14 departments."
+        },
+        {
+          "version": "4.0",
+          "title": "All Departments Complete",
+          "desc": "Added Economics (99), English (70), Geography (68), Anthropology (40), Bengali (5). Grand total: 1,232 students across 19 departments."
+        }
+      ]
     },
     {
       "id": "sem2_master_2023-2027",
