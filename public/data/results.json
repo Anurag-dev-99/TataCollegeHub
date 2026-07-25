@@ -52,75 +52,67 @@
   ],
   "passPercentageBySemester": [
     {
-      "semester": "Semester 1",
-      "passPercentage": 68.5,
-      "totalStudents": 1420
-    },
-    {
       "semester": "Semester 2",
-      "passPercentage": 72.1,
-      "totalStudents": 1390
+      "passPercentage": 40.9,
+      "totalStudents": 1930
     },
     {
       "semester": "Semester 3",
-      "passPercentage": 75.8,
-      "totalStudents": 1350
+      "passPercentage": 63.8,
+      "totalStudents": 1402
     },
     {
       "semester": "Semester 4",
-      "passPercentage": 79.2,
-      "totalStudents": 1340
-    },
-    {
-      "semester": "Semester 5",
-      "passPercentage": 82.4,
-      "totalStudents": 1310
+      "passPercentage": 80.9,
+      "totalStudents": 1232
     },
     {
       "semester": "Semester 6",
-      "passPercentage": 88.7,
-      "totalStudents": 1290
+      "passPercentage": 81.2,
+      "totalStudents": 112
     }
   ],
   "passPercentageByDepartment": [
     {
-      "department": "Mathematics",
-      "passPercentage": 82.5,
+      "department": "Geography",
+      "passPercentage": 84.7,
       "toppers": [
-        "Animesh Mahato (89.4%)",
-        "Shalini Soy (87.2%)"
+        "PUNAM SAMAD (388 marks)"
+      ]
+    },
+    {
+      "department": "Zoology",
+      "passPercentage": 81.5,
+      "toppers": [
+        "PRITI KORAH (394 marks)"
+      ]
+    },
+    {
+      "department": "Botany",
+      "passPercentage": 75.6,
+      "toppers": [
+        "ARCHANA KUMARI (372 marks)"
+      ]
+    },
+    {
+      "department": "Political Science",
+      "passPercentage": 75.5,
+      "toppers": [
+        "PALLAVI DAS (367 marks)"
       ]
     },
     {
       "department": "Physics",
-      "passPercentage": 78.4,
+      "passPercentage": 72.7,
       "toppers": [
-        "Rohan Deogam (86.1%)",
-        "Anjali Birua (84.5%)"
+        "BHARGAV KUMAR MAHATO (384 marks)"
       ]
     },
     {
-      "department": "Chemistry",
-      "passPercentage": 80.2,
+      "department": "English",
+      "passPercentage": 67.0,
       "toppers": [
-        "Sourav Kar (88.0%)",
-        "Karan Pingua (83.9%)"
-      ]
-    },
-    {
-      "department": "Commerce",
-      "passPercentage": 85.9,
-      "toppers": [
-        "Pooja Agrawal (91.2%)",
-        "Amit Kumar (89.5%)"
-      ]
-    },
-    {
-      "department": "Arts",
-      "passPercentage": 76.5,
-      "toppers": [
-        "Deepak Sinku (82.3%)",
-        "Sunita Purty (81.8%)"
+        "CHANDAN PRADHAN (368 marks)"
       ]
     }
   ],
@@ -255,5 +247,9 @@
         }
       ]
     }
-  ]
+  ],
+  "universityComparison": {
+    "tataCollege": 40.9,
+    "kolhanUniversity": 50.9
+  }
 }

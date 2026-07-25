@@ -185,14 +185,42 @@ datasets.forEach(d => {
           </div>
         </div>
 
-        <!-- Phase 2 Upgrades -->
+        <!-- University Comparison -->
         <div class="card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%); border: 1px dashed var(--border-color); padding: 1.25rem;">
-          <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; color: var(--accent-primary);">
-            <Sparkles size="16" /> Phase 2 Upgrades
+          <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem; color: var(--accent-primary);">
+            <GitCompare size="16" /> Tata College vs KU Average
           </h3>
-          <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
-            <strong>Interactive Analytics Reminder</strong>: Chart.js dynamic visual representations (Semester-wise bar graphs, yearly linear trends, and comparison templates) will be configured in the next build session.
+          <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 1rem;">
+            Semester 2 pass rate comparison across all 32 colleges.
           </p>
+          
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <!-- Tata College Bar -->
+            <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+                <span style="font-weight: 700; color: var(--text-primary);">Tata College</span>
+                <span style="font-size: 0.8rem; color: var(--text-secondary);">
+                  <strong style="color: var(--accent-primary);">{resultsData.universityComparison?.tataCollege || 40.9}%</strong>
+                </span>
+              </div>
+              <div style="background-color: var(--bg-tertiary); height: 10px; border-radius: var(--radius-full); overflow: hidden; display: flex;">
+                <div style={`width: ${resultsData.universityComparison?.tataCollege || 40.9}%; background: linear-gradient(90deg, var(--accent-primary) 0%, #8b5cf6 100%); border-radius: var(--radius-full);`}></div>
+              </div>
+            </div>
+            
+            <!-- Kolhan University Bar -->
+            <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+                <span style="font-weight: 700; color: var(--text-primary);">Kolhan University</span>
+                <span style="font-size: 0.8rem; color: var(--text-secondary);">
+                  <strong style="color: var(--accent-success);">{resultsData.universityComparison?.kolhanUniversity || 50.9}%</strong>
+                </span>
+              </div>
+              <div style="background-color: var(--bg-tertiary); height: 10px; border-radius: var(--radius-full); overflow: hidden; display: flex;">
+                <div style={`width: ${resultsData.universityComparison?.kolhanUniversity || 50.9}%; background: linear-gradient(90deg, var(--accent-success) 0%, #10b981 100%); border-radius: var(--radius-full);`}></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
