@@ -180,12 +180,24 @@
     },
     {
       "id": "sem2_master_2023-2027",
-      "title": "Semester 2 — Science Streams",
+      "title": "Semester 2 — All Streams (Science + Arts)",
       "batch": "Session 2023-2027",
       "university": "Kolhan University",
-      "date": "2026-06-07",
+      "date": "2026-07-26",
       "status": "Declared",
-      "file": "results_sem2_master.json"
+      "file": "results_sem2_master.json",
+      "updates": [
+        {
+          "version": "1.0",
+          "title": "Science Streams Published",
+          "desc": "Initial Science stream results: Mathematics, Chemistry, Physics, Zoology, Computer Application, Botany. Total: 141 students."
+        },
+        {
+          "version": "2.0",
+          "title": "All 18 Departments Complete",
+          "desc": "Full database with all departments: History (386), Hindi (270), Ho (226), Political Science (169), Economics (161), Geography (111), Psychology (103), Mathematics (94), English (78), Philosophy (73), Anthropology (63), Chemistry (49), Zoology (46), Physics (42), CA (23), Botany (18), Urdu (16), Odia (2). Grand total: 1,930 students."
+        }
+      ]
     },
     {
       "id": "sem3_master_2023-2027",
