@@ -1,0 +1,10 @@
+{
+    "id": "pyq-vac-env1",
+    "title": "2024 Paper - Environmental Studies (EVS)",
+    "year": "2024",
+    "semester": 1,
+    "category": "VAC",
+    "subject": "Environmental Studies",
+    "downloadCount": 420,
+    "fileSize": "1.0 MB"
+}
