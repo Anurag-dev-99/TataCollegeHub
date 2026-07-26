@@ -1389,7 +1389,7 @@ datasets.forEach(d => {
   function getStudentMajor(student) {
     if (!student || !student.subjects) return 'Unknown';
     // Check major subject keys first (semester-specific keys)
-    for (const key of ['major_ii', 'major_iii', 'major_iv', 'major_v', 'major_vi', 'major_vii', 'major_viii']) {
+    for (const key of ['major_i', 'major_ii', 'major_iii', 'major_iv', 'major_v', 'major_vi', 'major_vii', 'major_viii']) {
       const subObj = student.subjects[key];
       if (subObj && subObj.subject) {
         const title = subObj.subject.toLowerCase();

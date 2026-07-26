@@ -52,6 +52,11 @@
   ],
   "passPercentageBySemester": [
     {
+      "semester": "Semester 1",
+      "passPercentage": 38.2,
+      "totalStudents": 2081
+    },
+    {
       "semester": "Semester 2",
       "passPercentage": 40.9,
       "totalStudents": 1930
@@ -74,45 +79,45 @@
   ],
   "passPercentageByDepartment": [
     {
-      "department": "Geography",
-      "passPercentage": 84.7,
-      "toppers": [
-        "PUNAM SAMAD (388 marks)"
-      ]
-    },
-    {
       "department": "Zoology",
-      "passPercentage": 81.5,
+      "passPercentage": 77.9,
       "toppers": [
         "PRITI KORAH (394 marks)"
       ]
     },
     {
       "department": "Botany",
-      "passPercentage": 75.6,
+      "passPercentage": 77.5,
       "toppers": [
-        "ARCHANA KUMARI (372 marks)"
+        "SUMITRA PURTY (376 marks)"
       ]
     },
     {
-      "department": "Political Science",
-      "passPercentage": 75.5,
+      "department": "Geography",
+      "passPercentage": 76.3,
       "toppers": [
-        "PALLAVI DAS (367 marks)"
+        "PUNAM SAMAD (388 marks)"
+      ]
+    },
+    {
+      "department": "Computer Application",
+      "passPercentage": 70.0,
+      "toppers": [
+        "HEMANT GOPE (371 marks)"
       ]
     },
     {
       "department": "Physics",
-      "passPercentage": 72.7,
+      "passPercentage": 69.6,
       "toppers": [
         "BHARGAV KUMAR MAHATO (384 marks)"
       ]
     },
     {
-      "department": "English",
-      "passPercentage": 67.0,
+      "department": "Mathematics",
+      "passPercentage": 65.0,
       "toppers": [
-        "CHANDAN PRADHAN (368 marks)"
+        "ALISHABA PURTY (369 marks)"
       ]
     }
   ],
@@ -139,6 +144,22 @@
     }
   ],
   "datasets": [
+    {
+      "id": "sem1_master_2024-2028",
+      "title": "Semester 1 — All Streams (Science + Arts)",
+      "batch": "Session 2024-2028",
+      "university": "Kolhan University",
+      "date": "2026-07-27",
+      "status": "Declared",
+      "file": "results_sem1_master.json",
+      "updates": [
+        {
+          "version": "1.0",
+          "title": "All 18 Departments Complete",
+          "desc": "Full Tata College Sem 1 results: Ho (433), History (326), Hindi (255), Political Science (170), Economics (126), Psychology (125), Philosophy (107), Mathematics (106), Geography (93), English (66), Zoology (57), Anthropology (48), Physics (45), Chemistry (43), Botany (35), CA (31), Urdu (12), Odia (2). Grand total: 2,081 students."
+        }
+      ]
+    },
     {
       "id": "sem4_master_2022-2026",
       "title": "Semester 4 — All Streams (Science + Arts)",
@@ -249,7 +270,7 @@
     }
   ],
   "universityComparison": {
-    "tataCollege": 40.9,
+    "tataCollege": 38.2,
     "kolhanUniversity": 50.9
   }
 }

@@ -17,6 +17,7 @@ pass_by_semester = []
 
 # Mapping files to nice display names
 sem_files = [
+    ("Semester 1", "results_sem1_master.json"),
     ("Semester 2", "results_sem2_master.json"),
     ("Semester 3", "results_sem3_master.json"),
     ("Semester 4", "results_sem4_master.json"),
@@ -129,4 +130,4 @@ results_db["universityComparison"] = {
 print("\nUpdating results.json...")
 with open(RESULTS_JSON, 'w', encoding='utf-8') as f:
     json.dump(results_db, f, indent=2, ensure_ascii=False)
-print("DONE! 🎉")
+print("DONE!")
