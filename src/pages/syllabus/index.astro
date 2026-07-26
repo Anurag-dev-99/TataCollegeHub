@@ -1214,6 +1214,20 @@ const departments = Object.keys(deptGroups);
       majorSearchTerm = majorSearch.value.toLowerCase().trim();
       filterMajor();
     });
+
+    // ── Auto-open accordion based on URL hash ─────────────────────────────────
+    setTimeout(() => {
+      if (window.location.hash) {
+        const hashId = window.location.hash.substring(1);
+        const targetElement = document.getElementById(hashId);
+        if (targetElement && (targetElement.classList.contains('accordion-trigger') || targetElement.tagName === 'BUTTON')) {
+          targetElement.click();
+          setTimeout(() => {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 350);
+        }
+      }
+    }, 150);
   </script>
 
 </Layout>

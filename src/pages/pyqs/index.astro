@@ -1093,6 +1093,7 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
                           rel="noopener noreferrer"
                           class="btn btn-primary btn-sm"
                           style="font-size: 0.75rem; padding: 0.4rem 0.85rem; white-space: nowrap; text-decoration: none; display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0;"
+                          onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.subject}', category: 'IKS', semester: '${paper.semester}', university: '${paper.university}' });`}
                         >
                           <span>📄 {paper.year}{paper.set ? ` — ${paper.set}` : ''}</span>
                           <Download size="12" />
@@ -1121,6 +1122,7 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
                           rel="noopener noreferrer"
                           class="btn btn-secondary btn-sm"
                           style="font-size: 0.75rem; padding: 0.4rem 0.85rem; white-space: nowrap; text-decoration: none; display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0;"
+                          onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Indian Knowledge System', category: 'IKS', semester: '1', medium: 'IKS' });"
                         >
                           <span>📖 Download Notes</span>
                           <Download size="12" />
