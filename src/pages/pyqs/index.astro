@@ -1034,9 +1034,9 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
                   <div style="display: flex; gap: 0.6rem; align-items: flex-start;">
                     <span style="font-size: 1.1rem; flex-shrink: 0;">ℹ️</span>
                     <div>
-                      <p style="font-size: 0.82rem; font-weight: 700; color: #fb923c; margin-bottom: 0.3rem;">Reference Papers from Other Universities</p>
+                      <p style="font-size: 0.82rem; font-weight: 700; color: #fb923c; margin-bottom: 0.3rem;">Kolhan & Reference Papers Available</p>
                       <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
-                        IKS-1 is new to Kolhan University (2025 batch). No Kolhan PYQ exists yet. These are reference papers from other Jharkhand universities that closely follow the same FYUGP IKS syllabus — use them for exam preparation!
+                        Official Kolhan University IKS-1 question papers (2025 batch) are now available! We have also kept reference papers from other Jharkhand universities that follow the same FYUGP syllabus for your extra preparation.
                       </p>
                     </div>
                   </div>
@@ -1055,6 +1055,12 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
                       </tr>
                     </thead>
                     <tbody>
+                      <tr style="border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(59,130,246,0.05);">
+                        <td style="padding: 0.4rem 0.5rem; font-weight: 600; color: #3b82f6;">Kolhan University</td>
+                        <td style="padding: 0.4rem 0.5rem; text-align: center; color: #3b82f6; font-weight: 700;">100% ✓ (Actual Paper)</td>
+                        <td style="padding: 0.4rem 0.5rem; text-align: center; color: #3b82f6; font-weight: 700;">100%</td>
+                        <td style="padding: 0.4rem 0.5rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #3b82f6; border-radius: 20px; padding: 2px 8px; font-weight: 700; font-size: 0.72rem;">🎯 Official</span></td>
+                      </tr>
                       <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
                         <td style="padding: 0.4rem 0.5rem; font-weight: 600; color: var(--text-primary);">BBMKU</td>
                         <td style="padding: 0.4rem 0.5rem; text-align: center; color: #10b981; font-weight: 700;">100% ✓ (50 MCQs/OMR)</td>
@@ -1074,13 +1080,13 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
                 <!-- PYQ Cards -->
                 <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem;">
                   {iksPyqs.map((paper: any) => {
-                    const mColor = paper.matchRating === '95%' ? '#10b981' : '#f59e0b';
+                    const mColor = paper.matchRating === '100%' ? '#3b82f6' : (paper.matchRating === '95%' ? '#10b981' : '#f59e0b');
                     return (
                     <div style={`border: 1px solid ${mColor}30; border-radius: var(--radius-xs); overflow: hidden; background: rgba(0,0,0,0.15);`}>
                       <div style="padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
                         <div>
                           <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                            <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">{paper.university}</span>
+                            <span style={`font-size: 0.9rem; font-weight: 700; color: ${paper.matchRating === '100%' ? '#3b82f6' : 'var(--text-primary)'};`}>{paper.university}</span>
                             <span style={`font-size: 0.65rem; font-weight: 700; background: ${mColor}20; color: ${mColor}; border: 1px solid ${mColor}40; border-radius: 20px; padding: 1px 7px;`}>
                               {paper.matchRating} Match
                             </span>
