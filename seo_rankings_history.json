@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-07-23T08:20:00.000000",
+  "last_updated": "2026-07-29T21:49:32.766113",
   "history": [
     {
       "timestamp": "2026-06-19T07:25:00",
@@ -139,6 +139,29 @@
         "kolhan result": null,
         "kolhan university result": null,
         "kolhan university nep 2020 syllabus": 3
+      }
+    },
+    {
+      "timestamp": "2026-07-29T21:48:18+05:30",
+      "method": "manual",
+      "rankings": {
+        "kolhan hub": 1,
+        "kolhanhub": 1,
+        "kolhan pyq": 1,
+        "kolhan university pyq": 1,
+        "kolhan university previous year question paper": 1,
+        "kolhan university question paper download": 1,
+        "kolhan syllabus": 6,
+        "kolhan university syllabus": 8,
+        "kolhan university nep syllabus": 8,
+        "kolhan university nep 2020 syllabus": 2,
+        "kolhan result": 6,
+        "kolhan university result": null,
+        "tata college pyq": 1,
+        "tata college chaibasa pyq": 2,
+        "tata college syllabus": 4,
+        "tata college result": 2,
+        "tata college chaibasa": null
       }
     }
   ]
