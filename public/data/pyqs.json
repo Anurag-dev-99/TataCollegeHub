@@ -2353,5 +2353,16 @@
         "downloadUrl": "https://drive.google.com/file/d/1BaTir8o3o6X_9i1pQcZOawKHzhCvnxIw/view?usp=drive_link",
         "downloadCount": 0,
         "fileSize": "PDF"
+    },
+    {
+        "id": "pyq-major-hindi-sem1-2023",
+        "title": "2023 Paper",
+        "year": "2023-2027",
+        "semester": 1,
+        "category": "Major",
+        "subject": "Hindi",
+        "downloadUrl": "https://drive.google.com/file/d/1CzT3m7o9RJLn7zZ_9H-jj64SHAyzAEsy/view?usp=drive_link",
+        "downloadCount": 0,
+        "fileSize": "PDF File"
     }
 ]
