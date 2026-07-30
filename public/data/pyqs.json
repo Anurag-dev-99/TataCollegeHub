@@ -1033,7 +1033,7 @@
         "year": "2022",
         "semester": 1,
         "category": "SEC",
-        "subject": "Digital India",
+        "subject": "Digital Education",
         "downloadCount": 0,
         "fileSize": "PDF File",
         "downloadUrl": "https://drive.google.com/file/d/1cPER0iiAhcSfjU5uQnMGvYzCU3ubYdt3/view?usp=drive_link"
@@ -1044,7 +1044,7 @@
         "year": "2023",
         "semester": 1,
         "category": "SEC",
-        "subject": "Digital India",
+        "subject": "Digital Education",
         "downloadCount": 0,
         "fileSize": "PDF File",
         "downloadUrl": "https://drive.google.com/file/d/18Z_ODjH8EIhT_Pdpvrea2yBKPXRZy0sd/view?usp=drive_link"
@@ -1055,7 +1055,7 @@
         "year": "2024",
         "semester": 1,
         "category": "SEC",
-        "subject": "Digital India",
+        "subject": "Digital Education",
         "downloadCount": 0,
         "fileSize": "PDF File",
         "downloadUrl": "https://drive.google.com/file/d/1b9d1cr9UxJXXsF0G3fYtA4ttAAUwKY49/view?usp=drive_link"
@@ -2215,7 +2215,7 @@
         "id": "pyq-sec-digind-sem1-2025-set1",
         "category": "SEC",
         "semester": 1,
-        "subject": "Digital India",
+        "subject": "Digital Education",
         "title": "Digital India SEC Sem 1 PYQ 2025 Batch (Set 1)",
         "year": "2025-2029",
         "downloadUrl": "https://drive.google.com/file/d/1yDdIEJ78vAeLHFnQ9cZHReeJVshN355c/view?usp=drive_link",
@@ -2417,6 +2417,18 @@
         "category": "Major",
         "subject": "BBA",
         "downloadUrl": "https://drive.google.com/file/d/1MKYAc19a8dVVehmCzQM18ksEagQ4Q5D2/view?usp=drive_link",
+        "downloadCount": 0,
+        "fileSize": "PDF File"
+    },
+    {
+        "id": "pyq-sec-digital-education-sem1-2025-set3",
+        "title": "Digital Education 2025 (Set 3)",
+        "year": "2025-2029",
+        "set": "Set 3",
+        "semester": 1,
+        "category": "SEC",
+        "subject": "Digital Education",
+        "downloadUrl": "https://drive.google.com/file/d/1lY7k3_NGXe_CcGUnMKceM4SJSl_heQQD/view?usp=drive_link",
         "downloadCount": 0,
         "fileSize": "PDF File"
     }
