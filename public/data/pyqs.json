@@ -2455,5 +2455,20 @@
         "downloadUrl": "https://drive.google.com/file/d/1FYXrMbV0ia6C9wN9-QXukO9a8NGvBmm5/view?usp=drive_link",
         "downloadCount": 0,
         "fileSize": "PDF File"
+    },
+    {
+        "id": "pyq-iks-kolhan-sem1-2025-set3",
+        "category": "IKS",
+        "semester": 1,
+        "subject": "Indian Knowledge System",
+        "title": "IKS Sem 1 PYQ 2025 Set 3 (Kolhan University)",
+        "year": "2025-2029",
+        "set": "Set 3",
+        "university": "Kolhan University",
+        "matchRating": "100%",
+        "matchNote": "Official Kolhan University Question Paper",
+        "downloadUrl": "https://drive.google.com/file/d/19P7tCblBLpJSM8IbAZNUYeOFyxa8frAm/view?usp=drive_link",
+        "fileSize": "PDF File",
+        "downloadCount": 0
     }
 ]
