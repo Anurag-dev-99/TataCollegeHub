@@ -2408,5 +2408,16 @@
         "downloadUrl": "https://drive.google.com/file/d/1BBKG6wvAo9TBEf-6X2Z_k5Bj6sqNXcZ1/view?usp=drive_link",
         "downloadCount": 0,
         "fileSize": "PDF File"
+    },
+    {
+        "id": "pyq-major-bba-sem1-2025",
+        "title": "BBA Major 2025 Paper",
+        "year": "2025-2029",
+        "semester": 1,
+        "category": "Major",
+        "subject": "BBA",
+        "downloadUrl": "https://drive.google.com/file/d/1MKYAc19a8dVVehmCzQM18ksEagQ4Q5D2/view?usp=drive_link",
+        "downloadCount": 0,
+        "fileSize": "PDF File"
     }
 ]
