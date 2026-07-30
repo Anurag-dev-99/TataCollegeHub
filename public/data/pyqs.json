@@ -2443,5 +2443,17 @@
         "downloadUrl": "https://drive.google.com/file/d/1SMCxspPqFqjR9yxAFFNQ75sOrD3daizB/view?usp=drive_link",
         "downloadCount": 0,
         "fileSize": "PDF File"
+    },
+    {
+        "id": "pyq-aec-hindi-sem1-2025-set2",
+        "title": "AEC-1 Hindi 2025 (Set 2)",
+        "year": "2025-2029",
+        "set": "Set 2",
+        "semester": 1,
+        "category": "AEC",
+        "subject": "Hindi",
+        "downloadUrl": "https://drive.google.com/file/d/1FYXrMbV0ia6C9wN9-QXukO9a8NGvBmm5/view?usp=drive_link",
+        "downloadCount": 0,
+        "fileSize": "PDF File"
     }
 ]
