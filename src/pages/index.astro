@@ -2422,6 +2422,11 @@ const popularPapers = [...pyqsData]
       const qrPanel  = document.getElementById('qr-panel');
       if (!btn || !overlay) return;
 
+      const UPI_ID = '8002059887@ibl';
+
+      // Mobile detection
+      const isMobile = () => /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+
       const open  = () => { overlay.style.display = 'flex'; document.body.style.overflow = 'hidden'; };
       const close = () => { overlay.style.display = 'none';  document.body.style.overflow = ''; };
 
@@ -2430,13 +2435,16 @@ const popularPapers = [...pyqsData]
       overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
       document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
-      // Copy UPI ID
-      upiPill?.addEventListener('click', async () => {
+      // Copy UPI ID helper
+      const copyUpi = async () => {
         try {
-          await navigator.clipboard.writeText('8002059887@ibl');
+          await navigator.clipboard.writeText(UPI_ID);
           if (copyTick) { copyTick.style.display = 'inline'; setTimeout(() => { copyTick.style.display = 'none'; }, 2000); }
         } catch(_) {}
-      });
+      };
+
+      // Copy UPI ID on pill click
+      upiPill?.addEventListener('click', copyUpi);
 
       // QR panel toggle
       let qrOpen = false;
@@ -2446,18 +2454,30 @@ const popularPapers = [...pyqsData]
         qrToggle.textContent = qrOpen ? '📷 Hide QR ▲' : '📷 Show QR to scan instead ▼';
       });
 
-      // Chai buttons → UPI redirect with selected amount
-      document.querySelectorAll('.chai-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const amount = btn.getAttribute('data-amount');
-          const params = new URLSearchParams({
-            pa: '8002059887@ibl',
-            pn: 'Anurag Nishad',
-            tn: 'Chai for KolhanHub',
-            am: amount,
-            cu: 'INR'
-          });
-          window.location.href = 'upi://pay?' + params.toString();
+      // Build UPI deep link with RAW values (no encoding)
+      // UPI apps like BHIM don't decode %20/%40 — they expect raw values
+      const buildUpiUrl = (amount) => {
+        const am = parseFloat(amount).toFixed(2);
+        return `upi://pay?pa=${UPI_ID}&pn=Anurag Nishad&tn=Chai for KolhanHub&am=${am}&cu=INR`;
+      };
+
+      // Chai buttons → mobile: UPI redirect, desktop: copy UPI ID + show QR
+      document.querySelectorAll('.chai-btn').forEach(chaiBtn => {
+        chaiBtn.addEventListener('click', () => {
+          const amount = chaiBtn.getAttribute('data-amount');
+
+          if (isMobile()) {
+            // Mobile: redirect to UPI app with proper encoding
+            window.location.href = buildUpiUrl(amount);
+          } else {
+            // Desktop: copy UPI ID and auto-show QR code
+            copyUpi();
+            if (qrPanel && !qrOpen) {
+              qrOpen = true;
+              qrPanel.style.display = 'flex';
+              if (qrToggle) qrToggle.textContent = '📷 Hide QR ▲';
+            }
+          }
         });
       });
     })();
