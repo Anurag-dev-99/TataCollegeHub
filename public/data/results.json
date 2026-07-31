@@ -73,51 +73,135 @@
     },
     {
       "semester": "Semester 6",
-      "passPercentage": 81.2,
-      "totalStudents": 112
+      "passPercentage": 94.8,
+      "totalStudents": 1143
     }
   ],
   "passPercentageByDepartment": [
     {
-      "department": "Zoology",
-      "passPercentage": 77.9,
+      "department": "Urdu",
+      "passPercentage": 100.0,
       "toppers": [
-        "PRITI KORAH (394 marks)"
+        "ASHAR MAHMOOD (417 marks)"
       ]
     },
     {
-      "department": "Botany",
-      "passPercentage": 77.5,
+      "department": "Anthropology",
+      "passPercentage": 100.0,
       "toppers": [
-        "SUMITRA PURTY (376 marks)"
+        "SEVEYAN PURTY (410 marks)"
+      ]
+    },
+    {
+      "department": "Philosophy",
+      "passPercentage": 100.0,
+      "toppers": [
+        "SUBAN GOPE (409 marks)"
+      ]
+    },
+    {
+      "department": "Psychology",
+      "passPercentage": 100.0,
+      "toppers": [
+        "KANIKA BEHRA (384 marks)"
+      ]
+    },
+    {
+      "department": "Odia",
+      "passPercentage": 100.0,
+      "toppers": [
+        "AKANKSHA PRADHAN (380 marks)"
+      ]
+    },
+    {
+      "department": "Ho",
+      "passPercentage": 100.0,
+      "toppers": [
+        "KUNTI HAIBURU (380 marks)"
       ]
     },
     {
       "department": "Geography",
-      "passPercentage": 76.3,
+      "passPercentage": 98.5,
       "toppers": [
-        "PUNAM SAMAD (388 marks)"
+        "KAIRA SAWAIYAN (389 marks)"
       ]
     },
     {
-      "department": "Computer Application",
-      "passPercentage": 70.0,
+      "department": "Political Science",
+      "passPercentage": 98.5,
       "toppers": [
-        "HEMANT GOPE (371 marks)"
+        "PRIYANKA PAT PINGUA (324 marks)"
+      ]
+    },
+    {
+      "department": "Chemistry",
+      "passPercentage": 98.0,
+      "toppers": [
+        "ANSHU SAWAIYAN (403 marks)"
+      ]
+    },
+    {
+      "department": "History",
+      "passPercentage": 97.1,
+      "toppers": [
+        "SURYA RAM (369 marks)"
+      ]
+    },
+    {
+      "department": "Hindi",
+      "passPercentage": 96.7,
+      "toppers": [
+        "BINDIYA RANI MAHATO (370 marks)"
       ]
     },
     {
       "department": "Physics",
-      "passPercentage": 69.6,
+      "passPercentage": 95.7,
       "toppers": [
-        "BHARGAV KUMAR MAHATO (384 marks)"
+        "BHARGAV  KUMAR MAHATO (384 marks)"
+      ]
+    },
+    {
+      "department": "Zoology",
+      "passPercentage": 94.9,
+      "toppers": [
+        "PRITI KORAH (419 marks)"
+      ]
+    },
+    {
+      "department": "Economics",
+      "passPercentage": 91.3,
+      "toppers": [
+        "ANJALI RAJAK (385 marks)"
+      ]
+    },
+    {
+      "department": "Computer Application",
+      "passPercentage": 88.2,
+      "toppers": [
+        "SUSHMITA GHOSH (377 marks)"
+      ]
+    },
+    {
+      "department": "English",
+      "passPercentage": 86.4,
+      "toppers": [
+        "ROHIT MAHTO (339 marks)"
       ]
     },
     {
       "department": "Mathematics",
-      "passPercentage": 65.0,
+      "passPercentage": 72.5,
       "toppers": [
-        "ALISHABA PURTY (369 marks)"
+        "GULAB SARDAR (336 marks)"
+      ]
+    },
+    {
+      "department": "Botany",
+      "passPercentage": 66.7,
+      "toppers": [
+        "BIBHA MAHTO (375 marks)"
       ]
     }
   ],
@@ -247,11 +331,11 @@
     },
     {
       "id": "sem6_master_2022-2026",
-      "title": "Semester 6 — Science Streams (Maths + Physics Live)",
+      "title": "Semester 6 — All Streams (Science + Arts)",
       "batch": "Session 2022-2026",
       "university": "Kolhan University",
-      "date": "2026-06-13",
-      "status": "Maths + Physics Live",
+      "date": "2026-07-31",
+      "status": "Declared",
       "file": "results_sem6_master.json",
       "hasPdfs": true,
       "pdfFolder": "sem6_2022",
@@ -265,6 +349,11 @@
           "version": "2.0",
           "title": "Physics Results Live",
           "desc": "Physics major results added (44 students). Chemistry results are pending."
+        },
+        {
+          "version": "3.0",
+          "title": "All Departments Complete",
+          "desc": "Added all departments: History (241), Political Science (130), Hindi (121), Economics (92), Ho (84), Mathematics (69), Geography (68), English (66), Psychology (62), Chemistry (49), Physics (46), Zoology (39), Anthropology (38), Computer Application (17), Botany (9), Philosophy (6), Urdu (5), Odia (1). Grand total: 1143 students across 18 departments."
         }
       ]
     }
