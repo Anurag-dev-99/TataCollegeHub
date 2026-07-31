@@ -77,294 +77,160 @@ const popularPapers = [...pyqsData]
     </p>
   </div>
 
+
   <!-- ═══════════════════════════════════════════════════════════════
-       FYUGP SEM 1 EXAM 2025 — LIVE COUNTDOWN (COLLAPSIBLE)
+       SEM 4 FORM FILL-UP NOTICE — COMPACT BANNER
   ════════════════════════════════════════════════════════════════ -->
-  <div id="exam-countdown-section" style="margin-bottom: 2rem;">
-    <!-- Section header label -->
-    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.6rem;">
-      <span style="font-size:1rem;">📅</span>
-      <span style="font-size:0.82rem;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;">FYUGP Sem 1 Exam 2025</span>
-      <span id="exam-all-done-badge" style="display:none;font-size:0.65rem;font-weight:700;background:rgba(16,185,129,0.12);color:var(--accent-success);border:1px solid rgba(16,185,129,0.25);border-radius:20px;padding:1px 8px;">All Done ✓</span>
+  <div style="margin-bottom: 1.5rem; border: 1px solid rgba(239,68,68,0.25); border-radius: var(--radius-sm); padding: 0.75rem 1rem; background: linear-gradient(135deg, rgba(239,68,68,0.05) 0%, rgba(0,0,0,0.15) 100%);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
+        <span style="font-size: 1rem; flex-shrink: 0;">📋</span>
+        <div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: #f87171; font-family: var(--font-display);">Sem 4 Exam Form Fill-up</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary); margin-top: 1px;">FYUGP 2022 Batch — Online Application</div>
+        </div>
+      </div>
+      <a href={`${baseUrl}/pdf/sem4_exam_form_fillup.pdf`} target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; font-weight: 700; color: #f87171; text-decoration: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); border-radius: 20px; padding: 3px 10px; white-space: nowrap; transition: background 0.2s; flex-shrink: 0;">
+        <Download size={12} /> Notice PDF
+      </a>
     </div>
-
-    <!-- Toggle row (next exam + expand button) — injected by JS -->
-
-    <!-- Expanded cards grid (hidden by default) -->
-    <div id="exam-cards-grid" style="display:none;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:0.65rem;margin-top:0.6rem;"></div>
-
-    <!-- All exams done fallback -->
-    <div id="exam-all-complete-msg" style="display:none;padding:1.2rem 1.4rem;border:1px solid rgba(16,185,129,0.25);border-radius:var(--radius-sm);background:linear-gradient(135deg,rgba(16,185,129,0.05),rgba(0,0,0,0.15));text-align:center;color:var(--accent-success);font-weight:700;font-size:0.9rem;">
-      🎉 All FYUGP Sem 1 exams are over! Results awaited.
+    <!-- Deadline pills -->
+    <div style="display: flex; gap: 0.4rem; margin-top: 0.55rem; flex-wrap: wrap;">
+      <span id="form-pill-free" style="font-size: 0.62rem; font-weight: 700; border-radius: 20px; padding: 2px 8px; white-space: nowrap; border: 1px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.08); color: #34d399;">No Fine: 22 Jul – 31 Jul</span>
+      <span id="form-pill-200" style="font-size: 0.62rem; font-weight: 700; border-radius: 20px; padding: 2px 8px; white-space: nowrap; border: 1px solid rgba(245,158,11,0.3); background: rgba(245,158,11,0.08); color: #fbbf24;">₹200 Fine: 1 Aug – 5 Aug</span>
+      <span id="form-pill-500" style="font-size: 0.62rem; font-weight: 700; border-radius: 20px; padding: 2px 8px; white-space: nowrap; border: 1px solid rgba(239,68,68,0.3); background: rgba(239,68,68,0.08); color: #f87171;">₹500 Fine: 6 Aug – 10 Aug</span>
     </div>
   </div>
 
-  <script type="module">
-  (() => {
-    const schedule = [
-      {"date":"2026-07-17","day":"Friday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-1)","details":"Social Sciences (Pol. Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science)"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Associated Core (AC-1)","details":"Science & Vocational Subjects"}]},
-      {"date":"2026-07-18","day":"Saturday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Associated Core (AC-1)","details":"Language & Literature Subjects"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Associated Core (AC-1)","details":"Social Sciences"}]},
-      {"date":"2026-07-20","day":"Monday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"MDC-1","details":"Science & Commerce/Vocational Subjects"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"MDC-1","details":"Language & Literature Subjects"}]},
-      {"date":"2026-07-21","day":"Tuesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"MDC-1","details":"Philosophy"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"MDC-1","details":"Social Sciences (except Psychology)"}]},
-      {"date":"2026-07-22","day":"Wednesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"MDC-1","details":"Psychology"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"SEC-1","details":"Digital Education: DE - Set - 1 (For Science, Commerce & Vocational Majors)"}]},
-      {"date":"2026-07-23","day":"Thursday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"SEC-1","details":"Digital Education: DE - Set - 2 (For Language & Literature Majors)"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"SEC-1","details":"Digital Education: DE - Set - 3 (For Social Science Majors)"}]},
-      {"date":"2026-07-24","day":"Friday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"11:30:00","paper_type":"VAC-1","details":"Understanding India: UI - Set - 1 (Science, Commerce & Vocational Majors)"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"15:30:00","paper_type":"VAC-1","details":"Understanding India: UI - Set - 2 (Language & Literature Majors)"}]},
-      {"date":"2026-07-25","day":"Saturday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"11:30:00","paper_type":"VAC-1","details":"Understanding India: UI - Set - 3 (Social Science Majors)"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"15:30:00","paper_type":"AEC-I","details":"Hindi Composition - Set - 1 (Science, Commerce & Vocational Majors)"}]},
-      {"date":"2026-07-27","day":"Monday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"11:30:00","paper_type":"AEC-I","details":"Hindi Composition - Set - 2 (Language & Literature Majors)"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"15:30:00","paper_type":"AEC-I","details":"Hindi Composition - Set - 3 (Social Science Majors)"}]},
-      {"date":"2026-07-28","day":"Tuesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"11:30:00","paper_type":"IKS-1","details":"Indian Knowledge System - Set - 1 (Science, Commerce & Vocational Majors)"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"15:30:00","paper_type":"IKS-1","details":"Indian Knowledge System - Set - 2 (Language & Literature Majors)"}]},
-      {"date":"2026-07-29","day":"Wednesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"11:30:00","paper_type":"IKS-1","details":"Indian Knowledge System - Set - 3 (Social Science Majors)"}]},
-      {"date":"2026-07-30","day":"Thursday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-1)","details":"Science & Commerce/Vocational Subjects (Physics, Chem, Math, Bot, Zoo, Geol, Stat, Commerce, BBA, BCA, IT, Mass Comm, Env.)"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-1)","details":"Language & Literature Subjects (History, Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh, Maithili)"}]}
-    ];
+  <!-- ═══════════════════════════════════════════════════════════════
+       THANK YOU + CONTRIBUTE — COLLAPSIBLE ACCORDION
+  ════════════════════════════════════════════════════════════════ -->
+  <div style="margin-bottom: 1.5rem; border: 1px solid rgba(251,191,36,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(251,191,36,0.03) 0%, rgba(0,0,0,0.12) 100%);">
 
-    const typeColors = {
-      'Major': { bg:'rgba(99,102,241,0.10)',  border:'rgba(99,102,241,0.30)',  badge:'rgba(99,102,241,0.18)',  text:'#818cf8', icon:'📘' },
-      'AC':    { bg:'rgba(139,92,246,0.08)',  border:'rgba(139,92,246,0.25)',  badge:'rgba(139,92,246,0.15)',  text:'#a78bfa', icon:'📗' },
-      'MDC':   { bg:'rgba(236,72,153,0.08)', border:'rgba(236,72,153,0.25)', badge:'rgba(236,72,153,0.15)', text:'#f472b6', icon:'📙' },
-      'SEC':   { bg:'rgba(20,184,166,0.08)', border:'rgba(20,184,166,0.25)', badge:'rgba(20,184,166,0.15)', text:'#2dd4bf', icon:'💻' },
-      'VAC':   { bg:'rgba(245,158,11,0.08)', border:'rgba(245,158,11,0.25)', badge:'rgba(245,158,11,0.15)', text:'#fbbf24', icon:'🌿' },
-      'AEC':   { bg:'rgba(239,68,68,0.08)',  border:'rgba(239,68,68,0.25)',  badge:'rgba(239,68,68,0.15)',  text:'#f87171', icon:'✍️' },
-      'IKS':   { bg:'rgba(251,191,36,0.08)', border:'rgba(251,191,36,0.25)', badge:'rgba(251,191,36,0.15)', text:'#fcd34d', icon:'📿' },
-    };
+    <!-- Collapsed header (always visible) -->
+    <button id="thankyou-toggle" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.1rem; background: transparent; border: none; cursor: pointer; text-align: left; transition: background 0.25s;">
+      <div style="display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap;">
+        <span style="font-size: 1rem;">❤️</span>
+        <span style="font-size: 0.92rem; font-weight: 800; color: #fbbf24; font-family: var(--font-display);">Thank You, Kolhan University Students!</span>
+        <span style="font-size: 0.6rem; font-weight: 700; background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); border-radius: 20px; padding: 1px 7px;">10K+ Downloads</span>
+      </div>
+      <ChevronRight id="thankyou-chevron" size={18} style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+    </button>
 
-    function typeKey(pt) {
-      if (pt.includes('Major')) return 'Major';
-      if (pt.includes('AC'))    return 'AC';
-      if (pt.includes('MDC'))   return 'MDC';
-      if (pt.includes('SEC'))   return 'SEC';
-      if (pt.includes('VAC'))   return 'VAC';
-      if (pt.includes('AEC'))   return 'AEC';
-      if (pt.includes('IKS'))   return 'IKS';
-      return 'Major';
-    }
+    <!-- Expandable content -->
+    <div id="thankyou-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; border-top: 1px solid rgba(251,191,36,0.1);">
+      <div style="padding: 1rem 1.15rem; display: flex; flex-direction: column; gap: 1rem;">
 
-    function buildEvents() {
-      const seen = new Map();
-      for (const day of schedule) {
-        for (const s of day.sittings) {
-          const key = `${day.date}|${s.paper_type}`;
-          if (!seen.has(key)) {
-            seen.set(key, {
-              date: day.date, day: day.day,
-              paper_type: s.paper_type,
-              typeKey: typeKey(s.paper_type),
-              startTime: s.time_start.substring(0,5),
-              details: [],
-              deadline: new Date(`${day.date}T${s.time_start}`)
-            });
-          }
-          seen.get(key).details.push(s.details);
-        }
-      }
-      return [...seen.values()].sort((a,b) => a.deadline - b.deadline);
-    }
-
-    const events = buildEvents();
-
-    function pad(n) { return String(n).padStart(2,'0'); }
-    function tl(dt) {
-      const d = dt - Date.now();
-      if (d <= 0) return null;
-      return { days:Math.floor(d/86400000), hours:Math.floor((d%86400000)/3600000), mins:Math.floor((d%3600000)/60000), secs:Math.floor((d%60000)/1000), ms:d };
-    }
-    function urg(ms) {
-      const h = ms/3600000;
-      if (h<=24) return {bg:'rgba(239,68,68,0.15)',border:'rgba(239,68,68,0.4)',label:'TODAY',lc:'#f87171'};
-      if (h<=72) return {bg:'rgba(245,158,11,0.12)',border:'rgba(245,158,11,0.35)',label:'SOON',lc:'#fbbf24'};
-      return null;
-    }
-    function fmtDate(ds) {
-      return new Date(ds+'T00:00:00').toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
-    }
-
-    // DOM
-    const grid      = document.getElementById('exam-cards-grid');
-    const allDone   = document.getElementById('exam-all-complete-msg');
-    const allBadge  = document.getElementById('exam-all-done-badge');
-
-    let isExpanded = false;
-    let cardTimers = {};   // eventIdx → timerEl
-    let hdrTimerEl = null; // compact timer in the toggle row
-
-    // ── Card builder ──────────────────────────────────────────────
-    function makeCard(ev, i) {
-      const t = tl(ev.deadline);
-      if (!t) return null;
-      const c  = typeColors[ev.typeKey] || typeColors['Major'];
-      const u  = urg(t.ms);
-      const bc = u ? u.border : c.border;
-      const bg = u ? u.bg     : c.bg;
-      const up = u ? `<span style="font-size:0.58rem;font-weight:800;color:${u.lc};background:${u.bg};border:1px solid ${u.border};border-radius:20px;padding:1px 6px;">${u.label}</span>` : '';
-      const snip = ev.details[0].length > 70 ? ev.details[0].substring(0,68)+'…' : ev.details[0];
-
-      const card = document.createElement('div');
-      card.id = `ec-card-${i}`;
-      card.style.cssText = `border:1px solid ${bc};border-radius:12px;padding:0.95rem 1.05rem;background:${bg};transition:border-color 0.4s,box-shadow 0.3s;backdrop-filter:blur(4px);`;
-      if (u) card.style.boxShadow = `0 0 16px ${bc}55`;
-      card.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem;margin-bottom:0.5rem;">
-          <div style="display:flex;align-items:center;gap:0.4rem;">
-            <span style="font-size:0.95rem;">${c.icon}</span>
-            <span style="font-size:0.8rem;font-weight:800;color:${c.text};background:${c.badge};border-radius:20px;padding:2px 8px;">${ev.paper_type}</span>
+        <!-- Stats row -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.45rem;">
+          <div style="text-align: center; padding: 0.5rem 0.2rem; border: 1px solid rgba(99,102,241,0.2); border-radius: 10px; background: rgba(99,102,241,0.05);">
+            <div style="font-size: 1.15rem; font-weight: 900; font-family: var(--font-display); color: #818cf8; line-height: 1;">10K+</div>
+            <div style="font-size: 0.52rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; font-weight: 600;">Downloads</div>
           </div>
-          <div style="display:flex;align-items:center;gap:0.3rem;">
-            ${up}
-            <span style="font-size:0.67rem;color:var(--text-tertiary);white-space:nowrap;">${fmtDate(ev.date)} · ${ev.startTime}</span>
+          <div style="text-align: center; padding: 0.5rem 0.2rem; border: 1px solid rgba(16,185,129,0.2); border-radius: 10px; background: rgba(16,185,129,0.05);">
+            <div style="font-size: 1.15rem; font-weight: 900; font-family: var(--font-display); color: #34d399; line-height: 1;">#1</div>
+            <div style="font-size: 0.52rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; font-weight: 600;">10 Keywords</div>
+          </div>
+          <div style="text-align: center; padding: 0.5rem 0.2rem; border: 1px solid rgba(251,191,36,0.2); border-radius: 10px; background: rgba(251,191,36,0.05);">
+            <div style="font-size: 1.15rem; font-weight: 900; font-family: var(--font-display); color: #fbbf24; line-height: 1;">3K+</div>
+            <div style="font-size: 0.52rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; font-weight: 600;">Students</div>
           </div>
         </div>
-        <div style="font-size:0.76rem;color:var(--text-secondary);margin-bottom:0.6rem;line-height:1.45;">${snip}</div>
-        <div id="ec-timer-${i}" style="display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap;"></div>
-      `;
-      return card;
-    }
 
-    // ── Full timer renderer (expanded cards) ──────────────────────
-    function timerHtml(t) {
-      const u = (v,l) => `<div style="text-align:center;min-width:34px;"><div style="font-size:1.3rem;font-weight:900;font-family:var(--font-display);color:var(--text-primary);line-height:1;">${pad(v)}</div><div style="font-size:0.5rem;color:var(--text-tertiary);letter-spacing:0.06em;text-transform:uppercase;margin-top:1px;">${l}</div></div>`;
-      const s = () => `<div style="font-size:1rem;font-weight:900;color:var(--text-tertiary);margin-top:-3px;">:</div>`;
-      let h = '';
-      if (t.days > 0) h += u(t.days,'days') + s();
-      return h + u(t.hours,'hrs') + s() + u(t.mins,'min') + s() + u(t.secs,'sec');
-    }
+        <!-- Thank you message -->
+        <div style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6; border-left: 2px solid rgba(251,191,36,0.3); padding-left: 0.75rem;">
+          What started as a small effort to make study resources easier has now become one of the most trusted platforms for Kolhan University students. <strong style="color: var(--text-primary);">10,000+ downloads</strong>, <strong style="color: var(--text-primary);">#1 on Google for 10+ keywords</strong>, and trusted across colleges. None of this would have been possible without you. Thank you for making KolhanHub a community, not just a website. ❤️
+        </div>
 
-    // ── Main build/rebuild ─────────────────────────────────────────
-    function buildCards() {
-      cardTimers = {};
-      hdrTimerEl = null;
-
-      const upcoming = events.map((ev,i)=>({ev,i})).filter(({ev})=>tl(ev.deadline));
-
-      // Remove old toggle row
-      document.getElementById('ec-toggle-row')?.remove();
-
-      if (upcoming.length === 0) {
-        grid.style.display = 'none';
-        allDone.style.display = 'block';
-        allBadge.style.display = 'inline-flex';
-        return;
-      }
-
-      // ── Build the collapsed header row (next exam) ───────────────
-      const {ev: ne, i: ni} = upcoming[0];
-      const nc = typeColors[ne.typeKey] || typeColors['Major'];
-      const nu = urg(tl(ne.deadline)?.ms || 0);
-      const nbc = nu ? nu.border : nc.border;
-      const nbg = nu ? nu.bg     : nc.bg;
-      const moreCount = upcoming.length - 1;
-
-      const row = document.createElement('div');
-      row.id = 'ec-toggle-row';
-      row.style.cssText = `display:flex;align-items:center;justify-content:space-between;gap:0.6rem;padding:0.75rem 1rem;border:1px solid ${nbc};border-radius:12px;background:${nbg};cursor:pointer;margin-bottom:${isExpanded?'0.65rem':'0'};transition:margin 0.3s;flex-wrap:wrap;`;
-      if (nu) row.style.boxShadow = `0 0 16px ${nbc}44`;
-
-      const nup = nu ? `<span style="font-size:0.58rem;font-weight:800;color:${nu.lc};background:${nu.bg};border:1px solid ${nu.border};border-radius:20px;padding:1px 6px;">${nu.label}</span>` : '';
-
-      row.innerHTML = `
-        <div style="display:flex;align-items:center;gap:0.55rem;flex:1;min-width:0;">
-          <span style="font-size:1rem;">${nc.icon}</span>
-          <div style="min-width:0;">
-            <div style="display:flex;align-items:center;gap:0.35rem;flex-wrap:wrap;">
-              <span style="font-size:0.8rem;font-weight:800;color:${nc.text};background:${nc.badge};border-radius:20px;padding:2px 8px;white-space:nowrap;">${ne.paper_type}</span>
-              ${nup}
-              <span style="font-size:0.67rem;color:var(--text-tertiary);white-space:nowrap;">${fmtDate(ne.date)} · ${ne.startTime}</span>
-            </div>
-            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${ne.details[0].substring(0,55)}…</div>
+        <!-- Contribute CTA -->
+        <div style="border: 1px solid rgba(99,102,241,0.18); border-radius: 12px; padding: 0.75rem 0.85rem; background: rgba(99,102,241,0.03);">
+          <div style="font-size: 0.82rem; font-weight: 800; color: #818cf8; font-family: var(--font-display); margin-bottom: 0.35rem;">🌱 Help Your Juniors. Leave a Legacy.</div>
+          <div style="font-size: 0.72rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 0.6rem;">
+            Every PYQ, every note you share helps hundreds after you. If you're from the <strong style="color: #fbbf24;">2025 Batch</strong>, contribute your PYQs, class notes, or even clear mobile photos — we'll organize them. Your name will be listed in our <strong style="color: var(--text-primary);">Top Contributors</strong> section.
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="thankyou-submit-btn" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 700; color: #818cf8; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 20px; padding: 4px 12px; cursor: pointer; transition: background 0.2s;">
+              📄 Submit PYQ / Notes
+            </button>
           </div>
         </div>
-        <div style="display:flex;align-items:center;gap:0.55rem;flex-shrink:0;">
-          <div id="ec-hdr-timer" style="text-align:right;min-width:64px;"></div>
-          <button id="ec-expand-btn" style="display:flex;align-items:center;gap:0.3rem;font-size:0.7rem;font-weight:700;color:${nc.text};background:${nc.badge};border:1px solid ${nc.border};border-radius:20px;padding:3px 10px;cursor:pointer;white-space:nowrap;">${isExpanded ? '▲ Collapse' : `▼ ${moreCount > 0 ? `+${moreCount} more` : 'Expand'}`}</button>
-        </div>
-      `;
 
-      grid.parentElement.insertBefore(row, grid);
-      hdrTimerEl = document.getElementById('ec-hdr-timer');
-
-      // Click to toggle
-      const doToggle = (e) => { e.stopPropagation(); isExpanded = !isExpanded; buildCards(); tick(); };
-      row.addEventListener('click', doToggle);
-      document.getElementById('ec-expand-btn').addEventListener('click', doToggle);
-
-      // ── Grid (expanded) ──────────────────────────────────────────
-      if (isExpanded) {
-        grid.style.display = 'grid';
-        grid.innerHTML = '';
-        for (const {ev, i} of upcoming) {
-          const card = makeCard(ev, i);
-          if (!card) continue;
-          grid.appendChild(card);
-          cardTimers[i] = document.getElementById(`ec-timer-${i}`);
-        }
-      } else {
-        grid.style.display = 'none';
-        grid.innerHTML = '';
-        // Track next event for header timer only
-        cardTimers[ni] = null;
-      }
-    }
-
-    // ── Tick every second ─────────────────────────────────────────
-    function tick() {
-      let rebuild = false;
-
-      // Header compact timer
-      const nextEv = events.find(ev => tl(ev.deadline));
-      if (nextEv && hdrTimerEl) {
-        const t = tl(nextEv.deadline);
-        if (!t) { rebuild = true; }
-        else {
-          hdrTimerEl.innerHTML = t.days > 0
-            ? `<span style="font-size:0.88rem;font-weight:900;font-family:var(--font-display);color:var(--text-primary);">${t.days}d ${pad(t.hours)}h ${pad(t.mins)}m</span>`
-            : `<span style="font-size:0.88rem;font-weight:900;font-family:var(--font-display);color:var(--text-primary);">${pad(t.hours)}:${pad(t.mins)}:${pad(t.secs)}</span>`;
-        }
-      }
-
-      // Expanded card timers
-      for (const [idx, el] of Object.entries(cardTimers)) {
-        if (!el) continue;
-        const t = tl(events[idx].deadline);
-        if (!t) { rebuild = true; break; }
-        el.innerHTML = timerHtml(t);
-      }
-
-      if (rebuild) buildCards();
-    }
-
-    // ── Init ──────────────────────────────────────────────────────
-    buildCards();
-    tick();
-    setInterval(tick, 1000);
-  })();
-  </script>
-
-  <!-- Notes Notice -->
-  <div style="margin-bottom: 1.5rem; border: 1px solid rgba(6, 182, 212, 0.25); border-radius: var(--radius-sm); padding: 1rem; background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(0, 0, 0, 0.15) 100%);">
-    <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
-      <span style="font-size: 1.2rem;">📢</span>
-      <div style="display: flex; flex-direction: column; gap: 0.25rem; width: 100%;">
-        <span style="font-size: 0.95rem; font-weight: 700; color: #06b6d4; font-family: var(--font-display);">New Resources Added!</span>
-        <span style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">
-          <a href="/pyqs" style="color: inherit; text-decoration: none; display: block; margin-bottom: 0.6rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(6, 182, 212, 0.15);">
-            <strong>Kolhan University PYQ Set 1 & Set 2</strong> have been uploaded in high quality.<br/>
-            Check the <strong style="color: #06b6d4; text-decoration: underline;">PYQ section</strong> for the files.
-          </a>
-          <div style="display: flex; flex-direction: column; gap: 0.3rem;">
-            <span style="font-size: 0.8rem; font-weight: 700; color: #fb923c;">🏛️ IKS (Indian Knowledge System) — Now Available:</span>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.2rem;">
-              <a href="/pyqs#iks-pyq-trigger" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.78rem; font-weight: 600; color: #fb923c; text-decoration: none; background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.3); border-radius: 20px; padding: 3px 10px; transition: background 0.2s;">
-                📄 PYQ Papers →
-              </a>
-              <a href="/syllabus#iks-trigger" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.78rem; font-weight: 600; color: #fb923c; text-decoration: none; background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.3); border-radius: 20px; padding: 3px 10px; transition: background 0.2s;">
-                📚 Syllabus →
-              </a>
-              <a href="/pyqs#iks-pyq-trigger" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.78rem; font-weight: 600; color: #6366f1; text-decoration: none; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 20px; padding: 3px 10px; transition: background 0.2s;">
-                📖 Notes →
-              </a>
-            </div>
+        <!-- Support CTA -->
+        <div style="border: 1px solid rgba(251,191,36,0.18); border-radius: 12px; padding: 0.75rem 0.85rem; background: rgba(251,191,36,0.03);">
+          <div style="font-size: 0.82rem; font-weight: 800; color: #fbbf24; font-family: var(--font-display); margin-bottom: 0.35rem;">☕ Support KolhanHub (Optional)</div>
+          <div style="font-size: 0.72rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 0.6rem;">
+            KolhanHub will always remain <strong style="color: var(--text-primary);">free for every student</strong>. Running it takes time, effort, and hosting costs. If it has helped you even once, consider a small voluntary contribution. No obligation — sharing with friends already means a lot.
           </div>
-        </span>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="thankyou-donate-btn" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 700; color: #fbbf24; background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 4px 12px; cursor: pointer; transition: background 0.2s;">
+              ☕ Buy me a chai
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
+
+  <script>
+    (() => {
+      // Thank You accordion toggle
+      const toggle = document.getElementById('thankyou-toggle');
+      const content = document.getElementById('thankyou-content');
+      const chevron = document.getElementById('thankyou-chevron');
+      let isOpen = false;
+
+      toggle?.addEventListener('click', () => {
+        isOpen = !isOpen;
+        if (isOpen) {
+          content.style.maxHeight = content.scrollHeight + 'px';
+          chevron.style.transform = 'rotate(90deg)';
+        } else {
+          content.style.maxHeight = '0';
+          chevron.style.transform = 'rotate(0deg)';
+        }
+      });
+
+      // Submit button -> open submit modal
+      document.querySelectorAll('.thankyou-submit-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          document.dispatchEvent(new CustomEvent('open-submit-modal'));
+        });
+      });
+
+      // Donate button -> open donate modal
+      document.querySelectorAll('.thankyou-donate-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const overlay = document.getElementById('donate-modal-overlay');
+          if (overlay) {
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      });
+
+      // Highlight active form fill-up deadline pill
+      const now = new Date();
+      const pills = [
+        { id: 'form-pill-free', start: new Date('2026-07-22'), end: new Date('2026-08-01') },
+        { id: 'form-pill-200',  start: new Date('2026-08-01'), end: new Date('2026-08-06') },
+        { id: 'form-pill-500',  start: new Date('2026-08-06'), end: new Date('2026-08-11') },
+      ];
+      pills.forEach(p => {
+        const el = document.getElementById(p.id);
+        if (!el) return;
+        if (now >= p.start && now < p.end) {
+          el.style.boxShadow = '0 0 8px ' + (p.id === 'form-pill-free' ? 'rgba(16,185,129,0.3)' : p.id === 'form-pill-200' ? 'rgba(245,158,11,0.3)' : 'rgba(239,68,68,0.3)');
+          el.style.fontWeight = '800';
+        } else if (now >= p.end) {
+          el.style.opacity = '0.4';
+          el.style.textDecoration = 'line-through';
+        }
+      });
+    })();
+  </script>
 
   <!-- Requests Completed Accordion -->
   <div class="completed-requests-accordion" style="margin-bottom: 2rem; border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(16, 185, 129, 0.02) 0%, rgba(0, 0, 0, 0.15) 100%);">
