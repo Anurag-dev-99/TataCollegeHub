@@ -1290,89 +1290,35 @@ const popularPapers = [...pyqsData]
         What's New
       </h2>
 
-      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
-
-        <!-- Entry: MDC PYQ Mass Upload (newest) -->
-        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.6)'" onmouseout="this.style.borderColor='rgba(16,185,129,0.3)'">
-          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📑</span>
+        <!-- Entry: Batch Results -->
+        <a href={`${baseUrl}/results`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.6)'" onmouseout="this.style.borderColor='rgba(16,185,129,0.3)'">
+          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">🎓</span>
           <div style="flex:1;overflow:hidden;">
-            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">MDC PYQ — 11 New Subjects Added</div>
-            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">Anthropology, Economics, Geography, Philosophy &amp; more · 26 papers</div>
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">2022, 2023 & 2024 Batch Results</div>
+            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">Tata College — All semester results now available</div>
           </div>
           <span style="font-size:0.62rem;font-weight:700;color:#f59e0b;background:rgba(245,158,11,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">🆕 New</span>
         </a>
 
-        <!-- Entry: Botany Major Syllabus -->
-        <a href={`${baseUrl}/syllabus/botany`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
+        <!-- Entry: Maths & Physics Sem 4 PYQ -->
+        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
+          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
+          <div style="flex:1;overflow:hidden;">
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths & Physics Sem 4 PYQ</div>
+            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">Major papers · 2022–2026 batch</div>
+          </div>
+          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
+        </a>
+
+        <!-- Entry: Major Syllabus -->
+        <a href={`${baseUrl}/syllabus`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
           <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📚</span>
           <div style="flex:1;overflow:hidden;">
-            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Botany Major Syllabus</div>
-            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">Sem 1–8 · FYUGP NEP-2020</div>
+            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Major Syllabus Uploaded</div>
+            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">All major subjects · Sem 1–8 NEP-2020</div>
           </div>
           <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Added</span>
         </a>
-
-        <!-- Entry: AEC Sanskrit Sem 3 -->
-        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
-          <div style="flex:1;overflow:hidden;">
-            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">AEC-3 Sanskrit PYQ</div>
-            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">Sem 3 · 2022 Batch</div>
-          </div>
-          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-        </a>
-
-        <!-- Entry: Maths Major Sem 5 -->
-        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
-          <div style="flex:1;overflow:hidden;">
-            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 5 PYQ</div>
-            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-11 · 2022–2026 batch</div>
-          </div>
-          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-        </a>
-
-        <!-- Entry: Maths Major Sem 4 -->
-        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
-          <div style="flex:1;overflow:hidden;">
-            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 4 PYQ</div>
-            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-06, MJ-07, MJ-08 · 2022–2026</div>
-          </div>
-          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-        </a>
-
-        <!-- Entry: Maths Major Sem 3 -->
-        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
-          <div style="flex:1;overflow:hidden;">
-            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 3 PYQ</div>
-            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-04, MJ-05 · 2022–26 &amp; 2023–27</div>
-          </div>
-          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-        </a>
-
-        <!-- Entry: Maths Major Sem 2 -->
-        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">📄</span>
-          <div style="flex:1;overflow:hidden;">
-            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Maths Major Sem 2 PYQ</div>
-            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">MJ-02, MJ-03 · all 3 batches</div>
-          </div>
-          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-        </a>
-
-        <!-- Entry: MDC Psychology -->
-        <a href={`${baseUrl}/pyqs`} style="display:flex;gap:0.65rem;align-items:flex-start;padding:0.6rem 0.7rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:var(--radius-sm);text-decoration:none;transition:border-color var(--transition-fast);" onmouseover="this.style.borderColor='rgba(16,185,129,0.4)'" onmouseout="this.style.borderColor='var(--border-color)'">
-          <span style="font-size:0.9rem;flex-shrink:0;margin-top:1px;">🧠</span>
-          <div style="flex:1;overflow:hidden;">
-            <div style="font-size:0.8rem;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">MDC Psychology PYQ</div>
-            <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:1px;">Sem 1, 2, 3 · 2023–2027 batch</div>
-          </div>
-          <span style="font-size:0.62rem;font-weight:700;color:var(--accent-success);background:rgba(16,185,129,0.1);padding:0.15rem 0.4rem;border-radius:var(--radius-full);flex-shrink:0;white-space:nowrap;">✅ Uploaded</span>
-        </a>
-
-      </div>
 
       <div style="margin-top:0.85rem;padding-top:0.75rem;border-top:1px solid var(--border-color);text-align:center;">
         <a href={`${baseUrl}/pyqs`} style="font-size:0.8rem;font-weight:700;color:var(--accent-primary);display:inline-flex;align-items:center;gap:0.25rem;">
@@ -2202,7 +2148,7 @@ const popularPapers = [...pyqsData]
       <div style="display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1rem 0.7rem;border-bottom:1px solid rgba(251,191,36,0.1);">
         <div style="display:flex;align-items:center;gap:0.45rem;">
           <span style="font-size:1rem;">☕</span>
-          <span style="font-size:0.88rem;font-weight:800;color:#fbbf24;font-family:var(--font-display);">Buy me a chai</span>
+          <span style="font-size:0.88rem;font-weight:800;color:#fbbf24;font-family:var(--font-display);">Support KolhanHub</span>
         </div>
         <button id="donate-close" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);font-size:0.78rem;flex-shrink:0;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.14)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">✕</button>
       </div>
@@ -2210,57 +2156,33 @@ const popularPapers = [...pyqsData]
       <!-- Body -->
       <div style="padding:0.9rem 1rem;display:flex;flex-direction:column;align-items:center;gap:0.7rem;text-align:center;">
 
-        <!-- Cat GIF small -->
-        <div style="width:72px;height:72px;border-radius:50%;overflow:hidden;border:2px solid rgba(251,191,36,0.35);box-shadow:0 0 16px rgba(251,191,36,0.18);flex-shrink:0;">
-          <div class="tenor-gif-embed" data-postid="2313827382029791821" data-share-method="host" data-aspect-ratio="1" data-width="100%" style="margin:0;padding:0;line-height:0;">
-            <a href="https://tenor.com/view/cat-kiss-catkiss-cat-kiss-cat-kissing-gif-2313827382029791821">Cat Kiss GIF</a>
-          </div>
-          <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+        <!-- Cat Dance GIF -->
+        <div style="width:80px;height:80px;border-radius:50%;overflow:hidden;border:2px solid rgba(251,191,36,0.35);box-shadow:0 0 16px rgba(251,191,36,0.18);flex-shrink:0;">
+          <img src={`${baseUrl}/images/dance_cat.gif`} alt="Thank you!" style="width:100%;height:100%;object-fit:cover;" />
         </div>
 
         <!-- Tagline -->
         <div>
           <div style="font-size:0.88rem;font-weight:900;color:#fbbf24;font-family:var(--font-display);">You're amazing! 💛</div>
-          <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:2px;">Pick a chai and support KolhanHub ☕</div>
+          <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:2px;">Scan the QR or copy UPI ID to pay</div>
         </div>
 
-        <!-- ── Chai Amount Buttons ── -->
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;width:100%;">
-
-          <button class="chai-btn" data-amount="10" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:0.6rem 0.3rem;border:1px solid rgba(251,191,36,0.25);border-radius:12px;background:rgba(251,191,36,0.05);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(251,191,36,0.14)';this.style.borderColor='rgba(251,191,36,0.5)'" onmouseout="this.style.background='rgba(251,191,36,0.05)';this.style.borderColor='rgba(251,191,36,0.25)'">
-            <span style="font-size:1.3rem;">☕</span>
-            <span style="font-size:0.6rem;font-weight:700;color:#fbbf24;">Normal Chai</span>
-            <span style="font-size:0.8rem;font-weight:900;color:var(--text-primary);">₹10</span>
-          </button>
-
-          <button class="chai-btn" data-amount="25" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:0.6rem 0.3rem;border:1px solid rgba(251,191,36,0.35);border-radius:12px;background:rgba(251,191,36,0.08);cursor:pointer;transition:all 0.2s;position:relative;" onmouseover="this.style.background='rgba(251,191,36,0.18)';this.style.borderColor='rgba(251,191,36,0.6)'" onmouseout="this.style.background='rgba(251,191,36,0.08)';this.style.borderColor='rgba(251,191,36,0.35)'">
-            <span style="position:absolute;top:-8px;font-size:0.5rem;font-weight:800;background:#fbbf24;color:#1a1a1a;border-radius:20px;padding:1px 6px;">POPULAR</span>
-            <span style="font-size:1.3rem;">🏺</span>
-            <span style="font-size:0.6rem;font-weight:700;color:#fbbf24;">Kulhad Chai</span>
-            <span style="font-size:0.8rem;font-weight:900;color:var(--text-primary);">₹25</span>
-          </button>
-
-          <button class="chai-btn" data-amount="100" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:0.6rem 0.3rem;border:1px solid rgba(251,191,36,0.25);border-radius:12px;background:rgba(251,191,36,0.05);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(251,191,36,0.14)';this.style.borderColor='rgba(251,191,36,0.5)'" onmouseout="this.style.background='rgba(251,191,36,0.05)';this.style.borderColor='rgba(251,191,36,0.25)'">
-            <span style="font-size:1.3rem;">👑</span>
-            <span style="font-size:0.6rem;font-weight:700;color:#fbbf24;">Dolly Special</span>
-            <span style="font-size:0.8rem;font-weight:900;color:var(--text-primary);">₹100</span>
-          </button>
-
+        <!-- QR Code — prominently displayed -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">
+          <div style="border:2px solid rgba(251,191,36,0.25);border-radius:14px;padding:6px;background:white;">
+            <img src={`${baseUrl}/images/qr_phonepe.jpg`} alt="PhonePe QR" style="width:180px;height:auto;border-radius:10px;display:block;" />
+          </div>
+          <a href={`${baseUrl}/images/qr_phonepe.jpg`} download="KolhanHub_PhonePe_QR.jpg" style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.65rem;font-weight:700;color:var(--text-tertiary);text-decoration:none;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:3px 10px;transition:color 0.2s;" onmouseover="this.style.color='var(--text-secondary)'" onmouseout="this.style.color='var(--text-tertiary)'">
+            ⬇ Download QR
+          </a>
         </div>
 
         <!-- UPI ID copy -->
-        <div id="upi-id-pill" title="Tap to copy UPI ID" style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.18);border-radius:20px;padding:3px 11px;font-size:0.68rem;color:#fbbf24;font-family:monospace;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(251,191,36,0.13)'" onmouseout="this.style.background='rgba(251,191,36,0.07)'">
-          <span>💳</span><span>8002059887@ibl</span>
-          <span id="copy-tick" style="display:none;color:#34d399;font-size:0.68rem;">✓ copied</span>
-        </div>
-
-        <!-- QR toggle -->
-        <div style="width:100%;">
-          <button id="qr-toggle" style="width:100%;background:transparent;border:none;font-size:0.65rem;color:var(--text-tertiary);cursor:pointer;padding:2px 0;transition:color 0.2s;" onmouseover="this.style.color='var(--text-secondary)'" onmouseout="this.style.color='var(--text-tertiary)'">📷 Show QR to scan instead ▼</button>
-          <div id="qr-panel" style="display:none;margin-top:0.5rem;display:none;flex-direction:column;align-items:center;gap:0.35rem;">
-            <img src={`${baseUrl}/images/qr_phonepe.jpg`} alt="PhonePe QR" style="width:160px;height:auto;border-radius:10px;border:1px solid rgba(251,191,36,0.18);" onerror="this.style.display='none'" />
-            <a href={`${baseUrl}/images/qr_phonepe.jpg`} download="KolhanHub_PhonePe_QR.jpg" style="font-size:0.62rem;color:var(--text-tertiary);text-decoration:none;" onmouseover="this.style.color='var(--text-secondary)'" onmouseout="this.style.color='var(--text-tertiary)'">⬇ Download QR</a>
-          </div>
+        <div id="upi-id-pill" title="Tap to copy UPI ID" style="display:inline-flex;align-items:center;gap:0.4rem;background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.22);border-radius:24px;padding:6px 14px;font-size:0.75rem;color:#fbbf24;font-family:monospace;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(251,191,36,0.15)'" onmouseout="this.style.background='rgba(251,191,36,0.07)'">
+          <span>💳</span>
+          <span style="font-weight:700;">8002059887@ibl</span>
+          <span style="font-size:0.6rem;font-weight:700;color:var(--text-tertiary);border-left:1px solid rgba(251,191,36,0.2);padding-left:0.4rem;">Copy</span>
+          <span id="copy-tick" style="display:none;color:#34d399;font-size:0.68rem;font-weight:700;">✓ copied</span>
         </div>
 
       </div>
@@ -2281,14 +2203,9 @@ const popularPapers = [...pyqsData]
       const closeBtn = document.getElementById('donate-close');
       const upiPill  = document.getElementById('upi-id-pill');
       const copyTick = document.getElementById('copy-tick');
-      const qrToggle = document.getElementById('qr-toggle');
-      const qrPanel  = document.getElementById('qr-panel');
       if (!btn || !overlay) return;
 
       const UPI_ID = '8002059887@ibl';
-
-      // Mobile detection
-      const isMobile = () => /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 
       const open  = () => { overlay.style.display = 'flex'; document.body.style.overflow = 'hidden'; };
       const close = () => { overlay.style.display = 'none';  document.body.style.overflow = ''; };
@@ -2298,53 +2215,14 @@ const popularPapers = [...pyqsData]
       overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
       document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
-      // Copy UPI ID helper
-      const copyUpi = async () => {
+      // Copy UPI ID on pill click
+      upiPill?.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(UPI_ID);
           if (copyTick) { copyTick.style.display = 'inline'; setTimeout(() => { copyTick.style.display = 'none'; }, 2000); }
         } catch(_) {}
-      };
-
-      // Copy UPI ID on pill click
-      upiPill?.addEventListener('click', copyUpi);
-
-      // QR panel toggle
-      let qrOpen = false;
-      qrToggle?.addEventListener('click', () => {
-        qrOpen = !qrOpen;
-        qrPanel.style.display = qrOpen ? 'flex' : 'none';
-        qrToggle.textContent = qrOpen ? '📷 Hide QR ▲' : '📷 Show QR to scan instead ▼';
-      });
-
-      // Build UPI deep link with RAW values (no encoding)
-      // UPI apps like BHIM don't decode %20/%40 — they expect raw values
-      const buildUpiUrl = (amount) => {
-        const am = parseFloat(amount).toFixed(2);
-        return `upi://pay?pa=${UPI_ID}&pn=Anurag Nishad&tn=Chai for KolhanHub&am=${am}&cu=INR`;
-      };
-
-      // Chai buttons → mobile: UPI redirect, desktop: copy UPI ID + show QR
-      document.querySelectorAll('.chai-btn').forEach(chaiBtn => {
-        chaiBtn.addEventListener('click', () => {
-          const amount = chaiBtn.getAttribute('data-amount');
-
-          if (isMobile()) {
-            // Mobile: redirect to UPI app with proper encoding
-            window.location.href = buildUpiUrl(amount);
-          } else {
-            // Desktop: copy UPI ID and auto-show QR code
-            copyUpi();
-            if (qrPanel && !qrOpen) {
-              qrOpen = true;
-              qrPanel.style.display = 'flex';
-              if (qrToggle) qrToggle.textContent = '📷 Hide QR ▲';
-            }
-          }
-        });
       });
     })();
   </script>
 
 </Layout>
-
