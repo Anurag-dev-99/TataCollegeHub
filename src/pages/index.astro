@@ -77,7 +77,6 @@ const popularPapers = [...pyqsData]
     </p>
   </div>
 
-
   <!-- ═══════════════════════════════════════════════════════════════
        SEM 4 FORM FILL-UP NOTICE — COMPACT BANNER
   ════════════════════════════════════════════════════════════════ -->
@@ -87,7 +86,7 @@ const popularPapers = [...pyqsData]
         <span style="font-size: 1rem; flex-shrink: 0;">📋</span>
         <div>
           <div style="font-size: 0.82rem; font-weight: 800; color: #f87171; font-family: var(--font-display);">Sem 4 Exam Form Fill-up</div>
-          <div style="font-size: 0.68rem; color: var(--text-tertiary); margin-top: 1px;">FYUGP 2022 Batch — Online Application</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary); margin-top: 1px;">FYUGP 2023 Batch — Online Application</div>
         </div>
       </div>
       <a href={`${baseUrl}/pdf/sem4_exam_form_fillup.pdf`} target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; font-weight: 700; color: #f87171; text-decoration: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); border-radius: 20px; padding: 3px 10px; white-space: nowrap; transition: background 0.2s; flex-shrink: 0;">
@@ -103,9 +102,9 @@ const popularPapers = [...pyqsData]
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════════
-       THANK YOU + CONTRIBUTE — COLLAPSIBLE ACCORDION
+       THANK YOU — COLLAPSIBLE ACCORDION
   ════════════════════════════════════════════════════════════════ -->
-  <div style="margin-bottom: 1.5rem; border: 1px solid rgba(251,191,36,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(251,191,36,0.03) 0%, rgba(0,0,0,0.12) 100%);">
+  <div style="margin-bottom: 1rem; border: 1px solid rgba(251,191,36,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(251,191,36,0.03) 0%, rgba(0,0,0,0.12) 100%);">
 
     <!-- Collapsed header (always visible) -->
     <button id="thankyou-toggle" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.1rem; background: transparent; border: none; cursor: pointer; text-align: left; transition: background 0.25s;">
@@ -142,34 +141,37 @@ const popularPapers = [...pyqsData]
           What started as a small effort to make study resources easier has now become one of the most trusted platforms for Kolhan University students. <strong style="color: var(--text-primary);">10,000+ downloads</strong>, <strong style="color: var(--text-primary);">#1 on Google for 10+ keywords</strong>, and trusted across colleges. None of this would have been possible without you. Thank you for making KolhanHub a community, not just a website. ❤️
         </div>
 
-        <!-- Contribute CTA -->
-        <div style="border: 1px solid rgba(99,102,241,0.18); border-radius: 12px; padding: 0.75rem 0.85rem; background: rgba(99,102,241,0.03);">
-          <div style="font-size: 0.82rem; font-weight: 800; color: #818cf8; font-family: var(--font-display); margin-bottom: 0.35rem;">🌱 Help Your Juniors. Leave a Legacy.</div>
-          <div style="font-size: 0.72rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 0.6rem;">
-            Every PYQ, every note you share helps hundreds after you. If you're from the <strong style="color: #fbbf24;">2025 Batch</strong>, contribute your PYQs, class notes, or even clear mobile photos — we'll organize them. Your name will be listed in our <strong style="color: var(--text-primary);">Top Contributors</strong> section.
-          </div>
-          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <button class="thankyou-submit-btn" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 700; color: #818cf8; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 20px; padding: 4px 12px; cursor: pointer; transition: background 0.2s;">
-              📄 Submit PYQ / Notes
-            </button>
-          </div>
-        </div>
-
-        <!-- Support CTA -->
-        <div style="border: 1px solid rgba(251,191,36,0.18); border-radius: 12px; padding: 0.75rem 0.85rem; background: rgba(251,191,36,0.03);">
-          <div style="font-size: 0.82rem; font-weight: 800; color: #fbbf24; font-family: var(--font-display); margin-bottom: 0.35rem;">☕ Support KolhanHub (Optional)</div>
-          <div style="font-size: 0.72rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 0.6rem;">
-            KolhanHub will always remain <strong style="color: var(--text-primary);">free for every student</strong>. Running it takes time, effort, and hosting costs. If it has helped you even once, consider a small voluntary contribution. No obligation — sharing with friends already means a lot.
-          </div>
-          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <button class="thankyou-donate-btn" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 700; color: #fbbf24; background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 4px 12px; cursor: pointer; transition: background 0.2s;">
-              ☕ Buy me a chai
-            </button>
-          </div>
-        </div>
-
       </div>
     </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       CONTRIBUTE & SUPPORT — SIDE BY SIDE BOXES
+  ════════════════════════════════════════════════════════════════ -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1.5rem;">
+
+    <!-- Help Your Juniors Box -->
+    <div style="border: 1px solid rgba(99,102,241,0.2); border-radius: 14px; padding: 0.85rem 0.9rem; background: linear-gradient(135deg, rgba(99,102,241,0.04) 0%, rgba(0,0,0,0.1) 100%); display: flex; flex-direction: column; gap: 0.5rem;">
+      <div style="font-size: 0.82rem; font-weight: 800; color: #818cf8; font-family: var(--font-display);">🌱 Help Your Juniors</div>
+      <div style="font-size: 0.68rem; color: var(--text-secondary); line-height: 1.5; flex: 1;">
+        Share your PYQs, notes, or even mobile photos — we'll organize everything.
+      </div>
+      <button id="cta-submit-btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 700; color: #818cf8; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 20px; padding: 5px 14px; cursor: pointer; transition: all 0.2s; width: fit-content;" onmouseover="this.style.background='rgba(99,102,241,0.18)'" onmouseout="this.style.background='rgba(99,102,241,0.1)'">
+        📄 Submit PYQ / Notes
+      </button>
+    </div>
+
+    <!-- Support Box -->
+    <div style="border: 1px solid rgba(251,191,36,0.2); border-radius: 14px; padding: 0.85rem 0.9rem; background: linear-gradient(135deg, rgba(251,191,36,0.04) 0%, rgba(0,0,0,0.1) 100%); display: flex; flex-direction: column; gap: 0.5rem;">
+      <div style="font-size: 0.82rem; font-weight: 800; color: #fbbf24; font-family: var(--font-display);">☕ Contribute (Optional)</div>
+      <div style="font-size: 0.68rem; color: var(--text-secondary); line-height: 1.5; flex: 1;">
+        Every file you share matters more than anything. But if you'd like to support us too, we're grateful.
+      </div>
+      <button id="cta-donate-btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 700; color: #fbbf24; background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 5px 14px; cursor: pointer; transition: all 0.2s; width: fit-content;" onmouseover="this.style.background='rgba(251,191,36,0.18)'" onmouseout="this.style.background='rgba(251,191,36,0.1)'">
+        ☕ Buy me a chai
+      </button>
+    </div>
+
   </div>
 
   <script>
@@ -191,24 +193,18 @@ const popularPapers = [...pyqsData]
         }
       });
 
-      // Submit button -> open submit modal
-      document.querySelectorAll('.thankyou-submit-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          document.dispatchEvent(new CustomEvent('open-submit-modal'));
-        });
+      // Submit PYQ button
+      document.getElementById('cta-submit-btn')?.addEventListener('click', () => {
+        document.dispatchEvent(new CustomEvent('open-submit-modal'));
       });
 
-      // Donate button -> open donate modal
-      document.querySelectorAll('.thankyou-donate-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const overlay = document.getElementById('donate-modal-overlay');
-          if (overlay) {
-            overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-          }
-        });
+      // Donate button
+      document.getElementById('cta-donate-btn')?.addEventListener('click', () => {
+        const overlay = document.getElementById('donate-modal-overlay');
+        if (overlay) {
+          overlay.style.display = 'flex';
+          document.body.style.overflow = 'hidden';
+        }
       });
 
       // Highlight active form fill-up deadline pill
@@ -231,6 +227,7 @@ const popularPapers = [...pyqsData]
       });
     })();
   </script>
+
 
   <!-- Requests Completed Accordion -->
   <div class="completed-requests-accordion" style="margin-bottom: 2rem; border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(16, 185, 129, 0.02) 0%, rgba(0, 0, 0, 0.15) 100%);">
