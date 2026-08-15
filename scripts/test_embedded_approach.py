@@ -101,36 +101,62 @@ for s in samples:
     print(f"  {s['rollno']} | {s['sname']} | {s['result']}")
 
 # ============================================================
-# Helpers
+# Helpers — read from RAW JSON to preserve null vs "-"
 # ============================================================
-def get_credit(rollno):
+def load_raw(rollno):
+    """Load raw API JSON for a student (cached)."""
     raw_path = os.path.join(RAW_DIR, f"{rollno}.json")
     if os.path.exists(raw_path):
-        raw = json.load(open(raw_path, 'r', encoding='utf-8'))
-        return raw.get('credit1') or raw.get('credit') or '20'
-    return '20'
+        return json.load(open(raw_path, 'r', encoding='utf-8'))
+    return {}
 
-def get_semester_status(rollno):
-    raw_path = os.path.join(RAW_DIR, f"{rollno}.json")
-    if os.path.exists(raw_path):
-        raw = json.load(open(raw_path, 'r', encoding='utf-8'))
-        return raw.get('semester_status', '')
-    return ''
+def get_credit(raw):
+    return raw.get('credit1') or raw.get('credit') or '20'
 
-def fix_subject_order(subjects):
+def get_semester_status(raw):
+    return raw.get('semester_status', '')
+
+def build_subjects_from_raw(raw):
+    """
+    Build subject list directly from raw API data.
+    KEY FIX: null → blank cell, "-" → shows hyphen
+    KU template renders in order: p1, p2, p3, p4, p6, p5 (swapped!)
+    """
+    subjects = []
+    for i in range(1, 10):  # p1 through p9
+        name = raw.get(f'cores2p{i}')
+        if not name:
+            continue
+        theory = raw.get(f'mcores2th{i}')
+        internal = raw.get(f'mcores2ia{i}')
+        practical = raw.get(f'mcores2pr{i}')
+        total = raw.get(f'tot{i}')
+        
+        # KEY: null → empty string, "-" stays as "-", values stay as-is
+        subjects.append({
+            'name': name,
+            'theory': theory if theory is not None else '',
+            'internal': internal if internal is not None else '',
+            'practical': practical if practical is not None else '',  # null → blank!
+            'total': total if total is not None else '',
+        })
+    
+    # KU template renders: p1, p2, p3, p4, p6, p5 (swap last two)
     if len(subjects) >= 6:
-        return subjects[:4] + [subjects[5], subjects[4]]
+        subjects = subjects[:4] + [subjects[5], subjects[4]]
+    
     return subjects
 
 # ============================================================
 # STEP 4: Generate self-contained HTML (EVERYTHING embedded)
 # ============================================================
 def generate_embedded_html(student):
-    subjects = fix_subject_order(student.get('subjects', []))
-    credit_val = get_credit(student['rollno'])
-    sem_status = get_semester_status(student['rollno'])
+    raw = load_raw(student['rollno'])
+    subjects = build_subjects_from_raw(raw) if raw else fix_subject_order(student.get('subjects', []))
+    credit_val = get_credit(raw) if raw else '20'
+    sem_status = get_semester_status(raw) if raw else ''
 
-    # Generate QR code locally
+    # QR code from same API as KU
     qr_data = f"Student Name:{student['sname']},Roll No:{student['rollno']},Registration No.:{student['regno']},Grand Total:{student['grand_total']},Result:{student['result']}"
     qr_b64 = generate_qr_base64(qr_data)
 
@@ -139,7 +165,7 @@ def generate_embedded_html(student):
         subject_rows += f"""
   <tr align="center">
     <td style="text-align:left;padding-left:10px;"><span style="margin-left:2px;">{subj.get('name','')}</span></td>
-    <td>{subj.get('theory','-')}</td><td>{subj.get('internal','-')}</td><td>{subj.get('practical','-')}</td><td>{subj.get('total','-')}</td>
+    <td>{subj.get('theory','')}</td><td>{subj.get('internal','')}</td><td>{subj.get('practical','')}</td><td>{subj.get('total','')}</td>
   </tr>"""
 
     fullm = student.get('fullm', '500')
