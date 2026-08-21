@@ -327,6 +327,134 @@ const popularPapers = [...pyqsData]
   </script>
 
   <!-- ═══════════════════════════════════════════════════════════════
+       FIND YOUR EXAM CENTRE — SEARCHABLE COLLAPSIBLE
+  ════════════════════════════════════════════════════════════════ -->
+  <div style="margin-bottom: 1.25rem; border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(245,158,11,0.03) 0%, rgba(0,0,0,0.12) 100%);">
+    <!-- Toggle header -->
+    <button id="ec-toggle" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 1rem; background: transparent; border: none; cursor: pointer; text-align: left;">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 0.9rem;">🏫</span>
+        <span style="font-size: 0.82rem; font-weight: 800; color: #fbbf24; font-family: var(--font-display);">Find Your Exam Centre</span>
+        <span style="font-size: 0.58rem; font-weight: 700; background: rgba(245,158,11,0.12); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 1px 7px;">Sem 4</span>
+      </div>
+      <ChevronRight id="ec-chevron" size={16} style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+    </button>
+
+    <!-- Expandable content -->
+    <div id="ec-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; border-top: 1px solid rgba(245,158,11,0.1);">
+      <div style="padding: 0.75rem 1rem;">
+        <!-- Search box -->
+        <div style="position: relative; margin-bottom: 0.65rem;">
+          <input
+            id="ec-search"
+            type="text"
+            placeholder="Search your college name..."
+            style="width: 100%; padding: 0.5rem 0.75rem 0.5rem 2rem; font-size: 0.78rem; border: 1px solid var(--border-color); border-radius: var(--radius-xs); background: rgba(0,0,0,0.2); color: var(--text-primary); outline: none; font-family: var(--font-body); transition: border-color 0.2s; box-sizing: border-box;"
+            onfocus="this.style.borderColor='rgba(245,158,11,0.5)'"
+            onblur="this.style.borderColor='var(--border-color)'"
+          />
+          <span style="position: absolute; left: 0.6rem; top: 50%; transform: translateY(-50%); font-size: 0.8rem; color: var(--text-tertiary);">🔍</span>
+        </div>
+        <!-- Results -->
+        <div id="ec-results" style="display: flex; flex-direction: column; gap: 0.4rem; max-height: 300px; overflow-y: auto;"></div>
+        <div id="ec-no-result" style="display: none; text-align: center; padding: 0.75rem; font-size: 0.75rem; color: var(--text-tertiary);">No matching college found</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+  (() => {
+    const centres = [
+      {centre:"A.B.M College, Jsr.",colleges:["LBSM College, Jsr."]},
+      {centre:"Baharagora College, Baharagora",colleges:["Baharagora College, Baharagora"]},
+      {centre:"Ghatsila College, Ghatsila",colleges:["Ghatsila College, Ghatsila"]},
+      {centre:"The G.S.C. for Women, Jsr.",colleges:["The G.S.C. for Women, Jsr."]},
+      {centre:"Jsr. Co-operative College, Jsr.",colleges:["Karim City College, Jsr."]},
+      {centre:"Jsr. Workers' College, Jsr.",colleges:["J.K.S College, Jsr."]},
+      {centre:"J.L.N. College, Chakradharpur",colleges:["J.L.N. College, Chakradharpur","VAS College, Sonua"]},
+      {centre:"K.S College, Seraikella",colleges:["K.S. College, Seraikella","Degree College, Kharsawan","Institute for Education Seraikella Kharsawan"]},
+      {centre:"L.B.S.M College, Jsr.",colleges:["Jsr. Co-operative College, Jsr.","Rambha College, Gitilata"]},
+      {centre:"Mahila College, Chaibasa",colleges:["Tata College, Chaibasa","G.C. Jain Commerce College, Chaibasa"]},
+      {centre:"Singhbhum College, Chandil",colleges:["Singhbhum College, Chandil","MBNS Institute of Graduate Studies, Chandil"]},
+      {centre:"Tata College, Chaibasa",colleges:["Mahila College, Chaibasa","Degree College, Manjhgaon, Kumardungi"]},
+      {centre:"BDSL Mahila College, Ghatsila",colleges:["BDSL Mahila College, Ghatsila","J.K.M College of Management, Science and Commerce, Salboni","AJK College, Chakulia","S.R.K.M. College, Chakulia"]},
+      {centre:"J.K.S College, Jsr.",colleges:["Jsr. Worker's College, Jsr."]},
+      {centre:"Karim City College, Jsr.",colleges:["ABM College, Jsr.","R.K.M Voc. Training Inst. Jsr.","GIIT Prof. College, Jsr.","Mrs. KMPM Voc. College, Jsr.","XITE, Gamharia"]},
+      {centre:"Patamda Degree College, Jalla",colleges:["Patamda Degree College, Jalla"]},
+      {centre:"St. Augustin's College, Manoharpur",colleges:["St. Augustin's College, Manoharpur"]},
+      {centre:"Noamundi College, Noamundi",colleges:["Noamundi College, Noamundi","Degree College, Jagannathpur"]},
+      {centre:"Degree College, Manoharpur",colleges:["Degree College, Manoharpur"]},
+      {centre:"Model Mahavidyalaya, Seraikella-Kharswan",colleges:["Model Mahavidyalaya, Seraikella-Kharswan"]},
+      {centre:"Mahila Mahavidyalaya, Seraikella-Kharsawan",colleges:["Mahila Mahavidyalaya, Seraikella Kharsawan"]}
+    ];
+
+    const toggle = document.getElementById('ec-toggle');
+    const content = document.getElementById('ec-content');
+    const chevron = document.getElementById('ec-chevron');
+    const search = document.getElementById('ec-search');
+    const results = document.getElementById('ec-results');
+    const noResult = document.getElementById('ec-no-result');
+    let isOpen = false;
+
+    function renderCentres(query) {
+      results.innerHTML = '';
+      const q = (query || '').toLowerCase().trim();
+      let matched = 0;
+
+      centres.forEach(c => {
+        const centreMatch = c.centre.toLowerCase().includes(q);
+        const collegeMatches = c.colleges.filter(col => col.toLowerCase().includes(q));
+        if (!q || centreMatch || collegeMatches.length > 0) {
+          matched++;
+          const row = document.createElement('div');
+          row.style.cssText = 'border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:0.55rem 0.7rem;background:rgba(245,158,11,0.03);transition:border-color 0.2s;';
+
+          const highlight = (text) => {
+            if (!q) return text;
+            const idx = text.toLowerCase().indexOf(q);
+            if (idx === -1) return text;
+            return text.substring(0,idx) + '<mark style="background:rgba(245,158,11,0.3);color:#fbbf24;border-radius:2px;padding:0 1px;">' + text.substring(idx, idx+q.length) + '</mark>' + text.substring(idx+q.length);
+          };
+
+          const collegeList = c.colleges.map(col =>
+            `<span style="font-size:0.72rem;color:var(--text-secondary);">${highlight(col)}</span>`
+          ).join('<span style="font-size:0.6rem;color:var(--text-tertiary);"> · </span>');
+
+          row.innerHTML = `
+            <div style="font-size:0.75rem;font-weight:700;color:#fbbf24;margin-bottom:3px;">📍 ${highlight(c.centre)}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:0.15rem;align-items:center;">
+              <span style="font-size:0.62rem;color:var(--text-tertiary);margin-right:2px;">Colleges:</span>
+              ${collegeList}
+            </div>
+          `;
+          results.appendChild(row);
+        }
+      });
+
+      noResult.style.display = matched === 0 ? 'block' : 'none';
+    }
+
+    toggle.addEventListener('click', () => {
+      isOpen = !isOpen;
+      if (isOpen) {
+        content.style.maxHeight = content.scrollHeight + 500 + 'px';
+        chevron.style.transform = 'rotate(90deg)';
+        renderCentres('');
+        setTimeout(() => search.focus(), 100);
+      } else {
+        content.style.maxHeight = '0';
+        chevron.style.transform = 'rotate(0deg)';
+      }
+    });
+
+    search.addEventListener('input', (e) => {
+      renderCentres(e.target.value);
+      content.style.maxHeight = content.scrollHeight + 500 + 'px';
+    });
+  })();
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════════════
        SEM 7 FORM FILL-UP NOTICE (2022 BATCH) — COMPACT BANNER
   ════════════════════════════════════════════════════════════════ -->
   <div style="margin-bottom: 1rem; border: 1px solid rgba(99,102,241,0.25); border-radius: var(--radius-sm); padding: 0.75rem 1rem; background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(0,0,0,0.15) 100%);">
