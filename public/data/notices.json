@@ -1,12 +1,12 @@
 [
   {
-    "id": "notice-1",
-    "title": "UG Semester 4 (Session 2024-27) Exam Form Fill-up Dates Released",
-    "date": "2026-06-02",
+    "id": "notice-sem7-formfillup",
+    "title": "UG Semester 7 (Session 2022-26) Exam Form Fill-up Dates Released",
+    "date": "2026-08-20",
     "category": "Exam",
     "isPinned": true,
     "isArchived": false,
-    "description": "Kolhan University has released the official notifications for UG Semester 4 Examination Form Fill-up. Students can fill the form online via the KU Examination Portal. The last date to fill the form without fine is June 15, 2026. A late fine of ₹200 will be applicable from June 16 to June 20, 2026.",
+    "description": "Kolhan University has released the official notification for FYUGP 7th Semester Examination 2026 (Under NEP) for Arts/Science/Commerce/Vocational (Session 2022-2026). Form fill-up without fine: 20 Aug – 31 Aug 2026. With ₹200 late fine: 1 Sep – 5 Sep 2026. After that, daily ₹100 increase (₹600 on 6 Sep to ₹1000 on 10 Sep 2026).",
     "links": [
       {
         "label": "Fill Exam Form",
@@ -14,10 +14,30 @@
       },
       {
         "label": "Official Notification PDF",
-        "url": "#"
+        "url": "https://drive.google.com/file/d/1RKK2Au7J59-1K4YtV-raqZ1gFaRYF61Y/view?usp=drive_link"
       }
     ]
   },
+  {
+    "id": "notice-1",
+    "title": "UG Semester 4 (Session 2024-27) Exam Form Fill-up — Extended Till 22 Aug",
+    "date": "2026-08-18",
+    "category": "Exam",
+    "isPinned": true,
+    "isArchived": false,
+    "description": "Kolhan University has released the official notifications for UG Semester 4 Examination Form Fill-up. Students can fill the form online via the KU Examination Portal. The last date to fill the form without fine was July 31, 2026. Extended deadline: 20 Aug – 22 Aug 2026 with ₹1000 fine.",
+    "links": [
+      {
+        "label": "Fill Exam Form",
+        "url": "https://kuuniv.ac.in/"
+      },
+      {
+        "label": "Extension Notice PDF",
+        "url": "https://drive.google.com/file/d/1fqi639y8dz8BgTeg96TT3pi0L3c0YLsn/view?usp=drive_link"
+      }
+    ]
+  },
+
   {
     "id": "notice-2",
     "title": "Summer Vacation Announcement - College Closed from June 10",
