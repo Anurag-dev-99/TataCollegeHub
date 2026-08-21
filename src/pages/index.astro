@@ -337,7 +337,12 @@ const popularPapers = [...pyqsData]
         <span style="font-size: 0.82rem; font-weight: 800; color: #fbbf24; font-family: var(--font-display);">Find Your Exam Centre</span>
         <span style="font-size: 0.58rem; font-weight: 700; background: rgba(245,158,11,0.12); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 1px 7px;">Sem 4</span>
       </div>
-      <ChevronRight id="ec-chevron" size={16} style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <a href="https://drive.google.com/file/d/1k7UU6bWZp9WzGVcPdtdy70l0mU6KZh5F/view?usp=drive_link" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.62rem; font-weight: 700; color: #fbbf24; text-decoration: none; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 8px; white-space: nowrap;">
+          <Download size={10} /> PDF
+        </a>
+        <ChevronRight id="ec-chevron" size={16} style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+      </div>
     </button>
 
     <!-- Expandable content -->
@@ -348,7 +353,7 @@ const popularPapers = [...pyqsData]
           <input
             id="ec-search"
             type="text"
-            placeholder="Search your college name..."
+            placeholder="Type your college name (e.g. Tata College)..."
             style="width: 100%; padding: 0.5rem 0.75rem 0.5rem 2rem; font-size: 0.78rem; border: 1px solid var(--border-color); border-radius: var(--radius-xs); background: rgba(0,0,0,0.2); color: var(--text-primary); outline: none; font-family: var(--font-body); transition: border-color 0.2s; box-sizing: border-box;"
             onfocus="this.style.borderColor='rgba(245,158,11,0.5)'"
             onblur="this.style.borderColor='var(--border-color)'"
@@ -364,7 +369,7 @@ const popularPapers = [...pyqsData]
 
   <script type="module">
   (() => {
-    const centres = [
+    const centreData = [
       {centre:"A.B.M College, Jsr.",colleges:["LBSM College, Jsr."]},
       {centre:"Baharagora College, Baharagora",colleges:["Baharagora College, Baharagora"]},
       {centre:"Ghatsila College, Ghatsila",colleges:["Ghatsila College, Ghatsila"]},
@@ -388,6 +393,15 @@ const popularPapers = [...pyqsData]
       {centre:"Mahila Mahavidyalaya, Seraikella-Kharsawan",colleges:["Mahila Mahavidyalaya, Seraikella Kharsawan"]}
     ];
 
+    // Build reverse lookup: college → centre
+    const collegeToCentre = [];
+    centreData.forEach(c => {
+      c.colleges.forEach(col => {
+        collegeToCentre.push({ college: col, centre: c.centre });
+      });
+    });
+    collegeToCentre.sort((a, b) => a.college.localeCompare(b.college));
+
     const toggle = document.getElementById('ec-toggle');
     const content = document.getElementById('ec-content');
     const chevron = document.getElementById('ec-chevron');
@@ -396,41 +410,33 @@ const popularPapers = [...pyqsData]
     const noResult = document.getElementById('ec-no-result');
     let isOpen = false;
 
-    function renderCentres(query) {
+    function hl(text, q) {
+      if (!q) return text;
+      const idx = text.toLowerCase().indexOf(q);
+      if (idx === -1) return text;
+      return text.substring(0,idx) + '<mark style="background:rgba(245,158,11,0.3);color:#fbbf24;border-radius:2px;padding:0 1px;">' + text.substring(idx, idx+q.length) + '</mark>' + text.substring(idx+q.length);
+    }
+
+    function renderResults(query) {
       results.innerHTML = '';
       const q = (query || '').toLowerCase().trim();
       let matched = 0;
 
-      centres.forEach(c => {
-        const centreMatch = c.centre.toLowerCase().includes(q);
-        const collegeMatches = c.colleges.filter(col => col.toLowerCase().includes(q));
-        if (!q || centreMatch || collegeMatches.length > 0) {
+      collegeToCentre.forEach(item => {
+        if (!q || item.college.toLowerCase().includes(q)) {
           matched++;
           const row = document.createElement('div');
-          row.style.cssText = 'border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:0.55rem 0.7rem;background:rgba(245,158,11,0.03);transition:border-color 0.2s;';
-
-          const highlight = (text) => {
-            if (!q) return text;
-            const idx = text.toLowerCase().indexOf(q);
-            if (idx === -1) return text;
-            return text.substring(0,idx) + '<mark style="background:rgba(245,158,11,0.3);color:#fbbf24;border-radius:2px;padding:0 1px;">' + text.substring(idx, idx+q.length) + '</mark>' + text.substring(idx+q.length);
-          };
-
-          const collegeList = c.colleges.map(col =>
-            `<span style="font-size:0.72rem;color:var(--text-secondary);">${highlight(col)}</span>`
-          ).join('<span style="font-size:0.6rem;color:var(--text-tertiary);"> · </span>');
-
+          row.style.cssText = 'border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:0.6rem 0.75rem;background:rgba(245,158,11,0.03);';
           row.innerHTML = `
-            <div style="font-size:0.75rem;font-weight:700;color:#fbbf24;margin-bottom:3px;">📍 ${highlight(c.centre)}</div>
-            <div style="display:flex;flex-wrap:wrap;gap:0.15rem;align-items:center;">
-              <span style="font-size:0.62rem;color:var(--text-tertiary);margin-right:2px;">Colleges:</span>
-              ${collegeList}
+            <div style="font-size:0.78rem;font-weight:700;color:var(--text-primary);margin-bottom:4px;">🎓 ${hl(item.college, q)}</div>
+            <div style="display:flex;align-items:center;gap:0.3rem;">
+              <span style="font-size:0.65rem;color:var(--text-tertiary);">Your Exam Centre →</span>
+              <span style="font-size:0.78rem;font-weight:800;color:#fbbf24;">📍 ${item.centre}</span>
             </div>
           `;
           results.appendChild(row);
         }
       });
-
       noResult.style.display = matched === 0 ? 'block' : 'none';
     }
 
@@ -439,7 +445,7 @@ const popularPapers = [...pyqsData]
       if (isOpen) {
         content.style.maxHeight = content.scrollHeight + 500 + 'px';
         chevron.style.transform = 'rotate(90deg)';
-        renderCentres('');
+        renderResults('');
         setTimeout(() => search.focus(), 100);
       } else {
         content.style.maxHeight = '0';
@@ -448,7 +454,7 @@ const popularPapers = [...pyqsData]
     });
 
     search.addEventListener('input', (e) => {
-      renderCentres(e.target.value);
+      renderResults(e.target.value);
       content.style.maxHeight = content.scrollHeight + 500 + 'px';
     });
   })();
