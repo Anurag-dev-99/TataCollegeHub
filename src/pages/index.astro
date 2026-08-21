@@ -78,6 +78,250 @@ const popularPapers = [...pyqsData]
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════════
+       FYUGP SEM 4 EXAM 2025 — COUNTDOWN TIMER
+  ════════════════════════════════════════════════════════════════ -->
+  <div style="margin-bottom: 1.25rem;">
+    <!-- Section title -->
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.65rem;">
+      <span style="font-size: 0.95rem;">📅</span>
+      <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.04em;">FYUGP SEM 4 EXAM 2025</span>
+    </div>
+
+    <!-- Toggle row (shows next upcoming exam) -->
+    <div id="s4-toggle-row" style="display: none; cursor: pointer; border: 1px solid rgba(239,68,68,0.25); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; background: linear-gradient(135deg, rgba(239,68,68,0.06) 0%, rgba(0,0,0,0.18) 100%); margin-bottom: 0.5rem;" role="button" tabindex="0">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0; flex: 1;">
+          <span style="font-size: 0.85rem; flex-shrink: 0;" id="s4-hdr-icon">💬</span>
+          <div style="min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap;">
+              <span id="s4-hdr-badge" style="font-size: 0.6rem; font-weight: 800; border-radius: 20px; padding: 1px 7px; white-space: nowrap;"></span>
+              <span id="s4-hdr-urgency" style="font-size: 0.58rem; font-weight: 800; border-radius: 20px; padding: 1px 6px; display: none;"></span>
+              <span id="s4-hdr-datetime" style="font-size: 0.65rem; color: var(--text-tertiary);"></span>
+            </div>
+            <div id="s4-hdr-details" style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 350px;"></div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
+          <span id="s4-hdr-timer" style="font-size: 0.82rem; font-weight: 800; font-family: var(--font-display); color: var(--text-primary);"></span>
+          <span id="s4-hdr-more" style="font-size: 0.6rem; font-weight: 700; background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.25); border-radius: 20px; padding: 2px 8px; white-space: nowrap; cursor: pointer;"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expandable cards grid -->
+    <div id="s4-cards-grid" style="display: none; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.6rem;"></div>
+
+    <!-- All exams done message -->
+    <div id="s4-all-done" style="display: none; text-align: center; padding: 1rem; border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-sm); background: rgba(16,185,129,0.05);">
+      <span style="font-size: 0.85rem; color: #34d399; font-weight: 700;">✅ All Sem 4 exams completed!</span>
+    </div>
+  </div>
+
+  <script type="module">
+  (() => {
+    const schedule = [
+      {"date":"2026-09-08","day":"Tuesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-6)","details":"Physics, Chemistry, Mathematics (Science & Arts), Botany, Zoology, Geology, Statistics, Commerce, BBA, BCA, IT, Mass Comm, Env."},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-6)","details":"Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"}]},
+      {"date":"2026-09-09","day":"Wednesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-6)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-7)","details":"Physics, Chemistry, Mathematics (Science & Arts), Botany, Zoology, Geology, Statistics, Commerce, BBA, BCA, IT, Mass Comm, Env."}]},
+      {"date":"2026-09-10","day":"Thursday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-7)","details":"Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-7)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science"}]},
+      {"date":"2026-09-11","day":"Friday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-8)","details":"Physics, Chemistry, Mathematics (Science & Arts), Botany, Zoology, Geology, Statistics, Commerce, BBA, BCA, IT, Mass Comm, Env."},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-8)","details":"Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"}]},
+      {"date":"2026-09-12","day":"Saturday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-8)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Minor (MN-2B)","details":"Science & Commerce/Vocational Subjects"}]},
+      {"date":"2026-09-15","day":"Tuesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Minor (MN-2B)","details":"Language & Literature Subjects"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Minor (MN-2B)","details":"Social Science Subjects"}]},
+      {"date":"2026-09-16","day":"Wednesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"12:00:00","paper_type":"VAC-2","details":"Global Citizenship Education — Set 1 (Science, Commerce & Vocational Majors)"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"16:00:00","paper_type":"VAC-2","details":"Global Citizenship Education — Set 2 (Language & Literature Majors)"}]},
+      {"date":"2026-09-18","day":"Friday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"12:00:00","paper_type":"VAC-2","details":"Global Citizenship Education — Set 3 (Social Science Majors)"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"16:00:00","paper_type":"AEC-4","details":"Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh — All Majors"}]},
+      {"date":"2026-09-19","day":"Saturday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"12:00:00","paper_type":"AEC-4","details":"English — All Majors"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"16:00:00","paper_type":"AEC-4","details":"Hindi — All Majors"}]}
+    ];
+
+    const typeColors = {
+      'Major': { bg:'rgba(99,102,241,0.10)',  border:'rgba(99,102,241,0.30)',  badge:'rgba(99,102,241,0.18)',  text:'#818cf8', icon:'📘' },
+      'Minor': { bg:'rgba(139,92,246,0.08)',  border:'rgba(139,92,246,0.25)',  badge:'rgba(139,92,246,0.15)',  text:'#a78bfa', icon:'📗' },
+      'VAC':   { bg:'rgba(245,158,11,0.08)', border:'rgba(245,158,11,0.25)', badge:'rgba(245,158,11,0.15)', text:'#fbbf24', icon:'🌿' },
+      'AEC':   { bg:'rgba(239,68,68,0.08)',  border:'rgba(239,68,68,0.25)',  badge:'rgba(239,68,68,0.15)',  text:'#f87171', icon:'✍️' },
+    };
+
+    function typeKey(pt) {
+      if (pt.includes('Major')) return 'Major';
+      if (pt.includes('Minor')) return 'Minor';
+      if (pt.includes('VAC'))   return 'VAC';
+      if (pt.includes('AEC'))   return 'AEC';
+      return 'Major';
+    }
+
+    function buildEvents() {
+      const events = [];
+      for (const day of schedule) {
+        for (const s of day.sittings) {
+          events.push({
+            date: day.date, day: day.day,
+            paper_type: s.paper_type,
+            typeKey: typeKey(s.paper_type),
+            startTime: s.time_start.substring(0,5),
+            details: [s.details],
+            deadline: new Date(`${day.date}T${s.time_start}`)
+          });
+        }
+      }
+      return events.sort((a,b) => a.deadline - b.deadline);
+    }
+
+    const events = buildEvents();
+
+    function pad(n) { return String(n).padStart(2,'0'); }
+    function tl(dt) {
+      const d = dt - Date.now();
+      if (d <= 0) return null;
+      return { days:Math.floor(d/86400000), hours:Math.floor((d%86400000)/3600000), mins:Math.floor((d%3600000)/60000), secs:Math.floor((d%60000)/1000), ms:d };
+    }
+    function urg(ms) {
+      const h = ms/3600000;
+      if (h<=24) return {bg:'rgba(239,68,68,0.15)',border:'rgba(239,68,68,0.4)',label:'TODAY',lc:'#f87171'};
+      if (h<=72) return {bg:'rgba(245,158,11,0.12)',border:'rgba(245,158,11,0.35)',label:'SOON',lc:'#fbbf24'};
+      return null;
+    }
+    function fmtDate(ds) {
+      return new Date(ds+'T00:00:00').toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+    }
+
+    // DOM
+    const grid      = document.getElementById('s4-cards-grid');
+    const allDone   = document.getElementById('s4-all-done');
+    const toggleRow = document.getElementById('s4-toggle-row');
+
+    let isExpanded = false;
+    let cardTimers = {};
+    let hdrTimerEl = null;
+
+    function makeCard(ev, i) {
+      const t = tl(ev.deadline);
+      if (!t) return null;
+      const c  = typeColors[ev.typeKey] || typeColors['Major'];
+      const u  = urg(t.ms);
+      const bc = u ? u.border : c.border;
+      const bg = u ? u.bg     : c.bg;
+      const up = u ? `<span style="font-size:0.58rem;font-weight:800;color:${u.lc};background:${u.bg};border:1px solid ${u.border};border-radius:20px;padding:1px 6px;">${u.label}</span>` : '';
+      const snip = ev.details[0].length > 70 ? ev.details[0].substring(0,68)+'…' : ev.details[0];
+
+      const card = document.createElement('div');
+      card.id = `s4-card-${i}`;
+      card.style.cssText = `border:1px solid ${bc};border-radius:var(--radius-sm);padding:0.75rem 0.85rem;background:${bg};display:flex;flex-direction:column;gap:0.35rem;transition:border-color 0.3s,background 0.3s;`;
+
+      card.innerHTML = `
+        <div style="display:flex;align-items:center;gap:0.35rem;flex-wrap:wrap;">
+          <span style="font-size:0.6rem;font-weight:800;color:${c.text};background:${c.badge};border-radius:20px;padding:1px 7px;">${ev.paper_type}</span>
+          ${up}
+          <span style="font-size:0.62rem;color:var(--text-tertiary);">${fmtDate(ev.date)} · ${ev.startTime}</span>
+        </div>
+        <div style="font-size:0.72rem;color:var(--text-secondary);line-height:1.4;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
+          ${c.icon} ${snip}
+        </div>
+        <div style="display:flex;align-items:baseline;gap:0.25rem;margin-top:auto;" id="s4-timer-${i}">
+          <span style="font-size:1.15rem;font-weight:900;font-family:var(--font-display);color:var(--text-primary);letter-spacing:-0.02em;">${pad(t.days)}</span><span style="font-size:0.55rem;color:var(--text-tertiary);margin-right:4px;">DAYS</span>
+          <span style="font-size:0.55rem;color:var(--text-tertiary);">:</span>
+          <span style="font-size:1.15rem;font-weight:900;font-family:var(--font-display);color:var(--text-primary);letter-spacing:-0.02em;">${pad(t.hours)}</span><span style="font-size:0.55rem;color:var(--text-tertiary);margin-right:4px;">HRS</span>
+          <span style="font-size:0.55rem;color:var(--text-tertiary);">:</span>
+          <span style="font-size:1.15rem;font-weight:900;font-family:var(--font-display);color:var(--text-primary);letter-spacing:-0.02em;">${pad(t.mins)}</span><span style="font-size:0.55rem;color:var(--text-tertiary);margin-right:4px;">MIN</span>
+          <span style="font-size:0.55rem;color:var(--text-tertiary);">:</span>
+          <span style="font-size:1.15rem;font-weight:900;font-family:var(--font-display);color:var(--text-primary);letter-spacing:-0.02em;">${pad(t.secs)}</span><span style="font-size:0.55rem;color:var(--text-tertiary);">SEC</span>
+        </div>
+      `;
+      return card;
+    }
+
+    function buildCards() {
+      grid.innerHTML = '';
+      cardTimers = {};
+      let built = 0;
+      events.forEach((ev, i) => {
+        const card = makeCard(ev, i);
+        if (card) { grid.appendChild(card); cardTimers[i] = ev; built++; }
+      });
+      if (built === 0) {
+        toggleRow.style.display = 'none';
+        grid.style.display = 'none';
+        allDone.style.display = 'block';
+      }
+    }
+
+    function updateHeader() {
+      const next = events.find(ev => tl(ev.deadline));
+      if (!next) { toggleRow.style.display = 'none'; return; }
+      toggleRow.style.display = 'block';
+
+      const c = typeColors[next.typeKey] || typeColors['Major'];
+      const t = tl(next.deadline);
+      const u = urg(t.ms);
+
+      document.getElementById('s4-hdr-icon').textContent = c.icon;
+
+      const badge = document.getElementById('s4-hdr-badge');
+      badge.textContent = next.paper_type;
+      badge.style.cssText = `font-size:0.6rem;font-weight:800;border-radius:20px;padding:1px 7px;white-space:nowrap;color:${c.text};background:${c.badge};`;
+
+      const urgEl = document.getElementById('s4-hdr-urgency');
+      if (u) {
+        urgEl.style.display = 'inline';
+        urgEl.textContent = u.label;
+        urgEl.style.cssText = `font-size:0.58rem;font-weight:800;color:${u.lc};background:${u.bg};border:1px solid ${u.border};border-radius:20px;padding:1px 6px;display:inline;`;
+      } else { urgEl.style.display = 'none'; }
+
+      document.getElementById('s4-hdr-datetime').textContent = `${fmtDate(next.date)} · ${next.startTime}`;
+      const snip = next.details[0].length > 50 ? next.details[0].substring(0,48)+'…' : next.details[0];
+      document.getElementById('s4-hdr-details').textContent = snip;
+      document.getElementById('s4-hdr-timer').textContent = `${pad(t.days)}d ${pad(t.hours)}h ${pad(t.mins)}m ${pad(t.secs)}s`;
+
+      // "more" pill
+      const remaining = events.filter(ev => tl(ev.deadline)).length;
+      const moreEl = document.getElementById('s4-hdr-more');
+      if (remaining > 1 && !isExpanded) {
+        moreEl.style.display = 'inline';
+        moreEl.textContent = `▼ +${remaining - 1} more`;
+      } else if (isExpanded) {
+        moreEl.style.display = 'inline';
+        moreEl.textContent = '▲ Collapse';
+        moreEl.style.background = 'rgba(16,185,129,0.12)';
+        moreEl.style.color = '#34d399';
+        moreEl.style.borderColor = 'rgba(16,185,129,0.25)';
+      } else {
+        moreEl.style.display = 'none';
+      }
+    }
+
+    function tick() {
+      updateHeader();
+      for (const [i, ev] of Object.entries(cardTimers)) {
+        const t = tl(ev.deadline);
+        const el = document.getElementById(`s4-timer-${i}`);
+        if (!el) continue;
+        if (!t) { el.innerHTML = '<span style="font-size:0.75rem;color:#34d399;font-weight:700;">✅ Done</span>'; continue; }
+        const spans = el.querySelectorAll('span[style*="font-size:1.15rem"]');
+        if (spans.length >= 4) {
+          spans[0].textContent = pad(t.days);
+          spans[1].textContent = pad(t.hours);
+          spans[2].textContent = pad(t.mins);
+          spans[3].textContent = pad(t.secs);
+        }
+      }
+    }
+
+    toggleRow.addEventListener('click', () => {
+      isExpanded = !isExpanded;
+      if (isExpanded) {
+        buildCards();
+        grid.style.display = 'grid';
+      } else {
+        grid.style.display = 'none';
+      }
+      updateHeader();
+    });
+
+    // Init
+    buildCards();
+    if (!isExpanded) grid.style.display = 'none';
+    tick();
+    setInterval(tick, 1000);
+  })();
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════════════
        SEM 7 FORM FILL-UP NOTICE (2022 BATCH) — COMPACT BANNER
   ════════════════════════════════════════════════════════════════ -->
   <div style="margin-bottom: 1rem; border: 1px solid rgba(99,102,241,0.25); border-radius: var(--radius-sm); padding: 0.75rem 1rem; background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(0,0,0,0.15) 100%);">
