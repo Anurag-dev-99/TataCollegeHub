@@ -1,7 +1,7 @@
 # 📈 KolhanHub SEO Ranking History Report
 
-> Last Updated: **09 Aug 2026, 10:53 PM** (Method: `manual`)
-> Previous Run: **29 Jul 2026, 09:48 PM**
+> Last Updated: **21 Aug 2026, 11:49 PM** (Method: `manual`)
+> Previous Run: **09 Aug 2026, 10:53 PM**
 
 ---
 
@@ -15,12 +15,12 @@
 | **Top 30 Rankings 🟡** | **15** | Pages 1-3 |
 | **Not Found in Top Results ❌** | **2** | - |
 
-### Run-to-Run Trends (Compared to 29 Jul 2026, 09:48 PM)
-- 🟢 **Rank Improved:** 1 keywords
-- 🔴 **Rank Declined:** 3 keywords
+### Run-to-Run Trends (Compared to 09 Aug 2026, 10:53 PM)
+- 🟢 **Rank Improved:** 0 keywords
+- 🔴 **Rank Declined:** 5 keywords
 - ✨ **New Rankings:** 0 keywords
 - ❌ **Dropped Out of Top:** 0 keywords
-- ⚪ **No Change:** 13 keywords
+- ⚪ **No Change:** 12 keywords
 
 ---
 
@@ -34,15 +34,15 @@
 | ⚪ | `kolhan university pyq` | #1 | #1 | #1 |
 | ⚪ | `kolhan university previous year question paper` | #1 | #1 | #1 |
 | ⚪ | `kolhan university question paper download` | #1 | #1 | #1 |
-| ⚪ | `tata college pyq` | #1 | #1 | #1 |
-| 🔴 | `tata college chaibasa pyq` | #2 | #3 | 🔴 #3 (▼ 1) |
-| 🔴 | `kolhan university nep 2020 syllabus` | #2 | #4 | 🔴 #4 (▼ 2) |
-| ⚪ | `tata college syllabus` | #4 | #4 | #4 |
-| 🔴 | `tata college result` | #2 | #4 | 🔴 #4 (▼ 2) |
+| 🔴 | `tata college pyq` | #1 | #2 | 🔴 #2 (▼ 1) |
+| ⚪ | `tata college chaibasa pyq` | #3 | #3 | #3 |
+| ⚪ | `tata college result` | #4 | #4 | #4 |
 | ⚪ | `kolhan syllabus` | #6 | #6 | #6 |
-| ⚪ | `kolhan result` | #6 | #6 | #6 |
-| 🟢 | `kolhan university syllabus` | #8 | #7 | 🟢 #7 (▲ 1) |
+| 🔴 | `tata college syllabus` | #4 | #6 | 🔴 #6 (▼ 2) |
+| 🔴 | `kolhan university syllabus` | #7 | #8 | 🔴 #8 (▼ 1) |
 | ⚪ | `kolhan university nep syllabus` | #8 | #8 | #8 |
+| 🔴 | `kolhan result` | #6 | #8 | 🔴 #8 (▼ 2) |
+| 🔴 | `kolhan university nep 2020 syllabus` | #4 | #9 | 🔴 #9 (▼ 5) |
 | ⚪ | `kolhan university result` | Not found | Not found | Not found |
 | ⚪ | `tata college chaibasa` | Not found | Not found | Not found |
 
@@ -52,6 +52,7 @@
 
 | Check Date & Time | Method | Keywords | Top 3 | Top 10 | Top 30 |
 | :--- | :---: | :---: | :---: | :---: | :---: |
+| 21 Aug 2026, 11:49 PM | `manual` | 17 | 8 | 15 | 15 |
 | 09 Aug 2026, 10:53 PM | `manual` | 17 | 8 | 15 | 15 |
 | 29 Jul 2026, 09:48 PM | `manual` | 17 | 10 | 15 | 15 |
 | 23 Jul 2026, 08:20 AM | `manual` | 17 | 11 | 14 | 14 |
