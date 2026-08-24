@@ -1,6 +1,13 @@
 {
   "announcements": [
     {
+      "id": "res-ug-sem2-2024",
+      "title": "UG Semester 2 All Streams (Session 2024-28) [All 17 Departments Live]",
+      "date": "2026-08-24",
+      "status": "Declared",
+      "link": "#results?exam=sem2_master_2024-2028"
+    },
+    {
       "id": "res-ug-sem6-science",
       "title": "UG Semester 6 Science Streams (Session 2022-26) [Maths + Physics Live]",
       "date": "2026-06-13",
@@ -228,6 +235,22 @@
     }
   ],
   "datasets": [
+    {
+      "id": "sem2_master_2024-2028",
+      "title": "Semester 2 — All Streams (Science + Arts)",
+      "batch": "Session 2024-2028",
+      "university": "Kolhan University",
+      "date": "2026-08-24",
+      "status": "Declared",
+      "file": "results_sem2_2024_master.json",
+      "updates": [
+        {
+          "version": "1.0",
+          "title": "All 17 Departments Complete",
+          "desc": "Full Tata College Sem 2 (2024 batch) results: Ho (468), History (434), Hindi (252), Economics (211), Political Science (169), Psychology (154), Philosophy (140), Mathematics (95), Geography (90), English (73), Zoology (50), Chemistry (46), Physics (37), CA (34), Botany (31), Urdu (19), Odia (3). Grand total: 2,306 students."
+        }
+      ]
+    },
     {
       "id": "sem1_master_2024-2028",
       "title": "Semester 1 — All Streams (Science + Arts)",
