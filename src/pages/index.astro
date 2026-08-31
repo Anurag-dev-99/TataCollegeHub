@@ -336,9 +336,10 @@ const popularPapers = [...pyqsData]
         <span style="font-size: 0.9rem;">🏫</span>
         <span style="font-size: 0.82rem; font-weight: 800; color: #fbbf24; font-family: var(--font-display);">Find Your Exam Centre</span>
         <span style="font-size: 0.58rem; font-weight: 700; background: rgba(245,158,11,0.12); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 1px 7px;">Sem 4</span>
+        <span style="font-size: 0.58rem; font-weight: 700; background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); border-radius: 20px; padding: 1px 7px; animation: pulse 2s infinite;">⚠️ Revised</span>
       </div>
       <div style="display: flex; align-items: center; gap: 0.5rem;">
-        <a href="https://drive.google.com/file/d/1k7UU6bWZp9WzGVcPdtdy70l0mU6KZh5F/view?usp=drive_link" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.62rem; font-weight: 700; color: #fbbf24; text-decoration: none; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 8px; white-space: nowrap;">
+        <a href="https://drive.google.com/file/d/1qYxpyxW0__938htPJYjkXOAypBo2HsG6/view?usp=drive_link" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.62rem; font-weight: 700; color: #fbbf24; text-decoration: none; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 8px; white-space: nowrap;">
           <Download size={10} /> PDF
         </a>
         <ChevronRight id="ec-chevron" size={16} style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
@@ -370,11 +371,10 @@ const popularPapers = [...pyqsData]
   <script type="module">
   (() => {
     const centreData = [
-      {centre:"A.B.M College, Jsr.",colleges:["LBSM College, Jsr."]},
       {centre:"Baharagora College, Baharagora",colleges:["Baharagora College, Baharagora"]},
       {centre:"Ghatsila College, Ghatsila",colleges:["Ghatsila College, Ghatsila"]},
       {centre:"The G.S.C. for Women, Jsr.",colleges:["The G.S.C. for Women, Jsr."]},
-      {centre:"Jsr. Co-operative College, Jsr.",colleges:["Karim City College, Jsr."]},
+      {centre:"Jsr. Co-operative College, Jsr.",colleges:["LBSM College, Jsr."]},
       {centre:"Jsr. Workers' College, Jsr.",colleges:["J.K.S College, Jsr."]},
       {centre:"J.L.N. College, Chakradharpur",colleges:["J.L.N. College, Chakradharpur","VAS College, Sonua"]},
       {centre:"K.S College, Seraikella",colleges:["K.S. College, Seraikella","Degree College, Kharsawan","Institute for Education Seraikella Kharsawan"]},
@@ -383,10 +383,11 @@ const popularPapers = [...pyqsData]
       {centre:"Singhbhum College, Chandil",colleges:["Singhbhum College, Chandil","MBNS Institute of Graduate Studies, Chandil"]},
       {centre:"Tata College, Chaibasa",colleges:["Mahila College, Chaibasa","Degree College, Manjhgaon, Kumardungi"]},
       {centre:"BDSL Mahila College, Ghatsila",colleges:["BDSL Mahila College, Ghatsila","J.K.M College of Management, Science and Commerce, Salboni","AJK College, Chakulia","S.R.K.M. College, Chakulia"]},
-      {centre:"J.K.S College, Jsr.",colleges:["Jsr. Worker's College, Jsr."]},
-      {centre:"Karim City College, Jsr.",colleges:["ABM College, Jsr.","R.K.M Voc. Training Inst. Jsr.","GIIT Prof. College, Jsr.","Mrs. KMPM Voc. College, Jsr.","XITE, Gamharia"]},
+      {centre:"J.K.S College, Jsr.",colleges:["Karim City College, Jsr. (Arts & Commerce)"]},
+      {centre:"Karim City College, Jsr.",colleges:["ABM College, Jsr.","Jsr. Worker's College, Jsr.","Mrs. KMPM Voc. College, Jsr."]},
       {centre:"Patamda Degree College, Jalla",colleges:["Patamda Degree College, Jalla"]},
       {centre:"St. Augustin's College, Manoharpur",colleges:["St. Augustin's College, Manoharpur"]},
+      {centre:"Jem Foundation Mrs. KMPM Vocational College, Jsr.",colleges:["Karim City College, Jsr. (Science & Vocational)","R.K.M Voc. Training Inst. Jsr.","GIIT Prof. College, Jsr.","XITE, Gamharia"]},
       {centre:"Noamundi College, Noamundi",colleges:["Noamundi College, Noamundi","Degree College, Jagannathpur"]},
       {centre:"Degree College, Manoharpur",colleges:["Degree College, Manoharpur"]},
       {centre:"Model Mahavidyalaya, Seraikella-Kharswan",colleges:["Model Mahavidyalaya, Seraikella-Kharswan"]},
@@ -484,30 +485,7 @@ const popularPapers = [...pyqsData]
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════════════════════════
-       SEM 4 FORM FILL-UP NOTICE — COMPACT BANNER (WITH EXTENSION)
-  ════════════════════════════════════════════════════════════════ -->
-  <div style="margin-bottom: 1.5rem; border: 1px solid rgba(239,68,68,0.25); border-radius: var(--radius-sm); padding: 0.75rem 1rem; background: linear-gradient(135deg, rgba(239,68,68,0.05) 0%, rgba(0,0,0,0.15) 100%);">
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
-      <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
-        <span style="font-size: 1rem; flex-shrink: 0;">📋</span>
-        <div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: #f87171; font-family: var(--font-display);">Sem 4 Exam Form Fill-up</div>
-          <div style="font-size: 0.68rem; color: var(--text-tertiary); margin-top: 1px;">FYUGP 2023 Batch — Online Application</div>
-        </div>
-      </div>
-      <a href="https://drive.google.com/file/d/1fqi639y8dz8BgTeg96TT3pi0L3c0YLsn/view?usp=drive_link" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; font-weight: 700; color: #f87171; text-decoration: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); border-radius: 20px; padding: 3px 10px; white-space: nowrap; transition: background 0.2s; flex-shrink: 0;">
-        <Download size={12} /> Notice PDF
-      </a>
-    </div>
-    <!-- Deadline pills -->
-    <div style="display: flex; gap: 0.4rem; margin-top: 0.55rem; flex-wrap: wrap;">
-      <span style="font-size: 0.62rem; font-weight: 700; border-radius: 20px; padding: 2px 8px; white-space: nowrap; border: 1px solid rgba(16,185,129,0.15); background: rgba(16,185,129,0.03); color: rgba(52,211,153,0.4); text-decoration: line-through;">No Fine: 22 Jul – 31 Jul</span>
-      <span style="font-size: 0.62rem; font-weight: 700; border-radius: 20px; padding: 2px 8px; white-space: nowrap; border: 1px solid rgba(245,158,11,0.15); background: rgba(245,158,11,0.03); color: rgba(251,191,36,0.4); text-decoration: line-through;">₹200 Fine: 1 Aug – 5 Aug</span>
-      <span style="font-size: 0.62rem; font-weight: 700; border-radius: 20px; padding: 2px 8px; white-space: nowrap; border: 1px solid rgba(239,68,68,0.15); background: rgba(239,68,68,0.03); color: rgba(248,113,113,0.4); text-decoration: line-through;">₹500 Fine: 6 Aug – 10 Aug</span>
-      <span style="font-size: 0.62rem; font-weight: 700; border-radius: 20px; padding: 2px 8px; white-space: nowrap; border: 1px solid rgba(239,68,68,0.4); background: rgba(239,68,68,0.12); color: #ef4444;">₹1000 Fine: 20 Aug – 22 Aug</span>
-    </div>
-  </div>
+
 
   <!-- ═══════════════════════════════════════════════════════════════
        2025 BATCH SYLLABUS REQUEST — COMMUNITY CTA

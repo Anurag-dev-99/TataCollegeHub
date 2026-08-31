@@ -19,18 +19,29 @@
     ]
   },
   {
-    "id": "notice-1",
-    "title": "UG Semester 4 (Session 2024-27) Exam Form Fill-up — Extended Till 22 Aug",
-    "date": "2026-08-18",
+    "id": "notice-sem4-revised-centre",
+    "title": "Sem 4 Exam Centre Revised — Check Your New Centre",
+    "date": "2026-08-31",
     "category": "Exam",
     "isPinned": true,
     "isArchived": false,
-    "description": "Kolhan University has released the official notifications for UG Semester 4 Examination Form Fill-up. Students can fill the form online via the KU Examination Portal. The last date to fill the form without fine was July 31, 2026. Extended deadline: 20 Aug – 22 Aug 2026 with ₹1000 fine.",
+    "description": "Kolhan University has released a revised exam centre list for FYUGP 4th Semester Examination 2025 (Under NEP). Several centre assignments have changed — Karim City College students are now split between J.K.S College (Arts & Commerce) and Jem Foundation Mrs. KMPM Voc. College (Science & Vocational). A.B.M College is no longer an exam centre. Please check the updated list on our homepage or download the official PDF.",
     "links": [
       {
-        "label": "Fill Exam Form",
-        "url": "https://kuuniv.ac.in/"
-      },
+        "label": "Revised Centre PDF",
+        "url": "https://drive.google.com/file/d/1qYxpyxW0__938htPJYjkXOAypBo2HsG6/view?usp=drive_link"
+      }
+    ]
+  },
+  {
+    "id": "notice-1",
+    "title": "UG Semester 4 (Session 2024-27) Exam Form Fill-up — Closed",
+    "date": "2026-08-18",
+    "category": "Exam",
+    "isPinned": false,
+    "isArchived": true,
+    "description": "Kolhan University has released the official notifications for UG Semester 4 Examination Form Fill-up. The form fill-up period has ended. Last date was 22 Aug 2026 with ₹1000 fine.",
+    "links": [
       {
         "label": "Extension Notice PDF",
         "url": "https://drive.google.com/file/d/1fqi639y8dz8BgTeg96TT3pi0L3c0YLsn/view?usp=drive_link"
