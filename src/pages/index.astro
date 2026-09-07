@@ -125,7 +125,7 @@ const popularPapers = [...pyqsData]
   <script type="module">
   (() => {
     const schedule = [
-      {"date":"2026-09-08","day":"Tuesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-6)","details":"Physics, Chemistry, Mathematics (Science & Arts), Botany, Zoology, Geology, Statistics, Commerce, BBA, BCA, IT, Mass Comm, Env."},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-6)","details":"Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"}]},
+      // Sep 8 (MJ-6 Science/Arts 1st sitting) POSTPONED — will be rescheduled
       {"date":"2026-09-09","day":"Wednesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-6)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-7)","details":"Physics, Chemistry, Mathematics (Science & Arts), Botany, Zoology, Geology, Statistics, Commerce, BBA, BCA, IT, Mass Comm, Env."}]},
       {"date":"2026-09-10","day":"Thursday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-7)","details":"Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-7)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science"}]},
       {"date":"2026-09-11","day":"Friday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-8)","details":"Physics, Chemistry, Mathematics (Science & Arts), Botany, Zoology, Geology, Statistics, Commerce, BBA, BCA, IT, Mass Comm, Env."},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-8)","details":"Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"}]},
@@ -327,139 +327,24 @@ const popularPapers = [...pyqsData]
   </script>
 
   <!-- ═══════════════════════════════════════════════════════════════
-       FIND YOUR EXAM CENTRE — SEARCHABLE COLLAPSIBLE
+       SEP 8 EXAM POSTPONED — NOTICE BANNER
   ════════════════════════════════════════════════════════════════ -->
-  <div style="margin-bottom: 1.25rem; border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(245,158,11,0.03) 0%, rgba(0,0,0,0.12) 100%);">
-    <!-- Toggle header -->
-    <button id="ec-toggle" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 1rem; background: transparent; border: none; cursor: pointer; text-align: left;">
-      <div style="display: flex; align-items: center; gap: 0.5rem;">
-        <span style="font-size: 0.9rem;">🏫</span>
-        <span style="font-size: 0.82rem; font-weight: 800; color: #fbbf24; font-family: var(--font-display);">Find Your Exam Centre</span>
-        <span style="font-size: 0.58rem; font-weight: 700; background: rgba(245,158,11,0.12); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 1px 7px;">Sem 4</span>
-        <span style="font-size: 0.58rem; font-weight: 700; background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); border-radius: 20px; padding: 1px 7px; animation: pulse 2s infinite;">⚠️ Revised</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 0.5rem;">
-        <a href="https://drive.google.com/file/d/1qYxpyxW0__938htPJYjkXOAypBo2HsG6/view?usp=drive_link" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.62rem; font-weight: 700; color: #fbbf24; text-decoration: none; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 8px; white-space: nowrap;">
-          <Download size={10} /> PDF
-        </a>
-        <ChevronRight id="ec-chevron" size={16} style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
-      </div>
-    </button>
-
-    <!-- Expandable content -->
-    <div id="ec-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; border-top: 1px solid rgba(245,158,11,0.1);">
-      <div style="padding: 0.75rem 1rem;">
-        <!-- Search box -->
-        <div style="position: relative; margin-bottom: 0.65rem;">
-          <input
-            id="ec-search"
-            type="text"
-            placeholder="Type your college name (e.g. Tata College)..."
-            style="width: 100%; padding: 0.5rem 0.75rem 0.5rem 2rem; font-size: 0.78rem; border: 1px solid var(--border-color); border-radius: var(--radius-xs); background: rgba(0,0,0,0.2); color: var(--text-primary); outline: none; font-family: var(--font-body); transition: border-color 0.2s; box-sizing: border-box;"
-            onfocus="this.style.borderColor='rgba(245,158,11,0.5)'"
-            onblur="this.style.borderColor='var(--border-color)'"
-          />
-          <span style="position: absolute; left: 0.6rem; top: 50%; transform: translateY(-50%); font-size: 0.8rem; color: var(--text-tertiary);">🔍</span>
+  <div style="margin-bottom: 1rem; border: 1px solid rgba(239,68,68,0.3); border-radius: var(--radius-sm); padding: 0.75rem 1rem; background: linear-gradient(135deg, rgba(239,68,68,0.06) 0%, rgba(0,0,0,0.15) 100%);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
+        <span style="font-size: 1rem; flex-shrink: 0;">⚠️</span>
+        <div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: #f87171; font-family: var(--font-display);">8 Sep Exam Postponed</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary); margin-top: 1px;">Major (MJ-6) — Both sittings postponed till next notice</div>
         </div>
-        <!-- Results -->
-        <div id="ec-results" style="display: flex; flex-direction: column; gap: 0.4rem; max-height: 300px; overflow-y: auto;"></div>
-        <div id="ec-no-result" style="display: none; text-align: center; padding: 0.75rem; font-size: 0.75rem; color: var(--text-tertiary);">No matching college found</div>
       </div>
+      <a href="https://drive.google.com/file/d/16UGW6hBa_rrv9hOG07k02oTTfmpV03-l/view?usp=drive_link" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; font-weight: 700; color: #f87171; text-decoration: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); border-radius: 20px; padding: 3px 10px; white-space: nowrap; transition: background 0.2s; flex-shrink: 0;">
+        <Download size={12} /> Notice PDF
+      </a>
     </div>
   </div>
 
-  <script type="module">
-  (() => {
-    const centreData = [
-      {centre:"Baharagora College, Baharagora",colleges:["Baharagora College, Baharagora"]},
-      {centre:"Ghatsila College, Ghatsila",colleges:["Ghatsila College, Ghatsila"]},
-      {centre:"The G.S.C. for Women, Jsr.",colleges:["The G.S.C. for Women, Jsr."]},
-      {centre:"Jsr. Co-operative College, Jsr.",colleges:["LBSM College, Jsr."]},
-      {centre:"Jsr. Workers' College, Jsr.",colleges:["J.K.S College, Jsr."]},
-      {centre:"J.L.N. College, Chakradharpur",colleges:["J.L.N. College, Chakradharpur","VAS College, Sonua"]},
-      {centre:"K.S College, Seraikella",colleges:["K.S. College, Seraikella","Degree College, Kharsawan","Institute for Education Seraikella Kharsawan"]},
-      {centre:"L.B.S.M College, Jsr.",colleges:["Jsr. Co-operative College, Jsr.","Rambha College, Gitilata"]},
-      {centre:"Mahila College, Chaibasa",colleges:["Tata College, Chaibasa","G.C. Jain Commerce College, Chaibasa"]},
-      {centre:"Singhbhum College, Chandil",colleges:["Singhbhum College, Chandil","MBNS Institute of Graduate Studies, Chandil"]},
-      {centre:"Tata College, Chaibasa",colleges:["Mahila College, Chaibasa","Degree College, Manjhgaon, Kumardungi"]},
-      {centre:"BDSL Mahila College, Ghatsila",colleges:["BDSL Mahila College, Ghatsila","J.K.M College of Management, Science and Commerce, Salboni","AJK College, Chakulia","S.R.K.M. College, Chakulia"]},
-      {centre:"J.K.S College, Jsr.",colleges:["Karim City College, Jsr. (Arts & Commerce)"]},
-      {centre:"Karim City College, Jsr.",colleges:["ABM College, Jsr.","Jsr. Worker's College, Jsr.","Mrs. KMPM Voc. College, Jsr."]},
-      {centre:"Patamda Degree College, Jalla",colleges:["Patamda Degree College, Jalla"]},
-      {centre:"St. Augustin's College, Manoharpur",colleges:["St. Augustin's College, Manoharpur"]},
-      {centre:"Jem Foundation Mrs. KMPM Vocational College, Jsr.",colleges:["Karim City College, Jsr. (Science & Vocational)","R.K.M Voc. Training Inst. Jsr.","GIIT Prof. College, Jsr.","XITE, Gamharia"]},
-      {centre:"Noamundi College, Noamundi",colleges:["Noamundi College, Noamundi","Degree College, Jagannathpur"]},
-      {centre:"Degree College, Manoharpur",colleges:["Degree College, Manoharpur"]},
-      {centre:"Model Mahavidyalaya, Seraikella-Kharswan",colleges:["Model Mahavidyalaya, Seraikella-Kharswan"]},
-      {centre:"Mahila Mahavidyalaya, Seraikella-Kharsawan",colleges:["Mahila Mahavidyalaya, Seraikella Kharsawan"]}
-    ];
 
-    // Build reverse lookup: college → centre
-    const collegeToCentre = [];
-    centreData.forEach(c => {
-      c.colleges.forEach(col => {
-        collegeToCentre.push({ college: col, centre: c.centre });
-      });
-    });
-    collegeToCentre.sort((a, b) => a.college.localeCompare(b.college));
-
-    const toggle = document.getElementById('ec-toggle');
-    const content = document.getElementById('ec-content');
-    const chevron = document.getElementById('ec-chevron');
-    const search = document.getElementById('ec-search');
-    const results = document.getElementById('ec-results');
-    const noResult = document.getElementById('ec-no-result');
-    let isOpen = false;
-
-    function hl(text, q) {
-      if (!q) return text;
-      const idx = text.toLowerCase().indexOf(q);
-      if (idx === -1) return text;
-      return text.substring(0,idx) + '<mark style="background:rgba(245,158,11,0.3);color:#fbbf24;border-radius:2px;padding:0 1px;">' + text.substring(idx, idx+q.length) + '</mark>' + text.substring(idx+q.length);
-    }
-
-    function renderResults(query) {
-      results.innerHTML = '';
-      const q = (query || '').toLowerCase().trim();
-      let matched = 0;
-
-      collegeToCentre.forEach(item => {
-        if (!q || item.college.toLowerCase().includes(q)) {
-          matched++;
-          const row = document.createElement('div');
-          row.style.cssText = 'border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:0.6rem 0.75rem;background:rgba(245,158,11,0.03);';
-          row.innerHTML = `
-            <div style="font-size:0.78rem;font-weight:700;color:var(--text-primary);margin-bottom:4px;">🎓 ${hl(item.college, q)}</div>
-            <div style="display:flex;align-items:center;gap:0.3rem;">
-              <span style="font-size:0.65rem;color:var(--text-tertiary);">Your Exam Centre →</span>
-              <span style="font-size:0.78rem;font-weight:800;color:#fbbf24;">📍 ${item.centre}</span>
-            </div>
-          `;
-          results.appendChild(row);
-        }
-      });
-      noResult.style.display = matched === 0 ? 'block' : 'none';
-    }
-
-    toggle.addEventListener('click', () => {
-      isOpen = !isOpen;
-      if (isOpen) {
-        content.style.maxHeight = content.scrollHeight + 500 + 'px';
-        chevron.style.transform = 'rotate(90deg)';
-        renderResults('');
-        setTimeout(() => search.focus(), 100);
-      } else {
-        content.style.maxHeight = '0';
-        chevron.style.transform = 'rotate(0deg)';
-      }
-    });
-
-    search.addEventListener('input', (e) => {
-      renderResults(e.target.value);
-      content.style.maxHeight = content.scrollHeight + 500 + 'px';
-    });
-  })();
-  </script>
 
   <!-- ═══════════════════════════════════════════════════════════════
        SEM 7 FORM FILL-UP NOTICE (2022 BATCH) — COMPACT BANNER
@@ -2048,7 +1933,7 @@ const popularPapers = [...pyqsData]
 
       tabDeadlinesBtn?.addEventListener('click', () => setTab('deadlines'));
       tabHolidaysBtn?.addEventListener('click', () => setTab('holidays'));
-      setTab('deadlines');
+      setTab('holidays');
 
       // 3. Render Holiday List on Homepage Card
       const renderHolidaysWidget = () => {
@@ -2330,7 +2215,7 @@ const popularPapers = [...pyqsData]
 
       tabDeadlinesBtn?.addEventListener('click', () => setTab('deadlines'));
       tabHolidaysBtn?.addEventListener('click', () => setTab('holidays'));
-      setTab('deadlines');
+      setTab('holidays');
 
       // 3. Render Holiday List on Homepage Card
       const renderHolidaysWidget = () => {

@@ -1,5 +1,20 @@
 [
   {
+    "id": "notice-sem4-postponed-sep8",
+    "title": "Sem 4 Exam on 8 September Postponed — Both Sittings",
+    "date": "2026-09-07",
+    "category": "Exam",
+    "isPinned": true,
+    "isArchived": false,
+    "description": "Kolhan University has postponed the FYUGP Sem 4 exam scheduled for 8 September 2026 (Major MJ-6 — both 1st and 2nd sittings). The new date will be notified later. All other exam dates remain unchanged.",
+    "links": [
+      {
+        "label": "Official Notice PDF",
+        "url": "https://drive.google.com/file/d/16UGW6hBa_rrv9hOG07k02oTTfmpV03-l/view?usp=drive_link"
+      }
+    ]
+  },
+  {
     "id": "notice-sem7-formfillup",
     "title": "UG Semester 7 (Session 2022-26) Exam Form Fill-up Dates Released",
     "date": "2026-08-20",
