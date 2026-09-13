@@ -29,16 +29,16 @@
   },
   {
     "id": "vac-2-global-citizenship",
-    "name": "VAC-2 Global Citizenship Education for Sustainable Development",
+    "name": "VAC-2 Global Citizenship (English)",
     "semester": "Semester 4",
     "link": "https://drive.google.com/file/d/14U_fbWZ6ALUUoM4YrPAzio0wlVsPVm4r/view?usp=drive_link",
-    "type": "VAC-2 (Compulsory)"
+    "type": "VAC-2 (Compulsory) • English"
   },
   {
     "id": "vac-2-global-citizenship-hindi",
-    "name": "VAC-2 Global Citizenship Education (Hindi Translated by ChatGPT)",
+    "name": "VAC-2 Global Citizenship (Hindi)",
     "semester": "Semester 4",
     "link": "https://drive.google.com/file/d/1_fbAqjsd3PBz61fZEthsJLMne6koaHIU/view?usp=drive_link",
-    "type": "VAC-2 (Compulsory)"
+    "type": "VAC-2 (Compulsory) • Hindi (AI Translated)"
   }
 ]
