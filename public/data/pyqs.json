@@ -1004,30 +1004,6 @@
         "downloadUrl": "https://drive.google.com/file/d/18QBIh2qPBtFfNN5JmaOTPFyW-tBsab9p/view?usp=drive_link"
     },
     {
-        "id": "pyq-vac-global-citizenship-sem4-2022-set1",
-        "title": "VAC_2_pyq_2022_set_1.pdf",
-        "year": "2022",
-        "semester": 4,
-        "category": "VAC",
-        "subject": "Global Citizenship Education for Sustainable Development",
-        "set": "Set 1",
-        "downloadCount": 0,
-        "fileSize": "PDF File",
-        "downloadUrl": "https://drive.google.com/file/d/1hQweIrg4q37zDnDn-IEyrAfEzq0TQwSP/view?usp=drive_link"
-    },
-    {
-        "id": "pyq-vac-global-citizenship-sem4-2022-set3",
-        "title": "VAC_2_pyq_2022_set_3.pdf",
-        "year": "2022",
-        "semester": 4,
-        "category": "VAC",
-        "subject": "Global Citizenship Education for Sustainable Development",
-        "set": "Set 3",
-        "downloadCount": 0,
-        "fileSize": "PDF File",
-        "downloadUrl": "https://drive.google.com/file/d/1WgPORekRmRtlmLpjfQYObdEUNploMtYs/view?usp=drive_link"
-    },
-    {
         "id": "pyq-sec-digital-india-sem1-2022",
         "title": "DE_pyq_2022.pdf",
         "year": "2022",
@@ -2470,5 +2446,41 @@
         "downloadUrl": "https://drive.google.com/file/d/19P7tCblBLpJSM8IbAZNUYeOFyxa8frAm/view?usp=drive_link",
         "fileSize": "PDF File",
         "downloadCount": 0
+    },
+    {
+        "id": "pyq-vac-global-citizenship-sem4-2022-set1",
+        "title": "Global Citizenship 2022 (Set 1)",
+        "year": "2022-2026",
+        "set": "Set 1",
+        "semester": 4,
+        "category": "VAC",
+        "subject": "Global Citizenship Education for Sustainable Development",
+        "downloadUrl": "https://drive.google.com/file/d/1ZN5iBiBFPRHjeA5UYiVr4zdoW9ACqKiC/view?usp=drive_link",
+        "downloadCount": 0,
+        "fileSize": "PDF File"
+    },
+    {
+        "id": "pyq-vac-global-citizenship-sem4-2022-set2",
+        "title": "Global Citizenship 2022 (Set 2)",
+        "year": "2022-2026",
+        "set": "Set 2",
+        "semester": 4,
+        "category": "VAC",
+        "subject": "Global Citizenship Education for Sustainable Development",
+        "downloadUrl": "https://drive.google.com/file/d/1Z7J-axXv3BqZhThDa24IpRdkIvlLX7co/view?usp=drive_link",
+        "downloadCount": 0,
+        "fileSize": "PDF File"
+    },
+    {
+        "id": "pyq-vac-global-citizenship-sem4-2022-set3",
+        "title": "Global Citizenship 2022 (Set 3)",
+        "year": "2022-2026",
+        "set": "Set 3",
+        "semester": 4,
+        "category": "VAC",
+        "subject": "Global Citizenship Education for Sustainable Development",
+        "downloadUrl": "https://drive.google.com/file/d/1OmHjKcSJzfW18YM264lVazF9I_RpObGT/view?usp=drive_link",
+        "downloadCount": 0,
+        "fileSize": "PDF File"
     }
 ]
