@@ -1220,11 +1220,25 @@ const departments = Object.keys(deptGroups);
       if (window.location.hash) {
         const hashId = window.location.hash.substring(1);
         const targetElement = document.getElementById(hashId);
-        if (targetElement && (targetElement.classList.contains('accordion-trigger') || targetElement.tagName === 'BUTTON')) {
-          targetElement.click();
-          setTimeout(() => {
-            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }, 350);
+        if (targetElement) {
+          // If it's a trigger/button, click it directly
+          if (targetElement.classList.contains('accordion-trigger') || targetElement.tagName === 'BUTTON') {
+            targetElement.click();
+            setTimeout(() => {
+              targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 350);
+          } else {
+            // For non-trigger elements (e.g. vac-grid), open parent accordion first
+            const parentContent = targetElement.closest('.accordion-content');
+            if (parentContent) {
+              const parentItem = parentContent.closest('.accordion-item') || parentContent.parentElement;
+              const trigger = parentItem?.querySelector('.accordion-trigger');
+              if (trigger) trigger.click();
+            }
+            setTimeout(() => {
+              targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 450);
+          }
         }
       }
     }, 150);
