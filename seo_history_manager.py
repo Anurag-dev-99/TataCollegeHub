@@ -130,11 +130,12 @@ def parse_manual_ranking_data(text_data):
                 # Check if last word is a number
                 if last_word.isdigit():
                     rank = int(last_word)
-                    kw = " ".join(words[:-1]).strip().lower()
+                    kw = " ".join(words[:-1]).rstrip(" -:\t").strip().lower()
                     rankings[kw] = rank
                 else:
                     # Fallback: whole line as keyword, no rank
-                    rankings[line_lower] = None
+                    kw = line_lower.rstrip(" -:\t").strip()
+                    rankings[kw] = None
     return rankings
 
 

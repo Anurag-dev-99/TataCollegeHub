@@ -1,7 +1,7 @@
 # 📈 KolhanHub SEO Ranking History Report
 
-> Last Updated: **21 Aug 2026, 11:49 PM** (Method: `manual`)
-> Previous Run: **09 Aug 2026, 10:53 PM**
+> Last Updated: **14 Sep 2026, 11:52 PM** (Method: `manual`)
+> Previous Run: **21 Aug 2026, 11:49 PM**
 
 ---
 
@@ -10,17 +10,17 @@
 | Metric | Latest Count | Breakdown |
 |---|---|---|
 | **Total Keywords Tracked** | **17** | - |
-| **Top 3 Rankings 🏆** | **8** | Rank #1 to #3 |
-| **Top 10 Rankings 🟢** | **15** | Page 1 |
-| **Top 30 Rankings 🟡** | **15** | Pages 1-3 |
-| **Not Found in Top Results ❌** | **2** | - |
+| **Top 3 Rankings 🏆** | **9** | Rank #1 to #3 |
+| **Top 10 Rankings 🟢** | **12** | Page 1 |
+| **Top 30 Rankings 🟡** | **17** | Pages 1-3 |
+| **Not Found in Top Results ❌** | **0** | - |
 
-### Run-to-Run Trends (Compared to 09 Aug 2026, 10:53 PM)
-- 🟢 **Rank Improved:** 0 keywords
-- 🔴 **Rank Declined:** 5 keywords
+### Run-to-Run Trends (Compared to 21 Aug 2026, 11:49 PM)
+- 🟢 **Rank Improved:** 4 keywords
+- 🔴 **Rank Declined:** 4 keywords
 - ✨ **New Rankings:** 0 keywords
 - ❌ **Dropped Out of Top:** 0 keywords
-- ⚪ **No Change:** 12 keywords
+- ⚪ **No Change:** 9 keywords
 
 ---
 
@@ -34,17 +34,17 @@
 | ⚪ | `kolhan university pyq` | #1 | #1 | #1 |
 | ⚪ | `kolhan university previous year question paper` | #1 | #1 | #1 |
 | ⚪ | `kolhan university question paper download` | #1 | #1 | #1 |
-| 🔴 | `tata college pyq` | #1 | #2 | 🔴 #2 (▼ 1) |
-| ⚪ | `tata college chaibasa pyq` | #3 | #3 | #3 |
-| ⚪ | `tata college result` | #4 | #4 | #4 |
-| ⚪ | `kolhan syllabus` | #6 | #6 | #6 |
-| 🔴 | `tata college syllabus` | #4 | #6 | 🔴 #6 (▼ 2) |
-| 🔴 | `kolhan university syllabus` | #7 | #8 | 🔴 #8 (▼ 1) |
+| ⚪ | `tata college pyq` | #2 | #2 | #2 |
+| 🟢 | `tata college chaibasa pyq` | #3 | #2 | 🟢 #2 (▲ 1) |
+| 🟢 | `tata college result` | #4 | #2 | 🟢 #2 (▲ 2) |
+| ⚪ | `tata college syllabus` | #6 | #6 | #6 |
+| 🔴 | `kolhan syllabus` | #6 | #7 | 🔴 #7 (▼ 1) |
 | ⚪ | `kolhan university nep syllabus` | #8 | #8 | #8 |
-| 🔴 | `kolhan result` | #6 | #8 | 🔴 #8 (▼ 2) |
-| 🔴 | `kolhan university nep 2020 syllabus` | #4 | #9 | 🔴 #9 (▼ 5) |
-| ⚪ | `kolhan university result` | Not found | Not found | Not found |
-| ⚪ | `tata college chaibasa` | Not found | Not found | Not found |
+| 🔴 | `kolhan university syllabus` | #8 | #11 | 🔴 #11 (▼ 3) |
+| 🟢 | `kolhan university result` | Not found | #11 | 🟢 #11 (Gained Rank) |
+| 🔴 | `kolhan result` | #8 | #12 | 🔴 #12 (▼ 4) |
+| 🔴 | `kolhan university nep 2020 syllabus` | #9 | #13 | 🔴 #13 (▼ 4) |
+| 🟢 | `tata college chaibasa` | Not found | #17 | 🟢 #17 (Gained Rank) |
 
 ---
 
@@ -52,6 +52,7 @@
 
 | Check Date & Time | Method | Keywords | Top 3 | Top 10 | Top 30 |
 | :--- | :---: | :---: | :---: | :---: | :---: |
+| 14 Sep 2026, 11:52 PM | `manual` | 17 | 9 | 12 | 17 |
 | 21 Aug 2026, 11:49 PM | `manual` | 17 | 8 | 15 | 15 |
 | 09 Aug 2026, 10:53 PM | `manual` | 17 | 8 | 15 | 15 |
 | 29 Jul 2026, 09:48 PM | `manual` | 17 | 10 | 15 | 15 |
