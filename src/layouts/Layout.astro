@@ -331,7 +331,19 @@ const webPageSchema = JSON.stringify({
               </p>
             </div>
 
-            <!-- Line 3: Disclaimer -->
+            <!-- Line 3: Site Links (About, Privacy, Contact) -->
+            <div>
+              <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); margin-bottom: 0.4rem;">Site</p>
+              <p style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.75rem; align-items: center;">
+                <a href={`${baseUrl}/about`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">About</a>
+                <span style="color: var(--text-tertiary);">•</span>
+                <a href={`${baseUrl}/privacy`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">Privacy Policy</a>
+                <span style="color: var(--text-tertiary);">•</span>
+                <a href={`${baseUrl}/contact`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">Contact</a>
+              </p>
+            </div>
+
+            <!-- Line 4: Disclaimer -->
             <div>
               <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); margin-bottom: 0.4rem;">Disclaimer</p>
               <p style="color: var(--text-tertiary); font-size: 0.78rem; line-height: 1.55;">Unofficial student resource website. Verify notices, results, and deadlines from official university/college sources.</p>

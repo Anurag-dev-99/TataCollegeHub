@@ -1,0 +1,153 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Info, Users, BookOpen, FileText, TrendingUp, Bell, Calculator, Heart, ExternalLink } from '@lucide/astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout 
+  title="About KolhanHub — Free Student Resources for Kolhan University" 
+  description="KolhanHub is an independent, student-made platform providing free PYQs, syllabus PDFs, results, and academic resources for Kolhan University and Tata College, Chaibasa students."
+  keywords="about kolhanhub, kolhan university student portal, tata college chaibasa resources, kolhan university pyq website"
+>
+
+  <!-- Header -->
+  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+    <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">About KolhanHub</h1>
+    <p style="color: var(--text-secondary); max-width: 640px; font-size: 1.05rem;">
+      The story behind your favorite student resource portal.
+    </p>
+  </div>
+
+  <div style="max-width: 720px; display: flex; flex-direction: column; gap: 1.5rem;">
+
+    <!-- What is KolhanHub -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.3rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+        <Info style="color: var(--accent-primary); width: 24px; height: 24px; flex-shrink: 0;" /> What is KolhanHub?
+      </h2>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7;">
+        <p>
+          <strong style="color: var(--text-primary);">KolhanHub</strong> is a free, independent student resource platform built specifically for 
+          <strong style="color: var(--text-primary);">Kolhan University</strong> and <strong style="color: var(--text-primary);">Tata College, Chaibasa</strong> students.
+        </p>
+        <p>
+          We provide organized access to previous year question papers (PYQs), NEP 2020 FYUGP syllabus, 
+          university notices, exam results, CGPA calculator, and other essential academic resources — all completely free.
+        </p>
+        <p>
+          Our goal is simple: <strong style="color: var(--accent-primary);">no student should struggle to find the resources they need to prepare for exams.</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- Who Made This -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.3rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+        <Users style="color: var(--accent-primary); width: 24px; height: 24px; flex-shrink: 0;" /> Who Made This?
+      </h2>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7;">
+        <p>
+          KolhanHub was created by a Kolhan University student who experienced the difficulty of finding organized study materials firsthand. 
+          Question papers were scattered across WhatsApp groups, syllabus PDFs were hard to locate, and result checking was always a hassle.
+        </p>
+        <p>
+          This platform was built to solve all of that — a single, clean, fast website where you can find everything you need for your semester exams.
+        </p>
+      </div>
+    </div>
+
+    <!-- What We Offer -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.3rem; font-family: var(--font-display); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem;">
+        <Heart style="color: var(--accent-primary); width: 24px; height: 24px; flex-shrink: 0;" /> What We Offer (100% Free)
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        
+        <a href={`${baseUrl}/pyqs`} style="text-decoration: none; color: inherit;">
+          <div style="background: var(--bg-tertiary); border-radius: var(--radius-sm); padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; transition: all var(--transition-normal); border: 1px solid transparent;" class="about-feature-card">
+            <FileText style="color: var(--accent-primary); width: 22px; height: 22px;" />
+            <strong style="font-size: 0.95rem; color: var(--text-primary);">PYQ Papers</strong>
+            <span style="font-size: 0.8rem; color: var(--text-secondary);">Semester-wise previous year question papers for all major, minor, MDC, AEC, SEC & VAC subjects</span>
+          </div>
+        </a>
+
+        <a href={`${baseUrl}/syllabus`} style="text-decoration: none; color: inherit;">
+          <div style="background: var(--bg-tertiary); border-radius: var(--radius-sm); padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; transition: all var(--transition-normal); border: 1px solid transparent;" class="about-feature-card">
+            <BookOpen style="color: var(--accent-success); width: 22px; height: 22px;" />
+            <strong style="font-size: 0.95rem; color: var(--text-primary);">NEP Syllabus</strong>
+            <span style="font-size: 0.8rem; color: var(--text-secondary);">Complete NEP 2020 FYUGP syllabus PDFs for all departments and semesters</span>
+          </div>
+        </a>
+
+        <a href={`${baseUrl}/results`} style="text-decoration: none; color: inherit;">
+          <div style="background: var(--bg-tertiary); border-radius: var(--radius-sm); padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; transition: all var(--transition-normal); border: 1px solid transparent;" class="about-feature-card">
+            <TrendingUp style="color: var(--accent-warning); width: 22px; height: 22px;" />
+            <strong style="font-size: 0.95rem; color: var(--text-primary);">Results</strong>
+            <span style="font-size: 0.8rem; color: var(--text-secondary);">Quick result checking with semester-wise marks breakdown and analysis</span>
+          </div>
+        </a>
+
+        <a href={`${baseUrl}/notices`} style="text-decoration: none; color: inherit;">
+          <div style="background: var(--bg-tertiary); border-radius: var(--radius-sm); padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; transition: all var(--transition-normal); border: 1px solid transparent;" class="about-feature-card">
+            <Bell style="color: var(--accent-danger); width: 22px; height: 22px;" />
+            <strong style="font-size: 0.95rem; color: var(--text-primary);">Notices</strong>
+            <span style="font-size: 0.8rem; color: var(--text-secondary);">Latest university notices, exam schedules, and important announcements</span>
+          </div>
+        </a>
+
+        <a href={`${baseUrl}/cgpa`} style="text-decoration: none; color: inherit;">
+          <div style="background: var(--bg-tertiary); border-radius: var(--radius-sm); padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; transition: all var(--transition-normal); border: 1px solid transparent;" class="about-feature-card">
+            <Calculator style="color: #8b5cf6; width: 22px; height: 22px;" />
+            <strong style="font-size: 0.95rem; color: var(--text-primary);">CGPA Calculator</strong>
+            <span style="font-size: 0.8rem; color: var(--text-secondary);">Calculate your cumulative CGPA, percentage, and honors classification</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Our Commitment -->
+    <div class="card" style="padding: 1.75rem; border-color: var(--accent-primary);">
+      <h2 style="font-size: 1.3rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+        🎯 Our Commitment
+      </h2>
+      <ul style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.25rem;">
+        <li><strong style="color: var(--text-primary);">Always Free:</strong> Core resources like PYQs, syllabus, and result checking will always remain free for all students.</li>
+        <li><strong style="color: var(--text-primary);">Regularly Updated:</strong> We add new question papers, notices, and resources as soon as they become available.</li>
+        <li><strong style="color: var(--text-primary);">Mobile-First:</strong> Designed for students who access the site on their phones — fast loading, clean interface, works on slow connections.</li>
+        <li><strong style="color: var(--text-primary);">Student Privacy:</strong> We don't collect personal data. We use only basic analytics to improve the site. See our <a href={`${baseUrl}/privacy`} style="color: var(--accent-primary); font-weight: 600;">Privacy Policy</a>.</li>
+      </ul>
+    </div>
+
+    <!-- Disclaimer -->
+    <div style="background: var(--bg-tertiary); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; border: 1px solid var(--border-color);">
+      <p style="font-size: 0.85rem; color: var(--text-tertiary); line-height: 1.6;">
+        <strong style="color: var(--text-secondary);">Disclaimer:</strong> KolhanHub is an independent, unofficial student resource website. 
+        It is <strong>not affiliated with, endorsed by, or officially connected to Kolhan University or Tata College, Chaibasa</strong>. 
+        Always verify critical information (exam dates, results, admit cards) from official university sources at 
+        <a href="https://www.kolhanuniversity.ac.in" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">kolhanuniversity.ac.in</a>.
+      </p>
+    </div>
+
+    <!-- Contact CTA -->
+    <div style="text-align: center; padding: 1rem 0;">
+      <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+        Have feedback, suggestions, or found an error?
+      </p>
+      <a href={`${baseUrl}/contact`} class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; padding: 0.75rem 1.5rem; border-radius: var(--radius-full); font-size: 0.95rem;">
+        Contact Us <ExternalLink style="width: 16px; height: 16px;" />
+      </a>
+    </div>
+
+  </div>
+
+</Layout>
+
+<style>
+  .about-feature-card:hover {
+    border-color: var(--accent-primary) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+</style>

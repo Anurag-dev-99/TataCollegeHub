@@ -1,0 +1,126 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Mail, MessageCircle, AlertTriangle, FileText, Send } from '@lucide/astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout 
+  title="Contact Us — KolhanHub" 
+  description="Get in touch with the KolhanHub team. Report wrong papers, request new PYQs, give feedback, or suggest improvements for Kolhan University students."
+  keywords="contact kolhanhub, kolhan university website contact, report wrong paper, request pyq"
+>
+
+  <!-- Header -->
+  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+    <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">Contact Us</h1>
+    <p style="color: var(--text-secondary); max-width: 640px; font-size: 1.05rem;">
+      Found an error? Need a question paper? Have a suggestion? We'd love to hear from you.
+    </p>
+  </div>
+
+  <div style="max-width: 720px; display: flex; flex-direction: column; gap: 1.5rem;">
+
+    <!-- Email Contact -->
+    <div class="card" style="padding: 1.75rem; border-color: var(--accent-primary);">
+      <h2 style="font-size: 1.3rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+        <Mail style="color: var(--accent-primary); width: 24px; height: 24px; flex-shrink: 0;" /> Email Us
+      </h2>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7;">
+        <p>
+          For any queries, feedback, or collaboration opportunities, reach out via email:
+        </p>
+        <a href="mailto:kolhanhub@gmail.com" style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem 1.25rem; text-decoration: none; color: var(--accent-primary); font-weight: 700; font-size: 1.05rem; transition: all var(--transition-normal); width: fit-content;" class="email-link">
+          <Mail style="width: 20px; height: 20px;" />
+          kolhanhub@gmail.com
+        </a>
+        <p style="font-size: 0.85rem; color: var(--text-tertiary);">
+          We typically respond within 24-48 hours.
+        </p>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.3rem; font-family: var(--font-display); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem;">
+        <Send style="color: var(--accent-primary); width: 24px; height: 24px; flex-shrink: 0;" /> Quick Actions
+      </h2>
+      <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.6;">
+        You can also use the built-in tools on our website for faster help:
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        
+        <button onclick="document.dispatchEvent(new CustomEvent('open-request-modal'))" style="display: flex; align-items: center; gap: 1rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem 1.25rem; text-align: left; cursor: pointer; transition: all var(--transition-normal); width: 100%; color: inherit;" class="contact-action-card">
+          <div style="background: rgba(var(--accent-primary-rgb), 0.1); border-radius: var(--radius-xs); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <FileText style="color: var(--accent-primary); width: 22px; height: 22px;" />
+          </div>
+          <div>
+            <strong style="font-size: 0.95rem; color: var(--text-primary); display: block;">Request a Question Paper</strong>
+            <span style="font-size: 0.82rem; color: var(--text-secondary);">Can't find a PYQ? Tell us the subject and semester — we'll try to add it.</span>
+          </div>
+        </button>
+
+        <button onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'))" style="display: flex; align-items: center; gap: 1rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem 1.25rem; text-align: left; cursor: pointer; transition: all var(--transition-normal); width: 100%; color: inherit;" class="contact-action-card">
+          <div style="background: rgba(var(--accent-success-rgb), 0.1); border-radius: var(--radius-xs); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <Send style="color: var(--accent-success); width: 22px; height: 22px;" />
+          </div>
+          <div>
+            <strong style="font-size: 0.95rem; color: var(--text-primary); display: block;">Submit a Resource</strong>
+            <span style="font-size: 0.82rem; color: var(--text-secondary);">Have a question paper or notes? Share it with fellow students.</span>
+          </div>
+        </button>
+
+        <button onclick="document.dispatchEvent(new CustomEvent('open-report-modal'))" style="display: flex; align-items: center; gap: 1rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem 1.25rem; text-align: left; cursor: pointer; transition: all var(--transition-normal); width: 100%; color: inherit;" class="contact-action-card">
+          <div style="background: rgba(var(--accent-danger-rgb), 0.1); border-radius: var(--radius-xs); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <AlertTriangle style="color: var(--accent-danger); width: 22px; height: 22px;" />
+          </div>
+          <div>
+            <strong style="font-size: 0.95rem; color: var(--text-primary); display: block;">Report a Wrong Paper</strong>
+            <span style="font-size: 0.82rem; color: var(--text-secondary);">Found an incorrect or mislabeled paper? Let us know so we can fix it.</span>
+          </div>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- What to Include -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.3rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+        <MessageCircle style="color: var(--accent-primary); width: 24px; height: 24px; flex-shrink: 0;" /> When Contacting Us
+      </h2>
+      <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.6;">
+        To help us respond faster, please include:
+      </p>
+      <ul style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.25rem;">
+        <li><strong style="color: var(--text-primary);">For paper requests:</strong> Subject name, category (Major/Minor/MDC), and semester number</li>
+        <li><strong style="color: var(--text-primary);">For error reports:</strong> The page URL and a description of what's wrong</li>
+        <li><strong style="color: var(--text-primary);">For suggestions:</strong> What feature you'd like to see and why it would help students</li>
+        <li><strong style="color: var(--text-primary);">For resource submissions:</strong> The file (photo/PDF) and correct subject + semester details</li>
+      </ul>
+    </div>
+
+    <!-- Disclaimer -->
+    <div style="background: var(--bg-tertiary); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; border: 1px solid var(--border-color);">
+      <p style="font-size: 0.85rem; color: var(--text-tertiary); line-height: 1.6;">
+        <strong style="color: var(--text-secondary);">Note:</strong> KolhanHub is an independent student project. 
+        For official university matters (admission, certificates, exam issues), please contact 
+        <a href="https://www.kolhanuniversity.ac.in" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Kolhan University</a> directly.
+      </p>
+    </div>
+
+  </div>
+
+</Layout>
+
+<style>
+  .email-link:hover {
+    border-color: var(--accent-primary) !important;
+    background: rgba(var(--accent-primary-rgb), 0.05) !important;
+    transform: translateY(-1px);
+  }
+  .contact-action-card:hover {
+    border-color: var(--accent-primary) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+</style>

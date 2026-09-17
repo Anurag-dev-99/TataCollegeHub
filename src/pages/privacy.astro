@@ -1,0 +1,205 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Shield, Cookie, BarChart3, Eye, UserCheck, Mail } from '@lucide/astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const lastUpdated = '17 September 2026';
+---
+
+<Layout 
+  title="Privacy Policy — KolhanHub" 
+  description="Privacy Policy for KolhanHub.in — how we handle your data, cookies, and third-party services like Google Analytics and Google AdSense."
+  keywords="kolhanhub privacy policy, kolhan university website privacy, data policy"
+>
+
+  <!-- Header -->
+  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+    <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">Privacy Policy</h1>
+    <p style="color: var(--text-secondary); max-width: 640px; font-size: 1.05rem;">
+      How KolhanHub handles your data and protects your privacy.
+    </p>
+    <p style="font-size: 0.8rem; color: var(--text-tertiary);">Last updated: {lastUpdated}</p>
+  </div>
+
+  <div style="max-width: 720px; display: flex; flex-direction: column; gap: 1.5rem;">
+
+    <!-- Introduction -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.2rem; font-family: var(--font-display); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem;">
+        <Shield style="color: var(--accent-primary); width: 22px; height: 22px; flex-shrink: 0;" /> Overview
+      </h2>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+        <p>
+          KolhanHub (<a href="https://kolhanhub.in" style="color: var(--accent-primary);">kolhanhub.in</a>) is an independent, 
+          free student resource platform. We are committed to protecting your privacy and being transparent about how we use data.
+        </p>
+        <p>
+          <strong style="color: var(--accent-success);">In short:</strong> We don't collect personal information. 
+          We use basic analytics to understand how students use the site so we can make it better. That's it.
+        </p>
+      </div>
+    </div>
+
+    <!-- Information We Collect -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.2rem; font-family: var(--font-display); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem;">
+        <Eye style="color: var(--accent-primary); width: 22px; height: 22px; flex-shrink: 0;" /> Information We Collect
+      </h2>
+      <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+        
+        <div>
+          <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.4rem; font-weight: 700;">Information You Provide</h3>
+          <p>
+            When you use our "Request Paper" or "Report Wrong Paper" features, you may voluntarily provide information such as your subject name or feedback. 
+            This information is used solely to improve the website and is not linked to your personal identity.
+          </p>
+        </div>
+
+        <div>
+          <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.4rem; font-weight: 700;">Automatically Collected Information</h3>
+          <p>Like most websites, we automatically collect basic, anonymized usage data:</p>
+          <ul style="padding-left: 1.25rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.3rem;">
+            <li>Pages you visit and time spent on each page</li>
+            <li>General device type (mobile/desktop) and browser</li>
+            <li>General geographic region (country/state level only)</li>
+            <li>How you found us (Google search, direct link, etc.)</li>
+          </ul>
+          <p style="margin-top: 0.5rem;">
+            <strong style="color: var(--text-primary);">We do NOT collect:</strong> your name, email, phone number, roll number, IP address, or any personally identifiable information.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Google Analytics -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.2rem; font-family: var(--font-display); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem;">
+        <BarChart3 style="color: var(--accent-primary); width: 22px; height: 22px; flex-shrink: 0;" /> Google Analytics
+      </h2>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+        <p>
+          We use <strong style="color: var(--text-primary);">Google Analytics 4 (GA4)</strong> to understand how students use our website. 
+          This helps us know which pages are most useful, which subjects need more PYQs, and how to improve the site.
+        </p>
+        <p>
+          Google Analytics uses cookies to collect anonymized data. It does NOT collect personal information. 
+          You can learn more about how Google uses data at 
+          <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Google's Privacy & Terms</a>.
+        </p>
+        <p>
+          You can opt out of Google Analytics tracking by installing the 
+          <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Google Analytics Opt-out Browser Add-on</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Google AdSense / Advertising -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.2rem; font-family: var(--font-display); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem;">
+        <Cookie style="color: var(--accent-warning); width: 22px; height: 22px; flex-shrink: 0;" /> Advertising & Cookies
+      </h2>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+        <p>
+          We may display advertisements on this website through <strong style="color: var(--text-primary);">Google AdSense</strong> 
+          or similar advertising networks. These services may use cookies and similar technologies to serve ads based on your 
+          prior visits to this or other websites.
+        </p>
+        <p>
+          Google's use of advertising cookies enables it and its partners to serve ads based on your visit to this site and/or 
+          other sites on the Internet. You may opt out of personalized advertising by visiting 
+          <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">Google Ads Settings</a>.
+        </p>
+        <p>
+          For more information about how Google uses data from sites that use their services, visit: 
+          <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">policies.google.com/technologies/partner-sites</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Cookies -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.2rem; font-family: var(--font-display); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem;">
+        <Cookie style="color: var(--accent-primary); width: 22px; height: 22px; flex-shrink: 0;" /> Cookies We Use
+      </h2>
+      <div style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+        <p style="margin-bottom: 0.75rem;">Cookies are small text files stored on your device. Here's what we use:</p>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--border-color);">
+                <th style="text-align: left; padding: 0.6rem 0.75rem; color: var(--text-primary); font-weight: 700;">Cookie</th>
+                <th style="text-align: left; padding: 0.6rem 0.75rem; color: var(--text-primary); font-weight: 700;">Purpose</th>
+                <th style="text-align: left; padding: 0.6rem 0.75rem; color: var(--text-primary); font-weight: 700;">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.6rem 0.75rem;"><code style="font-size: 0.8rem; background: var(--bg-tertiary); padding: 0.15rem 0.4rem; border-radius: 4px;">theme</code></td>
+                <td style="padding: 0.6rem 0.75rem;">Remembers your light/dark mode preference</td>
+                <td style="padding: 0.6rem 0.75rem;"><span style="color: var(--accent-success); font-weight: 600;">Essential</span></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 0.6rem 0.75rem;"><code style="font-size: 0.8rem; background: var(--bg-tertiary); padding: 0.15rem 0.4rem; border-radius: 4px;">_ga, _ga_*</code></td>
+                <td style="padding: 0.6rem 0.75rem;">Google Analytics — anonymized usage statistics</td>
+                <td style="padding: 0.6rem 0.75rem;"><span style="color: var(--accent-warning); font-weight: 600;">Analytics</span></td>
+              </tr>
+              <tr>
+                <td style="padding: 0.6rem 0.75rem;"><code style="font-size: 0.8rem; background: var(--bg-tertiary); padding: 0.15rem 0.4rem; border-radius: 4px;">__gads, __gpi</code></td>
+                <td style="padding: 0.6rem 0.75rem;">Google AdSense — ad personalization and frequency</td>
+                <td style="padding: 0.6rem 0.75rem;"><span style="color: var(--accent-primary); font-weight: 600;">Advertising</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Third-Party Links -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.2rem; font-family: var(--font-display); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem;">
+        <UserCheck style="color: var(--accent-primary); width: 22px; height: 22px; flex-shrink: 0;" /> Third-Party Links & Downloads
+      </h2>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+        <p>
+          Our website may contain links to external websites (such as Kolhan University's official site or Google Drive for file downloads). 
+          We are not responsible for the privacy practices or content of these external sites.
+        </p>
+        <p>
+          Question papers and syllabus PDFs available on this site are compiled from publicly available university sources 
+          for educational purposes under fair use.
+        </p>
+      </div>
+    </div>
+
+    <!-- Children's Privacy -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.2rem; font-family: var(--font-display); margin-bottom: 0.75rem;">Children's Privacy</h2>
+      <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+        Our services are intended for university/college students and general audiences. 
+        We do not knowingly collect personal information from children under 13.
+      </p>
+    </div>
+
+    <!-- Changes to Policy -->
+    <div class="card" style="padding: 1.75rem;">
+      <h2 style="font-size: 1.2rem; font-family: var(--font-display); margin-bottom: 0.75rem;">Changes to This Policy</h2>
+      <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
+        We may update this privacy policy from time to time. Any changes will be posted on this page with an updated "Last updated" date. 
+        We encourage you to review this page periodically.
+      </p>
+    </div>
+
+    <!-- Contact for Privacy -->
+    <div style="background: var(--bg-tertiary); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; border: 1px solid var(--border-color); display: flex; align-items: flex-start; gap: 0.75rem;">
+      <Mail style="color: var(--accent-primary); width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;" />
+      <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+        <strong style="color: var(--text-primary);">Privacy Questions?</strong><br />
+        If you have any questions about this privacy policy or how we handle your data, please contact us at 
+        <a href="mailto:kolhanhub@gmail.com" style="color: var(--accent-primary); font-weight: 600;">kolhanhub@gmail.com</a> 
+        or visit our <a href={`${baseUrl}/contact`} style="color: var(--accent-primary); font-weight: 600;">Contact page</a>.
+      </div>
+    </div>
+
+  </div>
+
+</Layout>
