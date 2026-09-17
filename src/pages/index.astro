@@ -125,7 +125,8 @@ const popularPapers = [...pyqsData]
   <script type="module">
   (() => {
     const schedule = [
-      // Sep 8 (MJ-6 Science/Arts 1st sitting) POSTPONED — will be rescheduled
+      // Sep 8 exams rescheduled to Sep 21 (same centre, same sittings)
+      {"date":"2026-09-21","day":"Monday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-6)","details":"Physics, Chemistry, Mathematics (Science & Arts), Botany, Zoology, Geology, Statistics, Commerce (Corporate Accounting), BBA, BCA, IT, Mass Comm, Env. & Water Mgt."},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-6)","details":"Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"}]},
       {"date":"2026-09-09","day":"Wednesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-6)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-7)","details":"Physics, Chemistry, Mathematics (Science & Arts), Botany, Zoology, Geology, Statistics, Commerce, BBA, BCA, IT, Mass Comm, Env."}]},
       {"date":"2026-09-10","day":"Thursday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-7)","details":"Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-7)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science"}]},
       {"date":"2026-09-11","day":"Friday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-8)","details":"Physics, Chemistry, Mathematics (Science & Arts), Botany, Zoology, Geology, Statistics, Commerce, BBA, BCA, IT, Mass Comm, Env."},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-8)","details":"Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"}]},
@@ -325,6 +326,24 @@ const popularPapers = [...pyqsData]
     setInterval(tick, 1000);
   })();
   </script>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SEP 8 → SEP 21 RESCHEDULED NOTICE
+  ════════════════════════════════════════════════════════════════ -->
+  <div style="margin-bottom: 1rem; border: 1px solid rgba(16,185,129,0.3); border-radius: var(--radius-sm); padding: 0.75rem 1rem; background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(0,0,0,0.15) 100%);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
+        <span style="font-size: 1rem; flex-shrink: 0;">📅</span>
+        <div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: #34d399; font-family: var(--font-display);">8 Sep Exam → Now on 21 Sep (Monday)</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary); margin-top: 1px;">Major (MJ-6) — Both sittings rescheduled · Same exam centres</div>
+        </div>
+      </div>
+      <a href="https://drive.google.com/file/d/1nbogc5GzrNCOIQ1ax4RqdYsFEJVZdIwQ/view?usp=drive_link" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; font-weight: 700; color: #34d399; text-decoration: none; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 3px 10px; white-space: nowrap; transition: background 0.2s; flex-shrink: 0;">
+        <Download size={12} /> Notice PDF
+      </a>
+    </div>
+  </div>
 
   <!-- ═══════════════════════════════════════════════════════════════
        VAC-2 SEM 4 QUICK ACCESS — SYLLABUS + PYQ
