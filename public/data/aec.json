@@ -1,50 +1,110 @@
 [
-  {
-    "id": "aec-1-hindi",
-    "name": "AEC-1 Hindi",
-    "semester": "Semester 1",
-    "link": "https://drive.google.com/file/d/1jvYPrG7FqXZqwcSMukcPSgIUJXP5f6_c/view?usp=drive_link"
-  },
-  {
-    "id": "aec-2-english",
-    "name": "AEC-2 English",
-    "semester": "Semester 2",
-    "link": "https://drive.google.com/file/d/1yfdCALhcLHPQ6C2MBRLLW6jnOk5cpnpJ/view?usp=drive_link"
-  },
-  {
-    "id": "aec-3-hindi",
-    "name": "AEC-3 Hindi",
-    "semester": "Semester 3",
-    "link": "https://drive.google.com/file/d/19r8H96amNuU9SfcTP6Y2E8Bf8K3RJyZ3/view?usp=drive_link"
-  },
-  {
-    "id": "aec-3-sanskrit",
-    "name": "AEC-3 Sanskrit",
-    "semester": "Semester 3",
-    "link": "https://drive.google.com/file/d/1k_KLzrq7LCWBbiFSDjgeuGQrg5IMfl9Q/view?usp=drive_link"
-  },
-  {
-    "id": "aec-3-english",
-    "name": "AEC-3 English",
-    "semester": "Semester 3",
-    "link": "https://drive.google.com/file/d/1YrIZawoU5UjbgbgRNY3GjBhUxf6AkJnU/view?usp=drive_link"
-  },
-  {
-    "id": "aec-4-hindi",
-    "name": "AEC-4 Hindi",
-    "semester": "Semester 4",
-    "link": "https://drive.google.com/file/d/1_qna6taI-V2uzC9ndY6FXEJ3Sg5Uet5u/view?usp=drive_link"
-  },
-  {
-    "id": "aec-4-sanskrit",
-    "name": "AEC-4 Sanskrit",
-    "semester": "Semester 4",
-    "link": "https://drive.google.com/file/d/1t9YDPZ_Xub-P4bIRAHdHFnCMw0LN3vs_/view?usp=drive_link"
-  },
-  {
-    "id": "aec-4-english",
-    "name": "AEC-4 English",
-    "semester": "Semester 4",
-    "link": "https://drive.google.com/file/d/1tqG5qTYlBlz0KIvsX_FHLEVITHihyalh/view?usp=drive_link"
-  }
+    {
+        "id": "aec-1-hindi",
+        "name": "AEC-1 Hindi",
+        "semester": "Semester 1",
+        "link": "https://drive.google.com/file/d/1jvYPrG7FqXZqwcSMukcPSgIUJXP5f6_c/view?usp=drive_link"
+    },
+    {
+        "id": "aec-2-english",
+        "name": "AEC-2 English",
+        "semester": "Semester 2",
+        "link": "https://drive.google.com/file/d/1yfdCALhcLHPQ6C2MBRLLW6jnOk5cpnpJ/view?usp=drive_link"
+    },
+    {
+        "id": "aec-3-hindi",
+        "name": "AEC-3 Hindi",
+        "semester": "Semester 3",
+        "link": "https://drive.google.com/file/d/19r8H96amNuU9SfcTP6Y2E8Bf8K3RJyZ3/view?usp=drive_link"
+    },
+    {
+        "id": "aec-3-sanskrit",
+        "name": "AEC-3 Sanskrit",
+        "semester": "Semester 3",
+        "link": "https://drive.google.com/file/d/1k_KLzrq7LCWBbiFSDjgeuGQrg5IMfl9Q/view?usp=drive_link"
+    },
+    {
+        "id": "aec-3-english",
+        "name": "AEC-3 English",
+        "semester": "Semester 3",
+        "link": "https://drive.google.com/file/d/1YrIZawoU5UjbgbgRNY3GjBhUxf6AkJnU/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-hindi",
+        "name": "AEC-4 Hindi",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/1_qna6taI-V2uzC9ndY6FXEJ3Sg5Uet5u/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-sanskrit",
+        "name": "AEC-4 Sanskrit",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/1t9YDPZ_Xub-P4bIRAHdHFnCMw0LN3vs_/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-english",
+        "name": "AEC-4 English",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/1tqG5qTYlBlz0KIvsX_FHLEVITHihyalh/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-bengali",
+        "name": "AEC-4 Bengali (Ranchi Univ.)",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/1qUegoIsTOXhdZzPJrVuPDz7sc1EDAhmf/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-ho",
+        "name": "AEC-4 Ho (Ranchi Univ.)",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/1tWgBS0rh05r8tHNwtQPNgbWlUDZyfJnh/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-kharia",
+        "name": "AEC-4 Kharia (Ranchi Univ.)",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/1ENTyW0phbtLgyO5BdQg6ecTwthAi4JVl/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-khortha",
+        "name": "AEC-4 Khortha (Ranchi Univ.)",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/1NCmk9oyhfk5u2axCdvzR28ThxAz0FzTV/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-kurmali",
+        "name": "AEC-4 Kurmali (Ranchi Univ.)",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/11v3QU6h1nOCVlk4EijHDFBXXxjAdQtcF/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-kurukh",
+        "name": "AEC-4 Kurukh (Ranchi Univ.)",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/1yp4YkYo6ay62u4VI-EpCGy0HRMhcHkF0/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-mundari",
+        "name": "AEC-4 Mundari (Ranchi Univ.)",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/1naws1t-aLEKEmK8AIjHvoV9XofzMMbag/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-nagpuri",
+        "name": "AEC-4 Nagpuri (Ranchi Univ.)",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/1-Z2h687fTV6JiGARyP3CZOXuu9023n8q/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-santali",
+        "name": "AEC-4 Santali (Ranchi Univ.)",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/1y0ZufgUQwQa1C63dlDxlO36rK3-2x38c/view?usp=drive_link"
+    },
+    {
+        "id": "aec-4-urdu",
+        "name": "AEC-4 Urdu (Ranchi Univ.)",
+        "semester": "Semester 4",
+        "link": "https://drive.google.com/file/d/102DiXwrkYmJTejeYZK0vNHta5HGVVOxE/view?usp=drive_link"
+    }
 ]
