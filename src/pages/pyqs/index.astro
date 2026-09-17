@@ -1811,7 +1811,7 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
         const targetElement = document.getElementById(hashId);
         
         if (targetElement) {
-          // If it's a sub-card, we must open its parent accordion first
+          // If it's a sub-card or grid, we must open its parent accordion first
           if (!targetElement.classList.contains('accordion-trigger')) {
             const parentAccordion = targetElement.closest('.accordion-item');
             if (parentAccordion) {
@@ -1820,10 +1820,26 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
             }
           }
           
-          // Now click the target element (either the main accordion or the sub-card)
-          targetElement.click();
+          // Auto-select Sem 4 tab if targeting aec-pyq-grid or vac-pyq-grid
+          if (hashId === 'aec-pyq-grid') {
+            setTimeout(() => {
+              const tabs = document.querySelectorAll('.aec-pyq-tab');
+              tabs.forEach(btn => { if (btn.getAttribute('data-sem') === '4') btn.click(); });
+            }, 100);
+          }
+          if (hashId === 'vac-pyq-grid') {
+            setTimeout(() => {
+              const tabs = document.querySelectorAll('.vac-pyq-tab');
+              tabs.forEach(btn => { if (btn.getAttribute('data-sem') === '4') btn.click(); });
+            }, 100);
+          }
+
+          // Click the target if it's a button (accordion or card), skip if it's a grid/div
+          if (targetElement.tagName === 'BUTTON') {
+            targetElement.click();
+          }
           
-          // Scroll it into view smoothly (with a slight offset if needed)
+          // Scroll it into view smoothly
           setTimeout(() => {
             targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }, 400);

@@ -1243,6 +1243,14 @@ const departments = Object.keys(deptGroups);
               const trigger = parentItem?.querySelector('.accordion-trigger');
               if (trigger) trigger.click();
             }
+            // Auto-select Sem 4 tab if targeting aec-grid or vac-grid
+            if (hashId === 'aec-grid' || hashId === 'vac-grid') {
+              const prefix = hashId.startsWith('aec') ? 'aec' : 'vac';
+              const tabBtns = document.querySelectorAll(`.${prefix}-tab-btn`);
+              tabBtns.forEach(btn => {
+                if (btn.getAttribute('data-semester') === 'Semester 4') btn.click();
+              });
+            }
             setTimeout(() => {
               targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 450);
