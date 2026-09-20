@@ -345,27 +345,84 @@ const popularPapers = [...pyqsData]
     </div>
   </div>
 
+
   <!-- ═══════════════════════════════════════════════════════════════
-       AEC-4 SEM 4 QUICK ACCESS — SYLLABUS + PYQ
+       SEM 3 EXAM FORM FILL-UP NOTICE (2024 BATCH + 2023 EX-REGULAR)
   ════════════════════════════════════════════════════════════════ -->
-  <div style="margin-bottom: 1rem; border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: 0.7rem 1rem; background: linear-gradient(135deg, rgba(239,68,68,0.04) 0%, rgba(0,0,0,0.12) 100%);">
-    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.55rem;">
-      <span style="font-size: 0.85rem;">✍️</span>
-      <span style="font-size: 0.78rem; font-weight: 800; color: #f87171; font-family: var(--font-display);">AEC-4 Language Paper</span>
-      <span style="font-size: 0.55rem; font-weight: 700; background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.25); border-radius: 20px; padding: 1px 7px;">Sem 4</span>
+  <div style="margin-bottom: 1rem; border: 1px solid rgba(99,102,241,0.25); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(0,0,0,0.15) 100%);">
+    <!-- Header -->
+    <div style="padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
+        <span style="font-size: 1rem; flex-shrink: 0;">📋</span>
+        <div>
+          <div style="font-size: 0.82rem; font-weight: 800; color: #818cf8; font-family: var(--font-display);">Sem 3 Exam Form Fill-up</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary); margin-top: 1px;">2024 Batch (Regular) + 2023 Batch (Ex-Regular) · Arts/Science/Commerce/Vocational</div>
+        </div>
+      </div>
+      <a href="https://kuuniv.ac.in/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; font-weight: 700; color: #818cf8; text-decoration: none; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 3px 10px; white-space: nowrap; transition: background 0.2s; flex-shrink: 0;">
+        Fill Form →
+      </a>
+      <a href="https://drive.google.com/file/d/1VnHEoYlzteAeEpZbDk_ducn5HfuMkSuV/view?usp=drive_link" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; font-weight: 700; color: var(--text-tertiary); text-decoration: none; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 3px 10px; white-space: nowrap; transition: background 0.2s; flex-shrink: 0;">
+        <Download size={12} /> Notice PDF
+      </a>
     </div>
-    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-      <a href={`${baseUrl}/syllabus#aec-grid`} style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; font-weight: 700; color: #818cf8; text-decoration: none; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2); border-radius: 20px; padding: 4px 12px; transition: all 0.2s;" onmouseover="this.style.background='rgba(99,102,241,0.15)'" onmouseout="this.style.background='rgba(99,102,241,0.08)'">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
-        Syllabus (Hindi, English, Sanskrit + more)
-      </a>
-      <a href={`${baseUrl}/pyqs#aec-pyq-grid`} style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; font-weight: 700; color: #fbbf24; text-decoration: none; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); border-radius: 20px; padding: 4px 12px; transition: all 0.2s;" onmouseover="this.style.background='rgba(245,158,11,0.15)'" onmouseout="this.style.background='rgba(245,158,11,0.08)'">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
-        PYQ Papers (English, Hindi, Ho, Odia, Sanskrit)
-      </a>
+
+    <!-- Deadline pills -->
+    <div style="padding: 0 1rem 0.6rem; display: flex; gap: 0.35rem; flex-wrap: wrap;">
+      <span style="font-size: 0.6rem; font-weight: 700; border-radius: 20px; padding: 2px 8px; white-space: nowrap; border: 1px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.08); color: #34d399;">No Fine: 24 Sep – 30 Sep</span>
+      <span style="font-size: 0.6rem; font-weight: 700; border-radius: 20px; padding: 2px 8px; white-space: nowrap; border: 1px solid rgba(245,158,11,0.3); background: rgba(245,158,11,0.08); color: #fbbf24;">₹200 Fine: 1 Oct – 5 Oct</span>
+      <span style="font-size: 0.6rem; font-weight: 700; border-radius: 20px; padding: 2px 8px; white-space: nowrap; border: 1px solid rgba(249,115,22,0.3); background: rgba(249,115,22,0.08); color: #fb923c;">₹500 Fine: 6 Oct – 10 Oct</span>
+      <span style="font-size: 0.6rem; font-weight: 700; border-radius: 20px; padding: 2px 8px; white-space: nowrap; border: 1px solid rgba(239,68,68,0.3); background: rgba(239,68,68,0.08); color: #f87171;">₹1000 Fine: 11 Oct – 15 Oct</span>
+    </div>
+
+    <!-- Collapsible Details -->
+    <button id="sem3-form-toggle" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.45rem; font-size: 0.65rem; font-weight: 700; color: #818cf8; background: rgba(99,102,241,0.06); border: none; border-top: 1px solid rgba(99,102,241,0.12); cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(99,102,241,0.1)'" onmouseout="this.style.background='rgba(99,102,241,0.06)'">
+      <span id="sem3-form-toggle-text">Fees & Tips ▾</span>
+    </button>
+    <div id="sem3-form-details" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out;">
+      <div style="padding: 0.75rem 1rem; border-top: 1px solid rgba(99,102,241,0.1); display: flex; flex-direction: column; gap: 0.65rem;">
+        <!-- Fees Table -->
+        <div>
+          <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem;">💰 Exam Fees</div>
+          <div style="display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 0.8rem; font-size: 0.65rem; color: var(--text-secondary); line-height: 1.6;">
+            <span>Arts/Commerce (Non-Practical)</span><span style="color: var(--text-primary); font-weight: 700;">₹410</span>
+            <span>Arts (Practical Subject)</span><span style="color: var(--text-primary); font-weight: 700;">₹480</span>
+            <span>Science</span><span style="color: var(--text-primary); font-weight: 700;">₹500</span>
+            <span>Voc. (BBA, BCA, IT, Mass Comm, Env.)</span><span style="color: var(--text-primary); font-weight: 700;">₹750</span>
+          </div>
+        </div>
+        <!-- MDC Rule -->
+        <div>
+          <div style="font-size: 0.72rem; font-weight: 700; color: #f87171; margin-bottom: 0.25rem;">⚠️ MDC-3 Subject Selection Rule</div>
+          <div style="font-size: 0.63rem; color: var(--text-secondary); line-height: 1.55;">
+            Choose a subject that is <strong style="color: var(--text-primary);">NOT</strong> in your 10+2 marksheet, <strong style="color: var(--text-primary);">NOT</strong> already selected as MDC-1 (Sem 1) or MDC-2 (Sem 2). No repeat allowed. Commerce students cannot choose Commerce as MDC-3.
+          </div>
+        </div>
+        <!-- SEC & AEC Tips -->
+        <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+          <div style="font-size: 0.63rem; color: var(--text-secondary); line-height: 1.55;">
+            <strong style="color: #34d399;">💡 SEC-3:</strong> Mathematical & Computational Thinking and Analysis — known as a high-scoring subject!
+          </div>
+          <div style="font-size: 0.63rem; color: var(--text-secondary); line-height: 1.55;">
+            <strong style="color: #fbbf24;">💡 AEC-3:</strong> Choose your AEC-3 language wisely — the same language continues as AEC-4 in Semester 4. Read both syllabi before deciding.
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
+  <script>
+    document.getElementById('sem3-form-toggle')?.addEventListener('click', () => {
+      const details = document.getElementById('sem3-form-details');
+      const text = document.getElementById('sem3-form-toggle-text');
+      if (details.style.maxHeight && details.style.maxHeight !== '0px') {
+        details.style.maxHeight = '0px';
+        text.textContent = 'Fees & Tips ▾';
+      } else {
+        details.style.maxHeight = details.scrollHeight + 'px';
+        text.textContent = 'Fees & Tips ▴';
+      }
+    });
+  </script>
 
   <!-- ═══════════════════════════════════════════════════════════════
        THANK YOU — COLLAPSIBLE ACCORDION
