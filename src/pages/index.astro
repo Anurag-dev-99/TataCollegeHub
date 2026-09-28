@@ -85,7 +85,7 @@ const popularPapers = [...pyqsData]
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.65rem;">
       <div style="display: flex; align-items: center; gap: 0.5rem;">
         <span style="font-size: 0.95rem;">📅</span>
-        <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.04em;">FYUGP SEM 4 EXAM 2025</span>
+        <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.04em;">FYUGP SEM 7 EXAM 2025</span>
       </div>
       <a href="https://drive.google.com/file/d/1f17x-FxS_slISgPo4Pt_rjiRjF02ivJ3/view?usp=drive_link" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; font-weight: 700; color: var(--text-secondary); text-decoration: none; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 20px; padding: 3px 10px; white-space: nowrap; transition: background 0.2s; flex-shrink: 0;">
         <Download size={12} /> Notice PDF
@@ -118,23 +118,19 @@ const popularPapers = [...pyqsData]
 
     <!-- All exams done message -->
     <div id="s4-all-done" style="display: none; text-align: center; padding: 1rem; border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-sm); background: rgba(16,185,129,0.05);">
-      <span style="font-size: 0.85rem; color: #34d399; font-weight: 700;">✅ All Sem 4 exams completed!</span>
+      <span style="font-size: 0.85rem; color: #34d399; font-weight: 700;">✅ All Sem 7 exams completed!</span>
     </div>
   </div>
 
   <script type="module">
   (() => {
     const schedule = [
-      // Sep 8 exams rescheduled to Sep 21 (same centre, same sittings)
-      {"date":"2026-09-21","day":"Monday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-6)","details":"Physics, Chemistry, Mathematics (Science & Arts), Botany, Zoology, Geology, Statistics, Commerce (Corporate Accounting), BBA, BCA, IT, Mass Comm, Env. & Water Mgt."},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-6)","details":"Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"}]},
-      {"date":"2026-09-09","day":"Wednesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-6)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-7)","details":"Physics, Chemistry, Mathematics (Science & Arts), Botany, Zoology, Geology, Statistics, Commerce, BBA, BCA, IT, Mass Comm, Env."}]},
-      {"date":"2026-09-10","day":"Thursday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-7)","details":"Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-7)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science"}]},
-      {"date":"2026-09-11","day":"Friday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-8)","details":"Physics, Chemistry, Mathematics (Science & Arts), Botany, Zoology, Geology, Statistics, Commerce, BBA, BCA, IT, Mass Comm, Env."},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-8)","details":"Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"}]},
-      {"date":"2026-09-12","day":"Saturday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-8)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Minor (MN-2B)","details":"Science & Commerce/Vocational Subjects"}]},
-      {"date":"2026-09-15","day":"Tuesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Minor (MN-2B)","details":"Language & Literature Subjects"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Minor (MN-2B)","details":"Social Science Subjects"}]},
-      {"date":"2026-09-16","day":"Wednesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"12:00:00","paper_type":"VAC-2","details":"Global Citizenship Education — Set 1 (Science, Commerce & Vocational Majors)"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"16:00:00","paper_type":"VAC-2","details":"Global Citizenship Education — Set 2 (Language & Literature Majors)"}]},
-      {"date":"2026-09-18","day":"Friday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"12:00:00","paper_type":"VAC-2","details":"Global Citizenship Education — Set 3 (Social Science Majors)"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"16:00:00","paper_type":"AEC-4","details":"Bengali, Oriya, Urdu, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh — All Majors"}]},
-      {"date":"2026-09-19","day":"Saturday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"12:00:00","paper_type":"AEC-4","details":"English — All Majors"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"16:00:00","paper_type":"AEC-4","details":"Hindi — All Majors"}]}
+      // Sem 7 Exam Schedule (2022 Batch) — Oct 5–9, 2026
+      {"date":"2026-10-05","day":"Monday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-16)","details":"Physics, Chemistry, Maths, Botany, Zoology, Geology, Statistics, Commerce (Principles of Marketing), BBA, BCA, IT, Mass Comm, Env. & Water Mgt, Hindi, English, Bengali, Oriya, Urdu, Maithili, Sanskrit, Ho, Santali, Mundari, Kurmali, Kurukh"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-16)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science, Philosophy"}]},
+      {"date":"2026-10-06","day":"Tuesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-17)","details":"Physics, Chemistry, Maths, Botany, Zoology, Geology, Statistics, Commerce (HR Management), BBA, BCA, IT, Mass Comm, Env. & Water Mgt, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Maithili, Ho, Santali, Mundari, Kurmali, Kurukh"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-17)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science, Philosophy"}]},
+      {"date":"2026-10-07","day":"Wednesday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-18)","details":"Physics, Chemistry, Maths, Botany, Zoology, Geology, Statistics, Commerce (International Business), BBA, BCA, IT, Mass Comm, Env. & Water Mgt, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Maithili, Ho, Santali, Mundari, Kurmali, Kurukh"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-18)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science, Philosophy"}]},
+      {"date":"2026-10-08","day":"Thursday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Major (MJ-19)","details":"Physics, Chemistry, Maths, Botany, Zoology, Geology, Statistics, Commerce (Personal Tax Planning & Tax Management), BBA, BCA, IT, Mass Comm, Env. & Water Mgt, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Maithili, Ho, Santali, Mundari, Kurmali, Kurukh"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Major (MJ-19)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science, Philosophy"}]},
+      {"date":"2026-10-09","day":"Friday","sittings":[{"sitting":"1st Sitting","time_start":"10:00:00","time_end":"13:00:00","paper_type":"Minor (MN-1D)","details":"Physics, Chemistry, Maths, Botany, Zoology, Geology, Statistics, Commerce (Basics of Management), BBA, BCA, IT, Mass Comm, Env. & Water Mgt"},{"sitting":"2nd Sitting","time_start":"14:00:00","time_end":"17:00:00","paper_type":"Minor (MN-1D)","details":"History, Political Science, Public Admin, Economics, Sociology, Psychology, Geography, Anthropology, Home Science, Philosophy, Hindi, English, Bengali, Oriya, Urdu, Sanskrit, Maithili, Ho, Santali, Mundari, Kurmali, Kurukh"}]}
     ];
 
     const typeColors = {
@@ -327,23 +323,6 @@ const popularPapers = [...pyqsData]
   })();
   </script>
 
-  <!-- ═══════════════════════════════════════════════════════════════
-       SEP 8 → SEP 21 RESCHEDULED NOTICE
-  ════════════════════════════════════════════════════════════════ -->
-  <div style="margin-bottom: 1rem; border: 1px solid rgba(16,185,129,0.3); border-radius: var(--radius-sm); padding: 0.75rem 1rem; background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(0,0,0,0.15) 100%);">
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
-      <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
-        <span style="font-size: 1rem; flex-shrink: 0;">📅</span>
-        <div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: #34d399; font-family: var(--font-display);">8 Sep Exam → Now on 21 Sep (Monday)</div>
-          <div style="font-size: 0.68rem; color: var(--text-tertiary); margin-top: 1px;">Major (MJ-6) — Both sittings rescheduled · Same exam centres</div>
-        </div>
-      </div>
-      <a href="https://drive.google.com/file/d/1nbogc5GzrNCOIQ1ax4RqdYsFEJVZdIwQ/view?usp=drive_link" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.68rem; font-weight: 700; color: #34d399; text-decoration: none; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 3px 10px; white-space: nowrap; transition: background 0.2s; flex-shrink: 0;">
-        <Download size={12} /> Notice PDF
-      </a>
-    </div>
-  </div>
 
 
   <!-- ═══════════════════════════════════════════════════════════════
