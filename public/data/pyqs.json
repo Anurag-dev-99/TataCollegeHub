@@ -1539,6 +1539,17 @@
         "fileSize": "PDF File"
     },
     {
+        "id": "pyq-mj-zoology-sem1-2022",
+        "title": "Zoology Major Sem 1 PYQ (MJ-01) 2022 Batch",
+        "year": "2022-2026",
+        "semester": 1,
+        "category": "Major",
+        "subject": "Zoology",
+        "downloadUrl": "https://drive.google.com/file/d/10EC7Iqgur-SO_xNr_LcrU9MxqI-KWJFU/view?usp=drive_link",
+        "downloadCount": 0,
+        "fileSize": "PDF File"
+    },
+    {
         "year": "2023-2027",
         "downloadUrl": "https://drive.google.com/file/d/1a0-8EzPCkG-JGQ1-gpXw7IQwWWQknIFS/view?usp=drive_link",
         "id": "pyq-mj-zoo-sem1-mj01-2023",
@@ -1547,17 +1558,6 @@
         "subject": "Zoology",
         "downloadCount": 0,
         "title": "Zoology Major Sem 1 PYQ (MJ-01) 2023 Batch",
-        "fileSize": "PDF File"
-    },
-    {
-        "year": "2024-2028",
-        "downloadUrl": "https://drive.google.com/file/d/1GQpaf_VF6I5pFdZ0vrvTMnE-fuwDAdKG/view?usp=drive_link",
-        "id": "pyq-mj-zoo-sem1-mj01-2024",
-        "category": "Major",
-        "semester": 1,
-        "subject": "Zoology",
-        "downloadCount": 0,
-        "title": "Zoology Major Sem 1 PYQ (MJ-01) 2024 Batch",
         "fileSize": "PDF File"
     },
     {
@@ -2541,19 +2541,19 @@
         "fileSize": "PDF File"
     },
     {
-        "id": "pyq-mj-zoology-sem1-2022",
-        "title": "MJ-01 Zoology Sem 1 (2022-2026 Batch)",
-        "year": "2022-2026",
-        "semester": 1,
+        "year": "2024-2028",
+        "downloadUrl": "https://drive.google.com/file/d/1GQpaf_VF6I5pFdZ0vrvTMnE-fuwDAdKG/view?usp=drive_link",
+        "id": "pyq-mj-zoo-sem1-mj01-2024",
         "category": "Major",
+        "semester": 1,
         "subject": "Zoology",
-        "downloadUrl": "https://drive.google.com/file/d/10EC7Iqgur-SO_xNr_LcrU9MxqI-KWJFU/view?usp=drive_link",
         "downloadCount": 0,
+        "title": "Zoology Major Sem 1 PYQ (MJ-01) 2024 Batch",
         "fileSize": "PDF File"
     },
     {
         "id": "pyq-mj-zoology-sem1-2025",
-        "title": "MJ-01 Zoology Sem 1 (2025-2029 Batch)",
+        "title": "Zoology Major Sem 1 PYQ (MJ-01) 2025 Batch",
         "year": "2025-2029",
         "semester": 1,
         "category": "Major",
