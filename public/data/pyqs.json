@@ -1540,7 +1540,7 @@
     },
     {
         "year": "2023-2027",
-        "downloadUrl": "https://drive.google.com/file/d/120rlVRfS9fZAOpr1m1E7V4RpgX4KJWLP/view?usp=drive_link",
+        "downloadUrl": "https://drive.google.com/file/d/1a0-8EzPCkG-JGQ1-gpXw7IQwWWQknIFS/view?usp=drive_link",
         "id": "pyq-mj-zoo-sem1-mj01-2023",
         "category": "Major",
         "semester": 1,
@@ -1551,7 +1551,7 @@
     },
     {
         "year": "2024-2028",
-        "downloadUrl": "https://drive.google.com/file/d/1Ldpfl1UlsQjpSsrBIXMKIpeqFUVUkSkF/view?usp=drive_link",
+        "downloadUrl": "https://drive.google.com/file/d/1GQpaf_VF6I5pFdZ0vrvTMnE-fuwDAdKG/view?usp=drive_link",
         "id": "pyq-mj-zoo-sem1-mj01-2024",
         "category": "Major",
         "semester": 1,
@@ -2537,6 +2537,28 @@
         "category": "AEC",
         "subject": "English",
         "downloadUrl": "https://drive.google.com/file/d/1xSCuprUiIQxIs1diDthM0Ubnv4B-f6Jt/view?usp=drive_link",
+        "downloadCount": 0,
+        "fileSize": "PDF File"
+    },
+    {
+        "id": "pyq-mj-zoology-sem1-2022",
+        "title": "MJ-01 Zoology Sem 1 (2022-2026 Batch)",
+        "year": "2022-2026",
+        "semester": 1,
+        "category": "Major",
+        "subject": "Zoology",
+        "downloadUrl": "https://drive.google.com/file/d/10EC7Iqgur-SO_xNr_LcrU9MxqI-KWJFU/view?usp=drive_link",
+        "downloadCount": 0,
+        "fileSize": "PDF File"
+    },
+    {
+        "id": "pyq-mj-zoology-sem1-2025",
+        "title": "MJ-01 Zoology Sem 1 (2025-2029 Batch)",
+        "year": "2025-2029",
+        "semester": 1,
+        "category": "Major",
+        "subject": "Zoology",
+        "downloadUrl": "https://drive.google.com/file/d/15x04oTL2wC3Xk2RzNv5JvMKyS_fhkUEk/view?usp=drive_link",
         "downloadCount": 0,
         "fileSize": "PDF File"
     }
