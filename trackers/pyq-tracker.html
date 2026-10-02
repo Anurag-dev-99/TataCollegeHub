@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PYQ Tracker — Tata College Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0a0f;--surface:#12121a;--card:#1a1a27;--card-hover:#222235;
+    --border:#2a2a3d;--border-glow:#3d3d5c;
+    --text:#e8e8f0;--text-dim:#8888a8;--text-muted:#55557a;
+    --accent:#6c5ce7;--accent-glow:#7c6cf7;--accent-dim:#4a3cb5;
+    --green:#00d68f;--green-dim:#00a86d;
+    --orange:#ffb347;--red:#ff6b6b;
+    --radius:12px;--radius-sm:8px;
+  }
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
+    min-height:100vh;line-height:1.5;
+  }
+
+  /* ── Header ── */
+  .header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(10,10,15,0.85);backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    padding:16px 24px;
+  }
+  .header-inner{
+    max-width:1200px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:12px;
+  }
+  .header h1{
+    font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;
+    background:linear-gradient(135deg,var(--accent-glow),var(--green));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .header-stats{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .stat-badge{
+    background:var(--card);border:1px solid var(--border);border-radius:20px;
+    padding:6px 14px;font-size:0.8rem;font-weight:600;color:var(--text-dim);
+  }
+  .stat-badge span{color:var(--green);font-weight:700}
+
+  /* ── Action Buttons ── */
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{
+    font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;
+    padding:8px 16px;border-radius:var(--radius-sm);border:1px solid var(--border);
+    background:var(--card);color:var(--text-dim);cursor:pointer;
+    transition:all 0.2s;
+  }
+  .btn:hover{background:var(--card-hover);color:var(--text);border-color:var(--border-glow)}
+  .btn-accent{background:var(--accent-dim);border-color:var(--accent);color:#fff}
+  .btn-accent:hover{background:var(--accent);box-shadow:0 0 20px rgba(108,92,231,0.3)}
+  .btn-danger{border-color:var(--red);color:var(--red)}
+  .btn-danger:hover{background:rgba(255,107,107,0.1)}
+
+  /* ── Category Tabs (Subject) ── */
+  .container{max-width:1200px;margin:0 auto;padding:20px 24px}
+  .category-tabs{
+    display:flex;gap:6px;flex-wrap:wrap;
+    padding:4px;background:var(--surface);border-radius:var(--radius);
+    border:1px solid var(--border);margin-bottom:24px;
+  }
+  .cat-tab{
+    flex:1;min-width:100px;text-align:center;
+    padding:10px 12px;border-radius:var(--radius-sm);
+    font-size:0.82rem;font-weight:600;cursor:pointer;
+    color:var(--text-dim);transition:all 0.25s;border:none;background:transparent;
+    position:relative;
+  }
+  .cat-tab:hover{color:var(--text);background:rgba(108,92,231,0.08)}
+  .cat-tab.active{
+    background:var(--accent);color:#fff;
+    box-shadow:0 2px 12px rgba(108,92,231,0.35);
+  }
+  .cat-tab .tab-count{
+    display:inline-block;font-size:0.65rem;font-weight:700;
+    background:rgba(255,255,255,0.15);border-radius:10px;
+    padding:1px 7px;margin-left:4px;vertical-align:middle;
+  }
+  .cat-tab.active .tab-count{background:rgba(255,255,255,0.25)}
+
+  /* ── Subject Panel ── */
+  .subject-panel{display:none}
+  .subject-panel.active{display:block}
+
+  /* ── Progress Bar ── */
+  .progress-section{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px 20px;margin-bottom:20px;
+  }
+  .progress-header{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;
+  }
+  .progress-label{font-size:0.85rem;font-weight:600;color:var(--text-dim)}
+  .progress-pct{font-size:1.1rem;font-weight:800;color:var(--green)}
+  .progress-track{
+    height:8px;background:var(--surface);border-radius:4px;overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;border-radius:4px;transition:width 0.5s ease;
+    background:linear-gradient(90deg,var(--accent),var(--green));
+  }
+
+  /* ── Semester Section ── */
+  .sem-section{margin-bottom:20px}
+  .sem-header{
+    display:flex;align-items:center;gap:10px;
+    padding:12px 16px;
+    background:linear-gradient(135deg,rgba(108,92,231,0.08),rgba(0,214,143,0.05));
+    border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;
+    cursor:pointer;user-select:none;transition:all 0.2s;
+  }
+  .sem-header:hover{border-color:var(--border-glow)}
+  .sem-header .arrow{
+    font-size:0.7rem;color:var(--text-muted);transition:transform 0.3s;
+  }
+  .sem-header.open .arrow{transform:rotate(90deg)}
+  .sem-title{
+    font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;flex:1;
+  }
+  .sem-progress-mini{
+    font-size:0.75rem;font-weight:700;
+    padding:3px 10px;border-radius:12px;
+    background:rgba(0,214,143,0.1);color:var(--green);
+  }
+  .sem-progress-mini.partial{background:rgba(255,179,71,0.1);color:var(--orange)}
+  .sem-progress-mini.zero{background:rgba(255,107,107,0.08);color:var(--red)}
+
+  .sem-body{
+    border:1px solid var(--border);border-top:none;
+    border-radius:0 0 var(--radius) var(--radius);
+    overflow:hidden;transition:max-height 0.35s ease;
+    max-height:0;
+  }
+  .sem-body.open{max-height:2000px}
+
+  /* ── Paper Grid ── */
+  .paper-group{
+    padding:12px 16px;border-bottom:1px solid rgba(42,42,61,0.5);
+  }
+  .paper-group:last-child{border-bottom:none}
+  .paper-code{
+    font-size:0.78rem;font-weight:700;color:var(--accent-glow);
+    margin-bottom:8px;letter-spacing:0.5px;
+  }
+  .paper-items{display:flex;flex-wrap:wrap;gap:8px}
+
+  /* ── Checkbox Card ── */
+  .paper-item{
+    display:flex;align-items:center;gap:8px;
+    padding:8px 14px;border-radius:var(--radius-sm);
+    background:var(--surface);border:1px solid var(--border);
+    cursor:pointer;transition:all 0.2s;user-select:none;min-width:140px;
+  }
+  .paper-item:hover{
+    border-color:var(--accent);background:rgba(108,92,231,0.06);
+    transform:translateY(-1px);
+  }
+  .paper-item.checked{
+    border-color:var(--green-dim);background:rgba(0,214,143,0.08);
+  }
+  .paper-item.checked:hover{border-color:var(--green)}
+
+  .paper-check{
+    width:20px;height:20px;border-radius:5px;border:2px solid var(--border-glow);
+    display:flex;align-items:center;justify-content:center;
+    transition:all 0.2s;flex-shrink:0;
+  }
+  .paper-item.checked .paper-check{
+    background:var(--green);border-color:var(--green);
+    animation:checkPop 0.3s ease;
+  }
+  .paper-check svg{width:12px;height:12px;opacity:0;transition:opacity 0.15s}
+  .paper-item.checked .paper-check svg{opacity:1}
+
+  .paper-info{display:flex;flex-direction:column}
+  .paper-batch{font-size:0.72rem;font-weight:600;color:var(--text-dim)}
+  .paper-year{font-size:0.68rem;color:var(--text-muted)}
+
+  @keyframes checkPop{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.25)}
+    100%{transform:scale(1)}
+  }
+
+  /* ── Filter bar ── */
+  .filter-bar{
+    display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;
+  }
+  .filter-chip{
+    padding:6px 14px;border-radius:16px;font-size:0.72rem;font-weight:600;
+    background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
+    cursor:pointer;transition:all 0.2s;
+  }
+  .filter-chip:hover{border-color:var(--accent);color:var(--text)}
+  .filter-chip.active{background:var(--accent-dim);border-color:var(--accent);color:#fff}
+
+  /* ── Toast ── */
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+    background:var(--card);border:1px solid var(--green-dim);border-radius:var(--radius);
+    padding:12px 24px;font-size:0.82rem;font-weight:600;color:var(--green);
+    box-shadow:0 8px 32px rgba(0,0,0,0.5);z-index:1000;
+    transition:transform 0.3s ease;pointer-events:none;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0)}
+
+  /* ── Responsive ── */
+  @media(max-width:640px){
+    .header{padding:12px 16px}
+    .header h1{font-size:1.2rem}
+    .container{padding:16px}
+    .cat-tab{min-width:60px;padding:8px 6px;font-size:0.72rem}
+    .paper-item{min-width:120px;padding:6px 10px}
+    .actions{gap:4px}
+    .btn{padding:6px 10px;font-size:0.7rem}
+  }
+
+  /* ── Hidden file input ── */
+  #importInput{display:none}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <h1>📄 PYQ Tracker</h1>
+    <div class="header-stats">
+      <div class="stat-badge">Uploaded: <span id="globalDone">0</span> / <span id="globalTotal">0</span></div>
+      <div class="stat-badge">Progress: <span id="globalPct">0%</span></div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-accent" onclick="exportData()">💾 Export Backup</button>
+      <button class="btn" onclick="document.getElementById('importInput').click()">📂 Import Backup</button>
+      <button class="btn btn-danger" onclick="resetAll()">🗑️ Reset All</button>
+      <input type="file" id="importInput" accept=".json" onchange="importData(event)">
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <!-- Subject tabs -->
+  <div class="category-tabs" id="subjectTabs"></div>
+
+  <!-- Filter by status -->
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-chip active" data-filter="all" onclick="setFilter('all',this)">All</button>
+    <button class="filter-chip" data-filter="pending" onclick="setFilter('pending',this)">⬜ Pending</button>
+    <button class="filter-chip" data-filter="done" onclick="setFilter('done',this)">✅ Uploaded</button>
+  </div>
+
+  <!-- Panels -->
+  <div id="panels"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATA DEFINITION — All subjects, semesters, papers, batches
+// ═══════════════════════════════════════════════════════════════
+
+// Paper structure per semester (same for ALL science major subjects)
+const PAPER_STRUCTURE = {
+  'Semester 1': {
+    papers: ['MJ-01'],
+    batches: [
+      { batch: '2022', examYear: '2022' },
+      { batch: '2023', examYear: '2023' },
+      { batch: '2024', examYear: '2024' },
+      { batch: '2025', examYear: '2025' },
+    ]
+  },
+  'Semester 2': {
+    papers: ['MJ-02', 'MJ-03'],
+    batches: [
+      { batch: '2022', examYear: '2023' },
+      { batch: '2023', examYear: '2024' },
+      { batch: '2024', examYear: '2025' },
+    ]
+  },
+  'Semester 3': {
+    papers: ['MJ-04', 'MJ-05'],
+    batches: [
+      { batch: '2022', examYear: '2023' },
+      { batch: '2023', examYear: '2024' },
+    ]
+  },
+  'Semester 4': {
+    papers: ['MJ-06', 'MJ-07', 'MJ-08'],
+    batches: [
+      { batch: '2022', examYear: '2024' },
+      { batch: '2023', examYear: '2025' },
+    ]
+  },
+  'Semester 5': {
+    papers: ['MJ-09', 'MJ-10', 'MJ-11'],
+    batches: [
+      { batch: '2022', examYear: '2025' },
+    ]
+  },
+  'Semester 6': {
+    papers: ['MJ-12', 'MJ-13', 'MJ-14', 'MJ-15'],
+    batches: [
+      { batch: '2022', examYear: '2025' },
+    ]
+  }
+};
+
+const SUBJECTS = ['Maths', 'Physics', 'Chemistry', 'Zoology', 'Botany'];
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+
+const STORAGE_KEY = 'pyq_tracker_science_major_v2';
+let state = {}; // { "Maths|Semester 1|MJ-01|2022": true, ... }
+let activeSubject = SUBJECTS[0];
+let activeFilter = 'all';
+
+function makeKey(subject, sem, paper, batch) {
+  return `${subject}|${sem}|${paper}|${batch}`;
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) state = JSON.parse(raw);
+  } catch(e) { state = {}; }
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BUILD UI
+// ═══════════════════════════════════════════════════════════════
+
+function buildTabs() {
+  const container = document.getElementById('subjectTabs');
+  container.innerHTML = SUBJECTS.map(sub => {
+    const { done, total } = getSubjectStats(sub);
+    return `<button class="cat-tab ${sub === activeSubject ? 'active' : ''}" 
+              onclick="switchSubject('${sub}')">
+              ${sub}<span class="tab-count">${done}/${total}</span>
+            </button>`;
+  }).join('');
+}
+
+function buildPanels() {
+  const container = document.getElementById('panels');
+  container.innerHTML = SUBJECTS.map(sub => {
+    const { done, total } = getSubjectStats(sub);
+    const pct = total ? Math.round(done/total*100) : 0;
+
+    let semHTML = '';
+    for (const [semName, semData] of Object.entries(PAPER_STRUCTURE)) {
+      const semStats = getSemStats(sub, semName);
+      const semPct = semStats.total ? Math.round(semStats.done/semStats.total*100) : 0;
+      const statusClass = semPct === 100 ? '' : (semPct > 0 ? 'partial' : 'zero');
+
+      let paperGroupsHTML = '';
+      for (const paper of semData.papers) {
+        let itemsHTML = '';
+        for (const b of semData.batches) {
+          const key = makeKey(sub, semName, paper, b.batch);
+          const checked = !!state[key];
+          
+          // Filter logic
+          if (activeFilter === 'done' && !checked) continue;
+          if (activeFilter === 'pending' && checked) continue;
+
+          itemsHTML += `
+            <div class="paper-item ${checked ? 'checked' : ''}" 
+                 onclick="toggle('${key}', this)" id="item-${CSS.escape(key)}">
+              <div class="paper-check">
+                <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
+                  <path d="M2 6l3 3 5-5"/>
+                </svg>
+              </div>
+              <div class="paper-info">
+                <span class="paper-batch">${b.batch} Batch</span>
+                <span class="paper-year">Exam: ${b.examYear}</span>
+              </div>
+            </div>`;
+        }
+        if (itemsHTML || activeFilter === 'all') {
+          paperGroupsHTML += `
+            <div class="paper-group">
+              <div class="paper-code">${paper}</div>
+              <div class="paper-items">${itemsHTML || '<span style="color:var(--text-muted);font-size:0.75rem">No matching items</span>'}</div>
+            </div>`;
+        }
+      }
+
+      semHTML += `
+        <div class="sem-section">
+          <div class="sem-header open" onclick="toggleSem(this)">
+            <span class="arrow">▶</span>
+            <span class="sem-title">${semName}</span>
+            <span class="sem-progress-mini ${statusClass}">${semStats.done}/${semStats.total}</span>
+          </div>
+          <div class="sem-body open">${paperGroupsHTML}</div>
+        </div>`;
+    }
+
+    return `<div class="subject-panel ${sub === activeSubject ? 'active' : ''}" id="panel-${sub}">
+      <div class="progress-section">
+        <div class="progress-header">
+          <span class="progress-label">${sub} Major — Overall Progress</span>
+          <span class="progress-pct">${pct}%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      </div>
+      ${semHTML}
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════════════════
+
+function getAllKeys() {
+  const keys = [];
+  for (const sub of SUBJECTS) {
+    for (const [semName, semData] of Object.entries(PAPER_STRUCTURE)) {
+      for (const paper of semData.papers) {
+        for (const b of semData.batches) {
+          keys.push(makeKey(sub, semName, paper, b.batch));
+        }
+      }
+    }
+  }
+  return keys;
+}
+
+function getSubjectStats(sub) {
+  let done = 0, total = 0;
+  for (const [semName, semData] of Object.entries(PAPER_STRUCTURE)) {
+    for (const paper of semData.papers) {
+      for (const b of semData.batches) {
+        total++;
+        if (state[makeKey(sub, semName, paper, b.batch)]) done++;
+      }
+    }
+  }
+  return { done, total };
+}
+
+function getSemStats(sub, semName) {
+  const semData = PAPER_STRUCTURE[semName];
+  let done = 0, total = 0;
+  for (const paper of semData.papers) {
+    for (const b of semData.batches) {
+      total++;
+      if (state[makeKey(sub, semName, paper, b.batch)]) done++;
+    }
+  }
+  return { done, total };
+}
+
+function getGlobalStats() {
+  const keys = getAllKeys();
+  const done = keys.filter(k => state[k]).length;
+  return { done, total: keys.length };
+}
+
+function updateGlobalStats() {
+  const { done, total } = getGlobalStats();
+  document.getElementById('globalDone').textContent = done;
+  document.getElementById('globalTotal').textContent = total;
+  document.getElementById('globalPct').textContent = total ? Math.round(done/total*100) + '%' : '0%';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INTERACTIONS
+// ═══════════════════════════════════════════════════════════════
+
+function toggle(key, el) {
+  if (state[key]) {
+    delete state[key];
+    el.classList.remove('checked');
+  } else {
+    state[key] = true;
+    el.classList.add('checked');
+  }
+  saveState();
+  // Rebuild to refresh stats (tabs, progress bars, sem counts)
+  buildTabs();
+  buildPanels();
+  updateGlobalStats();
+}
+
+function switchSubject(sub) {
+  activeSubject = sub;
+  buildTabs();
+  buildPanels();
+}
+
+function toggleSem(headerEl) {
+  headerEl.classList.toggle('open');
+  const body = headerEl.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+function setFilter(filter, el) {
+  activeFilter = filter;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  buildPanels();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EXPORT / IMPORT / RESET
+// ═══════════════════════════════════════════════════════════════
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `pyq_tracker_backup_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✅ Backup exported!');
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      // Merge: imported overwrites existing
+      state = { ...state, ...imported };
+      saveState();
+      render();
+      showToast(`✅ Imported ${Object.keys(imported).length} entries!`);
+    } catch(err) {
+      showToast('❌ Invalid backup file');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = ''; // reset so same file can be re-imported
+}
+
+function resetAll() {
+  if (!confirm('⚠️ Are you sure you want to reset ALL checkboxes? This cannot be undone.\n\nTip: Export a backup first!')) return;
+  state = {};
+  saveState();
+  render();
+  showToast('🗑️ All data reset');
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+
+function render() {
+  buildTabs();
+  buildPanels();
+  updateGlobalStats();
+}
+
+loadState();
+render();
+</script>
+
+</body>
+</html>
