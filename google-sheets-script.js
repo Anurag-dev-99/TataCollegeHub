@@ -14,6 +14,11 @@
  *
  * Notes sheet columns (Row 1 = headers):
  *   A: Timestamp  B: Subject  C: Language  D: Category  E: Medium
+ *
+ * Requests sheet columns (Row 1 = headers):
+ *   A: Timestamp  B: Name  C: What do you need?  D: Semester  E: Category
+ *   F: Subject  G: Exam Year  H: Session/Batch  I: WhatsApp Contact
+ *   J: Done (checkbox)  K: Completed At (auto-timestamp)
  */
 
 // ─── POST Handler ─────────────────────────────────────────────────────────────
@@ -71,10 +76,21 @@ function doPost(e) {
 
     } else {
       // ── Log a paper request ───────────────────────────────────────────────
+      // FIX: Use Column A to find the true last row, so checkbox FALSE values
+      // in column J don't push new requests to the wrong row.
       var reqSheet = ss.getSheetByName('Requests');
       if (!reqSheet) reqSheet = ss.getActiveSheet();
 
-      reqSheet.appendRow([
+      var colA = reqSheet.getRange('A:A').getValues();
+      var actualLastRow = 0;
+      for (var i = colA.length - 1; i >= 0; i--) {
+        if (colA[i][0] !== '') { actualLastRow = i + 1; break; }
+      }
+
+      var newRow = actualLastRow + 1;
+
+      // Write request data to the correct row
+      reqSheet.getRange(newRow, 1, 1, 9).setValues([[
         new Date(),
         data.name,
         (data.type === 'syllabus' ? 'Syllabus'
@@ -86,7 +102,10 @@ function doPost(e) {
         data.year,
         data.session,
         data.contact || 'Not provided'
-      ]);
+      ]]);
+
+      // Auto-add checkbox to column J for the new row
+      reqSheet.getRange(newRow, 10).insertCheckboxes();
     }
 
     return ContentService
@@ -188,4 +207,54 @@ function doGet(e) {
       .createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+// ─── Auto-Timestamp when "Done" checkbox is ticked ────────────────────────────
+function onEdit(e) {
+  var sheet = e.source.getActiveSheet();
+
+  if (sheet.getName() !== 'Requests') return;
+
+  var editedCol = e.range.getColumn();
+  var editedRow = e.range.getRow();
+
+  if (editedCol !== 10) return; // Column J = 10
+  if (editedRow === 1) return;  // skip header
+
+  var isDone = e.range.getValue();
+  var timestampCell = sheet.getRange(editedRow, 11); // Column K = 11
+
+  if (isDone) {
+    timestampCell.setValue(new Date());
+    timestampCell.setNumberFormat('dd/MM/yyyy HH:mm:ss');
+    sheet.getRange(editedRow, 1, 1, 11).setBackground('#c6efce'); // green row
+  } else {
+    timestampCell.clearContent();
+    sheet.getRange(editedRow, 1, 1, 11).setBackground(null); // remove green
+  }
+}
+
+// ─── ONE-TIME UTILITY: Add checkboxes to all rows missing them ────────────────
+// Run ONCE from Apps Script editor: select "fixMissingCheckboxes" → click ▶ Run
+// Safely adds checkboxes ONLY to rows with data in column A but no checkbox in J
+function fixMissingCheckboxes() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Requests');
+  if (!sheet) return;
+
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;
+
+  var colA = sheet.getRange(2, 1, lastRow - 1, 1).getValues();  // Column A data
+  var colJ = sheet.getRange(2, 10, lastRow - 1, 1).getValues(); // Column J data
+
+  var fixed = 0;
+  for (var i = 0; i < colA.length; i++) {
+    if (colA[i][0] !== '' && (colJ[i][0] === '' || colJ[i][0] === null)) {
+      // Row has data but no checkbox — add one
+      sheet.getRange(i + 2, 10).insertCheckboxes();
+      fixed++;
+    }
+  }
+
+  SpreadsheetApp.getUi().alert('Done! Added checkboxes to ' + fixed + ' rows.');
 }
