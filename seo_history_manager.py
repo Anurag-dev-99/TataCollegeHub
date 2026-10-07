@@ -113,25 +113,28 @@ def parse_manual_ranking_data(text_data):
             
         line_lower = line_str.lower()
         
-        # Check for 'not in top' or 'not found' or 'no rank'
-        if any(phrase in line_lower for phrase in ["not in top", "not found", "no rank", "dropped"]):
-            # Keyword is everything before the negative phrase
-            for phrase in ["not in top", "not found", "no rank", "dropped"]:
-                if phrase in line_lower:
-                    idx = line_lower.find(phrase)
-                    kw = line_str[:idx].strip().lower()
-                    rankings[kw] = None
-                    break
-        else:
-            # Try to split and parse last token as number
+        # Check for negative phrases or trailing not/none/na
+        phrases = ["not in top", "not found", "no rank", "dropped", "not ranked"]
+        matched_phrase = False
+        for phrase in phrases:
+            if phrase in line_lower:
+                idx = line_lower.find(phrase)
+                kw = line_str[:idx].rstrip(" -:\t").strip().lower()
+                rankings[kw] = None
+                matched_phrase = True
+                break
+                
+        if not matched_phrase:
             words = line_str.split()
             if words:
-                last_word = words[-1]
-                # Check if last word is a number
+                last_word = words[-1].lower()
                 if last_word.isdigit():
                     rank = int(last_word)
                     kw = " ".join(words[:-1]).rstrip(" -:\t").strip().lower()
                     rankings[kw] = rank
+                elif last_word in ["not", "none", "na", "n/a", "nil", "null"]:
+                    kw = " ".join(words[:-1]).rstrip(" -:\t").strip().lower()
+                    rankings[kw] = None
                 else:
                     # Fallback: whole line as keyword, no rank
                     kw = line_lower.rstrip(" -:\t").strip()
