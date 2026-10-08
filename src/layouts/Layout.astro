@@ -1,12 +1,12 @@
 ---
 import '../styles/global.css';
-import { LayoutGrid, FileText, BookOpen, Bell, TrendingUp, Calculator, Moon, Sun, Search, X, CheckCircle } from '@lucide/astro';
+import { LayoutGrid, FileText, BookOpen, Bell, TrendingUp, Calculator, Moon, Sun, Search, X, CheckCircle, Archive } from '@lucide/astro';
 
 interface Props {
   title: string;
   description?: string;
   keywords?: string;
-  activeTab?: 'home' | 'syllabus' | 'pyqs' | 'results' | 'notices' | 'cgpa' | 'recheck';
+  activeTab?: 'home' | 'syllabus' | 'pyqs' | 'results' | 'notices' | 'cgpa' | 'recheck' | 'exam-archive';
 }
 
 const { title, activeTab } = Astro.props;
@@ -241,6 +241,9 @@ const webPageSchema = JSON.stringify({
           </a>
           <a href={`${baseUrl}/notices`} class={`mobile-nav-item ${activeTab === 'notices' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <Bell /> <span style="font-size: 0.95rem; font-weight: 600;">Notices</span>
+          </a>
+          <a href={`${baseUrl}/exam-archive`} class={`mobile-nav-item ${activeTab === 'exam-archive' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+            <Archive /> <span style="font-size: 0.95rem; font-weight: 600;">Exam Archive</span>
           </a>
           <a href={`${baseUrl}/results`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <TrendingUp /> <span style="font-size: 0.95rem; font-weight: 600;">Results</span>

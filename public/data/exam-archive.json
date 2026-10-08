@@ -1,0 +1,274 @@
+{
+  "holidayLists": [
+    {
+      "year": "2024",
+      "url": "https://drive.google.com/file/d/1J2XuOFXTVVrHRhIr38JXAgUFzHBCM3HZ/view?usp=drive_link"
+    },
+    {
+      "year": "2025",
+      "url": "https://drive.google.com/file/d/1MgVQMN51OqG1D6hpLIaW4Gt_6AHUqTb9/view?usp=drive_link"
+    },
+    {
+      "year": "2026",
+      "url": "https://drive.google.com/file/d/1-6-egRakW9pCbDSEwde2YxM-ee7fgQPh/view?usp=drive_link"
+    }
+  ],
+  "batches": [
+    {
+      "batch": "2022",
+      "sessionRange": "2022–2026",
+      "programme": "FYUGP (4-Year) Under NEP 2020",
+      "description": "The first batch of Kolhan University's Four-Year Undergraduate Programme (FYUGP) under NEP 2020. This batch started in 2022 and covers Semesters 1 through 8. As the inaugural NEP batch, students experienced the transition to the new credit-based semester system with Major, Minor, MDC, AEC, SEC, and VAC courses.",
+      "semesters": [
+        {
+          "sem": 1,
+          "examDate": "https://drive.google.com/file/d/13uUb4xvYGgu78xkyEamgMu82HGN9FIzM/view?usp=drive_link",
+          "formFillup": null,
+          "examCenter": null,
+          "result": "https://drive.google.com/file/d/1TTUWCr_Vr0O0kskfE5sgNAnZNyKQahtu/view?usp=drive_link"
+        },
+        {
+          "sem": 2,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": "https://drive.google.com/file/d/1HprpXpwXLALfL8jpg_MA8C1D5_b8EWby/view?usp=drive_link",
+          "result": "https://drive.google.com/file/d/16O3zfGlgoRBozZx1KuA-Lp5SdDlpYQsd/view?usp=drive_link"
+        },
+        {
+          "sem": 3,
+          "examDate": "https://drive.google.com/file/d/1hOAj0EmDdW0wQFtAzevN8URW4oTBkaAY/view?usp=drive_link",
+          "formFillup": "https://drive.google.com/file/d/1ionBcaMiHd86cMYr6Pqs8QnJmNQ3XLhv/view?usp=drive_link",
+          "examCenter": "https://drive.google.com/file/d/11FaBak4Zbii44VBtuXKovgQyiT6Wt3JJ/view?usp=drive_link",
+          "result": "https://drive.google.com/file/d/1dD5N5VZpur3OLetjZyAYqeJt365gb3ze/view?usp=drive_link"
+        },
+        {
+          "sem": 4,
+          "examDate": null,
+          "formFillup": "https://drive.google.com/file/d/1CiWV7HU9XDl2y1xpoWlcvsZyjFmCjez5/view?usp=drive_link",
+          "examCenter": null,
+          "result": "https://drive.google.com/file/d/131g2-vz0mNBGrNR84EL5x63AIXDXiiz5/view?usp=drive_link"
+        },
+        {
+          "sem": 5,
+          "examDate": "https://drive.google.com/file/d/1EciTm3QNsIPT54T7_XR-uWur32M3uzIw/view?usp=drive_link",
+          "formFillup": "https://drive.google.com/file/d/1Ozp-iunJczBS5rEPOSfgxYRmb6MKo0f2/view?usp=drive_link",
+          "examCenter": "https://drive.google.com/file/d/1Tu9TQWtjmPxeW8OvhhhqcQ5tIPPtymEF/view?usp=drive_link",
+          "result": "https://drive.google.com/file/d/1N7Vrl8wHaPCDC84WkAW5Mk3B9EtdUFdd/view?usp=drive_link"
+        },
+        {
+          "sem": 6,
+          "examDate": "https://drive.google.com/file/d/1K7BCSDCRwWuIefoxUqvv3614JiE4GxtY/view?usp=drive_link",
+          "formFillup": "https://drive.google.com/file/d/1rGu8O_as-2uqo1QuhwlCNlT2kGN6uo0v/view?usp=drive_link",
+          "examCenter": null,
+          "result": "https://drive.google.com/file/d/1W4yXCnL3Iqdxz7-qLyCQXgc0As4Cro1U/view?usp=drive_link"
+        },
+        {
+          "sem": 7,
+          "examDate": "https://drive.google.com/file/d/1QDmFizbD21XWwGxPE8lRAv8M2xRIzmEF/view?usp=drive_link",
+          "formFillup": "https://drive.google.com/file/d/1XAYriX9M_KfgqIuE4C9oFZP4IW8bnkMW/view?usp=drive_link",
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 8,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "batch": "2023",
+      "sessionRange": "2023–2027",
+      "programme": "FYUGP (4-Year) Under NEP 2020",
+      "description": "The second FYUGP batch under Kolhan University's NEP 2020 framework. This batch started in 2023 and is currently progressing through the mid-semesters of their undergraduate programme. Students in this batch follow the same Major-Minor-MDC credit structure established by the first batch.",
+      "semesters": [
+        {
+          "sem": 1,
+          "examDate": "https://drive.google.com/file/d/19FYP5bQErkBZqjmZQCrIvAs6gQOVuhqy/view?usp=drive_link",
+          "formFillup": null,
+          "examCenter": null,
+          "result": "https://drive.google.com/file/d/16PiAkhMp4bQZXWazbM3aymmUwT1FpJGd/view?usp=drive_link"
+        },
+        {
+          "sem": 2,
+          "examDate": "https://drive.google.com/file/d/1j4xuAMC69UY6arsf9Bw5PkENfNJJIWpT/view?usp=drive_link",
+          "formFillup": null,
+          "examCenter": "https://drive.google.com/file/d/1hKOYfDjG5iYswDhzo5Yu69IV0kgALew9/view?usp=drive_link",
+          "result": "https://drive.google.com/file/d/1hTz_FSfY6BjQuNxDNUxCZrEeNJQY2pyF/view?usp=drive_link"
+        },
+        {
+          "sem": 3,
+          "examDate": "https://drive.google.com/file/d/1RJT6SQ2Fw78g9Vp5-hHaDGFMQcLKWnGU/view?usp=drive_link",
+          "formFillup": "https://drive.google.com/file/d/1dK7nt2eQuxEw9MpTg_lPrjQllMmlbDJI/view?usp=drive_link",
+          "examCenter": null,
+          "result": "https://drive.google.com/file/d/1HDK285DNGIPZRnN22rin3PWRk8l8vZKe/view?usp=drive_link"
+        },
+        {
+          "sem": 4,
+          "examDate": "https://drive.google.com/file/d/1_trImnhLFbL20MVBQ3jMr4QF5V_3ZFnv/view?usp=drive_link",
+          "formFillup": "https://drive.google.com/file/d/1OZiQiBdrXN52Oc_iO_SF7VtHzT17Ft-U/view?usp=drive_link",
+          "examCenter": "https://drive.google.com/file/d/1bCu5RnTJumof-xwEJyf1-TUWhKQp2nlL/view?usp=drive_link",
+          "result": null
+        },
+        {
+          "sem": 5,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 6,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 7,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 8,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "batch": "2024",
+      "sessionRange": "2024–2028",
+      "programme": "FYUGP (4-Year) Under NEP 2020",
+      "description": "The third FYUGP batch at Kolhan University. This batch started in 2024 and is currently in the early semesters of their programme. Like previous batches, they follow the NEP 2020 credit-based system with Major, Minor, MDC, AEC, SEC, VAC, and IKS courses.",
+      "semesters": [
+        {
+          "sem": 1,
+          "examDate": "https://drive.google.com/file/d/1gjB-5Hk0jWaAjqMuDxJahIvwaEqjHWJ4/view?usp=drive_link",
+          "formFillup": "https://drive.google.com/file/d/1v4yVQJ1LgOuxKkGsxktYU_JEhHi1fXx3/view?usp=drive_link",
+          "examCenter": null,
+          "result": "https://drive.google.com/file/d/17DCPzxRVaT_aZ5qX7wap2XN4a3AjUaLz/view?usp=drive_link"
+        },
+        {
+          "sem": 2,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": "https://drive.google.com/file/d/14De0RShqNgT_9_HY2d-S5iyY6AqFH_AZ/view?usp=drive_link"
+        },
+        {
+          "sem": 3,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 4,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 5,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 6,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 7,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 8,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        }
+      ]
+    },
+    {
+      "batch": "2025",
+      "sessionRange": "2025–2029",
+      "programme": "FYUGP (4-Year) Under NEP 2020",
+      "description": "The newest batch at Kolhan University, starting in 2025. These students are in their very first semester of the FYUGP programme under NEP 2020. Exam dates and form fill-up details for Semester 1 are available below.",
+      "semesters": [
+        {
+          "sem": 1,
+          "examDate": "https://drive.google.com/file/d/1z8mc6iTMyGnwg32yzdg6bYhweOg_4TI5/view?usp=drive_link",
+          "formFillup": "https://drive.google.com/file/d/1Uu2OVzOltjErBSDr-gv6rIr_q5GXBGhM/view?usp=drive_link",
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 2,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 3,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 4,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 5,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 6,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 7,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        },
+        {
+          "sem": 8,
+          "examDate": null,
+          "formFillup": null,
+          "examCenter": null,
+          "result": null
+        }
+      ]
+    }
+  ]
+}
