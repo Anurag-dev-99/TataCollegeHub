@@ -1,0 +1,294 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ChevronDown, MessageCircle, HelpCircle } from '@lucide/astro';
+import faqData from '../../public/data/faq.json';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const totalQuestions = faqData.categories.reduce((acc, cat) => acc + cat.questions.length, 0);
+---
+
+<Layout 
+  title="FAQ — Kolhan University Student Questions & Answers | KolhanHub" 
+  activeTab="home"
+  description="Frequently asked questions about Kolhan University exams, subjects, FYUGP NEP 2020, admit card, results, CGPA, back papers, Minor/MDC selection, and more. Get answers from real student experience."
+  keywords="Kolhan University FAQ, Kolhan University exam questions, FYUGP NEP 2020 FAQ, Kolhan University admit card, Kolhan University CGPA, Kolhan University back paper, KolhanHub FAQ"
+>
+
+  <!-- Header -->
+  <div style="margin-bottom: 1.75rem;">
+    <h1 style="font-size: 2rem; font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.25rem;">
+      ❓ Frequently Asked Questions
+    </h1>
+    <p style="color: var(--text-tertiary); font-size: 0.88rem;">
+      {totalQuestions} answers from real student experience — not generic advice.
+    </p>
+  </div>
+
+  <!-- Category Filter Chips -->
+  <div id="faq-filters" style="display: flex; gap: 0.4rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+    <button class="faq-filter active" data-category="all">
+      All ({totalQuestions})
+    </button>
+    {faqData.categories.map(cat => (
+      <button class="faq-filter" data-category={cat.id}>
+        {cat.icon} {cat.name} ({cat.questions.length})
+      </button>
+    ))}
+  </div>
+
+  <!-- FAQ Sections -->
+  {faqData.categories.map(cat => (
+    <section class="faq-section" data-category={cat.id} style="margin-bottom: 1.5rem;">
+      <!-- Category Header -->
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+        <span style="font-size: 1.1rem;">{cat.icon}</span>
+        <h2 style="font-size: 1.05rem; font-weight: 700; font-family: var(--font-display); margin: 0; color: var(--text-secondary);">
+          {cat.name}
+        </h2>
+      </div>
+
+      <!-- Questions Accordion -->
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        {cat.questions.map(q => (
+          <div class="faq-item card" id={q.id}>
+            <button class="faq-question" aria-expanded="false" aria-controls={`${q.id}-answer`}>
+              <span class="faq-q-text">{q.question}</span>
+              <ChevronDown size="18" class="faq-chevron" />
+            </button>
+            <div class="faq-answer" id={`${q.id}-answer`} set:html={q.answer} />
+          </div>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <!-- Ask a Question CTA -->
+  <div class="card" style="margin-top: 2rem; text-align: center; padding: 1.75rem 1.25rem; border-color: rgba(99,102,241,0.2); background: rgba(99,102,241,0.03);">
+    <h3 style="font-size: 1.15rem; font-weight: 800; font-family: var(--font-display); margin-bottom: 0.35rem;">
+      Couldn't find your question?
+    </h3>
+    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+      Ask us. Your question may help other Kolhan University students too.
+    </p>
+    <a 
+      href="https://api.whatsapp.com/send?phone=918002059887&text=Hi!%20I%20have%20a%20question%20for%20KolhanHub%20FAQ:%20" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.5rem; background: linear-gradient(135deg, #25d366, #128c7e); color: white; font-size: 0.88rem; font-weight: 700; border-radius: 100px; text-decoration: none; border: none; cursor: pointer; box-shadow: 0 4px 16px rgba(37,211,102,0.25); transition: all 0.2s;"
+    >
+      <MessageCircle size="18" /> Ask on WhatsApp
+    </a>
+    <p style="font-size: 0.68rem; color: var(--text-tertiary); margin-top: 0.75rem;">
+      We review questions manually. Useful ones get added to this FAQ.
+    </p>
+  </div>
+
+  <!-- Important Notice -->
+  <div style="margin-top: 1.5rem; padding: 0.85rem 1rem; border-radius: var(--radius-sm); background: rgba(251,191,36,0.04); border: 1px solid rgba(251,191,36,0.15);">
+    <p style="font-size: 0.75rem; color: var(--text-tertiary); line-height: 1.6; margin: 0;">
+      ⚠️ <strong style="color: var(--text-secondary);">Important:</strong> KolhanHub is an independent student resource and is not an official website of Kolhan University or Tata College. Information related to examination rules, subject selection, promotion, dates, eligibility and other official matters can change. Students should always cross-check with the <strong>latest official notice from Kolhan University or their college</strong>.
+    </p>
+  </div>
+
+</Layout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Accordion toggle
+    const questions = document.querySelectorAll('.faq-question');
+    questions.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const item = this.closest('.faq-item');
+        const answer = item.querySelector('.faq-answer');
+        const isOpen = item.classList.contains('open');
+        
+        // Close all others
+        document.querySelectorAll('.faq-item.open').forEach(openItem => {
+          if (openItem !== item) {
+            openItem.classList.remove('open');
+            openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+            openItem.querySelector('.faq-answer').style.maxHeight = '0';
+          }
+        });
+        
+        // Toggle current
+        if (isOpen) {
+          item.classList.remove('open');
+          this.setAttribute('aria-expanded', 'false');
+          answer.style.maxHeight = '0';
+        } else {
+          item.classList.add('open');
+          this.setAttribute('aria-expanded', 'true');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+
+    // Category filter
+    const filters = document.querySelectorAll('.faq-filter');
+    const sections = document.querySelectorAll('.faq-section');
+    
+    filters.forEach(filter => {
+      filter.addEventListener('click', function() {
+        const category = this.dataset.category;
+        
+        // Update active filter
+        filters.forEach(f => f.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Show/hide sections
+        sections.forEach(section => {
+          if (category === 'all' || section.dataset.category === category) {
+            section.style.display = 'block';
+          } else {
+            section.style.display = 'none';
+          }
+        });
+
+        // Close all open accordions when switching categories
+        document.querySelectorAll('.faq-item.open').forEach(item => {
+          item.classList.remove('open');
+          item.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+          item.querySelector('.faq-answer').style.maxHeight = '0';
+        });
+      });
+    });
+
+    // Deep link: open FAQ if URL has hash
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const target = document.getElementById(hash);
+      if (target && target.classList.contains('faq-item')) {
+        const btn = target.querySelector('.faq-question');
+        if (btn) {
+          setTimeout(() => {
+            btn.click();
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 300);
+        }
+      }
+    }
+  });
+</script>
+
+<style>
+  /* Filter Chips */
+  .faq-filter {
+    padding: 0.42rem 0.9rem;
+    border-radius: 100px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.78rem;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .faq-filter:hover {
+    border-color: rgba(99,102,241,0.3);
+    color: var(--text-secondary);
+  }
+  .faq-filter.active {
+    background: rgba(99,102,241,0.12);
+    color: #818cf8;
+    border-color: rgba(99,102,241,0.35);
+  }
+
+  /* FAQ Item */
+  .faq-item {
+    padding: 0 !important;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .faq-item:hover {
+    border-color: rgba(99,102,241,0.2);
+  }
+
+  /* Question Button */
+  .faq-question {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.5;
+    transition: background 0.15s;
+  }
+  .faq-question:hover {
+    background: rgba(99,102,241,0.03);
+  }
+  .faq-q-text {
+    flex: 1;
+  }
+  .faq-chevron {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: var(--text-tertiary);
+    transition: transform 0.25s ease;
+  }
+  .faq-item.open .faq-chevron {
+    transform: rotate(180deg);
+    color: #818cf8;
+  }
+
+  /* Answer */
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0 1rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.75;
+  }
+  .faq-item.open .faq-answer {
+    padding: 0 1rem 1rem;
+  }
+  .faq-answer p {
+    margin: 0 0 0.6rem;
+  }
+  .faq-answer p:last-child {
+    margin-bottom: 0;
+  }
+  .faq-answer ul {
+    margin: 0.3rem 0 0.6rem;
+    padding-left: 1.25rem;
+  }
+  .faq-answer li {
+    margin-bottom: 0.25rem;
+  }
+  .faq-answer strong {
+    color: var(--text-primary);
+  }
+  .faq-answer a {
+    text-decoration: none;
+  }
+  .faq-answer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 600px) {
+    .faq-question {
+      font-size: 0.84rem;
+      padding: 0.75rem 0.85rem;
+    }
+    .faq-answer {
+      font-size: 0.82rem;
+      padding: 0 0.85rem;
+    }
+    .faq-item.open .faq-answer {
+      padding: 0 0.85rem 0.85rem;
+    }
+  }
+</style>

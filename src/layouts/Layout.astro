@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { LayoutGrid, FileText, BookOpen, Bell, TrendingUp, Calculator, Moon, Sun, Search, X, CheckCircle, Archive } from '@lucide/astro';
+import { LayoutGrid, FileText, BookOpen, Bell, TrendingUp, Calculator, Moon, Sun, Search, X, CheckCircle, Archive, HelpCircle } from '@lucide/astro';
 
 interface Props {
   title: string;
@@ -250,6 +250,9 @@ const webPageSchema = JSON.stringify({
           </a>
           <a href={`${baseUrl}/cgpa`} class={`mobile-nav-item ${activeTab === 'cgpa' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <Calculator /> <span style="font-size: 0.95rem; font-weight: 600;">CGPA</span>
+          </a>
+          <a href={`${baseUrl}/faq`} class={`mobile-nav-item ${activeTab === 'faq' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+            <HelpCircle /> <span style="font-size: 0.95rem; font-weight: 600;">FAQ</span>
           </a>
         </nav>
 

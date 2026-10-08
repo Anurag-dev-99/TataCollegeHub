@@ -1,0 +1,174 @@
+{
+  "categories": [
+    {
+      "id": "general",
+      "name": "General",
+      "icon": "🏠",
+      "questions": [
+        {
+          "id": "faq-1",
+          "question": "Is KolhanHub an official website of Kolhan University or Tata College?",
+          "answer": "<p><strong>No. KolhanHub is not an official website of Kolhan University or Tata College.</strong></p><p>KolhanHub is an independent student resource created to make academic information easier to find and understand.</p><p>We provide resources such as <strong>PYQs, syllabus, notes, results, result analysis, guides, and practical information</strong> to help students save time and prepare better.</p><p>The goal is simple: make the college journey easier for students by bringing useful information into one place.</p><p>We will continue adding new features and resources based on what students actually need.</p>"
+        },
+        {
+          "id": "faq-2",
+          "question": "I am unable to find my syllabus. What should I do?",
+          "answer": "<p>First, check the <strong>official Kolhan University syllabus</strong> and ask your subject teacher or department about the latest syllabus.</p><p>Syllabus can change or be revised, so <strong>don't blindly prepare from an old syllabus</strong>.</p><p>KolhanHub tries to provide the relevant syllabus and keep it updated, but the <strong>latest official university/college information should always be treated as the final authority</strong>.</p>"
+        },
+        {
+          "id": "faq-3",
+          "question": "Are the PYQs uploaded on KolhanHub genuine? Some of them look AI-generated.",
+          "answer": "<p><strong>Yes. The PYQs are genuine.</strong></p><p>Many original question papers are old, blurry, scanned poorly, or difficult to read. In some cases, we use AI to improve the <strong>readability and presentation</strong> of the original paper.</p><p>The purpose of AI is to enhance the quality of the scan — not to create or invent questions.</p><p>We also verify the enhanced version against the original PYQ before uploading it.</p><p>So, <strong>the question paper is authentic; AI is only used to improve its readability when necessary.</strong></p>"
+        },
+        {
+          "id": "faq-4",
+          "question": "I have just taken admission. I am confused about how to prepare for my exams. What should I do?",
+          "answer": "<p>First of all, <strong>don't panic.</strong> You have plenty of time before your Semester 1 examination.</p><p>The best thing you can do is talk to your <strong>seniors and subject teachers</strong>. They can guide you about books, teachers, preparation and common mistakes.</p><p>You should also:</p><ul><li>Check your syllabus carefully.</li><li>Look at previous year question papers.</li><li>Analyse previous results to understand examination patterns.</li><li>Follow the KolhanHub Guide section for useful preparation tips.</li></ul><p>Don't wait until the final few weeks before starting.</p>"
+        }
+      ]
+    },
+    {
+      "id": "subjects",
+      "name": "Subjects",
+      "icon": "📚",
+      "questions": [
+        {
+          "id": "faq-5",
+          "question": "I am confused about which Minor or MDC subject I should choose. What should I take?",
+          "answer": "<p>For <strong>Minor</strong>, don't choose blindly just because everyone else is choosing the same subject.</p><p>Before deciding:</p><ul><li>Check what students generally take using KolhanResult.</li><li>Ask your Major subject teacher.</li><li>Ask seniors who have already studied the subject.</li><li>Check the rules about which Minor subjects you are allowed to choose.</li><li>Consider whether the subject matches your interests or future career plans.</li></ul><p>For <strong>MDC</strong>, you generally have more flexibility. You can choose a subject that is <strong>scoring and relatively low-pressure</strong>, or simply choose something you genuinely want to study.</p><p>From my experience, <strong>Anthropology has been comparatively easy to score in</strong>, while Economics at Tata College is also considered a good option.</p><p>However, students should still check the current syllabus and ask seniors before making a final decision.</p>"
+        },
+        {
+          "id": "faq-7",
+          "question": "What are Major, Minor, MDC, AEC, SEC and VAC subjects?",
+          "answer": "<p>These are different types of papers in the undergraduate course.</p><p><strong>Major:</strong> Your main/core subject. For example, if you are doing B.Sc Mathematics Honours, Mathematics is your Major. For a Major paper with practical components, the marks distribution in the current scheme can include <strong>60 marks external + 40 marks internal/practical</strong>.</p><p><strong>Minor:</strong> A secondary subject studied alongside your Major. Depending on whether the Minor paper is practical or non-practical, the marks distribution can differ. In the current scheme:</p><ul><li>Practical Minor: <strong>60 external + 40 internal/practical</strong></li><li>Non-practical Minor: <strong>75 external + 25 internal</strong></li></ul><p><strong>AEC (Ability Enhancement Course):</strong> For example, the usual pattern includes Semester 1 – Hindi, Semester 2 – English. From later semesters, students may have choices depending on the available options. Be careful while choosing later AEC papers. <strong>AEC-3 and AEC-4 need to follow the applicable combination rules</strong>, so don't choose them randomly.</p><p><strong>MDC (Multidisciplinary Course):</strong> A paper outside your Major, where you can choose something based on your interest or scoring potential.</p><p><strong>SEC (Skill Enhancement Course):</strong> Skill-oriented papers.</p><p><strong>VAC (Value Added Course):</strong> Additional/general-value papers outside your core subject.</p>"
+        },
+        {
+          "id": "faq-8",
+          "question": "Which subjects should I avoid?",
+          "answer": "<p>There is no universal list of subjects that everyone should avoid.</p><p>But <strong>don't choose a Major just because everyone else is taking it.</strong></p><p>Major subjects can require significantly more time and consistent preparation. For example, B.Sc Mathematics is not just about solving numerical problems. You may have to learn many <strong>definitions, theorems, proofs and concepts</strong>, and it can become difficult if you leave preparation until the last moment.</p><p>I have seen students struggle to clear demanding Major subjects and continue into the second or third year.</p><p>For <strong>MDC, AEC and SEC</strong>, there is generally less reason to worry heavily. For <strong>Minor</strong>, talk to seniors and teachers and check previous results to understand which options are more manageable.</p><p>The important thing is to choose based on <strong>your ability, interest and career plans</strong>, rather than simply following the crowd.</p>"
+        },
+        {
+          "id": "faq-9",
+          "question": "Which books should I use for B.Sc Mathematics?",
+          "answer": "<p>For B.Sc Mathematics at Kolhan University, <strong>Lalji Prasad's books are a strong choice</strong> for the current syllabus followed by the recent batches such as 2022, 2023 and 2024.</p><p>The syllabus should still be checked before choosing a book because the syllabus can change.</p><p>The books are also available online, and they are sometimes available at discounted prices.</p><p>Recommendations for other departments will be added to KolhanHub later.</p>"
+        }
+      ]
+    },
+    {
+      "id": "exam-preparation",
+      "name": "Exam Preparation",
+      "icon": "📝",
+      "questions": [
+        {
+          "id": "faq-10",
+          "question": "Are PYQs and the syllabus enough to prepare for exams?",
+          "answer": "<p>PYQs and the syllabus can help you <strong>a lot</strong>, but they should not be your only source of preparation.</p><p>The <strong>syllabus tells you what to study</strong>, while PYQs show you <strong>how the examiner asks questions</strong>.</p><p>You should also check previous results to understand the difficulty and general performance pattern.</p><p>Use these together:</p><p><strong>Syllabus → PYQs → PYQ analysis → Study → Revision → Practice</strong></p><p>Don't prepare only by memorising questions because you expect the exact same question to repeat.</p>"
+        },
+        {
+          "id": "faq-11",
+          "question": "How many years of PYQs should I solve?",
+          "answer": "<p>Solve <strong>every available PYQ that matches your current syllabus</strong>.</p><p>Questions can repeat in Kolhan University, but the bigger advantage is understanding the examiner's pattern.</p><p>By analysing several PYQs, you can identify:</p><ul><li>Repeated topics</li><li>High-weightage topics</li><li>Important units</li><li>Common question patterns</li><li>How the examiner frames questions</li></ul><p>The goal is not simply to predict the next paper. The goal is to <strong>understand how the paper is set</strong>.</p>"
+        },
+        {
+          "id": "faq-12",
+          "question": "How can I prepare better using PYQs?",
+          "answer": "<p>Don't simply solve PYQs one by one.</p><p>First compare them <strong>unit-wise with your syllabus</strong>.</p><p>Look for:</p><ul><li>Topics that repeat</li><li>Topics with high weightage</li><li>Important long-answer questions</li><li>Frequently asked short questions</li><li>Changes in question pattern</li></ul><p>This will give you a much clearer picture of what the examiner normally focuses on.</p>"
+        }
+      ]
+    },
+    {
+      "id": "examination-process",
+      "name": "Examination Process",
+      "icon": "🎓",
+      "questions": [
+        {
+          "id": "faq-13",
+          "question": "How can I get my admit card?",
+          "answer": "<p>Before the examination, the admit card is generally made available through the <strong>Kolhan University examination portal</strong>.</p><p>You normally need details such as your <strong>date of birth, registration number or roll number</strong>.</p><p>Sometimes one number may not work, so try the other applicable login details as well.</p><p>After downloading your admit card, check all the details carefully.</p><p><strong>Important:</strong> Get the required <strong>college principal's signature and stamp/seal</strong> before going to the examination.</p><p>Without the required authentication, you may face problems at the examination centre.</p>"
+        },
+        {
+          "id": "faq-14",
+          "question": "There is a mistake in my admit card. What should I do?",
+          "answer": "<p>Don't ignore it.</p><p>Go to your college and contact the <strong>examination department</strong> as soon as possible.</p><p>You may need to write an application, get it signed and stamped by the Principal, and submit it through the college examination department for correction.</p><p>These kinds of problems happen from time to time, and they can usually be addressed more easily when you report them early.</p>"
+        },
+        {
+          "id": "faq-15",
+          "question": "How do I fill up my examination form?",
+          "answer": "<p>You can normally fill the examination form through the <strong>Kolhan University examination portal</strong>.</p><p>You can also take help from a cyber café if necessary.</p><p>The important thing is: <strong>Don't rush while filling the form.</strong></p><p>Check your:</p><ul><li>Semester</li><li>Subjects</li><li>Registration/roll details</li><li>Examination category</li><li>Other personal details</li></ul><p>If you are confused about any selection, ask your <strong>seniors, classmates or teachers</strong> before submitting.</p>"
+        },
+        {
+          "id": "faq-16",
+          "question": "Where can I find my examination date and examination centre?",
+          "answer": "<p>Check the <strong>official Kolhan University website</strong>.</p><p>Also check your college's official communication channels or student groups because exam notices are often shared there.</p><p>You can also check our <a href='/exam-archive/' style='color: var(--accent-primary);'>Exam Archive</a> section where we save official date sheets, exam centre lists, and result notifications organised by batch and semester.</p><p>For important information, always cross-check with an <strong>official source</strong> rather than relying only on a forwarded message.</p>"
+        },
+        {
+          "id": "faq-17",
+          "question": "There is a problem with my result. What should I do?",
+          "answer": "<p>If you find an error or don't understand something in your result, first go to your <strong>college examination department</strong>.</p><p>Show them your result and explain the issue.</p><p>They can tell you what procedure to follow and whether the matter needs to be taken up with the university examination department.</p>"
+        },
+        {
+          "id": "faq-18",
+          "question": "What are SGPA and CGPA?",
+          "answer": "<p><strong>SGPA (Semester Grade Point Average)</strong> shows your academic performance for a particular semester.</p><p><strong>CGPA (Cumulative Grade Point Average)</strong> represents your overall academic performance across the semesters included in the calculation.</p><p>The calculation depends on your university's credit and grading system.</p><p>You can use our <a href='/cgpa/' style='color: var(--accent-primary);'>CGPA Calculator</a> to calculate your CGPA easily.</p>"
+        },
+        {
+          "id": "faq-19",
+          "question": "What happens if I fail a paper?",
+          "answer": "<p>Failing a paper does not automatically mean that you have to stop your course.</p><p>Whether you can move to the next year depends on the <strong>promotion rules applicable to your batch</strong>, including the required number of passed papers/credits and percentage requirements.</p><p>Because these rules can change, students should always check the <strong>current university rules and official notices</strong> for their batch.</p>"
+        },
+        {
+          "id": "faq-20",
+          "question": "Can I write a failed paper again?",
+          "answer": "<p>Generally, if you fail a paper, you get an opportunity to appear for that paper again in a subsequent examination, subject to the university's rules.</p><p>When filling the next examination form, carefully check whether you have to apply under <strong>regular, back-paper, ex-regular or another applicable category</strong>.</p>"
+        },
+        {
+          "id": "faq-21",
+          "question": "What is a back paper?",
+          "answer": "<p>A back paper is generally a paper that you <strong>have not successfully cleared</strong> and need to appear for again in a later examination.</p><p>For example, if you fail to achieve the required passing marks in a paper, you may need to appear for that paper again.</p><p>The exact eligibility and procedure should always be checked in the latest university examination notification.</p>"
+        },
+        {
+          "id": "faq-22",
+          "question": "What happens if I miss my examination?",
+          "answer": "<p>If you miss an examination, you generally cannot simply take the same paper whenever you want.</p><p>You will usually have to wait for the <strong>next applicable examination opportunity</strong> and follow the examination-form procedure for that paper.</p><p>If you missed the exam because of an emergency or serious reason, contact your <strong>college examination department immediately</strong> and ask what procedure applies to your case.</p>"
+        },
+        {
+          "id": "faq-23",
+          "question": "How important are internal marks?",
+          "answer": "<p><strong>Internal marks are important. Don't treat them as free marks.</strong></p><p>Your final result can depend on both your external examination performance and the internal/practical component applicable to your paper.</p><p>So:</p><ul><li>Attend classes where attendance matters.</li><li>Complete internal assignments/practical work properly.</li><li>Take internal tests seriously.</li><li>Check your internal marks when results are released.</li><li>Report any obvious mistake to your department/college as early as possible.</li></ul><p>A student who ignores internals can unnecessarily make the final examination harder for themselves.</p>"
+        }
+      ]
+    },
+    {
+      "id": "kolhanhub",
+      "name": "KolhanHub",
+      "icon": "💜",
+      "questions": [
+        {
+          "id": "faq-24",
+          "question": "Why is a particular PYQ not available on KolhanHub?",
+          "answer": "<p>We are continuously collecting and organizing previous year question papers.</p><p>Some papers may not yet be available because we have not received a usable copy.</p><p>You can help us by submitting a missing PYQ through the <strong>\"Request Paper\"</strong> button or by contacting us on WhatsApp.</p>"
+        },
+        {
+          "id": "faq-25",
+          "question": "Can I request a missing PYQ?",
+          "answer": "<p><strong>Yes.</strong></p><p>If you cannot find a particular PYQ, let us know which:</p><p><strong>Course + Semester + Subject + Year</strong></p><p>you are looking for.</p><p>If we can find or verify the paper, we will try to add it to KolhanHub.</p>"
+        },
+        {
+          "id": "faq-26",
+          "question": "I found incorrect information on KolhanHub. What should I do?",
+          "answer": "<p>Please report it.</p><p>KolhanHub is built for students, so corrections are important.</p><p>You can report the issue by contacting us on WhatsApp or through the contact page.</p><p>If possible, include the correct information or a reliable source so we can verify it quickly.</p>"
+        },
+        {
+          "id": "faq-27",
+          "question": "Can I suggest a new feature or resource for KolhanHub?",
+          "answer": "<p><strong>Yes.</strong></p><p>KolhanHub is being developed around actual student needs.</p><p>If there is something you think would help students — such as a missing resource, guide, calculator, analysis tool or new section — send your suggestion through WhatsApp or the contact page.</p><p>Useful suggestions may become future KolhanHub features.</p>"
+        },
+        {
+          "id": "faq-28",
+          "question": "I am confused about what to study first. Where should I start?",
+          "answer": "<p>Start with these four things:</p><p><strong>1. Check your syllabus.</strong><br/>Know exactly what is included.</p><p><strong>2. Check PYQs.</strong><br/>See what type of questions are actually being asked.</p><p><strong>3. Analyse previous results.</strong><br/>Understand the general difficulty and performance pattern.</p><p><strong>4. Make a study plan.</strong><br/>Start with important/high-weightage topics instead of studying randomly.</p><p>You can use KolhanHub's <strong>Syllabus → PYQ → Result Analysis → Guide</strong> sections together.</p>"
+        }
+      ]
+    }
+  ]
+}
