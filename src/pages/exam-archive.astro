@@ -1,272 +1,160 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Calendar, FileText, MapPin, Award, ExternalLink, ChevronDown, Clock, GraduationCap, Palmtree } from '@lucide/astro';
+import { Calendar, FileText, MapPin, Award, ExternalLink, GraduationCap, ChevronDown } from '@lucide/astro';
 import examData from '../../public/data/exam-archive.json';
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
-
-// Count available documents
-const totalDocs = examData.batches.reduce((acc, batch) => {
-  return acc + batch.semesters.reduce((semAcc, sem) => {
-    return semAcc + (sem.examDate ? 1 : 0) + (sem.formFillup ? 1 : 0) + (sem.examCenter ? 1 : 0) + (sem.result ? 1 : 0);
-  }, 0);
-}, 0) + examData.holidayLists.length;
-
-const docTypes = [
-  { key: 'examDate', label: 'Exam Date', icon: 'calendar', color: '#6366f1', colorBg: 'rgba(99, 102, 241, 0.1)' },
-  { key: 'formFillup', label: 'Form Fill-up', icon: 'file', color: '#f59e0b', colorBg: 'rgba(245, 158, 11, 0.1)' },
-  { key: 'examCenter', label: 'Exam Center', icon: 'map', color: '#10b981', colorBg: 'rgba(16, 185, 129, 0.1)' },
-  { key: 'result', label: 'Result', icon: 'award', color: '#ef4444', colorBg: 'rgba(239, 68, 68, 0.1)' },
-];
 ---
 
 <Layout 
   title="Exam Archive — Kolhan University Exam Dates, Results & Notices (2022–2025)" 
-  activeTab="notices"
+  activeTab="exam-archive"
   description="Complete archive of Kolhan University exam dates, form fill-up schedules, exam center lists, result PDFs, and holiday lists for all FYUGP batches (2022, 2023, 2024, 2025). Organized by batch and semester."
   keywords="Kolhan University exam date, Kolhan University result, KU exam form fill up, Kolhan University exam center, Kolhan University holiday list, FYUGP exam schedule"
 >
 
-  <!-- Page Header -->
-  <div style="margin-bottom: 2rem;">
-    <h1 style="font-size: 2.25rem; font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.5rem;">
+  <!-- Compact Header -->
+  <div style="margin-bottom: 1.5rem;">
+    <h1 style="font-size: 2rem; font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.25rem;">
       📋 Exam Archive
     </h1>
-    <p style="color: var(--text-secondary); max-width: 640px; font-size: 1.05rem; line-height: 1.7;">
-      Complete collection of Kolhan University exam dates, form fill-up notices, exam center lists, and result PDFs — organized by batch and semester. All documents are official notices from Kolhan University, saved here for easy student access.
+    <p style="color: var(--text-tertiary); font-size: 0.88rem;">
+      Official exam dates, form fill-ups, exam centers & results — all batches.
     </p>
-
-    <!-- Stats bar -->
-    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem;">
-      <div class="badge badge-primary" style="font-size: 0.78rem; padding: 0.4rem 0.85rem; display: flex; align-items: center; gap: 0.35rem;">
-        <FileText size="13" /> {totalDocs} Documents
-      </div>
-      <div class="badge" style="font-size: 0.78rem; padding: 0.4rem 0.85rem; background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.2); display: flex; align-items: center; gap: 0.35rem;">
-        <GraduationCap size="13" /> {examData.batches.length} Batches
-      </div>
-      <div class="badge" style="font-size: 0.78rem; padding: 0.4rem 0.85rem; background: rgba(245,158,11,0.1); color: #f59e0b; border: 1px solid rgba(245,158,11,0.2); display: flex; align-items: center; gap: 0.35rem;">
-        <Calendar size="13" /> Semester 1–8
-      </div>
-    </div>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════════
-       HOLIDAY LISTS SECTION
+       HOLIDAY LISTS — Compact inline row
   ════════════════════════════════════════════════════════════════ -->
-  <section style="margin-bottom: 2.5rem;">
-    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-      <div style="width: 40px; height: 40px; border-radius: var(--radius-sm); background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); display: flex; align-items: center; justify-content: center;">
-        <Palmtree size="20" style="color: #10b981;" />
-      </div>
-      <div>
-        <h2 style="font-size: 1.35rem; font-weight: 800; font-family: var(--font-display); margin: 0;">Holiday Lists</h2>
-        <p style="font-size: 0.8rem; color: var(--text-tertiary); margin: 0;">Official Kolhan University holiday calendars</p>
-      </div>
-    </div>
-
-    <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; margin-bottom: 1rem; max-width: 600px;">
-      Download the official list of gazetted holidays, restricted holidays, and academic breaks declared by Kolhan University for each calendar year. Useful for planning study schedules and travel around exam seasons.
-    </p>
-
-    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
-      {examData.holidayLists.map(h => (
-        <a 
-          href={h.url} 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="card" 
-          style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.25rem; text-decoration: none; color: inherit; transition: all 0.2s; border-color: rgba(16,185,129,0.2); min-width: 160px;"
-        >
-          <div style="width: 36px; height: 36px; border-radius: var(--radius-xs); background: rgba(16,185,129,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-            <Calendar size="18" style="color: #10b981;" />
-          </div>
-          <div>
-            <div style="font-weight: 700; font-size: 0.95rem;">{h.year} Holidays</div>
-            <div style="font-size: 0.72rem; color: var(--text-tertiary);">PDF • Official</div>
-          </div>
-          <ExternalLink size="14" style="color: var(--text-tertiary); margin-left: auto; flex-shrink: 0;" />
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════════════════════════
-       BATCH-WISE EXAM DATA
-  ════════════════════════════════════════════════════════════════ -->
-  
-  <!-- Batch Tab Switcher -->
-  <div style="margin-bottom: 1.5rem;">
-    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
-      <div style="width: 40px; height: 40px; border-radius: var(--radius-sm); background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); display: flex; align-items: center; justify-content: center;">
-        <GraduationCap size="20" style="color: #6366f1;" />
-      </div>
-      <div>
-        <h2 style="font-size: 1.35rem; font-weight: 800; font-family: var(--font-display); margin: 0;">Batch-wise Exam Records</h2>
-        <p style="font-size: 0.8rem; color: var(--text-tertiary); margin: 0;">Select your batch to view all semester documents</p>
-      </div>
-    </div>
-
-    <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.65; margin-bottom: 1.25rem; max-width: 640px;">
-      Every Kolhan University FYUGP batch (NEP 2020) has 8 semesters. For each semester, we archive four types of official documents: exam date sheets, form fill-up notices, exam center allotments, and result notifications. Select your admission year below to find your documents.
-    </p>
-
-    <!-- Batch Tabs -->
-    <div id="batch-tabs" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
-      {examData.batches.map((batch, i) => {
-        const availCount = batch.semesters.reduce((acc, sem) => {
-          return acc + (sem.examDate ? 1 : 0) + (sem.formFillup ? 1 : 0) + (sem.examCenter ? 1 : 0) + (sem.result ? 1 : 0);
-        }, 0);
-        return (
-          <button 
-            class={`batch-tab ${i === 0 ? 'active' : ''}`}
-            data-batch={batch.batch}
-            style={`
-              padding: 0.6rem 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); 
-              background: var(--bg-secondary); color: var(--text-secondary); cursor: pointer; font-family: var(--font-display); 
-              font-weight: 700; font-size: 0.9rem; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem;
-            `}
+  <div class="card" style="margin-bottom: 1.5rem; padding: 0.85rem 1rem;">
+    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); display: flex; align-items: center; gap: 0.4rem; white-space: nowrap;">
+        🗓️ Holiday Lists
+      </span>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        {examData.holidayLists.map(h => (
+          <a 
+            href={h.url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="holiday-chip"
           >
-            <span>{batch.batch} Batch</span>
-            <span style="font-size: 0.68rem; background: var(--bg-tertiary); padding: 0.15rem 0.5rem; border-radius: 20px; font-weight: 600; color: var(--text-tertiary);">{availCount} docs</span>
-          </button>
-        );
-      })}
+            {h.year} <ExternalLink size="11" style="opacity: 0.5;" />
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 
-  <!-- Batch Content Panels -->
-  {examData.batches.map((batch, batchIdx) => {
-    const availSemesters = batch.semesters.filter(s => s.examDate || s.formFillup || s.examCenter || s.result);
-    const upcomingSemesters = batch.semesters.filter(s => !s.examDate && !s.formFillup && !s.examCenter && !s.result);
-    
-    return (
-      <div class={`batch-panel ${batchIdx === 0 ? 'active' : ''}`} data-batch={batch.batch} style={batchIdx !== 0 ? 'display:none;' : ''}>
-        
-        <!-- Batch Info Card -->
-        <div class="card" style="margin-bottom: 1.5rem; border-left: 3px solid #6366f1;">
-          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-              <h3 style="font-size: 1.15rem; font-weight: 800; font-family: var(--font-display); margin: 0;">
-                {batch.batch} Batch — {batch.programme}
-              </h3>
-              <span class="badge badge-primary" style="font-size: 0.68rem;">Session {batch.sessionRange}</span>
-            </div>
-            <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.65; margin: 0.25rem 0 0;">
-              {batch.description}
-            </p>
-          </div>
-        </div>
+  <!-- ═══════════════════════════════════════════════════════════════
+       BATCH TABS — Compact pill buttons
+  ════════════════════════════════════════════════════════════════ -->
+  <div id="batch-tabs" style="display: flex; gap: 0.4rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
+    {examData.batches.map((batch, i) => (
+      <button 
+        class={`batch-tab ${i === 0 ? 'active' : ''}`}
+        data-batch={batch.batch}
+      >
+        {batch.batch} Batch
+      </button>
+    ))}
+  </div>
 
-        <!-- Semester Grid -->
-        <div style="display: flex; flex-direction: column; gap: 1rem;">
-          {batch.semesters.map(sem => {
-            const docs = [
-              { key: 'examDate', label: 'Exam Date Sheet', url: sem.examDate, color: '#6366f1', colorBg: 'rgba(99,102,241,0.1)', borderColor: 'rgba(99,102,241,0.2)' },
-              { key: 'formFillup', label: 'Form Fill-up Notice', url: sem.formFillup, color: '#f59e0b', colorBg: 'rgba(245,158,11,0.1)', borderColor: 'rgba(245,158,11,0.2)' },
-              { key: 'examCenter', label: 'Exam Center List', url: sem.examCenter, color: '#10b981', colorBg: 'rgba(16,185,129,0.1)', borderColor: 'rgba(16,185,129,0.2)' },
-              { key: 'result', label: 'Result Notification', url: sem.result, color: '#ef4444', colorBg: 'rgba(239,68,68,0.1)', borderColor: 'rgba(239,68,68,0.2)' },
-            ];
-            const hasAny = docs.some(d => d.url);
-            const availDocs = docs.filter(d => d.url);
-            
-            return (
-              <div class="card" style={`${!hasAny ? 'opacity: 0.5;' : ''}`}>
-                <!-- Semester Header -->
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-                  <div style="display: flex; align-items: center; gap: 0.6rem;">
-                    <div style={`width: 32px; height: 32px; border-radius: var(--radius-xs); background: ${hasAny ? 'rgba(99,102,241,0.1)' : 'var(--bg-tertiary)'}; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; font-family: var(--font-display); color: ${hasAny ? '#6366f1' : 'var(--text-tertiary)'};`}>
-                      {sem.sem}
-                    </div>
-                    <h4 style="font-size: 1rem; font-weight: 700; font-family: var(--font-display); margin: 0;">
-                      Semester {sem.sem}
-                    </h4>
-                  </div>
-                  {hasAny ? (
-                    <span style="font-size: 0.7rem; color: var(--text-tertiary); background: var(--bg-tertiary); padding: 0.2rem 0.6rem; border-radius: 20px; font-weight: 600;">
-                      {availDocs.length}/4 available
-                    </span>
-                  ) : (
-                    <span style="font-size: 0.7rem; color: var(--text-tertiary); background: var(--bg-tertiary); padding: 0.2rem 0.6rem; border-radius: 20px; font-weight: 600;">
-                      Upcoming
-                    </span>
-                  )}
+  <!-- ═══════════════════════════════════════════════════════════════
+       BATCH PANELS — Compact semester rows
+  ════════════════════════════════════════════════════════════════ -->
+  {examData.batches.map((batch, batchIdx) => (
+    <div class={`batch-panel ${batchIdx === 0 ? 'active' : ''}`} data-batch={batch.batch} style={batchIdx !== 0 ? 'display:none;' : ''}>
+      
+      <!-- Batch subtitle -->
+      <p style="font-size: 0.78rem; color: var(--text-tertiary); margin-bottom: 1rem;">
+        {batch.programme} • Session {batch.sessionRange}
+      </p>
+
+      <!-- Semester Cards -->
+      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+        {batch.semesters.map(sem => {
+          const docs = [
+            { key: 'examDate', label: 'Exam Date', shortLabel: 'Date', url: sem.examDate, color: '#6366f1', bg: 'rgba(99,102,241,0.1)', border: 'rgba(99,102,241,0.25)' },
+            { key: 'formFillup', label: 'Form Fill-up', shortLabel: 'Form', url: sem.formFillup, color: '#f59e0b', bg: 'rgba(245,158,11,0.1)', border: 'rgba(245,158,11,0.25)' },
+            { key: 'examCenter', label: 'Exam Center', shortLabel: 'Center', url: sem.examCenter, color: '#10b981', bg: 'rgba(16,185,129,0.1)', border: 'rgba(16,185,129,0.25)' },
+            { key: 'result', label: 'Result', shortLabel: 'Result', url: sem.result, color: '#ef4444', bg: 'rgba(239,68,68,0.1)', border: 'rgba(239,68,68,0.25)' },
+          ];
+          const hasAny = docs.some(d => d.url);
+          
+          return (
+            <div class="card sem-card" style={`padding: 0.75rem 1rem; ${!hasAny ? 'opacity: 0.4;' : ''}`}>
+              <!-- Semester label + doc chips in one row -->
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 90px;">
+                  <span style={`display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; font-family: var(--font-display); ${hasAny ? 'background: rgba(99,102,241,0.1); color: #6366f1;' : 'background: var(--bg-tertiary); color: var(--text-tertiary);'}`}>
+                    {sem.sem}
+                  </span>
+                  <span style="font-size: 0.88rem; font-weight: 700;">Sem {sem.sem}</span>
                 </div>
 
-                <!-- Document Links Grid -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.6rem;">
+                <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; flex: 1;">
                   {docs.map(doc => (
                     doc.url ? (
                       <a 
                         href={doc.url} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        style={`
-                          display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.85rem; 
-                          border-radius: var(--radius-xs); background: ${doc.colorBg}; border: 1px solid ${doc.borderColor}; 
-                          text-decoration: none; color: ${doc.color}; font-size: 0.8rem; font-weight: 600; 
-                          transition: all 0.2s; cursor: pointer;
-                        `}
+                        class="doc-chip"
+                        style={`background: ${doc.bg}; border-color: ${doc.border}; color: ${doc.color};`}
                       >
-                        {doc.key === 'examDate' && <Calendar size="14" />}
-                        {doc.key === 'formFillup' && <FileText size="14" />}
-                        {doc.key === 'examCenter' && <MapPin size="14" />}
-                        {doc.key === 'result' && <Award size="14" />}
-                        <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{doc.label}</span>
-                        <ExternalLink size="12" style="flex-shrink: 0; opacity: 0.6;" />
+                        {doc.key === 'examDate' && <Calendar size="12" />}
+                        {doc.key === 'formFillup' && <FileText size="12" />}
+                        {doc.key === 'examCenter' && <MapPin size="12" />}
+                        {doc.key === 'result' && <Award size="12" />}
+                        <span class="doc-chip-label-full">{doc.label}</span>
+                        <span class="doc-chip-label-short">{doc.shortLabel}</span>
                       </a>
                     ) : (
-                      <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.85rem; border-radius: var(--radius-xs); background: var(--bg-tertiary); border: 1px solid var(--border-color); font-size: 0.8rem; font-weight: 500; color: var(--text-tertiary); opacity: 0.7;">
-                        {doc.key === 'examDate' && <Calendar size="14" />}
-                        {doc.key === 'formFillup' && <FileText size="14" />}
-                        {doc.key === 'examCenter' && <MapPin size="14" />}
-                        {doc.key === 'result' && <Award size="14" />}
-                        <span style="flex: 1;">{doc.label}</span>
-                        <span style="font-size: 0.65rem;">—</span>
+                      <div class="doc-chip doc-chip-empty">
+                        {doc.key === 'examDate' && <Calendar size="12" />}
+                        {doc.key === 'formFillup' && <FileText size="12" />}
+                        {doc.key === 'examCenter' && <MapPin size="12" />}
+                        {doc.key === 'result' && <Award size="12" />}
+                        <span class="doc-chip-label-full">{doc.label}</span>
+                        <span class="doc-chip-label-short">{doc.shortLabel}</span>
                       </div>
                     )
                   ))}
                 </div>
               </div>
-            );
-          })}
-        </div>
-
-        <!-- Disclaimer -->
-        <div style="margin-top: 1.5rem; padding: 1rem 1.25rem; border-radius: var(--radius-sm); background: var(--bg-tertiary); border: 1px solid var(--border-color);">
-          <p style="font-size: 0.78rem; color: var(--text-tertiary); line-height: 1.6; margin: 0;">
-            📌 <strong style="color: var(--text-secondary);">Note:</strong> All documents are sourced from official Kolhan University notifications. Some documents may not be available if the university did not issue a separate notice for that category. Missing documents are shown as unavailable (—). We update this archive as new notices are released.
-          </p>
-        </div>
+            </div>
+          );
+        })}
       </div>
-    );
-  })}
 
-  <!-- ═══════════════════════════════════════════════════════════════
-       ABOUT THIS ARCHIVE (SEO TEXT)
-  ════════════════════════════════════════════════════════════════ -->
-  <section style="margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
-    <h2 style="font-size: 1.2rem; font-weight: 700; font-family: var(--font-display); margin-bottom: 0.75rem;">
-      About This Exam Archive
-    </h2>
-    <div style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.75; display: flex; flex-direction: column; gap: 0.75rem; max-width: 680px;">
-      <p style="margin: 0;">
-        This page is a curated archive of official Kolhan University exam-related documents for all FYUGP batches under the NEP 2020 framework. Kolhan University (Chaibasa, Jharkhand) transitioned to the Four-Year Undergraduate Programme starting with the 2022 admission batch, introducing a semester-based credit system with Major, Minor, MDC (Multi-Disciplinary Course), AEC (Ability Enhancement Course), SEC (Skill Enhancement Course), VAC (Value Added Course), and IKS (Indian Knowledge System) components.
-      </p>
-      <p style="margin: 0;">
-        Each batch goes through 8 semesters over 4 years. For every semester exam cycle, the university typically releases four key documents: (1) an exam date sheet specifying the schedule for each paper, (2) a form fill-up notification with deadlines and fees, (3) an exam center allotment list assigning students to specific examination halls, and (4) a result notification after answer sheets are evaluated.
-      </p>
-      <p style="margin: 0;">
-        We save and organize these documents because the official university website often removes older notices when new ones are published. Students frequently need to reference past notices — for example, to verify exam dates during recheck applications, or to find their original exam center assignment. This archive ensures no official document is lost.
-      </p>
-      <p style="margin: 0;">
-        <strong>Disclaimer:</strong> KolhanHub is an unofficial student resource platform. All documents linked here are official Kolhan University notices hosted on Google Drive. We do not modify or alter any official document. For the latest notices, always cross-check with the <a href="https://www.kolhanuniversity.ac.in" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">official Kolhan University website</a>.
+      <!-- Compact note -->
+      <p style="font-size: 0.72rem; color: var(--text-tertiary); margin-top: 1rem; line-height: 1.5;">
+        📌 All documents are official Kolhan University notices. Missing items (—) were not separately issued by the university. Updated as new notices are released.
       </p>
     </div>
+  ))}
+
+  <!-- SEO text — hidden visually lightweight but present for crawlers -->
+  <section style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+    <details style="color: var(--text-tertiary); font-size: 0.82rem;">
+      <summary style="cursor: pointer; font-weight: 600; color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.5rem;">About This Archive</summary>
+      <div style="line-height: 1.7; display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.75rem; max-width: 680px;">
+        <p style="margin: 0;">
+          This page is a curated archive of official Kolhan University exam-related documents for all FYUGP batches under the NEP 2020 framework. Kolhan University (Chaibasa, Jharkhand) transitioned to the Four-Year Undergraduate Programme starting with the 2022 admission batch, introducing a semester-based credit system with Major, Minor, MDC, AEC, SEC, VAC, and IKS components.
+        </p>
+        <p style="margin: 0;">
+          Each batch goes through 8 semesters over 4 years. For every semester exam cycle, the university typically releases four key documents: an exam date sheet, a form fill-up notification with deadlines and fees, an exam center allotment list, and a result notification. We save these documents because the official university website often removes older notices when new ones are published.
+        </p>
+        <p style="margin: 0;">
+          <strong>Disclaimer:</strong> KolhanHub is an unofficial student resource. All documents are official Kolhan University notices hosted on Google Drive. For the latest notices, check the <a href="https://www.kolhanuniversity.ac.in" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary);">official Kolhan University website</a>.
+        </p>
+      </div>
+    </details>
   </section>
 
 </Layout>
 
-<!-- Batch Tab Switching Script -->
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function() {
     const tabs = document.querySelectorAll('.batch-tab');
@@ -276,51 +164,104 @@ const docTypes = [
       tab.addEventListener('click', function() {
         const batch = this.dataset.batch;
         
-        // Update active tab
-        tabs.forEach(t => {
-          t.classList.remove('active');
-          t.style.background = 'var(--bg-secondary)';
-          t.style.color = 'var(--text-secondary)';
-          t.style.borderColor = 'var(--border-color)';
-        });
+        tabs.forEach(t => t.classList.remove('active'));
         this.classList.add('active');
-        this.style.background = 'rgba(99, 102, 241, 0.1)';
-        this.style.color = '#6366f1';
-        this.style.borderColor = 'rgba(99, 102, 241, 0.3)';
         
-        // Show corresponding panel
         panels.forEach(p => {
-          if (p.dataset.batch === batch) {
-            p.style.display = 'block';
-          } else {
-            p.style.display = 'none';
-          }
+          p.style.display = p.dataset.batch === batch ? 'block' : 'none';
         });
       });
     });
-    
-    // Set initial active state styles
-    const activeTab = document.querySelector('.batch-tab.active');
-    if (activeTab) {
-      activeTab.style.background = 'rgba(99, 102, 241, 0.1)';
-      activeTab.style.color = '#6366f1';
-      activeTab.style.borderColor = 'rgba(99, 102, 241, 0.3)';
-    }
   });
 </script>
 
 <style>
+  /* Batch Tab Pills */
+  .batch-tab {
+    padding: 0.5rem 1.1rem;
+    border-radius: 100px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.82rem;
+    transition: all 0.2s;
+  }
   .batch-tab:hover {
-    background: rgba(99, 102, 241, 0.06) !important;
-    border-color: rgba(99, 102, 241, 0.2) !important;
+    border-color: rgba(99,102,241,0.3);
+    color: var(--text-secondary);
   }
   .batch-tab.active {
-    background: rgba(99, 102, 241, 0.1) !important;
-    color: #6366f1 !important;
-    border-color: rgba(99, 102, 241, 0.3) !important;
+    background: rgba(99,102,241,0.12);
+    color: #818cf8;
+    border-color: rgba(99,102,241,0.35);
   }
-  a[href][target="_blank"]:hover {
-    filter: brightness(1.1);
+
+  /* Holiday Chips */
+  .holiday-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 100px;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    color: #10b981;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .holiday-chip:hover {
+    background: rgba(16,185,129,0.15);
     transform: translateY(-1px);
+  }
+
+  /* Document Chips */
+  .doc-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.32rem 0.65rem;
+    border-radius: 6px;
+    border: 1px solid;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  a.doc-chip:hover {
+    filter: brightness(1.15);
+    transform: translateY(-1px);
+  }
+  .doc-chip-empty {
+    background: var(--bg-tertiary) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-tertiary) !important;
+    opacity: 0.5;
+  }
+
+  /* Responsive: show short labels on mobile, full labels on desktop */
+  .doc-chip-label-short { display: none; }
+  .doc-chip-label-full { display: inline; }
+
+  @media (max-width: 600px) {
+    .doc-chip-label-short { display: inline; }
+    .doc-chip-label-full { display: none; }
+    .doc-chip {
+      padding: 0.28rem 0.5rem;
+      font-size: 0.68rem;
+    }
+  }
+
+  /* Semester card hover */
+  .sem-card {
+    transition: border-color 0.2s;
+  }
+  .sem-card:hover {
+    border-color: rgba(99,102,241,0.2);
   }
 </style>
