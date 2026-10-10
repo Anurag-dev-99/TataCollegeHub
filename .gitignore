@@ -135,10 +135,38 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Local Student Photos & Data (Do not sync with GitHub)
+# ============ SENSITIVE DATA — DO NOT COMMIT ============
+
+# Student Photos (contain personal identity images)
 scripts/photos_*/
+public/data/photos/
 photos/
 Photos/
 *.jpg
 *.jpeg
+
+# Result screenshots with student roll numbers
+public/images/results/
+
+# Scraping scripts & guides (contain API endpoints, Supabase keys)
+scripts/KOLHAN_RESULT_KNOWLEDGE.md
+scripts/PHOTO_DOWNLOAD_GUIDE.md
+scripts/ADMIT_CARD_GUIDE.md
+scripts/download_photos.py
+scripts/download_2023_*.py
+scripts/download_2023_womens_colleges.py
+scripts/download_2023_commerce_females.py
+scripts/check_admitcards.py
+
+# Downloaded result PDFs (large files, copyrighted)
+public/data/results/*.pdf
+
+# SEO API script (contains API keys)
+seo_rank_checker_api.py
+
+# Student personal data JSONs (DOB, names, phone, photo IDs)
+scripts/photos_tata_2022/students.json
+scripts/photos_tata_2022/photo_results.json
+public/data/photos/photo_mapping.json
+public/data/photos/admitcard_sem4_full.html
 
