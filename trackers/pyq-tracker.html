@@ -18,41 +18,25 @@
     --radius:12px;--radius-sm:8px;
   }
   html{scroll-behavior:smooth}
-  body{
-    font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
-    min-height:100vh;line-height:1.5;
-  }
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
 
   /* ── Header ── */
   .header{
     position:sticky;top:0;z-index:100;
     background:rgba(10,10,15,0.88);backdrop-filter:blur(24px);
-    border-bottom:1px solid var(--border);
-    padding:14px 24px;
+    border-bottom:1px solid var(--border);padding:14px 24px;
   }
-  .header-inner{
-    max-width:1300px;margin:0 auto;
-    display:flex;align-items:center;justify-content:space-between;
-    flex-wrap:wrap;gap:10px;
-  }
+  .header-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
   .header h1{
     font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;
     background:linear-gradient(135deg,var(--accent-glow),var(--green));
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-    white-space:nowrap;
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;
   }
   .header-stats{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-  .stat-badge{
-    background:var(--card);border:1px solid var(--border);border-radius:20px;
-    padding:5px 12px;font-size:0.75rem;font-weight:600;color:var(--text-dim);
-  }
+  .stat-badge{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:0.75rem;font-weight:600;color:var(--text-dim)}
   .stat-badge span{color:var(--green);font-weight:700}
   .actions{display:flex;gap:6px;flex-wrap:wrap}
-  .btn{
-    font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;
-    padding:7px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);
-    background:var(--card);color:var(--text-dim);cursor:pointer;transition:all 0.2s;
-  }
+  .btn{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--card);color:var(--text-dim);cursor:pointer;transition:all 0.2s}
   .btn:hover{background:var(--card-hover);color:var(--text);border-color:var(--border-glow)}
   .btn-accent{background:var(--accent-dim);border-color:var(--accent);color:#fff}
   .btn-accent:hover{background:var(--accent);box-shadow:0 0 20px rgba(108,92,231,0.3)}
@@ -62,106 +46,66 @@
   /* ── Container ── */
   .container{max-width:1300px;margin:0 auto;padding:16px 24px}
 
-  /* ── Category Tabs (MAJOR / MINOR / MDC) ── */
-  .category-bar{
-    display:flex;gap:4px;margin-bottom:16px;
-    padding:3px;background:var(--surface);border-radius:var(--radius);
-    border:1px solid var(--border);
-  }
+  /* ── Category Tabs ── */
+  .category-bar{display:flex;gap:4px;margin-bottom:16px;padding:3px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border)}
   .category-btn{
-    flex:1;text-align:center;padding:10px 16px;border-radius:var(--radius-sm);
-    font-size:0.8rem;font-weight:700;cursor:pointer;border:none;background:transparent;
-    color:var(--text-dim);transition:all 0.25s;letter-spacing:0.5px;
+    flex:1;text-align:center;padding:10px 10px;border-radius:var(--radius-sm);
+    font-size:0.75rem;font-weight:700;cursor:pointer;border:none;background:transparent;
+    color:var(--text-dim);transition:all 0.25s;letter-spacing:0.3px;
   }
   .category-btn:hover{color:var(--text);background:rgba(108,92,231,0.06)}
-  .category-btn.active{
-    color:#fff;box-shadow:0 2px 12px rgba(108,92,231,0.3);
-  }
+  .category-btn.active{color:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
   .category-btn[data-cat="MAJOR"].active{background:var(--accent)}
   .category-btn[data-cat="MINOR"].active{background:var(--green-dim)}
   .category-btn[data-cat="MDC"].active{background:#e17055}
-  .category-btn[data-cat="VAC"].active{background:#00cec9}
-  .category-btn[data-cat="AEC"].active{background:#fdcb6e}
+  .category-btn[data-cat="AEC"].active{background:#e67e22}
   .category-btn[data-cat="SEC"].active{background:#a29bfe}
-  .category-btn .cat-count{
-    display:inline-block;font-size:0.6rem;font-weight:700;
-    background:rgba(255,255,255,0.15);border-radius:10px;
-    padding:1px 6px;margin-left:4px;vertical-align:middle;
-  }
+  .category-btn[data-cat="VAC"].active{background:var(--cyan)}
+  .cat-count{display:inline-block;font-size:0.58rem;font-weight:700;background:rgba(255,255,255,0.15);border-radius:10px;padding:1px 6px;margin-left:3px;vertical-align:middle}
 
   /* ── Subject Selector ── */
-  .subject-selector{
-    display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;
-  }
+  .subject-selector{display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
   .subject-search{
     flex:1;min-width:200px;padding:10px 16px;
     background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-    color:var(--text);font-family:'Inter',sans-serif;font-size:0.85rem;
-    outline:none;transition:border-color 0.2s;
+    color:var(--text);font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;transition:border-color 0.2s;
   }
   .subject-search:focus{border-color:var(--accent)}
   .subject-search::placeholder{color:var(--text-muted)}
-
-  .subject-grid{
-    display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;
-  }
+  .subject-grid{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
   .subject-chip{
-    padding:6px 12px;border-radius:16px;font-size:0.7rem;font-weight:600;
+    padding:5px 11px;border-radius:16px;font-size:0.68rem;font-weight:600;
     background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
     cursor:pointer;transition:all 0.2s;white-space:nowrap;
   }
   .subject-chip:hover{border-color:var(--accent);color:var(--text)}
   .subject-chip.active{background:var(--accent-dim);border-color:var(--accent);color:#fff}
   .subject-chip.has-progress{border-color:var(--green-dim)}
-  .subject-chip.has-progress::after{
-    content:'';display:inline-block;width:6px;height:6px;
-    background:var(--green);border-radius:50%;margin-left:5px;vertical-align:middle;
-  }
+  .subject-chip.has-progress::after{content:'';display:inline-block;width:5px;height:5px;background:var(--green);border-radius:50%;margin-left:4px;vertical-align:middle}
   .subject-chip.complete{border-color:var(--green);background:rgba(0,214,143,0.1)}
-  .subject-chip .chip-pct{
-    font-size:0.6rem;margin-left:3px;opacity:0.7;
-  }
+  .chip-pct{font-size:0.58rem;margin-left:2px;opacity:0.7}
 
-  /* ── Filter ── */
-  .controls-row{
-    display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px;
-  }
-  .filter-chip{
-    padding:6px 14px;border-radius:16px;font-size:0.7rem;font-weight:600;
-    background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
-    cursor:pointer;transition:all 0.2s;
-  }
+  /* ── Controls ── */
+  .controls-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  .filter-chip{padding:6px 14px;border-radius:16px;font-size:0.7rem;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text-dim);cursor:pointer;transition:all 0.2s}
   .filter-chip:hover{border-color:var(--accent);color:var(--text)}
   .filter-chip.active{background:var(--accent-dim);border-color:var(--accent);color:#fff}
   .controls-spacer{flex:1}
-  .expand-btn{
-    padding:6px 14px;border-radius:16px;font-size:0.7rem;font-weight:600;
-    background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
-    cursor:pointer;transition:all 0.2s;
-  }
+  .expand-btn{padding:6px 14px;border-radius:16px;font-size:0.7rem;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text-dim);cursor:pointer;transition:all 0.2s}
   .expand-btn:hover{border-color:var(--accent);color:var(--text)}
 
   /* ── Progress Bar ── */
-  .progress-section{
-    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-    padding:14px 18px;margin-bottom:16px;
-  }
-  .progress-header{
-    display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;
-  }
+  .progress-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin-bottom:14px}
+  .progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
   .progress-label{font-size:0.82rem;font-weight:600;color:var(--text-dim)}
   .progress-pct{font-size:1.05rem;font-weight:800;color:var(--green)}
   .progress-track{height:7px;background:var(--surface);border-radius:4px;overflow:hidden}
-  .progress-fill{
-    height:100%;border-radius:4px;transition:width 0.5s ease;
-    background:linear-gradient(90deg,var(--accent),var(--green));
-  }
+  .progress-fill{height:100%;border-radius:4px;transition:width 0.5s ease;background:linear-gradient(90deg,var(--accent),var(--green))}
 
   /* ── Semester Section ── */
-  .sem-section{margin-bottom:14px}
+  .sem-section{margin-bottom:12px}
   .sem-header{
-    display:flex;align-items:center;gap:10px;
-    padding:11px 16px;
+    display:flex;align-items:center;gap:10px;padding:11px 16px;
     background:linear-gradient(135deg,rgba(108,92,231,0.06),rgba(0,214,143,0.03));
     border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;
     cursor:pointer;user-select:none;transition:all 0.2s;
@@ -170,92 +114,67 @@
   .sem-header .arrow{font-size:0.65rem;color:var(--text-muted);transition:transform 0.3s}
   .sem-header.open .arrow{transform:rotate(90deg)}
   .sem-title{font-family:'Outfit',sans-serif;font-size:0.95rem;font-weight:700;flex:1}
-  .sem-progress-mini{
-    font-size:0.72rem;font-weight:700;
-    padding:2px 9px;border-radius:12px;
-  }
+  .sem-progress-mini{font-size:0.72rem;font-weight:700;padding:2px 9px;border-radius:12px}
   .sem-progress-mini.full{background:rgba(0,214,143,0.12);color:var(--green)}
   .sem-progress-mini.partial{background:rgba(255,179,71,0.1);color:var(--orange)}
   .sem-progress-mini.zero{background:rgba(255,107,107,0.06);color:var(--red)}
+  .sem-body{border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);overflow:hidden;max-height:0;transition:max-height 0.35s ease}
+  .sem-body.open{max-height:5000px}
 
-  .sem-body{
-    border:1px solid var(--border);border-top:none;
-    border-radius:0 0 var(--radius) var(--radius);
-    overflow:hidden;max-height:0;transition:max-height 0.35s ease;
+  /* ── Group Title (for fixed-paper categories) ── */
+  .group-title-bar{
+    font-size:0.78rem;font-weight:700;color:var(--orange);
+    padding:10px 16px 4px;letter-spacing:0.3px;
+    border-top:1px solid rgba(42,42,61,0.3);
   }
-  .sem-body.open{max-height:3000px}
+  .group-title-bar:first-child{border-top:none}
 
   /* ── Paper Grid ── */
-  .paper-group{padding:10px 16px;border-bottom:1px solid rgba(42,42,61,0.4)}
+  .paper-group{padding:8px 16px;border-bottom:1px solid rgba(42,42,61,0.3)}
   .paper-group:last-child{border-bottom:none}
-  .paper-code{
-    font-size:0.72rem;font-weight:700;color:var(--accent-glow);
-    margin-bottom:6px;letter-spacing:0.5px;
-  }
-  .paper-items{display:flex;flex-wrap:wrap;gap:7px}
+  .paper-code{font-size:0.72rem;font-weight:700;color:var(--accent-glow);margin-bottom:5px;letter-spacing:0.5px}
+  .paper-items{display:flex;flex-wrap:wrap;gap:6px}
 
   /* ── Checkbox Card ── */
   .paper-item{
-    display:flex;align-items:center;gap:8px;
-    padding:7px 12px;border-radius:var(--radius-sm);
+    display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:var(--radius-sm);
     background:var(--surface);border:1px solid var(--border);
-    cursor:pointer;transition:all 0.2s;user-select:none;min-width:130px;
+    cursor:pointer;transition:all 0.2s;user-select:none;min-width:125px;
   }
-  .paper-item:hover{
-    border-color:var(--accent);background:rgba(108,92,231,0.05);
-    transform:translateY(-1px);
-  }
+  .paper-item:hover{border-color:var(--accent);background:rgba(108,92,231,0.05);transform:translateY(-1px)}
   .paper-item.checked{border-color:var(--green-dim);background:rgba(0,214,143,0.07)}
   .paper-item.checked:hover{border-color:var(--green)}
   .paper-check{
     width:18px;height:18px;border-radius:4px;border:2px solid var(--border-glow);
-    display:flex;align-items:center;justify-content:center;
-    transition:all 0.2s;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;
   }
-  .paper-item.checked .paper-check{
-    background:var(--green);border-color:var(--green);
-    animation:checkPop 0.3s ease;
-  }
+  .paper-item.checked .paper-check{background:var(--green);border-color:var(--green);animation:checkPop 0.3s ease}
   .paper-check svg{width:11px;height:11px;opacity:0;transition:opacity 0.15s}
   .paper-item.checked .paper-check svg{opacity:1}
   .paper-info{display:flex;flex-direction:column}
   .paper-batch{font-size:0.7rem;font-weight:600;color:var(--text-dim)}
-  .paper-year{font-size:0.63rem;color:var(--text-muted)}
+  .paper-year{font-size:0.62rem;color:var(--text-muted)}
   @keyframes checkPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
-
-  /* ── Placeholder ── */
-  .placeholder-panel{
-    text-align:center;padding:60px 24px;
-    background:var(--card);border:1px dashed var(--border);border-radius:var(--radius);
-  }
-  .placeholder-panel .ph-icon{font-size:3rem;margin-bottom:12px}
-  .placeholder-panel h3{
-    font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;
-    color:var(--text-dim);margin-bottom:8px;
-  }
-  .placeholder-panel p{font-size:0.82rem;color:var(--text-muted);max-width:400px;margin:0 auto}
 
   /* ── Toast ── */
   .toast{
     position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);
     background:var(--card);border:1px solid var(--green-dim);border-radius:var(--radius);
     padding:10px 22px;font-size:0.8rem;font-weight:600;color:var(--green);
-    box-shadow:0 8px 32px rgba(0,0,0,0.5);z-index:1000;
-    transition:transform 0.3s ease;pointer-events:none;
+    box-shadow:0 8px 32px rgba(0,0,0,0.5);z-index:1000;transition:transform 0.3s ease;pointer-events:none;
   }
   .toast.show{transform:translateX(-50%) translateY(0)}
 
   /* ── Responsive ── */
   @media(max-width:700px){
     .header{padding:10px 14px}
-    .header h1{font-size:1.15rem}
+    .header h1{font-size:1.1rem}
     .container{padding:12px 14px}
-    .subject-chip{font-size:0.65rem;padding:5px 9px}
-    .paper-item{min-width:110px;padding:6px 9px}
+    .category-btn{font-size:0.62rem;padding:8px 4px}
+    .subject-chip{font-size:0.62rem;padding:4px 8px}
+    .paper-item{min-width:105px;padding:5px 8px}
     .btn{padding:5px 10px;font-size:0.68rem}
-    .category-btn{font-size:0.68rem;padding:8px 8px}
   }
-
   #importInput{display:none}
 </style>
 </head>
@@ -265,8 +184,8 @@
   <div class="header-inner">
     <h1>📄 PYQ Tracker</h1>
     <div class="header-stats">
-      <div class="stat-badge">Uploaded: <span id="globalDone">0</span> / <span id="globalTotal">0</span></div>
-      <div class="stat-badge">Progress: <span id="globalPct">0%</span></div>
+      <div class="stat-badge">Uploaded: <span id="gDone">0</span> / <span id="gTotal">0</span></div>
+      <div class="stat-badge">Progress: <span id="gPct">0%</span></div>
     </div>
     <div class="actions">
       <button class="btn btn-accent" onclick="exportData()">💾 Export</button>
@@ -278,23 +197,16 @@
 </header>
 
 <div class="container">
-  <!-- Category tabs -->
-  <div class="category-bar" id="categoryBar"></div>
-
-  <!-- Subject selector (only shown for categories with subjects) -->
+  <div class="category-bar" id="catBar"></div>
   <div id="subjectArea"></div>
-
-  <!-- Controls row -->
-  <div class="controls-row" id="controlsRow">
+  <div class="controls-row">
     <button class="filter-chip active" data-filter="all" onclick="setFilter('all',this)">All</button>
     <button class="filter-chip" data-filter="pending" onclick="setFilter('pending',this)">⬜ Pending</button>
     <button class="filter-chip" data-filter="done" onclick="setFilter('done',this)">✅ Uploaded</button>
     <div class="controls-spacer"></div>
-    <button class="expand-btn" onclick="toggleAllSems()">📂 Expand/Collapse All</button>
+    <button class="expand-btn" onclick="toggleAll()">📂 Expand / Collapse</button>
   </div>
-
-  <!-- Main content -->
-  <div id="mainContent"></div>
+  <div id="main"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -304,52 +216,20 @@
 // DATA DEFINITIONS
 // ═══════════════════════════════════════════════════════════════
 
-// Major paper structure — same for ALL major subjects (Sem 1-6)
-const MAJOR_PAPER_STRUCTURE = {
-  'Semester 1': {
-    papers: ['MJ-01'],
-    batches: [
-      { batch: '2022', examYear: '2022' },
-      { batch: '2023', examYear: '2023' },
-      { batch: '2024', examYear: '2024' },
-      { batch: '2025', examYear: '2025' },
-    ]
-  },
-  'Semester 2': {
-    papers: ['MJ-02', 'MJ-03'],
-    batches: [
-      { batch: '2022', examYear: '2023' },
-      { batch: '2023', examYear: '2024' },
-      { batch: '2024', examYear: '2025' },
-    ]
-  },
-  'Semester 3': {
-    papers: ['MJ-04', 'MJ-05'],
-    batches: [
-      { batch: '2022', examYear: '2023' },
-      { batch: '2023', examYear: '2024' },
-    ]
-  },
-  'Semester 4': {
-    papers: ['MJ-06', 'MJ-07', 'MJ-08'],
-    batches: [
-      { batch: '2022', examYear: '2024' },
-      { batch: '2023', examYear: '2025' },
-    ]
-  },
-  'Semester 5': {
-    papers: ['MJ-09', 'MJ-10', 'MJ-11'],
-    batches: [
-      { batch: '2022', examYear: '2025' },
-    ]
-  },
-  'Semester 6': {
-    papers: ['MJ-12', 'MJ-13', 'MJ-14', 'MJ-15'],
-    batches: [
-      { batch: '2022', examYear: '2025' },
-    ]
-  }
+// Batch templates: b = batch year, e = exam year
+const B = {
+  s1:  [{b:'2022',e:'2022'},{b:'2023',e:'2023'},{b:'2024',e:'2024'},{b:'2025',e:'2025'}],
+  s2:  [{b:'2022',e:'2023'},{b:'2023',e:'2024'},{b:'2024',e:'2025'}],
+  s3:  [{b:'2022',e:'2023'},{b:'2023',e:'2024'}],
+  s3x: [{b:'2022',e:'2023'},{b:'2023',e:'2024'},{b:'2024',e:'2025'}],  // includes upcoming 2024 batch
+  s4:  [{b:'2022',e:'2024'},{b:'2023',e:'2025'}],
+  s5:  [{b:'2022',e:'2025'}],
+  s6:  [{b:'2022',e:'2025'}],
+  s7:  [{b:'2022',e:'2026'}],
+  s8:  [{b:'2022',e:'2026'}],
 };
+
+// ── Subject Lists ──
 
 const MAJOR_SUBJECTS = [
   'Anthropology','Bengali','Botany','Business Administration','Business Law',
@@ -382,437 +262,428 @@ const MDC_SUBJECTS = [
   'Sanskrit','Santhali','Sociology','Statistics','Urdu','Zoology'
 ];
 
-// Category config
+const AEC_LANGUAGES = [
+  'Bengali','English','Hindi','Ho','Kurmali','Kurukh',
+  'Mundari','Oriya','Sanskrit','Santhali','Urdu'
+];
+
+// ── Semester Structures ──
+
+// MAJOR: 32 subjects × Sem 1-6, paper codes MJ-01 to MJ-15
+const MAJOR_SEMS = {
+  'Semester 1': { papers:['MJ-01'], batches:B.s1 },
+  'Semester 2': { papers:['MJ-02','MJ-03'], batches:B.s2 },
+  'Semester 3': { papers:['MJ-04','MJ-05'], batches:B.s3 },
+  'Semester 4': { papers:['MJ-06','MJ-07','MJ-08'], batches:B.s4 },
+  'Semester 5': { papers:['MJ-09','MJ-10','MJ-11'], batches:B.s5 },
+  'Semester 6': { papers:['MJ-12','MJ-13','MJ-14','MJ-15'], batches:B.s6 },
+};
+
+// MINOR: 32 subjects × Sem 1-8, one paper per sem (MN-1A to MN-2D)
+const MINOR_SEMS = {
+  'Semester 1': { papers:['MN-1A'], batches:B.s1 },
+  'Semester 2': { papers:['MN-2A'], batches:B.s2 },
+  'Semester 3': { papers:['MN-1B'], batches:B.s3 },
+  'Semester 4': { papers:['MN-2B'], batches:B.s4 },
+  'Semester 5': { papers:['MN-1C'], batches:B.s5 },
+  'Semester 6': { papers:['MN-2C'], batches:B.s6 },
+  'Semester 7': { papers:['MN-1D'], batches:B.s7 },
+  'Semester 8': { papers:['MN-2D'], batches:B.s8 },
+};
+
+// MDC: 34 subjects × Sem 1-3, one paper per sem (MDC-1 to MDC-3)
+const MDC_SEMS = {
+  'Semester 1': { papers:['MDC-1'], batches:B.s1 },
+  'Semester 2': { papers:['MDC-2'], batches:B.s2 },
+  'Semester 3': { papers:['MDC-3'], batches:B.s3x },
+};
+
+// ── Fixed-Paper Structures (AEC, SEC, VAC) ──
+// Each semester has an array of groups.
+// Each group: { id, title, papers[], batches[] }
+
+const AEC_SEMS = {
+  'Semester 1': [
+    { id:'AEC-01', title:'AEC-01: Hindi Composition', papers:['Set 01','Set 02','Set 03'], batches:B.s1 }
+  ],
+  'Semester 2': [
+    { id:'AEC-02', title:'AEC-02: English Composition', papers:['Set 01','Set 02','Set 03'], batches:B.s2 }
+  ],
+  'Semester 3': [
+    { id:'AEC-03', title:'AEC-03 (Language-specific)', papers:AEC_LANGUAGES, batches:B.s3x }
+  ],
+  'Semester 4': [
+    { id:'AEC-04', title:'AEC-04 (Language-specific)', papers:AEC_LANGUAGES, batches:B.s4 }
+  ],
+};
+
+const SEC_SEMS = {
+  'Semester 1': [
+    { id:'SEC-01', title:'SEC-01: Digital Education', papers:['Set 01','Set 02','Set 03'], batches:B.s1 }
+  ],
+  'Semester 2': [
+    { id:'SEC-02-CS', title:'SEC-02: Communication Skills & Personality Development', papers:['Set 01','Set 02','Set 03'], batches:B.s2 },
+    { id:'SEC-02-NW', title:'SEC-02: News Writing and Reporting', papers:['Set 01','Set 02','Set 03'], batches:B.s2 }
+  ],
+  'Semester 3': [
+    { id:'SEC-03', title:'SEC-03: Mathematical & Computational Thinking and Analysis', papers:['Set 01','Set 02','Set 03'], batches:B.s3x }
+  ],
+};
+
+const VAC_SEMS = {
+  'Semester 1': [
+    { id:'VAC-1', title:'Understanding India', papers:['Paper'], batches:B.s1 }
+  ],
+  'Semester 4': [
+    { id:'VAC-2', title:'Global Citizenship Education for Sustainable Development', papers:['Paper'], batches:B.s4 }
+  ],
+};
+
+// ── Master Category Config ──
+
 const CATEGORIES = {
-  'MAJOR': {
-    label: 'Major',
-    subjects: MAJOR_SUBJECTS,
-    structure: MAJOR_PAPER_STRUCTURE,
-    color: 'var(--accent)',
-    icon: '📘'
-  },
-  'MINOR': {
-    label: 'Minor',
-    subjects: MINOR_SUBJECTS,
-    structure: null, // paper structure TBD
-    color: 'var(--green)',
-    icon: '📗'
-  },
-  'MDC': {
-    label: 'MDC',
-    subjects: MDC_SUBJECTS,
-    structure: null, // paper structure TBD
-    color: '#e17055',
-    icon: '📙'
-  },
-  'VAC': {
-    label: 'VAC',
-    subjects: [],
-    structure: null,
-    color: 'var(--cyan)',
-    icon: '📕'
-  },
-  'AEC': {
-    label: 'AEC',
-    subjects: [],
-    structure: null,
-    color: '#fdcb6e',
-    icon: '📒'
-  },
-  'SEC': {
-    label: 'SEC',
-    subjects: [],
-    structure: null,
-    color: '#a29bfe',
-    icon: '📓'
-  }
+  MAJOR: { label:'Major', icon:'📘', type:'subject', subjects:MAJOR_SUBJECTS, semesters:MAJOR_SEMS },
+  MINOR: { label:'Minor', icon:'📗', type:'subject', subjects:MINOR_SUBJECTS, semesters:MINOR_SEMS },
+  MDC:   { label:'MDC',   icon:'📙', type:'subject', subjects:MDC_SUBJECTS,   semesters:MDC_SEMS },
+  AEC:   { label:'AEC',   icon:'📒', type:'fixed',   semesters:AEC_SEMS },
+  SEC:   { label:'SEC',   icon:'📓', type:'fixed',   semesters:SEC_SEMS },
+  VAC:   { label:'VAC',   icon:'📕', type:'fixed',   semesters:VAC_SEMS },
 };
 
 // ═══════════════════════════════════════════════════════════════
-// STATE
+// STATE MANAGEMENT
 // ═══════════════════════════════════════════════════════════════
 
 const STORAGE_KEY = 'pyq_tracker_v3';
-const OLD_STORAGE_KEY = 'pyq_tracker_science_major_v2';
+const OLD_KEY = 'pyq_tracker_science_major_v2';
 let state = {};
-let activeCategory = 'MAJOR';
-let activeSubject = MAJOR_SUBJECTS[0];
+let activeCat = 'MAJOR';
+let activeSub = MAJOR_SUBJECTS[0];
 let activeFilter = 'all';
 let searchQuery = '';
-let allSemsExpanded = true;
+let allExpanded = true;
+let itemKeys = []; // maps data-idx → state key
 
-function makeKey(category, subject, sem, paper, batch) {
-  // For MAJOR, keep backward-compatible key format
-  if (category === 'MAJOR') return `${subject}|${sem}|${paper}|${batch}`;
-  return `${category}|${subject}|${sem}|${paper}|${batch}`;
+// Key generators
+function sKey(cat, sub, sem, paper, batch) {
+  if (cat === 'MAJOR') return `${sub}|${sem}|${paper}|${batch}`;
+  return `${cat}|${sub}|${sem}|${paper}|${batch}`;
+}
+function fKey(cat, sem, gid, paper, batch) {
+  return `${cat}|${sem}|${gid}|${paper}|${batch}`;
 }
 
 function loadState() {
   try {
-    // Try new storage key first
     let raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) { state = JSON.parse(raw); return; }
+    // Migrate from v2
+    raw = localStorage.getItem(OLD_KEY);
     if (raw) {
-      state = JSON.parse(raw);
-      return;
-    }
-    // Migrate from old storage key (backward compatibility)
-    raw = localStorage.getItem(OLD_STORAGE_KEY);
-    if (raw) {
-      const oldState = JSON.parse(raw);
-      // Rename old subject names to match official DB names
-      const RENAME_MAP = { 'Maths': 'Mathematics' };
-      for (const [key, val] of Object.entries(oldState)) {
-        let newKey = key;
-        for (const [oldName, newName] of Object.entries(RENAME_MAP)) {
-          if (newKey.startsWith(oldName + '|')) {
-            newKey = newName + newKey.slice(oldName.length);
-          }
+      const old = JSON.parse(raw);
+      const RN = { 'Maths':'Mathematics' };
+      for (const [k, v] of Object.entries(old)) {
+        let nk = k;
+        for (const [from, to] of Object.entries(RN)) {
+          if (nk.startsWith(from + '|')) nk = to + nk.slice(from.length);
         }
-        state[newKey] = val;
+        state[nk] = v;
       }
-      // Save to new key
       saveState();
-      console.log('Migrated data from v2 to v3');
     }
   } catch(e) { state = {}; }
 }
+function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
-function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+// ═══════════════════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════════════════
+
+function subStats(ck, sub) {
+  const sems = CATEGORIES[ck].semesters;
+  let d=0, t=0;
+  for (const [sem, sd] of Object.entries(sems)) {
+    for (const p of sd.papers) for (const b of sd.batches) { t++; if (state[sKey(ck,sub,sem,p,b.b)]) d++; }
+  }
+  return {done:d, total:t};
+}
+
+function subSemStats(ck, sub, sem) {
+  const sd = CATEGORIES[ck].semesters[sem];
+  let d=0, t=0;
+  for (const p of sd.papers) for (const b of sd.batches) { t++; if (state[sKey(ck,sub,sem,p,b.b)]) d++; }
+  return {done:d, total:t};
+}
+
+function fixedStats(ck) {
+  const sems = CATEGORIES[ck].semesters;
+  let d=0, t=0;
+  for (const [sem, groups] of Object.entries(sems))
+    for (const g of groups) for (const p of g.papers) for (const b of g.batches) { t++; if (state[fKey(ck,sem,g.id,p,b.b)]) d++; }
+  return {done:d, total:t};
+}
+
+function fixedSemStats(ck, sem) {
+  let d=0, t=0;
+  for (const g of CATEGORIES[ck].semesters[sem])
+    for (const p of g.papers) for (const b of g.batches) { t++; if (state[fKey(ck,sem,g.id,p,b.b)]) d++; }
+  return {done:d, total:t};
+}
+
+function catStats(ck) {
+  const c = CATEGORIES[ck];
+  if (c.type === 'subject') {
+    let d=0, t=0;
+    for (const sub of c.subjects) { const s = subStats(ck,sub); d+=s.done; t+=s.total; }
+    return {done:d, total:t};
+  }
+  return fixedStats(ck);
+}
+
+function globalStats() {
+  let d=0, t=0;
+  for (const ck of Object.keys(CATEGORIES)) { const s = catStats(ck); d+=s.done; t+=s.total; }
+  return {done:d, total:t};
 }
 
 // ═══════════════════════════════════════════════════════════════
-// STATS HELPERS
+// RENDERING
 // ═══════════════════════════════════════════════════════════════
 
-function getSubjectPaperCount(category, subject) {
-  const cat = CATEGORIES[category];
-  if (!cat.structure) return { done: 0, total: 0 };
-  let done = 0, total = 0;
-  for (const [sem, semData] of Object.entries(cat.structure)) {
-    for (const paper of semData.papers) {
-      for (const b of semData.batches) {
-        total++;
-        if (state[makeKey(category, subject, sem, paper, b.batch)]) done++;
-      }
-    }
-  }
-  return { done, total };
-}
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function getSemStats(category, subject, semName) {
-  const cat = CATEGORIES[category];
-  if (!cat.structure) return { done: 0, total: 0 };
-  const semData = cat.structure[semName];
-  if (!semData) return { done: 0, total: 0 };
-  let done = 0, total = 0;
-  for (const paper of semData.papers) {
-    for (const b of semData.batches) {
-      total++;
-      if (state[makeKey(category, subject, semName, paper, b.batch)]) done++;
-    }
-  }
-  return { done, total };
-}
-
-function getCategoryStats(category) {
-  const cat = CATEGORIES[category];
-  if (!cat.structure || !cat.subjects.length) return { done: 0, total: 0 };
-  let done = 0, total = 0;
-  for (const sub of cat.subjects) {
-    const s = getSubjectPaperCount(category, sub);
-    done += s.done;
-    total += s.total;
-  }
-  return { done, total };
-}
-
-function getGlobalStats() {
-  let done = 0, total = 0;
-  for (const catKey of Object.keys(CATEGORIES)) {
-    const s = getCategoryStats(catKey);
-    done += s.done;
-    total += s.total;
-  }
-  return { done, total };
-}
-
-// ═══════════════════════════════════════════════════════════════
-// BUILD UI
-// ═══════════════════════════════════════════════════════════════
-
-function buildCategoryBar() {
-  const el = document.getElementById('categoryBar');
-  el.innerHTML = Object.entries(CATEGORIES).map(([key, cat]) => {
-    const stats = getCategoryStats(key);
-    const countText = stats.total > 0 ? `${stats.done}/${stats.total}` : cat.subjects.length > 0 ? '—' : 'Soon';
-    return `<button class="category-btn ${key === activeCategory ? 'active' : ''}" 
-              data-cat="${key}" onclick="switchCategory('${key}')">
-              ${cat.icon} ${cat.label}<span class="cat-count">${countText}</span>
-            </button>`;
+function buildCatBar() {
+  document.getElementById('catBar').innerHTML = Object.entries(CATEGORIES).map(([k,c]) => {
+    const s = catStats(k);
+    const txt = s.total > 0 ? `${s.done}/${s.total}` : '—';
+    return `<button class="category-btn ${k===activeCat?'active':''}" data-cat="${k}" 
+              onclick="switchCat('${k}')">${c.icon} ${c.label}<span class="cat-count">${txt}</span></button>`;
   }).join('');
 }
 
 function buildSubjectArea() {
   const el = document.getElementById('subjectArea');
-  const cat = CATEGORIES[activeCategory];
+  const c = CATEGORIES[activeCat];
+  if (c.type !== 'subject') { el.innerHTML = ''; return; }
 
-  if (!cat.subjects.length || !cat.structure) {
-    el.innerHTML = '';
-    return;
-  }
-
-  // Search input
-  let html = `<div class="subject-selector">
-    <input class="subject-search" type="text" placeholder="🔍 Search ${cat.label} subjects (${cat.subjects.length})..." 
-           value="${searchQuery}" oninput="onSearch(this.value)">
-  </div>`;
-
-  // Subject chips
-  const filtered = cat.subjects.filter(s => 
-    !searchQuery || s.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  html += '<div class="subject-grid">';
-  for (const sub of filtered) {
-    const stats = getSubjectPaperCount(activeCategory, sub);
-    const pct = stats.total ? Math.round(stats.done / stats.total * 100) : 0;
-    let extraClass = '';
-    if (pct === 100) extraClass = 'complete';
-    else if (pct > 0) extraClass = 'has-progress';
-    const isActive = sub === activeSubject ? 'active' : '';
-    const pctText = stats.total > 0 && pct > 0 ? `<span class="chip-pct">${pct}%</span>` : '';
-    html += `<button class="subject-chip ${isActive} ${extraClass}" 
-               onclick="switchSubject('${sub.replace(/'/g, "\\'")}')">${sub}${pctText}</button>`;
-  }
-  html += '</div>';
-  el.innerHTML = html;
+  const list = c.subjects.filter(s => !searchQuery || s.toLowerCase().includes(searchQuery.toLowerCase()));
+  el.innerHTML = `
+    <div class="subject-selector">
+      <input class="subject-search" type="text" placeholder="🔍 Search ${c.label} subjects (${c.subjects.length})..."
+        value="${esc(searchQuery)}" oninput="onSearch(this.value)">
+    </div>
+    <div class="subject-grid">${list.map(sub => {
+      const st = subStats(activeCat, sub);
+      const pct = st.total ? Math.round(st.done/st.total*100) : 0;
+      let cls = sub === activeSub ? 'active' : '';
+      if (pct === 100) cls += ' complete'; else if (pct > 0) cls += ' has-progress';
+      const pt = pct > 0 ? `<span class="chip-pct">${pct}%</span>` : '';
+      return `<button class="subject-chip ${cls}" onclick="switchSub(this.dataset.sub)" data-sub="${esc(sub)}">${sub}${pt}</button>`;
+    }).join('')}</div>`;
 }
 
-function buildMainContent() {
-  const el = document.getElementById('mainContent');
-  const cat = CATEGORIES[activeCategory];
+function buildMain() {
+  itemKeys = [];
+  const c = CATEGORIES[activeCat];
+  if (c.type === 'subject') buildSubjectMain();
+  else buildFixedMain();
+}
 
-  // If category has no structure yet, show placeholder
-  if (!cat.structure) {
-    el.innerHTML = `<div class="placeholder-panel">
-      <div class="ph-icon">${cat.icon}</div>
-      <h3>${cat.label} Papers — Coming Soon</h3>
-      <p>Paper structure for ${cat.label} will be added once you provide the paper codes 
-         (e.g., MN-01, MN-02, etc.) and batch/year mapping.</p>
-    </div>`;
-    return;
+function buildSubjectMain() {
+  const el = document.getElementById('main');
+  const c = CATEGORIES[activeCat];
+  if (!c.subjects.includes(activeSub)) activeSub = c.subjects[0];
+  const sub = activeSub;
+  const st = subStats(activeCat, sub);
+  const pct = st.total ? Math.round(st.done/st.total*100) : 0;
+
+  let h = progressBar(`${sub} — ${c.label} Progress`, pct);
+  for (const [sem, sd] of Object.entries(c.semesters)) {
+    const ss = subSemStats(activeCat, sub, sem);
+    h += semSection(sem, ss, () => {
+      let pg = '';
+      for (const p of sd.papers)
+        pg += paperGroup(p, sd.batches, b => sKey(activeCat, sub, sem, p, b.b));
+      return pg;
+    });
   }
+  el.innerHTML = h;
+}
 
-  if (!cat.subjects.length) {
-    el.innerHTML = `<div class="placeholder-panel">
-      <div class="ph-icon">${cat.icon}</div>
-      <h3>${cat.label} — No Subjects Added Yet</h3>
-      <p>Subject list will be added when ready.</p>
-    </div>`;
-    return;
+function buildFixedMain() {
+  const el = document.getElementById('main');
+  const c = CATEGORIES[activeCat];
+  const st = fixedStats(activeCat);
+  const pct = st.total ? Math.round(st.done/st.total*100) : 0;
+
+  let h = progressBar(`${c.label} — Overall Progress`, pct);
+  for (const [sem, groups] of Object.entries(c.semesters)) {
+    const ss = fixedSemStats(activeCat, sem);
+    h += semSection(sem, ss, () => {
+      let content = '';
+      for (const g of groups) {
+        if (groups.length > 1 || g.papers.length > 3) {
+          content += `<div class="group-title-bar">${g.title}</div>`;
+        }
+        for (const p of g.papers)
+          content += paperGroup(p, g.batches, b => fKey(activeCat, sem, g.id, p, b.b));
+      }
+      return content;
+    });
   }
+  el.innerHTML = h;
+}
 
-  // Check if activeSubject is valid for this category
-  if (!cat.subjects.includes(activeSubject)) {
-    activeSubject = cat.subjects[0];
-  }
+// ── Shared Helpers ──
 
-  const sub = activeSubject;
-  const stats = getSubjectPaperCount(activeCategory, sub);
-  const pct = stats.total ? Math.round(stats.done / stats.total * 100) : 0;
-
-  let html = `<div class="progress-section">
+function progressBar(label, pct) {
+  return `<div class="progress-section">
     <div class="progress-header">
-      <span class="progress-label">${sub} — ${cat.label} Progress</span>
+      <span class="progress-label">${label}</span>
       <span class="progress-pct">${pct}%</span>
     </div>
     <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
   </div>`;
+}
 
-  // Semesters
-  for (const [semName, semData] of Object.entries(cat.structure)) {
-    const semStats = getSemStats(activeCategory, sub, semName);
-    const semPct = semStats.total ? Math.round(semStats.done / semStats.total * 100) : 0;
-    const statusClass = semPct === 100 ? 'full' : (semPct > 0 ? 'partial' : 'zero');
-    const isOpen = allSemsExpanded;
+function semSection(sem, stats, contentFn) {
+  const pct = stats.total ? Math.round(stats.done/stats.total*100) : 0;
+  const cls = pct === 100 ? 'full' : (pct > 0 ? 'partial' : 'zero');
+  const op = allExpanded;
+  return `<div class="sem-section">
+    <div class="sem-header ${op?'open':''}" onclick="toggleSem(this)">
+      <span class="arrow">▶</span>
+      <span class="sem-title">${sem}</span>
+      <span class="sem-progress-mini ${cls}">${stats.done}/${stats.total}</span>
+    </div>
+    <div class="sem-body ${op?'open':''}">${contentFn()}</div>
+  </div>`;
+}
 
-    let paperGroupsHTML = '';
-    for (const paper of semData.papers) {
-      let itemsHTML = '';
-      for (const b of semData.batches) {
-        const key = makeKey(activeCategory, sub, semName, paper, b.batch);
-        const checked = !!state[key];
-        if (activeFilter === 'done' && !checked) continue;
-        if (activeFilter === 'pending' && checked) continue;
-
-        const escapedKey = key.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-        itemsHTML += `
-          <div class="paper-item ${checked ? 'checked' : ''}" onclick="toggle('${escapedKey}', this)">
-            <div class="paper-check">
-              <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
-                <path d="M2 6l3 3 5-5"/>
-              </svg>
-            </div>
-            <div class="paper-info">
-              <span class="paper-batch">${b.batch} Batch</span>
-              <span class="paper-year">Exam: ${b.examYear}</span>
-            </div>
-          </div>`;
-      }
-      if (itemsHTML || activeFilter === 'all') {
-        paperGroupsHTML += `
-          <div class="paper-group">
-            <div class="paper-code">${paper}</div>
-            <div class="paper-items">${itemsHTML || '<span style="color:var(--text-muted);font-size:0.72rem">No matching items</span>'}</div>
-          </div>`;
-      }
-    }
-
-    html += `
-      <div class="sem-section">
-        <div class="sem-header ${isOpen ? 'open' : ''}" onclick="toggleSem(this)">
-          <span class="arrow">▶</span>
-          <span class="sem-title">${semName}</span>
-          <span class="sem-progress-mini ${statusClass}">${semStats.done}/${semStats.total}</span>
-        </div>
-        <div class="sem-body ${isOpen ? 'open' : ''}">${paperGroupsHTML}</div>
-      </div>`;
+function paperGroup(paper, batches, keyFn) {
+  let items = '';
+  for (const b of batches) {
+    const key = keyFn(b);
+    const chk = !!state[key];
+    if (activeFilter === 'done' && !chk) continue;
+    if (activeFilter === 'pending' && chk) continue;
+    const idx = itemKeys.length;
+    itemKeys.push(key);
+    items += `<div class="paper-item ${chk?'checked':''}" data-idx="${idx}">
+      <div class="paper-check">
+        <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M2 6l3 3 5-5"/></svg>
+      </div>
+      <div class="paper-info">
+        <span class="paper-batch">${b.b} Batch</span>
+        <span class="paper-year">Exam: ${b.e}</span>
+      </div>
+    </div>`;
   }
-
-  el.innerHTML = html;
+  if (!items && activeFilter !== 'all') return '';
+  return `<div class="paper-group">
+    <div class="paper-code">${paper}</div>
+    <div class="paper-items">${items || '<span style="color:var(--text-muted);font-size:0.72rem">No matching</span>'}</div>
+  </div>`;
 }
 
 // ═══════════════════════════════════════════════════════════════
 // INTERACTIONS
 // ═══════════════════════════════════════════════════════════════
 
-function toggle(key, el) {
-  if (state[key]) {
-    delete state[key];
-    el.classList.remove('checked');
-  } else {
-    state[key] = true;
-    el.classList.add('checked');
-  }
+// Event delegation for checkbox toggling
+document.addEventListener('click', function(e) {
+  const item = e.target.closest('.paper-item');
+  if (!item) return;
+  const idx = parseInt(item.dataset.idx);
+  const key = itemKeys[idx];
+  if (key === undefined) return;
+  if (state[key]) delete state[key]; else state[key] = true;
   saveState();
-  // Full re-render for stats updates
   render();
-}
+});
 
-function switchCategory(cat) {
-  activeCategory = cat;
+function switchCat(cat) {
+  activeCat = cat;
   searchQuery = '';
-  const catData = CATEGORIES[cat];
-  if (catData.subjects.length) activeSubject = catData.subjects[0];
+  const c = CATEGORIES[cat];
+  if (c.type === 'subject') activeSub = c.subjects[0];
   render();
 }
 
-function switchSubject(sub) {
-  activeSubject = sub;
-  buildSubjectArea(); // refresh chips
-  buildMainContent(); // refresh main
+function switchSub(sub) {
+  activeSub = sub;
+  buildSubjectArea();
+  buildMain();
 }
 
-function toggleSem(headerEl) {
-  headerEl.classList.toggle('open');
-  headerEl.nextElementSibling.classList.toggle('open');
-}
+function toggleSem(h) { h.classList.toggle('open'); h.nextElementSibling.classList.toggle('open'); }
 
-function toggleAllSems() {
-  allSemsExpanded = !allSemsExpanded;
-  buildMainContent();
-}
+function toggleAll() { allExpanded = !allExpanded; buildMain(); }
 
-function setFilter(filter, el) {
-  activeFilter = filter;
+function setFilter(f, el) {
+  activeFilter = f;
   document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
-  buildMainContent();
+  buildMain();
 }
 
-function onSearch(query) {
-  searchQuery = query;
-  buildSubjectArea();
-}
+function onSearch(q) { searchQuery = q; buildSubjectArea(); }
 
 // ═══════════════════════════════════════════════════════════════
 // EXPORT / IMPORT / RESET
 // ═══════════════════════════════════════════════════════════════
 
 function exportData() {
-  const exportObj = {
-    version: 3,
-    exportDate: new Date().toISOString(),
-    data: state
-  };
-  const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `pyq_tracker_backup_${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+  const obj = { version:3, date:new Date().toISOString(), data:state };
+  const blob = new Blob([JSON.stringify(obj,null,2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `pyq_tracker_${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
   showToast('✅ Backup exported!');
 }
 
-function importData(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
+function importData(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = function(ev) {
     try {
-      const imported = JSON.parse(e.target.result);
-      // Support both v2 (flat object) and v3 (wrapped with version)
-      const data = imported.data || imported;
-      state = { ...state, ...data };
-      saveState();
-      render();
+      const imp = JSON.parse(ev.target.result);
+      const data = imp.data || imp;
+      state = {...state, ...data};
+      saveState(); render();
       showToast(`✅ Imported ${Object.keys(data).length} entries!`);
-    } catch(err) {
-      showToast('❌ Invalid backup file');
-    }
+    } catch(err) { showToast('❌ Invalid file'); }
   };
-  reader.readAsText(file);
-  event.target.value = '';
+  r.readAsText(file); e.target.value = '';
 }
 
 function resetAll() {
-  if (!confirm('⚠️ Reset ALL checkboxes across ALL categories?\n\nExport a backup first!')) return;
-  state = {};
-  saveState();
-  render();
+  if (!confirm('⚠️ Reset ALL checkboxes?\n\nExport a backup first!')) return;
+  state = {}; saveState(); render();
   showToast('🗑️ All data reset');
 }
 
 function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2500);
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
 }
 
 // ═══════════════════════════════════════════════════════════════
-// RENDER + INIT
+// INIT
 // ═══════════════════════════════════════════════════════════════
 
-function updateGlobalStats() {
-  const { done, total } = getGlobalStats();
-  document.getElementById('globalDone').textContent = done;
-  document.getElementById('globalTotal').textContent = total;
-  document.getElementById('globalPct').textContent = total ? Math.round(done/total*100) + '%' : '0%';
+function updateGlobal() {
+  const s = globalStats();
+  document.getElementById('gDone').textContent = s.done;
+  document.getElementById('gTotal').textContent = s.total;
+  document.getElementById('gPct').textContent = s.total ? Math.round(s.done/s.total*100)+'%' : '0%';
 }
 
-function render() {
-  buildCategoryBar();
-  buildSubjectArea();
-  buildMainContent();
-  updateGlobalStats();
-}
+function render() { buildCatBar(); buildSubjectArea(); buildMain(); updateGlobal(); }
 
 loadState();
 render();
 </script>
-
 </body>
 </html>
