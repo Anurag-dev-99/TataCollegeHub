@@ -132,16 +132,6 @@
         "downloadUrl": "https://drive.google.com/file/d/1I4rdO41zKBbUk4sr5hACHDNBDhesP_RG/view?usp=drive_link"
     },
     {
-        "id": "pyq-mn-phy1",
-        "title": "2024 Paper - Introductory Physics",
-        "year": "2024",
-        "semester": 1,
-        "category": "Minor",
-        "subject": "Physics",
-        "downloadCount": 190,
-        "fileSize": "1.4 MB"
-    },
-    {
         "id": "pyq-mn-phy-sem4-mn1b",
         "title": "mn-1b phy 2022-2026.pdf",
         "year": "2022-2026",
@@ -185,26 +175,6 @@
         "subject": "English",
         "downloadCount": 210,
         "fileSize": "980 KB"
-    },
-    {
-        "id": "pyq-mdc-hist1",
-        "title": "2024 Paper - Indian Culture & Heritage MDC",
-        "year": "2024",
-        "semester": 2,
-        "category": "MDC",
-        "subject": "History",
-        "downloadCount": 178,
-        "fileSize": "1.1 MB"
-    },
-    {
-        "id": "pyq-mdc-pol1",
-        "title": "2024 Paper - Introduction to Constitution MDC",
-        "year": "2024",
-        "semester": 1,
-        "category": "MDC",
-        "subject": "Political Science",
-        "downloadCount": 245,
-        "fileSize": "1.2 MB"
     },
     {
         "id": "pyq-vac-env1",
@@ -2074,7 +2044,7 @@
         "semester": 4,
         "subject": "History",
         "downloadCount": 0,
-        "title": "History Major Sem 4 PYQ (MJ-09) 2022 Batch",
+        "title": "History Major Sem 4 PYQ (MJ-08) 2022 Batch",
         "fileSize": "PDF File"
     },
     {
