@@ -14,7 +14,7 @@
     --text:#e8e8f0;--text-dim:#8888a8;--text-muted:#55557a;
     --accent:#6c5ce7;--accent-glow:#7c6cf7;--accent-dim:#4a3cb5;
     --green:#00d68f;--green-dim:#00a86d;
-    --orange:#ffb347;--red:#ff6b6b;
+    --orange:#ffb347;--red:#ff6b6b;--cyan:#00cec9;
     --radius:12px;--radius-sm:8px;
   }
   html{scroll-behavior:smooth}
@@ -26,34 +26,32 @@
   /* ── Header ── */
   .header{
     position:sticky;top:0;z-index:100;
-    background:rgba(10,10,15,0.85);backdrop-filter:blur(20px);
+    background:rgba(10,10,15,0.88);backdrop-filter:blur(24px);
     border-bottom:1px solid var(--border);
-    padding:16px 24px;
+    padding:14px 24px;
   }
   .header-inner{
-    max-width:1200px;margin:0 auto;
+    max-width:1300px;margin:0 auto;
     display:flex;align-items:center;justify-content:space-between;
-    flex-wrap:wrap;gap:12px;
+    flex-wrap:wrap;gap:10px;
   }
   .header h1{
-    font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;
+    font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;
     background:linear-gradient(135deg,var(--accent-glow),var(--green));
     -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    white-space:nowrap;
   }
-  .header-stats{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .header-stats{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
   .stat-badge{
     background:var(--card);border:1px solid var(--border);border-radius:20px;
-    padding:6px 14px;font-size:0.8rem;font-weight:600;color:var(--text-dim);
+    padding:5px 12px;font-size:0.75rem;font-weight:600;color:var(--text-dim);
   }
   .stat-badge span{color:var(--green);font-weight:700}
-
-  /* ── Action Buttons ── */
-  .actions{display:flex;gap:8px;flex-wrap:wrap}
+  .actions{display:flex;gap:6px;flex-wrap:wrap}
   .btn{
-    font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;
-    padding:8px 16px;border-radius:var(--radius-sm);border:1px solid var(--border);
-    background:var(--card);color:var(--text-dim);cursor:pointer;
-    transition:all 0.2s;
+    font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;
+    padding:7px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);
+    background:var(--card);color:var(--text-dim);cursor:pointer;transition:all 0.2s;
   }
   .btn:hover{background:var(--card-hover);color:var(--text);border-color:var(--border-glow)}
   .btn-accent{background:var(--accent-dim);border-color:var(--accent);color:#fff}
@@ -61,116 +59,156 @@
   .btn-danger{border-color:var(--red);color:var(--red)}
   .btn-danger:hover{background:rgba(255,107,107,0.1)}
 
-  /* ── Category Tabs (Subject) ── */
-  .container{max-width:1200px;margin:0 auto;padding:20px 24px}
-  .category-tabs{
-    display:flex;gap:6px;flex-wrap:wrap;
-    padding:4px;background:var(--surface);border-radius:var(--radius);
-    border:1px solid var(--border);margin-bottom:24px;
-  }
-  .cat-tab{
-    flex:1;min-width:100px;text-align:center;
-    padding:10px 12px;border-radius:var(--radius-sm);
-    font-size:0.82rem;font-weight:600;cursor:pointer;
-    color:var(--text-dim);transition:all 0.25s;border:none;background:transparent;
-    position:relative;
-  }
-  .cat-tab:hover{color:var(--text);background:rgba(108,92,231,0.08)}
-  .cat-tab.active{
-    background:var(--accent);color:#fff;
-    box-shadow:0 2px 12px rgba(108,92,231,0.35);
-  }
-  .cat-tab .tab-count{
-    display:inline-block;font-size:0.65rem;font-weight:700;
-    background:rgba(255,255,255,0.15);border-radius:10px;
-    padding:1px 7px;margin-left:4px;vertical-align:middle;
-  }
-  .cat-tab.active .tab-count{background:rgba(255,255,255,0.25)}
+  /* ── Container ── */
+  .container{max-width:1300px;margin:0 auto;padding:16px 24px}
 
-  /* ── Subject Panel ── */
-  .subject-panel{display:none}
-  .subject-panel.active{display:block}
+  /* ── Category Tabs (MAJOR / MINOR / MDC) ── */
+  .category-bar{
+    display:flex;gap:4px;margin-bottom:16px;
+    padding:3px;background:var(--surface);border-radius:var(--radius);
+    border:1px solid var(--border);
+  }
+  .category-btn{
+    flex:1;text-align:center;padding:10px 16px;border-radius:var(--radius-sm);
+    font-size:0.8rem;font-weight:700;cursor:pointer;border:none;background:transparent;
+    color:var(--text-dim);transition:all 0.25s;letter-spacing:0.5px;
+  }
+  .category-btn:hover{color:var(--text);background:rgba(108,92,231,0.06)}
+  .category-btn.active{
+    color:#fff;box-shadow:0 2px 12px rgba(108,92,231,0.3);
+  }
+  .category-btn[data-cat="MAJOR"].active{background:var(--accent)}
+  .category-btn[data-cat="MINOR"].active{background:var(--green-dim)}
+  .category-btn[data-cat="MDC"].active{background:#e17055}
+  .category-btn[data-cat="VAC"].active{background:#00cec9}
+  .category-btn[data-cat="AEC"].active{background:#fdcb6e}
+  .category-btn[data-cat="SEC"].active{background:#a29bfe}
+  .category-btn .cat-count{
+    display:inline-block;font-size:0.6rem;font-weight:700;
+    background:rgba(255,255,255,0.15);border-radius:10px;
+    padding:1px 6px;margin-left:4px;vertical-align:middle;
+  }
+
+  /* ── Subject Selector ── */
+  .subject-selector{
+    display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;
+  }
+  .subject-search{
+    flex:1;min-width:200px;padding:10px 16px;
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    color:var(--text);font-family:'Inter',sans-serif;font-size:0.85rem;
+    outline:none;transition:border-color 0.2s;
+  }
+  .subject-search:focus{border-color:var(--accent)}
+  .subject-search::placeholder{color:var(--text-muted)}
+
+  .subject-grid{
+    display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;
+  }
+  .subject-chip{
+    padding:6px 12px;border-radius:16px;font-size:0.7rem;font-weight:600;
+    background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
+    cursor:pointer;transition:all 0.2s;white-space:nowrap;
+  }
+  .subject-chip:hover{border-color:var(--accent);color:var(--text)}
+  .subject-chip.active{background:var(--accent-dim);border-color:var(--accent);color:#fff}
+  .subject-chip.has-progress{border-color:var(--green-dim)}
+  .subject-chip.has-progress::after{
+    content:'';display:inline-block;width:6px;height:6px;
+    background:var(--green);border-radius:50%;margin-left:5px;vertical-align:middle;
+  }
+  .subject-chip.complete{border-color:var(--green);background:rgba(0,214,143,0.1)}
+  .subject-chip .chip-pct{
+    font-size:0.6rem;margin-left:3px;opacity:0.7;
+  }
+
+  /* ── Filter ── */
+  .controls-row{
+    display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px;
+  }
+  .filter-chip{
+    padding:6px 14px;border-radius:16px;font-size:0.7rem;font-weight:600;
+    background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
+    cursor:pointer;transition:all 0.2s;
+  }
+  .filter-chip:hover{border-color:var(--accent);color:var(--text)}
+  .filter-chip.active{background:var(--accent-dim);border-color:var(--accent);color:#fff}
+  .controls-spacer{flex:1}
+  .expand-btn{
+    padding:6px 14px;border-radius:16px;font-size:0.7rem;font-weight:600;
+    background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
+    cursor:pointer;transition:all 0.2s;
+  }
+  .expand-btn:hover{border-color:var(--accent);color:var(--text)}
 
   /* ── Progress Bar ── */
   .progress-section{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-    padding:16px 20px;margin-bottom:20px;
+    padding:14px 18px;margin-bottom:16px;
   }
   .progress-header{
-    display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;
   }
-  .progress-label{font-size:0.85rem;font-weight:600;color:var(--text-dim)}
-  .progress-pct{font-size:1.1rem;font-weight:800;color:var(--green)}
-  .progress-track{
-    height:8px;background:var(--surface);border-radius:4px;overflow:hidden;
-  }
+  .progress-label{font-size:0.82rem;font-weight:600;color:var(--text-dim)}
+  .progress-pct{font-size:1.05rem;font-weight:800;color:var(--green)}
+  .progress-track{height:7px;background:var(--surface);border-radius:4px;overflow:hidden}
   .progress-fill{
     height:100%;border-radius:4px;transition:width 0.5s ease;
     background:linear-gradient(90deg,var(--accent),var(--green));
   }
 
   /* ── Semester Section ── */
-  .sem-section{margin-bottom:20px}
+  .sem-section{margin-bottom:14px}
   .sem-header{
     display:flex;align-items:center;gap:10px;
-    padding:12px 16px;
-    background:linear-gradient(135deg,rgba(108,92,231,0.08),rgba(0,214,143,0.05));
+    padding:11px 16px;
+    background:linear-gradient(135deg,rgba(108,92,231,0.06),rgba(0,214,143,0.03));
     border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;
     cursor:pointer;user-select:none;transition:all 0.2s;
   }
   .sem-header:hover{border-color:var(--border-glow)}
-  .sem-header .arrow{
-    font-size:0.7rem;color:var(--text-muted);transition:transform 0.3s;
-  }
+  .sem-header .arrow{font-size:0.65rem;color:var(--text-muted);transition:transform 0.3s}
   .sem-header.open .arrow{transform:rotate(90deg)}
-  .sem-title{
-    font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;flex:1;
-  }
+  .sem-title{font-family:'Outfit',sans-serif;font-size:0.95rem;font-weight:700;flex:1}
   .sem-progress-mini{
-    font-size:0.75rem;font-weight:700;
-    padding:3px 10px;border-radius:12px;
-    background:rgba(0,214,143,0.1);color:var(--green);
+    font-size:0.72rem;font-weight:700;
+    padding:2px 9px;border-radius:12px;
   }
+  .sem-progress-mini.full{background:rgba(0,214,143,0.12);color:var(--green)}
   .sem-progress-mini.partial{background:rgba(255,179,71,0.1);color:var(--orange)}
-  .sem-progress-mini.zero{background:rgba(255,107,107,0.08);color:var(--red)}
+  .sem-progress-mini.zero{background:rgba(255,107,107,0.06);color:var(--red)}
 
   .sem-body{
     border:1px solid var(--border);border-top:none;
     border-radius:0 0 var(--radius) var(--radius);
-    overflow:hidden;transition:max-height 0.35s ease;
-    max-height:0;
+    overflow:hidden;max-height:0;transition:max-height 0.35s ease;
   }
-  .sem-body.open{max-height:2000px}
+  .sem-body.open{max-height:3000px}
 
   /* ── Paper Grid ── */
-  .paper-group{
-    padding:12px 16px;border-bottom:1px solid rgba(42,42,61,0.5);
-  }
+  .paper-group{padding:10px 16px;border-bottom:1px solid rgba(42,42,61,0.4)}
   .paper-group:last-child{border-bottom:none}
   .paper-code{
-    font-size:0.78rem;font-weight:700;color:var(--accent-glow);
-    margin-bottom:8px;letter-spacing:0.5px;
+    font-size:0.72rem;font-weight:700;color:var(--accent-glow);
+    margin-bottom:6px;letter-spacing:0.5px;
   }
-  .paper-items{display:flex;flex-wrap:wrap;gap:8px}
+  .paper-items{display:flex;flex-wrap:wrap;gap:7px}
 
   /* ── Checkbox Card ── */
   .paper-item{
     display:flex;align-items:center;gap:8px;
-    padding:8px 14px;border-radius:var(--radius-sm);
+    padding:7px 12px;border-radius:var(--radius-sm);
     background:var(--surface);border:1px solid var(--border);
-    cursor:pointer;transition:all 0.2s;user-select:none;min-width:140px;
+    cursor:pointer;transition:all 0.2s;user-select:none;min-width:130px;
   }
   .paper-item:hover{
-    border-color:var(--accent);background:rgba(108,92,231,0.06);
+    border-color:var(--accent);background:rgba(108,92,231,0.05);
     transform:translateY(-1px);
   }
-  .paper-item.checked{
-    border-color:var(--green-dim);background:rgba(0,214,143,0.08);
-  }
+  .paper-item.checked{border-color:var(--green-dim);background:rgba(0,214,143,0.07)}
   .paper-item.checked:hover{border-color:var(--green)}
-
   .paper-check{
-    width:20px;height:20px;border-radius:5px;border:2px solid var(--border-glow);
+    width:18px;height:18px;border-radius:4px;border:2px solid var(--border-glow);
     display:flex;align-items:center;justify-content:center;
     transition:all 0.2s;flex-shrink:0;
   }
@@ -178,53 +216,46 @@
     background:var(--green);border-color:var(--green);
     animation:checkPop 0.3s ease;
   }
-  .paper-check svg{width:12px;height:12px;opacity:0;transition:opacity 0.15s}
+  .paper-check svg{width:11px;height:11px;opacity:0;transition:opacity 0.15s}
   .paper-item.checked .paper-check svg{opacity:1}
-
   .paper-info{display:flex;flex-direction:column}
-  .paper-batch{font-size:0.72rem;font-weight:600;color:var(--text-dim)}
-  .paper-year{font-size:0.68rem;color:var(--text-muted)}
+  .paper-batch{font-size:0.7rem;font-weight:600;color:var(--text-dim)}
+  .paper-year{font-size:0.63rem;color:var(--text-muted)}
+  @keyframes checkPop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
 
-  @keyframes checkPop{
-    0%{transform:scale(1)}
-    50%{transform:scale(1.25)}
-    100%{transform:scale(1)}
+  /* ── Placeholder ── */
+  .placeholder-panel{
+    text-align:center;padding:60px 24px;
+    background:var(--card);border:1px dashed var(--border);border-radius:var(--radius);
   }
-
-  /* ── Filter bar ── */
-  .filter-bar{
-    display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;
+  .placeholder-panel .ph-icon{font-size:3rem;margin-bottom:12px}
+  .placeholder-panel h3{
+    font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;
+    color:var(--text-dim);margin-bottom:8px;
   }
-  .filter-chip{
-    padding:6px 14px;border-radius:16px;font-size:0.72rem;font-weight:600;
-    background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
-    cursor:pointer;transition:all 0.2s;
-  }
-  .filter-chip:hover{border-color:var(--accent);color:var(--text)}
-  .filter-chip.active{background:var(--accent-dim);border-color:var(--accent);color:#fff}
+  .placeholder-panel p{font-size:0.82rem;color:var(--text-muted);max-width:400px;margin:0 auto}
 
   /* ── Toast ── */
   .toast{
-    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+    position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);
     background:var(--card);border:1px solid var(--green-dim);border-radius:var(--radius);
-    padding:12px 24px;font-size:0.82rem;font-weight:600;color:var(--green);
+    padding:10px 22px;font-size:0.8rem;font-weight:600;color:var(--green);
     box-shadow:0 8px 32px rgba(0,0,0,0.5);z-index:1000;
     transition:transform 0.3s ease;pointer-events:none;
   }
   .toast.show{transform:translateX(-50%) translateY(0)}
 
   /* ── Responsive ── */
-  @media(max-width:640px){
-    .header{padding:12px 16px}
-    .header h1{font-size:1.2rem}
-    .container{padding:16px}
-    .cat-tab{min-width:60px;padding:8px 6px;font-size:0.72rem}
-    .paper-item{min-width:120px;padding:6px 10px}
-    .actions{gap:4px}
-    .btn{padding:6px 10px;font-size:0.7rem}
+  @media(max-width:700px){
+    .header{padding:10px 14px}
+    .header h1{font-size:1.15rem}
+    .container{padding:12px 14px}
+    .subject-chip{font-size:0.65rem;padding:5px 9px}
+    .paper-item{min-width:110px;padding:6px 9px}
+    .btn{padding:5px 10px;font-size:0.68rem}
+    .category-btn{font-size:0.68rem;padding:8px 8px}
   }
 
-  /* ── Hidden file input ── */
   #importInput{display:none}
 </style>
 </head>
@@ -238,38 +269,43 @@
       <div class="stat-badge">Progress: <span id="globalPct">0%</span></div>
     </div>
     <div class="actions">
-      <button class="btn btn-accent" onclick="exportData()">💾 Export Backup</button>
-      <button class="btn" onclick="document.getElementById('importInput').click()">📂 Import Backup</button>
-      <button class="btn btn-danger" onclick="resetAll()">🗑️ Reset All</button>
+      <button class="btn btn-accent" onclick="exportData()">💾 Export</button>
+      <button class="btn" onclick="document.getElementById('importInput').click()">📂 Import</button>
+      <button class="btn btn-danger" onclick="resetAll()">🗑️ Reset</button>
       <input type="file" id="importInput" accept=".json" onchange="importData(event)">
     </div>
   </div>
 </header>
 
 <div class="container">
-  <!-- Subject tabs -->
-  <div class="category-tabs" id="subjectTabs"></div>
+  <!-- Category tabs -->
+  <div class="category-bar" id="categoryBar"></div>
 
-  <!-- Filter by status -->
-  <div class="filter-bar" id="filterBar">
+  <!-- Subject selector (only shown for categories with subjects) -->
+  <div id="subjectArea"></div>
+
+  <!-- Controls row -->
+  <div class="controls-row" id="controlsRow">
     <button class="filter-chip active" data-filter="all" onclick="setFilter('all',this)">All</button>
     <button class="filter-chip" data-filter="pending" onclick="setFilter('pending',this)">⬜ Pending</button>
     <button class="filter-chip" data-filter="done" onclick="setFilter('done',this)">✅ Uploaded</button>
+    <div class="controls-spacer"></div>
+    <button class="expand-btn" onclick="toggleAllSems()">📂 Expand/Collapse All</button>
   </div>
 
-  <!-- Panels -->
-  <div id="panels"></div>
+  <!-- Main content -->
+  <div id="mainContent"></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 // ═══════════════════════════════════════════════════════════════
-// DATA DEFINITION — All subjects, semesters, papers, batches
+// DATA DEFINITIONS
 // ═══════════════════════════════════════════════════════════════
 
-// Paper structure per semester (same for ALL science major subjects)
-const PAPER_STRUCTURE = {
+// Major paper structure — same for ALL major subjects (Sem 1-6)
+const MAJOR_PAPER_STRUCTURE = {
   'Semester 1': {
     papers: ['MJ-01'],
     batches: [
@@ -315,25 +351,129 @@ const PAPER_STRUCTURE = {
   }
 };
 
-const SUBJECTS = ['Maths', 'Physics', 'Chemistry', 'Zoology', 'Botany'];
+const MAJOR_SUBJECTS = [
+  'Anthropology','Bengali','Botany','Business Administration','Business Law',
+  'Chemistry','Computer Application','Economics','English',
+  'Environment & Water Management','Financial Accounting','Geography',
+  'Hindi','History','Ho','Home Science','Information Technology',
+  'Kurmali','Kurukh','Mass Communication and Video Production',
+  'Mathematics','Mundari','Odia','Philosophy','Physics',
+  'Political Science','Psychology','Sanskrit','Santhali',
+  'Sociology','Urdu','Zoology'
+];
+
+const MINOR_SUBJECTS = [
+  'Anthropology','Bengali','Botany','Business Administration','Chemistry',
+  'Commerce','Computer Application','Economics','English',
+  'Environment & Water Management','Geography','Geology','Hindi','History',
+  'Ho','Home Science','Information Technology','Kurmali','Mathematics',
+  'Mundari','Odia','Philosophy','Physics','Political Science',
+  'Psychology','Public Administration','Sanskrit','Santhali',
+  'Sociology','Statistics','Urdu','Zoology'
+];
+
+const MDC_SUBJECTS = [
+  'Anthropology','Basics of Business & Accounting','Bengali','Botany',
+  'Business Administration','Chemistry','Commerce','Computer Application',
+  'Economics','English','Environment & Water Management','Geography',
+  'Geology','Hindi','History','Ho','Home Science','Information Technology',
+  'Kurmali','Kurukh','Mathematics','Mundari','Odia','Philosophy',
+  'Physics','Political Science','Psychology','Public Administration',
+  'Sanskrit','Santhali','Sociology','Statistics','Urdu','Zoology'
+];
+
+// Category config
+const CATEGORIES = {
+  'MAJOR': {
+    label: 'Major',
+    subjects: MAJOR_SUBJECTS,
+    structure: MAJOR_PAPER_STRUCTURE,
+    color: 'var(--accent)',
+    icon: '📘'
+  },
+  'MINOR': {
+    label: 'Minor',
+    subjects: MINOR_SUBJECTS,
+    structure: null, // paper structure TBD
+    color: 'var(--green)',
+    icon: '📗'
+  },
+  'MDC': {
+    label: 'MDC',
+    subjects: MDC_SUBJECTS,
+    structure: null, // paper structure TBD
+    color: '#e17055',
+    icon: '📙'
+  },
+  'VAC': {
+    label: 'VAC',
+    subjects: [],
+    structure: null,
+    color: 'var(--cyan)',
+    icon: '📕'
+  },
+  'AEC': {
+    label: 'AEC',
+    subjects: [],
+    structure: null,
+    color: '#fdcb6e',
+    icon: '📒'
+  },
+  'SEC': {
+    label: 'SEC',
+    subjects: [],
+    structure: null,
+    color: '#a29bfe',
+    icon: '📓'
+  }
+};
 
 // ═══════════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════════
 
-const STORAGE_KEY = 'pyq_tracker_science_major_v2';
-let state = {}; // { "Maths|Semester 1|MJ-01|2022": true, ... }
-let activeSubject = SUBJECTS[0];
+const STORAGE_KEY = 'pyq_tracker_v3';
+const OLD_STORAGE_KEY = 'pyq_tracker_science_major_v2';
+let state = {};
+let activeCategory = 'MAJOR';
+let activeSubject = MAJOR_SUBJECTS[0];
 let activeFilter = 'all';
+let searchQuery = '';
+let allSemsExpanded = true;
 
-function makeKey(subject, sem, paper, batch) {
-  return `${subject}|${sem}|${paper}|${batch}`;
+function makeKey(category, subject, sem, paper, batch) {
+  // For MAJOR, keep backward-compatible key format
+  if (category === 'MAJOR') return `${subject}|${sem}|${paper}|${batch}`;
+  return `${category}|${subject}|${sem}|${paper}|${batch}`;
 }
 
 function loadState() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) state = JSON.parse(raw);
+    // Try new storage key first
+    let raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      state = JSON.parse(raw);
+      return;
+    }
+    // Migrate from old storage key (backward compatibility)
+    raw = localStorage.getItem(OLD_STORAGE_KEY);
+    if (raw) {
+      const oldState = JSON.parse(raw);
+      // Rename old subject names to match official DB names
+      const RENAME_MAP = { 'Maths': 'Mathematics' };
+      for (const [key, val] of Object.entries(oldState)) {
+        let newKey = key;
+        for (const [oldName, newName] of Object.entries(RENAME_MAP)) {
+          if (newKey.startsWith(oldName + '|')) {
+            newKey = newName + newKey.slice(oldName.length);
+          }
+        }
+        state[newKey] = val;
+      }
+      // Save to new key
+      saveState();
+      console.log('Migrated data from v2 to v3');
+    }
   } catch(e) { state = {}; }
 }
 
@@ -342,144 +482,205 @@ function saveState() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// BUILD UI
+// STATS HELPERS
 // ═══════════════════════════════════════════════════════════════
 
-function buildTabs() {
-  const container = document.getElementById('subjectTabs');
-  container.innerHTML = SUBJECTS.map(sub => {
-    const { done, total } = getSubjectStats(sub);
-    return `<button class="cat-tab ${sub === activeSubject ? 'active' : ''}" 
-              onclick="switchSubject('${sub}')">
-              ${sub}<span class="tab-count">${done}/${total}</span>
-            </button>`;
-  }).join('');
-}
-
-function buildPanels() {
-  const container = document.getElementById('panels');
-  container.innerHTML = SUBJECTS.map(sub => {
-    const { done, total } = getSubjectStats(sub);
-    const pct = total ? Math.round(done/total*100) : 0;
-
-    let semHTML = '';
-    for (const [semName, semData] of Object.entries(PAPER_STRUCTURE)) {
-      const semStats = getSemStats(sub, semName);
-      const semPct = semStats.total ? Math.round(semStats.done/semStats.total*100) : 0;
-      const statusClass = semPct === 100 ? '' : (semPct > 0 ? 'partial' : 'zero');
-
-      let paperGroupsHTML = '';
-      for (const paper of semData.papers) {
-        let itemsHTML = '';
-        for (const b of semData.batches) {
-          const key = makeKey(sub, semName, paper, b.batch);
-          const checked = !!state[key];
-          
-          // Filter logic
-          if (activeFilter === 'done' && !checked) continue;
-          if (activeFilter === 'pending' && checked) continue;
-
-          itemsHTML += `
-            <div class="paper-item ${checked ? 'checked' : ''}" 
-                 onclick="toggle('${key}', this)" id="item-${CSS.escape(key)}">
-              <div class="paper-check">
-                <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
-                  <path d="M2 6l3 3 5-5"/>
-                </svg>
-              </div>
-              <div class="paper-info">
-                <span class="paper-batch">${b.batch} Batch</span>
-                <span class="paper-year">Exam: ${b.examYear}</span>
-              </div>
-            </div>`;
-        }
-        if (itemsHTML || activeFilter === 'all') {
-          paperGroupsHTML += `
-            <div class="paper-group">
-              <div class="paper-code">${paper}</div>
-              <div class="paper-items">${itemsHTML || '<span style="color:var(--text-muted);font-size:0.75rem">No matching items</span>'}</div>
-            </div>`;
-        }
-      }
-
-      semHTML += `
-        <div class="sem-section">
-          <div class="sem-header open" onclick="toggleSem(this)">
-            <span class="arrow">▶</span>
-            <span class="sem-title">${semName}</span>
-            <span class="sem-progress-mini ${statusClass}">${semStats.done}/${semStats.total}</span>
-          </div>
-          <div class="sem-body open">${paperGroupsHTML}</div>
-        </div>`;
-    }
-
-    return `<div class="subject-panel ${sub === activeSubject ? 'active' : ''}" id="panel-${sub}">
-      <div class="progress-section">
-        <div class="progress-header">
-          <span class="progress-label">${sub} Major — Overall Progress</span>
-          <span class="progress-pct">${pct}%</span>
-        </div>
-        <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
-      </div>
-      ${semHTML}
-    </div>`;
-  }).join('');
-}
-
-// ═══════════════════════════════════════════════════════════════
-// STATS
-// ═══════════════════════════════════════════════════════════════
-
-function getAllKeys() {
-  const keys = [];
-  for (const sub of SUBJECTS) {
-    for (const [semName, semData] of Object.entries(PAPER_STRUCTURE)) {
-      for (const paper of semData.papers) {
-        for (const b of semData.batches) {
-          keys.push(makeKey(sub, semName, paper, b.batch));
-        }
-      }
-    }
-  }
-  return keys;
-}
-
-function getSubjectStats(sub) {
+function getSubjectPaperCount(category, subject) {
+  const cat = CATEGORIES[category];
+  if (!cat.structure) return { done: 0, total: 0 };
   let done = 0, total = 0;
-  for (const [semName, semData] of Object.entries(PAPER_STRUCTURE)) {
+  for (const [sem, semData] of Object.entries(cat.structure)) {
     for (const paper of semData.papers) {
       for (const b of semData.batches) {
         total++;
-        if (state[makeKey(sub, semName, paper, b.batch)]) done++;
+        if (state[makeKey(category, subject, sem, paper, b.batch)]) done++;
       }
     }
   }
   return { done, total };
 }
 
-function getSemStats(sub, semName) {
-  const semData = PAPER_STRUCTURE[semName];
+function getSemStats(category, subject, semName) {
+  const cat = CATEGORIES[category];
+  if (!cat.structure) return { done: 0, total: 0 };
+  const semData = cat.structure[semName];
+  if (!semData) return { done: 0, total: 0 };
   let done = 0, total = 0;
   for (const paper of semData.papers) {
     for (const b of semData.batches) {
       total++;
-      if (state[makeKey(sub, semName, paper, b.batch)]) done++;
+      if (state[makeKey(category, subject, semName, paper, b.batch)]) done++;
     }
+  }
+  return { done, total };
+}
+
+function getCategoryStats(category) {
+  const cat = CATEGORIES[category];
+  if (!cat.structure || !cat.subjects.length) return { done: 0, total: 0 };
+  let done = 0, total = 0;
+  for (const sub of cat.subjects) {
+    const s = getSubjectPaperCount(category, sub);
+    done += s.done;
+    total += s.total;
   }
   return { done, total };
 }
 
 function getGlobalStats() {
-  const keys = getAllKeys();
-  const done = keys.filter(k => state[k]).length;
-  return { done, total: keys.length };
+  let done = 0, total = 0;
+  for (const catKey of Object.keys(CATEGORIES)) {
+    const s = getCategoryStats(catKey);
+    done += s.done;
+    total += s.total;
+  }
+  return { done, total };
 }
 
-function updateGlobalStats() {
-  const { done, total } = getGlobalStats();
-  document.getElementById('globalDone').textContent = done;
-  document.getElementById('globalTotal').textContent = total;
-  document.getElementById('globalPct').textContent = total ? Math.round(done/total*100) + '%' : '0%';
+// ═══════════════════════════════════════════════════════════════
+// BUILD UI
+// ═══════════════════════════════════════════════════════════════
+
+function buildCategoryBar() {
+  const el = document.getElementById('categoryBar');
+  el.innerHTML = Object.entries(CATEGORIES).map(([key, cat]) => {
+    const stats = getCategoryStats(key);
+    const countText = stats.total > 0 ? `${stats.done}/${stats.total}` : cat.subjects.length > 0 ? '—' : 'Soon';
+    return `<button class="category-btn ${key === activeCategory ? 'active' : ''}" 
+              data-cat="${key}" onclick="switchCategory('${key}')">
+              ${cat.icon} ${cat.label}<span class="cat-count">${countText}</span>
+            </button>`;
+  }).join('');
+}
+
+function buildSubjectArea() {
+  const el = document.getElementById('subjectArea');
+  const cat = CATEGORIES[activeCategory];
+
+  if (!cat.subjects.length || !cat.structure) {
+    el.innerHTML = '';
+    return;
+  }
+
+  // Search input
+  let html = `<div class="subject-selector">
+    <input class="subject-search" type="text" placeholder="🔍 Search ${cat.label} subjects (${cat.subjects.length})..." 
+           value="${searchQuery}" oninput="onSearch(this.value)">
+  </div>`;
+
+  // Subject chips
+  const filtered = cat.subjects.filter(s => 
+    !searchQuery || s.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  html += '<div class="subject-grid">';
+  for (const sub of filtered) {
+    const stats = getSubjectPaperCount(activeCategory, sub);
+    const pct = stats.total ? Math.round(stats.done / stats.total * 100) : 0;
+    let extraClass = '';
+    if (pct === 100) extraClass = 'complete';
+    else if (pct > 0) extraClass = 'has-progress';
+    const isActive = sub === activeSubject ? 'active' : '';
+    const pctText = stats.total > 0 && pct > 0 ? `<span class="chip-pct">${pct}%</span>` : '';
+    html += `<button class="subject-chip ${isActive} ${extraClass}" 
+               onclick="switchSubject('${sub.replace(/'/g, "\\'")}')">${sub}${pctText}</button>`;
+  }
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function buildMainContent() {
+  const el = document.getElementById('mainContent');
+  const cat = CATEGORIES[activeCategory];
+
+  // If category has no structure yet, show placeholder
+  if (!cat.structure) {
+    el.innerHTML = `<div class="placeholder-panel">
+      <div class="ph-icon">${cat.icon}</div>
+      <h3>${cat.label} Papers — Coming Soon</h3>
+      <p>Paper structure for ${cat.label} will be added once you provide the paper codes 
+         (e.g., MN-01, MN-02, etc.) and batch/year mapping.</p>
+    </div>`;
+    return;
+  }
+
+  if (!cat.subjects.length) {
+    el.innerHTML = `<div class="placeholder-panel">
+      <div class="ph-icon">${cat.icon}</div>
+      <h3>${cat.label} — No Subjects Added Yet</h3>
+      <p>Subject list will be added when ready.</p>
+    </div>`;
+    return;
+  }
+
+  // Check if activeSubject is valid for this category
+  if (!cat.subjects.includes(activeSubject)) {
+    activeSubject = cat.subjects[0];
+  }
+
+  const sub = activeSubject;
+  const stats = getSubjectPaperCount(activeCategory, sub);
+  const pct = stats.total ? Math.round(stats.done / stats.total * 100) : 0;
+
+  let html = `<div class="progress-section">
+    <div class="progress-header">
+      <span class="progress-label">${sub} — ${cat.label} Progress</span>
+      <span class="progress-pct">${pct}%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+  </div>`;
+
+  // Semesters
+  for (const [semName, semData] of Object.entries(cat.structure)) {
+    const semStats = getSemStats(activeCategory, sub, semName);
+    const semPct = semStats.total ? Math.round(semStats.done / semStats.total * 100) : 0;
+    const statusClass = semPct === 100 ? 'full' : (semPct > 0 ? 'partial' : 'zero');
+    const isOpen = allSemsExpanded;
+
+    let paperGroupsHTML = '';
+    for (const paper of semData.papers) {
+      let itemsHTML = '';
+      for (const b of semData.batches) {
+        const key = makeKey(activeCategory, sub, semName, paper, b.batch);
+        const checked = !!state[key];
+        if (activeFilter === 'done' && !checked) continue;
+        if (activeFilter === 'pending' && checked) continue;
+
+        const escapedKey = key.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+        itemsHTML += `
+          <div class="paper-item ${checked ? 'checked' : ''}" onclick="toggle('${escapedKey}', this)">
+            <div class="paper-check">
+              <svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
+                <path d="M2 6l3 3 5-5"/>
+              </svg>
+            </div>
+            <div class="paper-info">
+              <span class="paper-batch">${b.batch} Batch</span>
+              <span class="paper-year">Exam: ${b.examYear}</span>
+            </div>
+          </div>`;
+      }
+      if (itemsHTML || activeFilter === 'all') {
+        paperGroupsHTML += `
+          <div class="paper-group">
+            <div class="paper-code">${paper}</div>
+            <div class="paper-items">${itemsHTML || '<span style="color:var(--text-muted);font-size:0.72rem">No matching items</span>'}</div>
+          </div>`;
+      }
+    }
+
+    html += `
+      <div class="sem-section">
+        <div class="sem-header ${isOpen ? 'open' : ''}" onclick="toggleSem(this)">
+          <span class="arrow">▶</span>
+          <span class="sem-title">${semName}</span>
+          <span class="sem-progress-mini ${statusClass}">${semStats.done}/${semStats.total}</span>
+        </div>
+        <div class="sem-body ${isOpen ? 'open' : ''}">${paperGroupsHTML}</div>
+      </div>`;
+  }
+
+  el.innerHTML = html;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -495,29 +696,44 @@ function toggle(key, el) {
     el.classList.add('checked');
   }
   saveState();
-  // Rebuild to refresh stats (tabs, progress bars, sem counts)
-  buildTabs();
-  buildPanels();
-  updateGlobalStats();
+  // Full re-render for stats updates
+  render();
+}
+
+function switchCategory(cat) {
+  activeCategory = cat;
+  searchQuery = '';
+  const catData = CATEGORIES[cat];
+  if (catData.subjects.length) activeSubject = catData.subjects[0];
+  render();
 }
 
 function switchSubject(sub) {
   activeSubject = sub;
-  buildTabs();
-  buildPanels();
+  buildSubjectArea(); // refresh chips
+  buildMainContent(); // refresh main
 }
 
 function toggleSem(headerEl) {
   headerEl.classList.toggle('open');
-  const body = headerEl.nextElementSibling;
-  body.classList.toggle('open');
+  headerEl.nextElementSibling.classList.toggle('open');
+}
+
+function toggleAllSems() {
+  allSemsExpanded = !allSemsExpanded;
+  buildMainContent();
 }
 
 function setFilter(filter, el) {
   activeFilter = filter;
   document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
-  buildPanels();
+  buildMainContent();
+}
+
+function onSearch(query) {
+  searchQuery = query;
+  buildSubjectArea();
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -525,7 +741,12 @@ function setFilter(filter, el) {
 // ═══════════════════════════════════════════════════════════════
 
 function exportData() {
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const exportObj = {
+    version: 3,
+    exportDate: new Date().toISOString(),
+    data: state
+  };
+  const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -542,21 +763,22 @@ function importData(event) {
   reader.onload = function(e) {
     try {
       const imported = JSON.parse(e.target.result);
-      // Merge: imported overwrites existing
-      state = { ...state, ...imported };
+      // Support both v2 (flat object) and v3 (wrapped with version)
+      const data = imported.data || imported;
+      state = { ...state, ...data };
       saveState();
       render();
-      showToast(`✅ Imported ${Object.keys(imported).length} entries!`);
+      showToast(`✅ Imported ${Object.keys(data).length} entries!`);
     } catch(err) {
       showToast('❌ Invalid backup file');
     }
   };
   reader.readAsText(file);
-  event.target.value = ''; // reset so same file can be re-imported
+  event.target.value = '';
 }
 
 function resetAll() {
-  if (!confirm('⚠️ Are you sure you want to reset ALL checkboxes? This cannot be undone.\n\nTip: Export a backup first!')) return;
+  if (!confirm('⚠️ Reset ALL checkboxes across ALL categories?\n\nExport a backup first!')) return;
   state = {};
   saveState();
   render();
@@ -571,12 +793,20 @@ function showToast(msg) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// INIT
+// RENDER + INIT
 // ═══════════════════════════════════════════════════════════════
 
+function updateGlobalStats() {
+  const { done, total } = getGlobalStats();
+  document.getElementById('globalDone').textContent = done;
+  document.getElementById('globalTotal').textContent = total;
+  document.getElementById('globalPct').textContent = total ? Math.round(done/total*100) + '%' : '0%';
+}
+
 function render() {
-  buildTabs();
-  buildPanels();
+  buildCategoryBar();
+  buildSubjectArea();
+  buildMainContent();
   updateGlobalStats();
 }
 
