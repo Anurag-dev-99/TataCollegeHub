@@ -170,3 +170,32 @@ scripts/photos_tata_2022/photo_results.json
 public/data/photos/photo_mapping.json
 public/data/photos/admitcard_sem4_full.html
 
+# ============ DEVELOPMENT SCRIPTS & UTILITIES ============
+# These are local-only tools, NOT part of the website
+
+# All Python scripts (data processing, PYQ adding, checking, etc.)
+*.py
+
+# PowerShell scripts
+*.ps1
+
+# SEO tracking tools & data
+seo_*.json
+seo_*.md
+seo_*.txt
+seo_*.py
+
+# Dev documentation & handoff files
+ASTRO_REBUILD_SPEC.md
+Astro_Project_Handoff.md
+DATA_REGISTRY.md
+detailed_analysis.md
+ideas_and_todo.md
+
+# Utility & temp files
+google-sheets-script.js
+kolhan-syllabus-browser.html
+temp_*.json
+sample_*.txt
+hindi_aec.txt
+iks_check.txt
