@@ -165,3 +165,7 @@ Astro_Project_Handoff.md
 DATA_REGISTRY.md
 detailed_analysis.md
 ideas_and_todo.md
+# Result PDFs & compiled files
+public/pdfs/
+__pycache__/
+*.pyc
