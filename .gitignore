@@ -199,3 +199,6 @@ temp_*.json
 sample_*.txt
 hindi_aec.txt
 iks_check.txt
+
+# Scripts folder (dev utilities, not part of website)
+scripts/
