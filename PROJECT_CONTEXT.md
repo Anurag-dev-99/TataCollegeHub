@@ -93,6 +93,7 @@ Related but **separate** repo/folder: `kolhan-result` (Next.js results/leaderboa
 | `calendar.json`, `holidays-2026.json` | Academic calendar & holidays | — |
 | `results*.json`, `results_semN_master.json` | Result data (Tata College only) | see `DATA_REGISTRY.md` |
 | `faq.json` | FAQ | — |
+| `notes.json` | **Paid notes** → `/notes` page, PYQ-page notes box | `{whatsapp, products:[{id,title,course,description,price,demoUrl,pyqPage,match:{category,subject,semester},emoji,color,available}], bundles:[{id,title,price,originalPrice,includes[]}]}` — `match` values are lowercase, same as PYQ URL params |
 
 PYQ **categories**: Major, Minor, MDC, VAC, AEC, SEC, IKS. `category`/`subject` strings must match existing spelling or filters break (use the `check_*.py`/`verify_*.py` scripts).
 Drive links must be `https://drive.google.com/file/d/<ID>/view?usp=drive_link` (or `usp=sharing`).
@@ -197,6 +198,7 @@ Collection message to contributors (soft tone): *"Thank you for sharing! If you'
 
 | Date | Change |
 |---|---|
+| 2026-10-30 | **Paid Notes launched.** New `public/data/notes.json` (products, prices, demo links, bundles, WhatsApp no.), new page `/notes` (Notes Hub), auto "Notes for this paper" box on matching PYQ pages (`[semester].astro`, matched via `match` field), homepage banner `NOTES HUB BANNER` (temporary — remove after Sem 3 exams). Buy = WhatsApp pre-filled message → owner sends UPI QR manually. GA events: `notes_buy`, `notes_sample`, `notes_banner_click`, `notes_creator`. To add/remove a product or change price → edit `notes.json` only. |
 | 2026-10-30 | Created this `PROJECT_CONTEXT.md`. |
 | 2026-10-23 | Removed expired homepage blocks: Sem 7 exam clock, Sem 3 form fill-up card, Physics Minor Sem 4 practical-notes banner. Build OK (143 pages). |
 | 2026-10-02 | Moved "Top Contributors" out of Thank You; added contributor Afshan Ishaque (Zoology Major Sem 1); designed contributor system (nickname, major/college, Instagram link, PYQ count). |

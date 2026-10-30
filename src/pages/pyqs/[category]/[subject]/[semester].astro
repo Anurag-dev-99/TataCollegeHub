@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
 import pyqsData from '../../../../../public/data/pyqs.json';
+import notesData from '../../../../../public/data/notes.json';
 import { ChevronLeft, Calendar, Download, FileCode, AlertCircle, HelpCircle, ExternalLink, BookOpen, Globe } from '@lucide/astro';
 
 export async function getStaticPaths() {
@@ -34,6 +35,10 @@ export async function getStaticPaths() {
 const { category, subject, semester } = Astro.params;
 const { originalCategory, originalSubject, originalSemester } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Paid notes for this paper (from notes.json) — shown below the free PYQs
+const paidNotes = notesData.products.filter(n => n.available && n.match.category === category && n.match.subject === subject && n.match.semester === semester);
+const notesWaLink = (item: string, price: number) => `https://api.whatsapp.com/send?phone=${notesData.whatsapp}&text=${encodeURIComponent(`Hi KolhanHub! 👋 I want to buy: ${item} – ₹${price}. Please send the payment QR.`)}`;
 
 // Filter papers matching these exactly
 const matchingPapers = pyqsData.filter(p => 
@@ -191,6 +196,50 @@ const matchingPapers = pyqsData.filter(p =>
           </div>
         );
       })}
+    </div>
+  )}
+
+  {/* ── Paid Notes (from notes.json) ─────────────────────── */}
+  {paidNotes.length > 0 && (
+    <div style="margin-top: 2rem;">
+      <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.85rem; flex-wrap: wrap;">
+        <BookOpen size="18" style="color: #818cf8; flex-shrink: 0;" />
+        <h2 style="font-size: 1rem; font-weight: 800; color: var(--text-primary); margin: 0;">Notes for this paper</h2>
+        <span style="font-size: 0.6rem; font-weight: 700; background: rgba(129,140,248,0.12); color: #818cf8; border: 1px solid rgba(129,140,248,0.3); border-radius: 20px; padding: 2px 7px; white-space: nowrap;">FREE SAMPLE</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+        {paidNotes.map(n => (
+          <div style={`display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; border: 1px solid ${n.color}33; border-radius: var(--radius-sm); padding: 0.75rem 1rem; background: linear-gradient(135deg, ${n.color}0d 0%, rgba(0,0,0,0.12) 100%);`}>
+            <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+              <span style="font-size: 1.2rem; flex-shrink: 0;">{n.emoji}</span>
+              <div style="min-width: 0;">
+                <div style={`font-size: 0.88rem; font-weight: 800; color: ${n.color};`}>{n.title} Notes</div>
+                <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 1px;">{n.course} · Scanned PDF</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
+              <a href={n.demoUrl} target="_blank" rel="noopener noreferrer" data-notes-event="notes_sample" data-notes-id={n.id}
+                 style={`display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 700; color: ${n.color}; text-decoration: none; border: 1px solid ${n.color}55; border-radius: 20px; padding: 5px 11px; white-space: nowrap;`}>
+                👀 Free sample
+              </a>
+              <a href={notesWaLink(`${n.title} notes (${n.course})`, n.price)} target="_blank" rel="noopener noreferrer" data-notes-event="notes_buy" data-notes-id={n.id}
+                 style={`display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 800; color: #0b0b12; text-decoration: none; background: ${n.color}; border-radius: 20px; padding: 5px 11px; white-space: nowrap;`}>
+                Get notes · ₹{n.price}
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+      <a href={`${baseUrl}/notes`} style="display: inline-block; margin-top: 0.6rem; font-size: 0.72rem; color: var(--text-secondary); text-decoration: underline;">See combos & all notes in the Notes Hub →</a>
+      <script is:inline>
+        document.querySelectorAll('[data-notes-event]').forEach(function (el) {
+          el.addEventListener('click', function () {
+            if (typeof window.gtag === 'function') {
+              window.gtag('event', el.getAttribute('data-notes-event'), { notes_id: el.getAttribute('data-notes-id'), page: 'pyq' });
+            }
+          });
+        });
+      </script>
     </div>
   )}
 

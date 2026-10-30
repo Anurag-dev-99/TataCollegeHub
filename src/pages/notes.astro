@@ -1,0 +1,144 @@
+---
+import Layout from '../layouts/Layout.astro';
+import notesData from '../../public/data/notes.json';
+import { ChevronLeft, Eye, MessageCircle, Sparkles, ShieldCheck, Heart } from '@lucide/astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { whatsapp, products, bundles } = notesData;
+
+const waLink = (item: string, price: number) =>
+  `https://api.whatsapp.com/send?phone=${whatsapp}&text=${encodeURIComponent(
+    `Hi KolhanHub! 👋 I want to buy: ${item} – ₹${price}. Please send the payment QR.`
+  )}`;
+
+const productById = Object.fromEntries(products.map((p) => [p.id, p]));
+---
+
+<Layout
+  title="Notes Hub – Kolhan University Sem 3 Notes (Maths Major & SEC-3)"
+  description="Kolhan University FYUGP Semester 3 notes: Maths Major MJ-04 Real Analysis, MJ-05 Vectors and SEC-3 Mathematical & Computational Thinking. Clean scanned coaching notes at ₹39 with free sample PDFs."
+  keywords="Kolhan University notes, Sem 3 maths notes, Real Analysis notes, Vector notes, SEC 3 notes, Mathematical and Computational Thinking notes, Tata College notes, KolhanHub notes"
+>
+  <!-- Breadcrumb -->
+  <div style="margin-bottom: 1.25rem; font-size: 0.85rem;">
+    <a href={`${baseUrl}/`} style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 600; color: var(--text-secondary);">
+      <ChevronLeft size="16" /> Home
+    </a>
+  </div>
+
+  <!-- Header -->
+  <div style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+    <div style="display: inline-flex; align-items: center; gap: 0.4rem; width: fit-content; font-size: 0.7rem; font-weight: 700; color: #818cf8; background: rgba(129,140,248,0.1); border: 1px solid rgba(129,140,248,0.25); border-radius: 20px; padding: 3px 10px;">
+      <Sparkles size="12" /> New · Sem 3 exam special
+    </div>
+    <h1 style="font-size: 1.75rem; font-family: var(--font-display); font-weight: 850; margin: 0;">📘 Notes Hub</h1>
+    <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin: 0; max-width: 650px;">
+      Handwritten coaching notes, scanned into clean PDFs. Check the free sample first, and buy only if you like it.
+    </p>
+  </div>
+
+  <!-- How it works -->
+  <div style="margin-bottom: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.85rem 1rem; background: rgba(0,0,0,0.12);">
+    <div style="font-size: 0.78rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-display); margin-bottom: 0.5rem;">How it works</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; font-size: 0.75rem; color: var(--text-secondary);">
+      <span>1️⃣ Open the free sample</span>
+      <span>2️⃣ Tap “Get notes” → WhatsApp opens</span>
+      <span>3️⃣ Pay via UPI QR</span>
+      <span>4️⃣ Get the full PDF on WhatsApp</span>
+    </div>
+  </div>
+
+  <!-- Products -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+    {products.filter((p) => p.available).map((p) => (
+      <div style={`display: flex; flex-direction: column; gap: 0.75rem; border: 1px solid ${p.color}33; border-radius: var(--radius-sm); padding: 1rem; background: linear-gradient(135deg, ${p.color}0d 0%, rgba(0,0,0,0.12) 100%);`}>
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem;">
+          <div style="display: flex; gap: 0.6rem; align-items: flex-start; min-width: 0;">
+            <span style="font-size: 1.4rem; flex-shrink: 0;">{p.emoji}</span>
+            <div style="min-width: 0;">
+              <div style={`font-size: 0.95rem; font-weight: 800; color: ${p.color}; font-family: var(--font-display);`}>{p.title}</div>
+              <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 2px;">{p.course}</div>
+            </div>
+          </div>
+          <div style="font-size: 1.15rem; font-weight: 850; color: var(--text-primary); white-space: nowrap;">₹{p.price}</div>
+        </div>
+        <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">{p.description}</p>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: auto;">
+          <a href={p.demoUrl} target="_blank" rel="noopener noreferrer" data-notes-event="notes_sample" data-notes-id={p.id}
+             style={`flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 700; color: ${p.color}; text-decoration: none; background: transparent; border: 1px solid ${p.color}55; border-radius: 20px; padding: 6px 12px; white-space: nowrap;`}>
+            <Eye size="14" /> Free sample
+          </a>
+          <a href={waLink(`${p.title} notes (${p.course})`, p.price)} target="_blank" rel="noopener noreferrer" data-notes-event="notes_buy" data-notes-id={p.id}
+             style={`flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 800; color: #0b0b12; text-decoration: none; background: ${p.color}; border: 1px solid ${p.color}; border-radius: 20px; padding: 6px 12px; white-space: nowrap;`}>
+            <MessageCircle size="14" /> Get notes · ₹{p.price}
+          </a>
+        </div>
+        {p.pyqPage && (
+          <a href={`${baseUrl}${p.pyqPage}`} style="font-size: 0.7rem; color: var(--text-tertiary); text-decoration: underline;">Free PYQs for this paper →</a>
+        )}
+      </div>
+    ))}
+  </div>
+
+  <!-- Bundles -->
+  {bundles.length > 0 && (
+    <div style="margin-bottom: 1.5rem;">
+      <div style="font-size: 0.85rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-display); margin-bottom: 0.65rem;">💰 Save with combos</div>
+      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+        {bundles.map((b) => (
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; border: 1px solid rgba(251,191,36,0.25); border-radius: var(--radius-sm); padding: 0.75rem 1rem; background: linear-gradient(135deg, rgba(251,191,36,0.06) 0%, rgba(0,0,0,0.12) 100%);">
+            <div style="min-width: 0;">
+              <div style="font-size: 0.85rem; font-weight: 800; color: #fbbf24;">{b.title}</div>
+              <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 2px;">
+                {b.includes.map((id) => productById[id]?.title).filter(Boolean).join(' + ')}
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span style="font-size: 0.75rem; color: var(--text-tertiary); text-decoration: line-through;">₹{b.originalPrice}</span>
+              <span style="font-size: 1.05rem; font-weight: 850; color: var(--text-primary);">₹{b.price}</span>
+              <a href={waLink(b.title, b.price)} target="_blank" rel="noopener noreferrer" data-notes-event="notes_buy" data-notes-id={b.id}
+                 style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 800; color: #0b0b12; text-decoration: none; background: #fbbf24; border-radius: 20px; padding: 6px 12px; white-space: nowrap;">
+                <MessageCircle size="14" /> Get combo
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Promise -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
+    <div style="border: 1px solid rgba(52,211,153,0.25); border-radius: var(--radius-sm); padding: 0.85rem 1rem; background: rgba(52,211,153,0.04);">
+      <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 800; color: #34d399;"><Heart size="14" /> PYQs & syllabus stay free</div>
+      <p style="font-size: 0.72rem; color: var(--text-secondary); margin: 0.35rem 0 0; line-height: 1.5;">Notes help us keep KolhanHub running. PYQs, syllabus, results and notices will always be free.</p>
+    </div>
+    <div style="border: 1px solid rgba(129,140,248,0.25); border-radius: var(--radius-sm); padding: 0.85rem 1rem; background: rgba(129,140,248,0.04);">
+      <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 800; color: #818cf8;"><ShieldCheck size="14" /> Fair for note writers</div>
+      <p style="font-size: 0.72rem; color: var(--text-secondary); margin: 0.35rem 0 0; line-height: 1.5;">The students who wrote these notes get a share of every sale. Please don't forward the PDF; support them instead 🙏</p>
+    </div>
+  </div>
+
+  <!-- Earn with your notes -->
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; border: 1px dashed rgba(167,139,250,0.35); border-radius: var(--radius-sm); padding: 0.85rem 1rem; background: rgba(167,139,250,0.04);">
+    <div style="min-width: 0;">
+      <div style="font-size: 0.85rem; font-weight: 800; color: #a78bfa;">✍️ Have good notes? Earn with KolhanHub</div>
+      <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px;">Share your notes and get a share of every sale. Thousands of Kolhan students visit this site.</div>
+    </div>
+    <a href={`https://api.whatsapp.com/send?phone=${whatsapp}&text=${encodeURIComponent('Hi KolhanHub! ✍️ I have notes I would like to share/sell on KolhanHub.')}`} target="_blank" rel="noopener noreferrer" data-notes-event="notes_creator" data-notes-id="creator"
+       style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 700; color: #a78bfa; text-decoration: none; background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.3); border-radius: 20px; padding: 6px 12px; white-space: nowrap;">
+      <MessageCircle size="14" /> Contact us
+    </a>
+  </div>
+
+  <script is:inline>
+    document.querySelectorAll('[data-notes-event]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', el.getAttribute('data-notes-event'), { notes_id: el.getAttribute('data-notes-id'), page: 'notes' });
+        }
+      });
+    });
+  </script>
+</Layout>
+

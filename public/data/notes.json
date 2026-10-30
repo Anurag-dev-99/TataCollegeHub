@@ -1,0 +1,61 @@
+{
+  "whatsapp": "918002059887",
+  "products": [
+    {
+      "id": "maths-mj04-real-analysis",
+      "title": "MJ-04 · Real Analysis",
+      "course": "Maths Major · Sem 3",
+      "description": "Complete handwritten coaching notes, scanned into a clean, high-quality PDF. Unit-wise, exam focused.",
+      "price": 39,
+      "demoUrl": "https://drive.google.com/file/d/1DJeTqQDy0abFTh0pz_yzwFWGqNGUC1-z/view?usp=drive_link",
+      "pyqPage": "/pyqs/major/mathematics/3",
+      "match": { "category": "major", "subject": "mathematics", "semester": "3" },
+      "emoji": "📐",
+      "color": "#818cf8",
+      "available": true
+    },
+    {
+      "id": "maths-mj05-vectors",
+      "title": "MJ-05 · Vectors",
+      "course": "Maths Major · Sem 3",
+      "description": "Complete handwritten coaching notes, scanned into a clean, high-quality PDF. Unit-wise, exam focused.",
+      "price": 39,
+      "demoUrl": "https://drive.google.com/file/d/1TmbMfziIGubHFz6WL7UAPQlj6vHeCvI4/view?usp=drive_link",
+      "pyqPage": "/pyqs/major/mathematics/3",
+      "match": { "category": "major", "subject": "mathematics", "semester": "3" },
+      "emoji": "🧭",
+      "color": "#34d399",
+      "available": true
+    },
+    {
+      "id": "sec3-mathematical-computational-thinking",
+      "title": "SEC-3 · Mathematical & Computational Thinking",
+      "course": "SEC-3 · Sem 3 · All streams",
+      "description": "Coaching notes for the SEC-3 paper (high-scoring paper, common for all streams). Clean scanned PDF.",
+      "price": 39,
+      "demoUrl": "https://drive.google.com/file/d/1zFDjjoyKHOHdHBKbdxGJy9yaXzbyf3J4/view?usp=drive_link",
+      "pyqPage": "/pyqs/sec/mathematical%20&%20computational%20thinking%20and%20analysis/3",
+      "match": { "category": "sec", "subject": "mathematical & computational thinking and analysis", "semester": "3" },
+      "emoji": "💻",
+      "color": "#fbbf24",
+      "available": true
+    }
+  ],
+  "bundles": [
+    {
+      "id": "bundle-maths-major-sem3",
+      "title": "Maths Major Combo (MJ-04 + MJ-05)",
+      "price": 69,
+      "originalPrice": 78,
+      "includes": ["maths-mj04-real-analysis", "maths-mj05-vectors"]
+    },
+    {
+      "id": "bundle-sem3-all",
+      "title": "Full Sem 3 Pack (MJ-04 + MJ-05 + SEC-3)",
+      "price": 99,
+      "originalPrice": 117,
+      "includes": ["maths-mj04-real-analysis", "maths-mj05-vectors", "sec3-mathematical-computational-thinking"]
+    }
+  ]
+}
+
