@@ -64,11 +64,15 @@ const productById = Object.fromEntries(products.map((p) => [p.id, p]));
         </div>
         <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">{p.description}</p>
         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: auto;">
-          <a href={p.demoUrl} target="_blank" rel="noopener noreferrer" data-notes-event="notes_sample" data-notes-id={p.id}
+          <a href={p.demoUrl} target="_blank" rel="noopener noreferrer"
+             data-notes-event="notes_sample" data-notes-id={p.id}
+             data-sheet-subject={p.title} data-sheet-action="Free Sample" data-sheet-category={p.course}
              style={`flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 700; color: ${p.color}; text-decoration: none; background: transparent; border: 1px solid ${p.color}55; border-radius: 20px; padding: 6px 12px; white-space: nowrap;`}>
             <Eye size="14" /> Free sample
           </a>
-          <a href={waLink(`${p.title} notes (${p.course})`, p.price)} target="_blank" rel="noopener noreferrer" data-notes-event="notes_buy" data-notes-id={p.id}
+          <a href={waLink(`${p.title} notes (${p.course})`, p.price)} target="_blank" rel="noopener noreferrer"
+             data-notes-event="notes_buy" data-notes-id={p.id}
+             data-sheet-subject={p.title} data-sheet-action={`Get Notes (₹${p.price})`} data-sheet-category={p.course}
              style={`flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 800; color: #0b0b12; text-decoration: none; background: ${p.color}; border: 1px solid ${p.color}; border-radius: 20px; padding: 6px 12px; white-space: nowrap;`}>
             <MessageCircle size="14" /> Get notes · ₹{p.price}
           </a>
@@ -96,7 +100,9 @@ const productById = Object.fromEntries(products.map((p) => [p.id, p]));
             <div style="display: flex; align-items: center; gap: 0.6rem;">
               <span style="font-size: 0.75rem; color: var(--text-tertiary); text-decoration: line-through;">₹{b.originalPrice}</span>
               <span style="font-size: 1.05rem; font-weight: 850; color: var(--text-primary);">₹{b.price}</span>
-              <a href={waLink(b.title, b.price)} target="_blank" rel="noopener noreferrer" data-notes-event="notes_buy" data-notes-id={b.id}
+              <a href={waLink(b.title, b.price)} target="_blank" rel="noopener noreferrer"
+                 data-notes-event="notes_buy" data-notes-id={b.id}
+                 data-sheet-subject={b.title} data-sheet-action={`Get Combo (₹${b.price})`} data-sheet-category="Bundle"
                  style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 800; color: #0b0b12; text-decoration: none; background: #fbbf24; border-radius: 20px; padding: 6px 12px; white-space: nowrap;">
                 <MessageCircle size="14" /> Get combo
               </a>
@@ -125,7 +131,9 @@ const productById = Object.fromEntries(products.map((p) => [p.id, p]));
       <div style="font-size: 0.85rem; font-weight: 800; color: #a78bfa;">✍️ Have good notes? Earn with KolhanHub</div>
       <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px;">Share your notes and get a share of every sale. Thousands of Kolhan students visit this site.</div>
     </div>
-    <a href={`https://api.whatsapp.com/send?phone=${whatsapp}&text=${encodeURIComponent('Hi KolhanHub! ✍️ I have notes I would like to share/sell on KolhanHub.')}`} target="_blank" rel="noopener noreferrer" data-notes-event="notes_creator" data-notes-id="creator"
+    <a href={`https://api.whatsapp.com/send?phone=${whatsapp}&text=${encodeURIComponent('Hi KolhanHub! ✍️ I have notes I would like to share/sell on KolhanHub.')}`} target="_blank" rel="noopener noreferrer"
+       data-notes-event="notes_creator" data-notes-id="creator"
+       data-sheet-subject="Creator Inquiry" data-sheet-action="Sell Notes Contact" data-sheet-category="Creator"
        style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 700; color: #a78bfa; text-decoration: none; background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.3); border-radius: 20px; padding: 6px 12px; white-space: nowrap;">
       <MessageCircle size="14" /> Contact us
     </a>
@@ -134,6 +142,14 @@ const productById = Object.fromEntries(products.map((p) => [p.id, p]));
   <script is:inline>
     document.querySelectorAll('[data-notes-event]').forEach(function (el) {
       el.addEventListener('click', function () {
+        if (window.trackDownload) {
+          window.trackDownload('note', {
+            subject: el.getAttribute('data-sheet-subject') || el.getAttribute('data-notes-id'),
+            language: el.getAttribute('data-sheet-action') || el.getAttribute('data-notes-event'),
+            category: el.getAttribute('data-sheet-category') || 'Paid Notes',
+            medium: 'NOTES_HUB'
+          });
+        }
         if (typeof window.gtag === 'function') {
           window.gtag('event', el.getAttribute('data-notes-event'), { notes_id: el.getAttribute('data-notes-id'), page: 'notes' });
         }

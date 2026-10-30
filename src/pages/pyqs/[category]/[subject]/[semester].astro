@@ -218,11 +218,15 @@ const matchingPapers = pyqsData.filter(p =>
               </div>
             </div>
             <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
-              <a href={n.demoUrl} target="_blank" rel="noopener noreferrer" data-notes-event="notes_sample" data-notes-id={n.id}
+              <a href={n.demoUrl} target="_blank" rel="noopener noreferrer"
+                 data-notes-event="notes_sample" data-notes-id={n.id}
+                 data-sheet-subject={n.title} data-sheet-action="Free Sample" data-sheet-category={n.course}
                  style={`display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 700; color: ${n.color}; text-decoration: none; border: 1px solid ${n.color}55; border-radius: 20px; padding: 5px 11px; white-space: nowrap;`}>
                 👀 Free sample
               </a>
-              <a href={notesWaLink(`${n.title} notes (${n.course})`, n.price)} target="_blank" rel="noopener noreferrer" data-notes-event="notes_buy" data-notes-id={n.id}
+              <a href={notesWaLink(`${n.title} notes (${n.course})`, n.price)} target="_blank" rel="noopener noreferrer"
+                 data-notes-event="notes_buy" data-notes-id={n.id}
+                 data-sheet-subject={n.title} data-sheet-action={`Get Notes (₹${n.price})`} data-sheet-category={n.course}
                  style={`display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 800; color: #0b0b12; text-decoration: none; background: ${n.color}; border-radius: 20px; padding: 5px 11px; white-space: nowrap;`}>
                 Get notes · ₹{n.price}
               </a>
@@ -230,10 +234,20 @@ const matchingPapers = pyqsData.filter(p =>
           </div>
         ))}
       </div>
-      <a href={`${baseUrl}/notes`} style="display: inline-block; margin-top: 0.6rem; font-size: 0.72rem; color: var(--text-secondary); text-decoration: underline;">See combos & all notes in the Notes Hub →</a>
+      <a href={`${baseUrl}/notes`}
+         onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Notes Hub Link', language: 'See All Notes Click', category: 'PYQ Page', medium: 'PYQ_PAGE' });"
+         style="display: inline-block; margin-top: 0.6rem; font-size: 0.72rem; color: var(--text-secondary); text-decoration: underline;">See combos & all notes in the Notes Hub →</a>
       <script is:inline>
         document.querySelectorAll('[data-notes-event]').forEach(function (el) {
           el.addEventListener('click', function () {
+            if (window.trackDownload) {
+              window.trackDownload('note', {
+                subject: el.getAttribute('data-sheet-subject') || el.getAttribute('data-notes-id'),
+                language: el.getAttribute('data-sheet-action') || el.getAttribute('data-notes-event'),
+                category: el.getAttribute('data-sheet-category') || 'Paid Notes',
+                medium: 'PYQ_PAGE'
+              });
+            }
             if (typeof window.gtag === 'function') {
               window.gtag('event', el.getAttribute('data-notes-event'), { notes_id: el.getAttribute('data-notes-id'), page: 'pyq' });
             }
