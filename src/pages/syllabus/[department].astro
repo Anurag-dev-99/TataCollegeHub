@@ -175,28 +175,26 @@ const noteByPaperCode: Record<string, any> = {
               )}
               {/* Multiple downloadUrls — one button per file */}
               {(syl as any).downloadUrls && (syl as any).downloadUrls.length > 0 && (
-                <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.875rem; display: flex; flex-wrap: wrap; gap: 0.65rem;">
+                <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.875rem; display: flex; flex-direction: column; gap: 0.75rem;">
                   {((syl as any).downloadUrls as string[]).map((url: string, idx: number) => {
                     const total = ((syl as any).downloadUrls as string[]).length;
-                    const customLabels = (syl as any).downloadLabels as string[] | undefined;
-                    const label = customLabels && customLabels[idx]
-                      ? customLabels[idx]
-                      : total === 1
-                        ? 'Download Full Syllabus (Sem 1-8)'
-                        : `Download Part ${idx + 1}`;
+                    const trackingLabel = total === 1
+                      ? 'Download Full Syllabus (Sem 1-8)'
+                      : `Download Part ${idx + 1}`;
                     return (
-                      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.35rem 0.65rem;">
+                      <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
                         <a
                           href={url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 700; color: var(--accent-primary); text-decoration: none;"
-                          onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${syl.title} ${label}', category: '${syl.department}', semester: 'All', department: '${syl.department}' });`}
+                          class="btn btn-outline btn-sm"
+                          style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem;"
+                          onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${syl.title} ${trackingLabel}', category: '${syl.department}', semester: 'All', department: '${syl.department}' });`}
                         >
-                          <Download size="13" /> {label} PDF
+                          <Download size="14" /> {trackingLabel}
                         </a>
-                        <span style="font-size: 0.68rem; color: var(--text-tertiary);">
-                          (<span class="live-paper-download-count" data-subject-title={`${syl.title} ${label}`}>—</span>)
+                        <span style="font-size: 0.75rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.25rem;">
+                          <Download size="12" /> <span class="live-paper-download-count" data-subject-title={`${syl.title} ${trackingLabel}`}>—</span> downloads
                         </span>
                       </div>
                     );
@@ -435,7 +433,7 @@ const noteByPaperCode: Record<string, any> = {
                       <a href={notesWaLink(`${noteItem.title} notes (${noteItem.course})`, noteItem.price)} target="_blank" rel="noopener noreferrer"
                          onclick={`if(window.trackDownload) window.trackDownload('note', { subject: '${noteItem.title}', language: 'Get Notes (₹${noteItem.price})', category: '${noteItem.course}', medium: 'SYLLABUS_PAGE' });`}
                          style={`display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.74rem; font-weight: 800; color: #0b0b12; text-decoration: none; background: ${noteItem.color}; border-radius: 20px; padding: 6px 12px;`}>
-                        <MessageCircle size="13" /> Get notes · ₹{noteItem.price}
+                        <MessageCircle size="13" /> Get Full Notes
                       </a>
                       <a href={`${baseUrl}/pyqs/major/mathematics/3`}
                          style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.74rem; font-weight: 700; color: var(--text-primary); text-decoration: none; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 20px; padding: 6px 12px;">

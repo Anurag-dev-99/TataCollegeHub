@@ -78,26 +78,84 @@ const popularPapers = [...pyqsData]
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════════
-       NOTES HUB BANNER — SEM 3 MATHS MAJOR + SEC-3 NOTES (temporary, remove after Sem 3 exams)
+       SEM 3 EXAM PREPARATION HUB — QUICK ACCESS FOR YOUTUBE SHORTS & STUDENTS
+       (temporary, remove after Sem 3 exams)
   ════════════════════════════════════════════════════════════════ -->
-  <a href={`${baseUrl}/notes`} style="display: block; margin-bottom: 1rem; border: 1px solid rgba(129,140,248,0.28); border-radius: var(--radius-sm); padding: 0.85rem 1rem; background: linear-gradient(135deg, rgba(129,140,248,0.08) 0%, rgba(251,191,36,0.05) 100%); text-decoration: none;" onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Sem 3 Notes Banner', language: 'Banner Click', category: 'Home Banner', medium: 'HOME' }); if(typeof window.gtag==='function') window.gtag('event','notes_banner_click',{page:'home'});">
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap;">
-      <div style="display: flex; align-items: flex-start; gap: 0.55rem; min-width: 0; flex: 1;">
-        <span style="font-size: 1.15rem; flex-shrink: 0; margin-top: 2px;">📘</span>
-        <div style="min-width: 0; display: flex; flex-direction: column; gap: 0.35rem;">
+  <div style="margin-bottom: 1rem; border: 1px solid rgba(129,140,248,0.32); border-radius: var(--radius-sm); padding: 0.9rem 1rem; background: linear-gradient(135deg, rgba(129,140,248,0.09) 0%, rgba(16,185,129,0.04) 55%, rgba(251,191,36,0.05) 100%); display: flex; flex-direction: column; gap: 0.7rem;">
+    <!-- Top Header Row -->
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
+        <span style="font-size: 1.15rem; flex-shrink: 0;">🎯</span>
+        <div>
           <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-            <span style="font-size: 0.85rem; font-weight: 800; color: #818cf8; font-family: var(--font-display);">Sem 3 Notes are here!</span>
-            <span style="font-size: 0.58rem; font-weight: 800; background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 1px 7px;">NEW</span>
+            <span style="font-size: 0.92rem; font-weight: 850; color: var(--text-primary); font-family: var(--font-display);">Semester 3 Exam Hub</span>
+            <span style="font-size: 0.58rem; font-weight: 800; background: rgba(52,211,153,0.15); color: #34d399; border: 1px solid rgba(52,211,153,0.35); border-radius: 20px; padding: 1px 7px;">SOLVED PYQs + SYLLABUS</span>
           </div>
-          <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-            <span style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; font-weight: 800; color: #fbbf24; background: rgba(251,191,36,0.14); border: 1px solid rgba(251,191,36,0.38); border-radius: 6px; padding: 2px 8px;">🔥 SEC-3 · All Streams (Arts, Science &amp; Commerce)</span>
-            <span style="font-size: 0.7rem; color: var(--text-secondary);">+ Maths Major (MJ-04 Real Analysis · MJ-05 Vectors) · Free sample PDF</span>
+          <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 1px;">
+            Direct access to Sem 3 Syllabus, Solved PYQs &amp; Handwritten Study Notes
           </div>
         </div>
       </div>
-      <span style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 800; color: #0b0b12; background: #818cf8; border-radius: 20px; padding: 5px 12px; white-space: nowrap; flex-shrink: 0;">From ₹39 →</span>
+      <a
+        href={`${baseUrl}/notes`}
+        onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Sem 3 Notes Banner', language: 'Banner Click', category: 'Home Banner', medium: 'HOME' }); if(typeof window.gtag==='function') window.gtag('event','notes_banner_click',{page:'home'});"
+        style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; font-weight: 800; color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.35); border-radius: 20px; padding: 4px 11px; text-decoration: none; white-space: nowrap;"
+      >
+        📘 Handwritten Notes →
+      </a>
     </div>
-  </a>
+
+    <!-- 2x2 Quick Action Grid (Maths Major & SEC-3 Syllabus + PYQ) -->
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+      <a
+        href={`${baseUrl}/syllabus/mathematics`}
+        onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Sem 3 Maths Major Syllabus', language: 'Home Quick Click', category: 'Home Hub', medium: 'HOME' });"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; padding: 0.6rem 0.75rem; border-radius: var(--radius-xs); background: rgba(129,140,248,0.12); border: 1px solid rgba(129,140,248,0.3); text-decoration: none; transition: transform 0.15s;"
+      >
+        <div style="min-width: 0;">
+          <div style="font-size: 0.78rem; font-weight: 800; color: #818cf8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">📐 Maths Major Syllabus</div>
+          <div style="font-size: 0.64rem; color: var(--text-tertiary); margin-top: 1px;">Sem 3 · MJ-04 &amp; MJ-05</div>
+        </div>
+        <span style="font-size: 0.75rem; color: #818cf8; font-weight: 800; flex-shrink: 0;">→</span>
+      </a>
+
+      <a
+        href={`${baseUrl}/pyqs/major/mathematics/3`}
+        onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Sem 3 Maths Major PYQ', language: 'Home Quick Click', category: 'Home Hub', medium: 'HOME' });"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; padding: 0.6rem 0.75rem; border-radius: var(--radius-xs); background: rgba(52,211,153,0.11); border: 1px solid rgba(52,211,153,0.3); text-decoration: none; transition: transform 0.15s;"
+      >
+        <div style="min-width: 0;">
+          <div style="font-size: 0.78rem; font-weight: 800; color: #34d399; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">📝 Maths Major PYQ</div>
+          <div style="font-size: 0.64rem; color: var(--text-tertiary); margin-top: 1px;">Sem 3 · With Solutions</div>
+        </div>
+        <span style="font-size: 0.75rem; color: #34d399; font-weight: 800; flex-shrink: 0;">→</span>
+      </a>
+
+      <a
+        href={`${baseUrl}/syllabus/sec-3`}
+        onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Sem 3 SEC-3 Syllabus', language: 'Home Quick Click', category: 'Home Hub', medium: 'HOME' });"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; padding: 0.6rem 0.75rem; border-radius: var(--radius-xs); background: rgba(251,191,36,0.11); border: 1px solid rgba(251,191,36,0.32); text-decoration: none; transition: transform 0.15s;"
+      >
+        <div style="min-width: 0;">
+          <div style="font-size: 0.78rem; font-weight: 800; color: #fbbf24; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">🔥 SEC-3 Syllabus</div>
+          <div style="font-size: 0.64rem; color: var(--text-tertiary); margin-top: 1px;">Sem 3 · All Streams</div>
+        </div>
+        <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 800; flex-shrink: 0;">→</span>
+      </a>
+
+      <a
+        href={`${baseUrl}/pyqs/sec/mathematical & computational thinking and analysis/3`}
+        onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Sem 3 SEC-3 PYQ', language: 'Home Quick Click', category: 'Home Hub', medium: 'HOME' });"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; padding: 0.6rem 0.75rem; border-radius: var(--radius-xs); background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.32); text-decoration: none; transition: transform 0.15s;"
+      >
+        <div style="min-width: 0;">
+          <div style="font-size: 0.78rem; font-weight: 800; color: #a78bfa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">📄 SEC-3 PYQ Papers</div>
+          <div style="font-size: 0.64rem; color: var(--text-tertiary); margin-top: 1px;">Sem 3 · All Streams</div>
+        </div>
+        <span style="font-size: 0.75rem; color: #a78bfa; font-weight: 800; flex-shrink: 0;">→</span>
+      </a>
+    </div>
+  </div>
   <!-- ═══════════════════════════════════════════════════════════════
        THANK YOU — COLLAPSIBLE ACCORDION
   ════════════════════════════════════════════════════════════════ -->

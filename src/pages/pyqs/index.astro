@@ -968,6 +968,8 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
                           </button>
 
                           <!-- Expandable papers list -->
+                          <!-- Expandable papers list -->
+                          <div style="padding: 0 1rem 0.65rem;"><a href={`${baseUrl}/pyqs/sec/${subject.toLowerCase()}/${sem}`} style="font-size: 0.72rem; font-weight: 700; color: #818cf8; text-decoration: none;">📘 Open Full Page &amp; Notes →</a></div>
                           <div id={panelId} class="sec-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
                             <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
                               {papers.map(paper => (

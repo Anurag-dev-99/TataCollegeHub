@@ -1,0 +1,164 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import secData from '../../../public/data/sec.json';
+import pyqsData from '../../../public/data/pyqs.json';
+import notesData from '../../../public/data/notes.json';
+import { ChevronLeft, Calendar, Download, FileText, BookOpen, Sparkles, Eye, MessageCircle, ExternalLink } from '@lucide/astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const sec3Syl = secData.find(s => s.id === 'sec-3-mathematical-computational-thinking') || secData[3];
+const sec3Pyqs = pyqsData.filter(p => p.category === 'SEC' && p.semester === 3 && !!p.downloadUrl);
+const sec3Note = notesData.products.find(n => n.id === 'sec3-mathematical-computational-thinking');
+const notesWaLink = (item: string, price: number) =>
+  `https://api.whatsapp.com/send?phone=${notesData.whatsapp}&text=${encodeURIComponent(`Hi KolhanHub! 👋 I want to buy: ${item} – ₹${price}. Please send the payment QR.`)}`;
+---
+
+<Layout
+  title="Kolhan University SEC-3 Syllabus (Sem 3) — Mathematical & Computational Thinking and Analysis"
+  description="Official Kolhan University NEP 2020 FYUGP Semester 3 SEC-3 (Mathematical & Computational Thinking and Analysis) Syllabus PDF, unit breakdown, exam pattern, PYQs, and study notes for Arts, Science & Commerce students."
+  keywords="Kolhan University SEC 3 syllabus, Mathematical and Computational Thinking syllabus Kolhan University, Sem 3 SEC syllabus Tata College, Kolhan University FYUGP SEC-3"
+  activeTab="syllabus"
+>
+  <!-- Breadcrumb Navigation -->
+  <div style="margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.88rem;">
+    <a href={`${baseUrl}/syllabus`} style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 600; color: var(--text-secondary);">
+      <ChevronLeft size="16" /> Syllabus Directory
+    </a>
+    <span style="color: var(--text-tertiary);">/</span>
+    <span style="color: var(--text-secondary); font-weight: 500;">SEC</span>
+    <span style="color: var(--text-tertiary);">/</span>
+    <span style="color: var(--text-primary); font-weight: 600;">SEC-3 (Semester 3)</span>
+  </div>
+
+  <!-- Main Header -->
+  <div style="margin-bottom: 1.75rem; display: flex; flex-direction: column; gap: 0.5rem;">
+    <div style="display: inline-flex; align-items: center; gap: 0.4rem; width: fit-content; font-size: 0.7rem; font-weight: 800; color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 3px 10px;">
+      <Sparkles size="12" /> Common Paper for All Streams (Arts, Science &amp; Commerce)
+    </div>
+    <h1 style="font-size: 1.85rem; font-family: var(--font-display); tracking: -0.03em; margin: 0;">
+      SEC-3: Mathematical &amp; Computational Thinking and Analysis
+    </h1>
+    <p style="color: var(--text-secondary); max-width: 680px; font-size: 1rem; line-height: 1.6; margin: 0;">
+      Official Kolhan University NEP-2020 FYUGP <strong>Semester 3 Skill Enhancement Course (SEC-3)</strong> syllabus, exam pattern, previous year question papers, and handwritten study notes.
+    </p>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+
+    <!-- Official Syllabus PDF Download Card -->
+    <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 1rem;">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+        <div style="display: flex; gap: 0.85rem; align-items: flex-start;">
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: rgba(245,158,11,0.12); color: #fbbf24; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <FileText size="22" />
+          </div>
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 800; margin: 0; color: var(--text-primary); font-family: var(--font-display);">
+              {sec3Syl.name} — Official Syllabus PDF
+            </h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.65rem; font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.35rem;">
+              <span>Semester: <strong>Semester 3</strong></span>
+              <span>•</span>
+              <span>Credits: <strong>3 Credits</strong></span>
+              <span>•</span>
+              <span>Full Marks: <strong>75 Marks</strong> (Pass: 30)</span>
+            </div>
+          </div>
+        </div>
+        <span style="font-size: 0.68rem; font-weight: 800; background: rgba(245,158,11,0.14); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 3px 10px;">
+          SEC-3 · 75 Marks
+        </span>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-color); padding-top: 0.9rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
+        <span style="font-size: 0.8rem; color: var(--text-secondary);">
+          Applicable to 2022–26, 2023–27 &amp; 2024–28 FYUGP batches across all departments.
+        </span>
+        <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+          <a
+            href={sec3Syl.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary btn-sm"
+            style="gap: 0.4rem; font-size: 0.84rem;"
+            onclick="if(window.trackDownload) window.trackDownload('syllabus', { subject: 'SEC-3 Mathematical & Computational Thinking and Analysis', category: 'SEC', semester: 'Semester 3', department: 'SEC' });"
+          >
+            <Download size="14" /> Download Official Syllabus PDF
+          </a>
+          <a
+            href={`${baseUrl}/pyqs/sec/mathematical & computational thinking and analysis/3`}
+            class="btn btn-secondary btn-sm"
+            style="gap: 0.4rem; font-size: 0.84rem; text-decoration: none;"
+          >
+            📄 View SEC-3 PYQ Papers ({sec3Pyqs.length}) →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEC-3 Handwritten Study Notes Box -->
+    {sec3Note && (
+      <div style={`display: flex; align-items: center; justify-content: space-between; gap: 0.85rem; flex-wrap: wrap; border: 1px solid ${sec3Note.color}44; border-radius: var(--radius-sm); padding: 1rem 1.2rem; background: linear-gradient(135deg, ${sec3Note.color}12 0%, rgba(0,0,0,0.16) 100%);`}>
+        <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0;">
+          <span style="font-size: 1.35rem; flex-shrink: 0;">{sec3Note.emoji}</span>
+          <div>
+            <div style={`font-size: 0.95rem; font-weight: 800; color: ${sec3Note.color}; font-family: var(--font-display);`}>
+              {sec3Note.title} — Handwritten Notes PDF
+            </div>
+            <div style="font-size: 0.76rem; color: var(--text-secondary); margin-top: 2px;">
+              Complete exam-focused coaching notes for all streams · View free sample PDF first
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <a
+            href={sec3Note.demoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onclick={`if(window.trackDownload) window.trackDownload('note', { subject: '${sec3Note.title}', language: 'Free Sample', category: '${sec3Note.course}', medium: 'SEC3_SYLLABUS_PAGE' });`}
+            style={`display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.76rem; font-weight: 700; color: ${sec3Note.color}; text-decoration: none; border: 1px solid ${sec3Note.color}66; border-radius: 20px; padding: 6px 13px; white-space: nowrap;`}
+          >
+            <Eye size="14" /> Free Sample PDF
+          </a>
+          <a
+            href={notesWaLink(`${sec3Note.title} notes (${sec3Note.course})`, sec3Note.price)}
+            target="_blank"
+            rel="noopener noreferrer"
+            onclick={`if(window.trackDownload) window.trackDownload('note', { subject: '${sec3Note.title}', language: 'Get Notes (₹${sec3Note.price})', category: '${sec3Note.course}', medium: 'SEC3_SYLLABUS_PAGE' });`}
+            style={`display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.76rem; font-weight: 800; color: #0b0b12; text-decoration: none; background: ${sec3Note.color}; border-radius: 20px; padding: 6px 13px; white-space: nowrap;`}
+          >
+            <MessageCircle size="14" /> Get Full Notes
+          </a>
+        </div>
+      </div>
+    )}
+
+    <!-- Quick Links to SEC-3 PYQs -->
+    <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.85rem;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+        <h2 style="font-size: 1.05rem; font-weight: 800; margin: 0; font-family: var(--font-display); color: var(--text-primary);">
+          📥 SEC-3 Previous Year Question Papers (Sem 3)
+        </h2>
+        <a href={`${baseUrl}/pyqs/sec/mathematical & computational thinking and analysis/3`} style="font-size: 0.78rem; font-weight: 700; color: #818cf8; text-decoration: none;">
+          Open Full SEC-3 PYQ Page →
+        </a>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.65rem;">
+        {sec3Pyqs.map(paper => (
+          <a
+            href={paper.downloadUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.7rem 0.9rem; border-radius: var(--radius-xs); background: var(--bg-tertiary); border: 1px solid var(--border-color); text-decoration: none; color: var(--text-primary); font-size: 0.82rem; font-weight: 700;"
+            onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.title}', category: 'SEC', semester: '3' });`}
+          >
+            <span>📄 {paper.year} {(paper as any).set ? `— ${(paper as any).set}` : ''}</span>
+            <ExternalLink size="14" style="color: #fbbf24; flex-shrink: 0;" />
+          </a>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</Layout>
+
