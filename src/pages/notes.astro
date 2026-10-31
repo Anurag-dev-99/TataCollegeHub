@@ -51,7 +51,7 @@ const productById = Object.fromEntries(products.map((p) => [p.id, p]));
   <!-- Products -->
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
     {products.filter((p) => p.available).map((p) => (
-      <div style={`display: flex; flex-direction: column; gap: 0.75rem; border: 1px solid ${p.color}33; border-radius: var(--radius-sm); padding: 1rem; background: linear-gradient(135deg, ${p.color}0d 0%, rgba(0,0,0,0.12) 100%);`}>
+      <div id={p.id} style={`scroll-margin-top: 90px; display: flex; flex-direction: column; gap: 0.75rem; border: 1px solid ${p.color}33; border-radius: var(--radius-sm); padding: 1rem; background: linear-gradient(135deg, ${p.color}0d 0%, rgba(0,0,0,0.12) 100%);`}>
         <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem;">
           <div style="display: flex; gap: 0.6rem; align-items: flex-start; min-width: 0;">
             <span style="font-size: 1.4rem; flex-shrink: 0;">{p.emoji}</span>
