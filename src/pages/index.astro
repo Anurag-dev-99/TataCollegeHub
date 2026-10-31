@@ -81,90 +81,93 @@ const popularPapers = [...pyqsData]
        SEM 3 EXAM PREPARATION HUB — SEC-3 (ALL STREAMS) + MATHS MAJOR
        (temporary, remove after Sem 3 exams)
   ════════════════════════════════════════════════════════════════ -->
-  <div style="margin-bottom: 1.15rem; display: flex; flex-direction: column; gap: 0.65rem;">
+  <div style="margin-bottom: 1.15rem; display: flex; flex-direction: column; gap: 0.65rem; width: 100%; box-sizing: border-box;">
 
     <!-- 1. HERO RIBBON: SEC-3 (Compulsory for All Streams) -->
-    <div style="position: relative; border-radius: 14px; padding: 0.9rem 1rem; background: radial-gradient(circle at top right, rgba(251,191,36,0.18), rgba(245,158,11,0.04) 60%, rgba(0,0,0,0.25) 100%); border: 1px solid rgba(251,191,36,0.42); box-shadow: 0 6px 24px -8px rgba(251,191,36,0.22); display: flex; flex-direction: column; gap: 0.65rem;">
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
-          <span style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.62rem; font-weight: 800; background: #fbbf24; color: #0b0b12; border-radius: 20px; padding: 2px 8px; letter-spacing: 0.03em; text-transform: uppercase;">
+    <div style="position: relative; width: 100%; box-sizing: border-box; overflow: hidden; border-radius: 14px; padding: 0.85rem 0.85rem; background: radial-gradient(circle at top right, rgba(251,191,36,0.18), rgba(245,158,11,0.04) 60%, rgba(0,0,0,0.25) 100%); border: 1px solid rgba(251,191,36,0.42); box-shadow: 0 6px 24px -8px rgba(251,191,36,0.22); display: flex; flex-direction: column; gap: 0.6rem;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+          <span style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6rem; font-weight: 800; background: #fbbf24; color: #0b0b12; border-radius: 20px; padding: 2px 7px; letter-spacing: 0.03em; text-transform: uppercase;">
             🔥 Compulsory · All Streams
           </span>
-          <span style="font-size: 0.65rem; font-weight: 700; color: #fcd34d;">
-            Arts · Science · Commerce (Sem 3)
+          <span style="font-size: 0.64rem; font-weight: 700; color: #fcd34d;">
+            Arts · Science · Commerce
           </span>
         </div>
-        <span style="font-size: 0.64rem; font-weight: 700; color: var(--text-tertiary);">SEC-3 · 75 Marks</span>
+        <span style="font-size: 0.62rem; font-weight: 700; color: var(--text-tertiary);">Sem 3 · 75M</span>
       </div>
 
-      <div>
-        <div style="font-size: 0.98rem; font-weight: 850; color: var(--text-primary); font-family: var(--font-display); letter-spacing: -0.01em;">
-          SEC-3: Mathematical &amp; Computational Thinking
-        </div>
+      <div style="font-size: 0.94rem; font-weight: 850; color: var(--text-primary); font-family: var(--font-display); letter-spacing: -0.01em; line-height: 1.3;">
+        SEC-3: Mathematical &amp; Computational Thinking
       </div>
 
       <!-- 3 Action Pills: Syllabus | PYQ | Notes -->
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.45rem;">
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4rem; width: 100%;">
         <a
           href={`${baseUrl}/syllabus/sec-3`}
           onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'SEC-3 Syllabus', language: 'Home Quick Click', category: 'Home SEC-3', medium: 'HOME' });"
-          style="display: flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.52rem 0.5rem; border-radius: 999px; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.38); color: #fbbf24; font-size: 0.74rem; font-weight: 800; text-decoration: none; white-space: nowrap;"
+          style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 0.45rem 0.3rem; border-radius: 10px; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.38); color: #fbbf24; text-decoration: none; min-width: 0; text-align: center;"
         >
-          📖 SEC-3 Syllabus
+          <span style="font-size: 0.56rem; font-weight: 700; color: #fcd34d; opacity: 0.9; line-height: 1.1;">SEC-3</span>
+          <span style="font-size: 0.72rem; font-weight: 800; line-height: 1.2; white-space: nowrap;">📖 Syllabus</span>
         </a>
         <a
           href={`${baseUrl}/pyqs/sec/mathematical & computational thinking and analysis/3`}
           onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'SEC-3 PYQ', language: 'Home Quick Click', category: 'Home SEC-3', medium: 'HOME' });"
-          style="display: flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.52rem 0.5rem; border-radius: 999px; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.38); color: #fbbf24; font-size: 0.74rem; font-weight: 800; text-decoration: none; white-space: nowrap;"
+          style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 0.45rem 0.3rem; border-radius: 10px; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.38); color: #fbbf24; text-decoration: none; min-width: 0; text-align: center;"
         >
-          📄 SEC-3 PYQ
+          <span style="font-size: 0.56rem; font-weight: 700; color: #fcd34d; opacity: 0.9; line-height: 1.1;">SEC-3</span>
+          <span style="font-size: 0.72rem; font-weight: 800; line-height: 1.2; white-space: nowrap;">📄 PYQ</span>
         </a>
         <a
           href={`${baseUrl}/notes#sec3-mathematical-computational-thinking`}
           onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'SEC-3 Notes', language: 'Home Quick Click', category: 'Home SEC-3', medium: 'HOME' }); if(typeof window.gtag==='function') window.gtag('event','notes_banner_click',{page:'home',item:'sec3'});"
-          style="display: flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.52rem 0.5rem; border-radius: 999px; background: #fbbf24; border: 1px solid #fbbf24; color: #0b0b12; font-size: 0.74rem; font-weight: 850; text-decoration: none; white-space: nowrap;"
+          style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 0.45rem 0.3rem; border-radius: 10px; background: #fbbf24; border: 1px solid #fbbf24; color: #0b0b12; text-decoration: none; min-width: 0; text-align: center;"
         >
-          ✍️ SEC-3 Notes
+          <span style="font-size: 0.56rem; font-weight: 800; color: #0b0b12; opacity: 0.8; line-height: 1.1;">SEC-3</span>
+          <span style="font-size: 0.72rem; font-weight: 850; line-height: 1.2; white-space: nowrap;">✍️ Notes</span>
         </a>
       </div>
     </div>
 
     <!-- 2. SECONDARY STRIP: MATHS MAJOR SEM 3 (MJ-04 & MJ-05) -->
-    <div style="border-radius: 14px; padding: 0.85rem 1rem; background: radial-gradient(circle at top right, rgba(129,140,248,0.16), rgba(52,211,153,0.04) 65%, rgba(0,0,0,0.22) 100%); border: 1px solid rgba(129,140,248,0.34); display: flex; flex-direction: column; gap: 0.6rem;">
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
-          <span style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.62rem; font-weight: 800; background: rgba(129,140,248,0.18); color: #818cf8; border: 1px solid rgba(129,140,248,0.38); border-radius: 20px; padding: 2px 8px;">
-            📐 B.Sc. Honours · Sem 3
-          </span>
-          <span style="font-size: 0.92rem; font-weight: 850; color: var(--text-primary); font-family: var(--font-display);">
-            Maths Major (MJ-04 &amp; MJ-05)
-          </span>
-        </div>
-        <span style="font-size: 0.64rem; font-weight: 700; color: #34d399;">Real Analysis &amp; Vectors</span>
+    <div style="width: 100%; box-sizing: border-box; overflow: hidden; border-radius: 14px; padding: 0.85rem 0.85rem; background: radial-gradient(circle at top right, rgba(129,140,248,0.16), rgba(52,211,153,0.04) 65%, rgba(0,0,0,0.22) 100%); border: 1px solid rgba(129,140,248,0.34); display: flex; flex-direction: column; gap: 0.55rem;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; flex-wrap: wrap;">
+        <span style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6rem; font-weight: 800; background: rgba(129,140,248,0.18); color: #818cf8; border: 1px solid rgba(129,140,248,0.38); border-radius: 20px; padding: 2px 7px;">
+          📐 B.Sc. Honours · Sem 3
+        </span>
+        <span style="font-size: 0.62rem; font-weight: 700; color: #34d399;">Real Analysis &amp; Vectors</span>
+      </div>
+
+      <div style="font-size: 0.92rem; font-weight: 850; color: var(--text-primary); font-family: var(--font-display); line-height: 1.3;">
+        Maths Major (MJ-04 &amp; MJ-05)
       </div>
 
       <!-- 3 Action Pills: Syllabus | PYQ | Notes -->
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.45rem;">
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4rem; width: 100%;">
         <a
           href={`${baseUrl}/syllabus/mathematics`}
           onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Maths MJ-04 & MJ-05 Syllabus', language: 'Home Quick Click', category: 'Home Maths', medium: 'HOME' });"
-          style="display: flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.5rem 0.5rem; border-radius: 999px; background: rgba(129,140,248,0.12); border: 1px solid rgba(129,140,248,0.35); color: #818cf8; font-size: 0.73rem; font-weight: 800; text-decoration: none; white-space: nowrap;"
+          style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 0.45rem 0.3rem; border-radius: 10px; background: rgba(129,140,248,0.12); border: 1px solid rgba(129,140,248,0.35); color: #818cf8; text-decoration: none; min-width: 0; text-align: center;"
         >
-          📚 MJ-04/05 Syllabus
+          <span style="font-size: 0.56rem; font-weight: 700; color: #a5b4fc; opacity: 0.9; line-height: 1.1;">MJ-04 &amp; 05</span>
+          <span style="font-size: 0.72rem; font-weight: 800; line-height: 1.2; white-space: nowrap;">📚 Syllabus</span>
         </a>
         <a
           href={`${baseUrl}/pyqs/major/mathematics/3`}
           onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Maths MJ-04 & MJ-05 PYQ', language: 'Home Quick Click', category: 'Home Maths', medium: 'HOME' });"
-          style="display: flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.5rem 0.5rem; border-radius: 999px; background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.35); color: #34d399; font-size: 0.73rem; font-weight: 800; text-decoration: none; white-space: nowrap;"
+          style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 0.45rem 0.3rem; border-radius: 10px; background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.35); color: #34d399; text-decoration: none; min-width: 0; text-align: center;"
         >
-          📝 Solved PYQs
+          <span style="font-size: 0.56rem; font-weight: 700; color: #6ee7b7; opacity: 0.9; line-height: 1.1;">MJ-04 &amp; 05</span>
+          <span style="font-size: 0.72rem; font-weight: 800; line-height: 1.2; white-space: nowrap;">📝 PYQ</span>
         </a>
         <a
           href={`${baseUrl}/notes#maths-mj04-real-analysis`}
           onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Maths MJ-04 & MJ-05 Notes', language: 'Home Quick Click', category: 'Home Maths', medium: 'HOME' }); if(typeof window.gtag==='function') window.gtag('event','notes_banner_click',{page:'home',item:'maths'});"
-          style="display: flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.5rem 0.5rem; border-radius: 999px; background: #818cf8; border: 1px solid #818cf8; color: #0b0b12; font-size: 0.73rem; font-weight: 850; text-decoration: none; white-space: nowrap;"
+          style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 0.45rem 0.3rem; border-radius: 10px; background: #818cf8; border: 1px solid #818cf8; color: #0b0b12; text-decoration: none; min-width: 0; text-align: center;"
         >
-          ✍️ MJ-04/05 Notes
+          <span style="font-size: 0.56rem; font-weight: 800; color: #0b0b12; opacity: 0.8; line-height: 1.1;">MJ-04 &amp; 05</span>
+          <span style="font-size: 0.72rem; font-weight: 850; line-height: 1.2; white-space: nowrap;">✍️ Notes</span>
         </a>
       </div>
     </div>
