@@ -2,7 +2,9 @@
 import Layout from '../../../../layouts/Layout.astro';
 import pyqsData from '../../../../../public/data/pyqs.json';
 import notesData from '../../../../../public/data/notes.json';
-import { ChevronLeft, Calendar, Download, FileCode, AlertCircle, HelpCircle, ExternalLink, BookOpen, Globe } from '@lucide/astro';
+import mathsSem3Data from '../../../../../public/data/maths-sem3-complete.json';
+import { renderMathText } from '../../../../utils/renderMath';
+import { ChevronLeft, Calendar, Download, FileCode, AlertCircle, HelpCircle, ExternalLink, BookOpen, Globe, Sparkles, Eye, MessageCircle } from '@lucide/astro';
 
 export async function getStaticPaths() {
   const pathsMap = new Map();
@@ -36,6 +38,8 @@ const { category, subject, semester } = Astro.params;
 const { originalCategory, originalSubject, originalSemester } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
+const isMathsMajorSem3 = category === 'major' && subject === 'mathematics' && semester === '3';
+
 // Paid notes for this paper (from notes.json) — shown below the free PYQs
 const paidNotes = notesData.products.filter(n => n.available && n.match.category === category && n.match.subject === subject && n.match.semester === semester);
 const notesWaLink = (item: string, price: number) => `https://api.whatsapp.com/send?phone=${notesData.whatsapp}&text=${encodeURIComponent(`Hi KolhanHub! 👋 I want to buy: ${item} – ₹${price}. Please send the payment QR.`)}`;
@@ -48,7 +52,14 @@ const matchingPapers = pyqsData.filter(p =>
 );
 ---
 
-<Layout title={`${originalSubject} Sem ${originalSemester} PYQs`} activeTab="pyqs">
+<Layout
+  title={isMathsMajorSem3 ? 'Kolhan University B.Sc Maths Major Sem 3 PYQs (MJ-04 Real Analysis & MJ-05 Vectors) with Solutions' : `${originalSubject} Sem ${originalSemester} PYQs`}
+  description={isMathsMajorSem3 ? 'Download Kolhan University B.Sc. Mathematics Honours Semester 3 Previous Year Question Papers (MJ-04 Real Analysis & MJ-05 Vectors) for 2022 & 2023 batches with complete step-by-step solved answers, repeated questions, book guide, and 2023 batch result stats.' : undefined}
+  activeTab="pyqs"
+>
+  {isMathsMajorSem3 && (
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+  )}
 
   <!-- Breadcrumb Navigation -->
   <div style="margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.85rem;">
@@ -70,6 +81,7 @@ const matchingPapers = pyqsData.filter(p =>
     </h1>
     <p style="color: var(--text-secondary); font-size: 1rem;">
       Category: <strong>{originalCategory}</strong> • Semester: <strong>{originalSemester}</strong>
+      {isMathsMajorSem3 && <> • Papers: <strong>MJ-04 (Real Analysis) &amp; MJ-05 (Vectors)</strong></>}
     </p>
   </div>
 
@@ -154,7 +166,7 @@ const matchingPapers = pyqsData.filter(p =>
                   <div style="display: flex; gap: 0.5rem;">
                     <button 
                       class="btn btn-sm" 
-                      style="font-size: 0.8rem; white-space: nowrap; background: rgba(245,158,11,0.12); color: #d97706; border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius-xs); padding: 0.35rem 0.85rem; cursor: pointer; transition: background 0.2s;"
+                      style="font-size: 0.8rem; white-space: nowrap; background: rgba(245,158,11,0.12); color: #d97706; border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 0.35rem 0.85rem; cursor: pointer; transition: background 0.2s;"
                       onclick={`document.dispatchEvent(new CustomEvent('open-submit-modal'));`}
                     >
                       📤 Upload if you have it
@@ -253,6 +265,317 @@ const matchingPapers = pyqsData.filter(p =>
             }
           });
         });
+      </script>
+    </div>
+  )}
+
+  {/* ══════════════════════════════════════════════════════════════════════════
+      SOLVED PYQs + STEP-BY-STEP SOLUTIONS + ANALYSIS (MATHS MAJOR SEM 3)
+  ══════════════════════════════════════════════════════════════════════════ */}
+  {isMathsMajorSem3 && (
+    <div style="margin-top: 2.25rem; display: flex; flex-direction: column; gap: 1.5rem;">
+
+      <!-- Header + Paper Switcher -->
+      <div style="border: 1px solid rgba(129,140,248,0.3); border-radius: var(--radius-sm); padding: 1.15rem 1.25rem; background: linear-gradient(135deg, rgba(129,140,248,0.08) 0%, rgba(16,185,129,0.04) 100%); display: flex; flex-direction: column; gap: 0.85rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
+          <div>
+            <div style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.68rem; font-weight: 800; color: #34d399; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 2px 9px; margin-bottom: 0.35rem;">
+              <Sparkles size="12" /> COMPLETE TEXT PYQs + STEP-BY-STEP SOLUTIONS
+            </div>
+            <h2 style="font-size: 1.35rem; font-weight: 850; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
+              Solved Question Papers, Repeated Questions &amp; Exam Guide
+            </h2>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0;">
+              Read every question in text format, click "Show Answer" for step-by-step university solutions, and check repeated questions &amp; book advice.
+            </p>
+          </div>
+          <a href={`${baseUrl}/syllabus/mathematics`} style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 800; color: #0b0b12; background: #818cf8; border-radius: 20px; padding: 7px 14px; text-decoration: none; white-space: nowrap;">
+            📚 View Sem 3 Syllabus &amp; Unit Weightage →
+          </a>
+        </div>
+
+        <!-- Paper Tabs (MJ-04 vs MJ-05) -->
+        <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; border-top: 1px solid var(--border-color); padding-top: 0.85rem;">
+          {mathsSem3Data.papers.map((p, idx) => (
+            <button
+              type="button"
+              class={`pyq-paper-tab ${idx === 0 ? 'active' : ''}`}
+              data-paper-code={p.paperCode}
+              style={`flex: 1; min-width: 220px; padding: 0.7rem 1rem; border-radius: var(--radius-xs); border: 1px solid ${idx === 0 ? '#818cf8' : 'var(--border-color)'}; background: ${idx === 0 ? 'rgba(129,140,248,0.18)' : 'var(--bg-secondary)'}; color: var(--text-primary); font-weight: 800; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;`}
+            >
+              <span>📘 {p.paperCode}: {p.paperTitle}</span>
+              <span style="font-size: 0.68rem; color: #34d399; font-weight: 700;">2 Solved Papers</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Paper Content Panels (MJ-04 & MJ-05) -->
+      {mathsSem3Data.papers.map((p, pIdx) => (
+        <div
+          class="pyq-paper-panel"
+          id={`pyq-panel-${p.paperCode}`}
+          style={`display: ${pIdx === 0 ? 'flex' : 'none'}; flex-direction: column; gap: 1.4rem;`}
+        >
+          <!-- Batch Switcher (2023-2027 vs 2022-2026) + Show All Answers Toggle -->
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-tertiary); text-transform: uppercase;">Select Batch Paper:</span>
+              {p.pyqPapers.map((bPaper: any, bIdx: number) => (
+                <button
+                  type="button"
+                  class="pyq-batch-subtab"
+                  data-parent-paper={p.paperCode}
+                  data-target-batch={`${p.paperCode}-${bPaper.batch}`}
+                  style={`padding: 0.45rem 0.9rem; border-radius: 20px; border: 1px solid ${bIdx === 0 ? '#34d399' : 'var(--border-color)'}; background: ${bIdx === 0 ? 'rgba(16,185,129,0.16)' : 'var(--bg-tertiary)'}; color: ${bIdx === 0 ? '#34d399' : 'var(--text-secondary)'}; font-weight: 800; font-size: 0.78rem; cursor: pointer;`}
+                >
+                  {bPaper.batch} Batch ({bPaper.questionsCount || '18'} Qs Solved)
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              class="toggle-all-solutions-btn"
+              data-target-paper={p.paperCode}
+              style="padding: 0.45rem 0.9rem; border-radius: 20px; border: 1px solid rgba(251,191,36,0.35); background: rgba(251,191,36,0.1); color: #fbbf24; font-weight: 800; font-size: 0.75rem; cursor: pointer;"
+            >
+              💡 Expand All Answers
+            </button>
+          </div>
+
+          <!-- Each Batch's Questions & Solutions -->
+          {p.pyqPapers.map((bPaper: any, bIdx: number) => (
+            <div
+              class={`pyq-batch-container batch-of-${p.paperCode}`}
+              id={`batch-box-${p.paperCode}-${bPaper.batch}`}
+              style={`display: ${bIdx === 0 ? 'flex' : 'none'}; flex-direction: column; gap: 1.15rem;`}
+            >
+              <!-- Batch Header Bar with Direct PDF Link -->
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; padding: 0.75rem 1rem; border-radius: var(--radius-xs); background: rgba(129,140,248,0.07); border: 1px solid rgba(129,140,248,0.22);">
+                <div>
+                  <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-primary);">
+                    {p.paperCode} ({p.paperTitle}) — {bPaper.batch} Batch Question Paper
+                  </div>
+                  <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px;">
+                    Full Marks: 75 · Time: 3 Hours · Pass Marks: 30 (Theory) / 40 (Total with Internal)
+                  </div>
+                </div>
+                {bPaper.downloadUrl && (
+                  <a
+                    href={bPaper.downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-primary btn-sm"
+                    style="font-size: 0.78rem; gap: 0.35rem;"
+                    onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${bPaper.pdfTitle}', category: 'Major', semester: '3' });`}
+                  >
+                    <Download size="13" /> Original Question Paper PDF
+                  </a>
+                )}
+              </div>
+
+              <!-- Groups (Group A MCQs, Group A Short Answer, Group B Long Answer) -->
+              {bPaper.groups.map((grp: any) => (
+                <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.85rem; padding: 1.1rem 1.2rem;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; border-bottom: 1px solid var(--border-color); padding-bottom: 0.65rem;">
+                    <h3 style="font-size: 0.98rem; font-weight: 800; color: #818cf8; margin: 0; font-family: var(--font-display);">
+                      {grp.groupName}
+                    </h3>
+                    <span style="font-size: 0.7rem; font-weight: 800; background: rgba(129,140,248,0.14); color: #818cf8; border: 1px solid rgba(129,140,248,0.3); border-radius: 20px; padding: 2px 9px;">
+                      {grp.marksPerQuestion} {grp.marksPerQuestion === 1 ? 'Mark' : 'Marks'} Each
+                    </span>
+                  </div>
+
+                  <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    {grp.questions.map((q: any) => (
+                      <div style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.85rem 1rem; background: rgba(0,0,0,0.14); display: flex; flex-direction: column; gap: 0.55rem;">
+                        <!-- Question Metadata Row -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+                          <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
+                            <span style="font-size: 0.72rem; font-weight: 800; background: #818cf8; color: #0b0b12; border-radius: 5px; padding: 2px 7px;">
+                              Q. {q.qNo}
+                            </span>
+                            {q.unit && (
+                              <span style="font-size: 0.66rem; font-weight: 700; color: var(--text-tertiary); background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 5px; padding: 1px 6px;">
+                                Unit {q.unit}
+                              </span>
+                            )}
+                            {q.topic && (
+                              <span style="font-size: 0.68rem; color: #fbbf24; font-weight: 600;" set:html={renderMathText(q.topic)} />
+                            )}
+                          </div>
+                          <span style="font-size: 0.68rem; font-weight: 700; color: var(--text-secondary);">
+                            [{q.marks} {q.marks === 1 ? 'Mark' : 'Marks'}]
+                          </span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <div style="font-size: 0.9rem; color: var(--text-primary); line-height: 1.65; font-weight: 500;" set:html={renderMathText(q.question)} />
+
+                        <!-- Interactive Show Answer / Solution Accordion -->
+                        {q.solution && (
+                          <details class="pyq-solution-details" style="margin-top: 0.2rem; border-top: 1px dashed var(--border-color); padding-top: 0.5rem;">
+                            <summary style="font-size: 0.78rem; font-weight: 800; color: #34d399; cursor: pointer; user-select: none; display: inline-flex; align-items: center; gap: 0.35rem;">
+                              ✅ Show Step-by-Step Solution
+                            </summary>
+                            <div style="margin-top: 0.65rem; padding: 0.85rem 1rem; border-radius: var(--radius-xs); background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.22); font-size: 0.84rem; color: var(--text-secondary); line-height: 1.7; overflow-x: auto;" set:html={renderMathText(q.solution, true)} />
+                          </details>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+
+          <!-- Repeated Questions & Theorems Summary Card -->
+          <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.75rem;">
+            <h3 style="font-size: 1.05rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: #fbbf24;">
+              🔁 Most Repeated Questions &amp; Theorems Across Years ({p.paperCode})
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 0.55rem;">
+              {p.mostRepeatedQuestionsAndTheorems.map((item: any, idx: number) => (
+                <div style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.75rem 0.9rem; background: rgba(0,0,0,0.14); display: flex; flex-direction: column; gap: 0.25rem;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+                    <span style="font-size: 0.84rem; font-weight: 800; color: var(--text-primary);" set:html={`${idx + 1}. ${renderMathText(item.item)}`} />
+                    <span style="font-size: 0.65rem; font-weight: 700; color: #fbbf24; background: rgba(251,191,36,0.14); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 2px 8px;">
+                      Asked: {item.askedIn.join(', ')}
+                    </span>
+                  </div>
+                  <div style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5;" set:html={renderMathText(item.tip)} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Senior Advice: Books, Strategy, Last 3-Day Plan & 2023 Batch Result Stats -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+            <div class="card" style="background: linear-gradient(135deg, rgba(129,140,248,0.07) 0%, rgba(251,191,36,0.04) 100%); border-color: rgba(129,140,248,0.28); display: flex; flex-direction: column; gap: 0.75rem;">
+              <h3 style="font-size: 1rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: #818cf8;">
+                💡 General Advice, Best Books &amp; What to Focus ({p.paperCode})
+              </h3>
+              <div>
+                <div style="font-size: 0.74rem; font-weight: 800; color: #34d399; margin-bottom: 0.2rem;">🎯 High-Scoring Units Strategy</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.55;" set:html={renderMathText(p.examStrategy.bestPassStrategy)} />
+              </div>
+              <div>
+                <div style="font-size: 0.74rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.2rem;">📚 Recommended Book</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.55;" set:html={renderMathText(p.examStrategy.bookRecommendation)} />
+              </div>
+            </div>
+
+            <!-- 2023 Batch Result Stats -->
+            <div class="card" style="background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, var(--bg-secondary) 100%); border-color: rgba(16,185,129,0.28); display: flex; flex-direction: column; gap: 0.7rem;">
+              <div>
+                <div style="font-size: 0.72rem; font-weight: 800; color: #34d399; text-transform: uppercase;">📊 2023 Batch Sem 3 Result Analysis ({p.paperCode})</div>
+                <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 2px;">{p.resultStats.scope}</div>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                <div style="background: rgba(0,0,0,0.2); padding: 0.55rem; border-radius: var(--radius-xs);">
+                  <div style="font-size: 1.05rem; font-weight: 850; color: #34d399;">{p.resultStats.passPercentage}% ({p.resultStats.passedStudents}/{p.resultStats.totalStudents})</div>
+                  <div style="font-size: 0.66rem; color: var(--text-tertiary);">Students Passed (≥40/100)</div>
+                </div>
+                <div style="background: rgba(0,0,0,0.2); padding: 0.55rem; border-radius: var(--radius-xs);">
+                  <div style="font-size: 1.05rem; font-weight: 850; color: #fbbf24;">{p.resultStats.highestTotal}/100</div>
+                  <div style="font-size: 0.66rem; color: var(--text-tertiary);">Highest Total · Avg: {p.resultStats.averageTotal}</div>
+                </div>
+                <div style="background: rgba(0,0,0,0.2); padding: 0.55rem; border-radius: var(--radius-xs);">
+                  <div style="font-size: 1.05rem; font-weight: 850; color: #818cf8;">{p.resultStats.highestTheory}/75</div>
+                  <div style="font-size: 0.66rem; color: var(--text-tertiary);">Highest Theory · Avg: {p.resultStats.averageTheory}</div>
+                </div>
+                <div style="background: rgba(0,0,0,0.2); padding: 0.55rem; border-radius: var(--radius-xs);">
+                  <div style="font-size: 1.05rem; font-weight: 850; color: #a78bfa;">{p.resultStats.highestInternal}/25</div>
+                  <div style="font-size: 0.66rem; color: var(--text-tertiary);">Highest Internal · Avg: {p.resultStats.averageInternal}</div>
+                </div>
+              </div>
+              <a href={`${baseUrl}/syllabus/mathematics`} style="margin-top: auto; font-size: 0.75rem; font-weight: 700; color: #34d399; text-decoration: underline;">
+                See full unit-wise syllabus &amp; "what to skip" list →
+              </a>
+            </div>
+          </div>
+
+          <!-- 3-Day Last-Minute Plan -->
+          <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.6rem;">
+            <h3 style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
+              ⚡ Last 3 Days Exam Revision Plan ({p.paperCode})
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+              {p.examStrategy.last3DaysPlan.map((d: string) => (
+                <div style="font-size: 0.8rem; color: var(--text-secondary); background: rgba(0,0,0,0.16); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.65rem 0.85rem; line-height: 1.55;" set:html={renderMathText(d)} />
+              ))}
+            </div>
+          </div>
+
+          <!-- FAQs -->
+          <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.6rem;">
+            <h3 style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
+              ❓ Frequently Asked Questions — {p.paperCode} PYQs &amp; Exam Pattern
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+              {p.faqs.map((f: any) => (
+                <details style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.65rem 0.85rem; background: rgba(0,0,0,0.12);">
+                  <summary style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary); cursor: pointer;" set:html={renderMathText(f.q)} />
+                  <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border-color);" set:html={renderMathText(f.a)} />
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+
+      <script is:inline>
+        (function() {
+          // Paper switcher (MJ-04 vs MJ-05)
+          var paperTabs = document.querySelectorAll('.pyq-paper-tab');
+          var paperPanels = document.querySelectorAll('.pyq-paper-panel');
+          paperTabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+              var code = tab.getAttribute('data-paper-code');
+              paperTabs.forEach(function(t) {
+                var active = t === tab;
+                t.style.borderColor = active ? '#818cf8' : 'var(--border-color)';
+                t.style.background = active ? 'rgba(129,140,248,0.18)' : 'var(--bg-secondary)';
+              });
+              paperPanels.forEach(function(panel) {
+                panel.style.display = panel.id === 'pyq-panel-' + code ? 'flex' : 'none';
+              });
+            });
+          });
+
+          // Batch sub-tabs (2022-2026 vs 2023-2027)
+          var batchBtns = document.querySelectorAll('.pyq-batch-subtab');
+          batchBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+              var parentCode = btn.getAttribute('data-parent-paper');
+              var targetId = 'batch-box-' + btn.getAttribute('data-target-batch');
+              document.querySelectorAll('.pyq-batch-subtab[data-parent-paper="' + parentCode + '"]').forEach(function(b) {
+                var active = b === btn;
+                b.style.borderColor = active ? '#34d399' : 'var(--border-color)';
+                b.style.background = active ? 'rgba(16,185,129,0.16)' : 'var(--bg-tertiary)';
+                b.style.color = active ? '#34d399' : 'var(--text-secondary)';
+              });
+              document.querySelectorAll('.batch-of-' + parentCode).forEach(function(box) {
+                box.style.display = box.id === targetId ? 'flex' : 'none';
+              });
+            });
+          });
+
+          // Expand / Collapse all solutions button
+          document.querySelectorAll('.toggle-all-solutions-btn').forEach(function(btn) {
+            var expanded = false;
+            btn.addEventListener('click', function() {
+              expanded = !expanded;
+              var code = btn.getAttribute('data-target-paper');
+              var panel = document.getElementById('pyq-panel-' + code);
+              if (!panel) return;
+              panel.querySelectorAll('details.pyq-solution-details').forEach(function(d) {
+                d.open = expanded;
+              });
+              btn.textContent = expanded ? '🔼 Collapse All Answers' : '💡 Expand All Answers';
+            });
+          });
+        })();
       </script>
     </div>
   )}
