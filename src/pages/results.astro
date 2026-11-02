@@ -1340,7 +1340,7 @@ datasets.forEach(d => {
     if (!name) return 'Unknown';
     let cleaned = name;
     
-    const majorMatch = name.match(/^MAJOR-([lIVX]+)\s*-\s*(.*)/i);
+    const majorMatch = name.match(/^MAJOR\s*-\s*([lIVX]+)\s*-\s*(.*)/i);
     if (majorMatch) {
       cleaned = `Major ${majorMatch[1].toUpperCase()}: ${majorMatch[2].trim()}`;
     } else if (name.toLowerCase().startsWith('minor')) {
@@ -1409,7 +1409,7 @@ datasets.forEach(d => {
         if (title.includes('political science')) return 'Political Science';
         if (title.includes('philosophy')) return 'Philosophy';
         if (title.includes('anthropology')) return 'Anthropology';
-        if (title.includes('ho ')) return 'Ho';
+        if (title.includes('ho ') || title.endsWith('- ho')) return 'Ho';
         if (title.includes('odia')) return 'Odia';
         if (title.includes('bengali')) return 'Bengali';
         if (title.includes('sociology')) return 'Sociology';
@@ -1428,6 +1428,18 @@ datasets.forEach(d => {
         if (title.includes('psychology')) return 'Psychology';
         if (title.includes('computer application') || title.includes('computer app')) return 'Computer Application';
         if (title.includes('urdu')) return 'Urdu';
+        if (title.includes('hindi')) return 'Hindi';
+        if (title.includes('english')) return 'English';
+        if (title.includes('history')) return 'History';
+        if (title.includes('geography')) return 'Geography';
+        if (title.includes('economics')) return 'Economics';
+        if (title.includes('political science')) return 'Political Science';
+        if (title.includes('philosophy')) return 'Philosophy';
+        if (title.includes('anthropology')) return 'Anthropology';
+        if (title.includes('ho ') || title.endsWith('- ho')) return 'Ho';
+        if (title.includes('odia')) return 'Odia';
+        if (title.includes('bengali')) return 'Bengali';
+        if (title.includes('sociology')) return 'Sociology';
       }
     }
     return 'General';
@@ -2144,7 +2156,7 @@ datasets.forEach(d => {
       <tr><td class="info-label">Registration No / Year</td><td class="info-value">${student.reg_no || 'N/A'} / ${student.reg_year || 'N/A'}</td></tr>
       <tr><td class="info-label">College Name</td><td class="info-value">${student.college_name || 'Tata College, Chaibasa'}</td></tr>
     </table>
-    <div class="sec-title">Marks Obtained (FYUGP Semester-III Exam ${student.year_of_exam || '2024'})</div>
+    <div class="sec-title">Marks Obtained (FYUGP Semester-${student.semester || 'III'} Exam ${student.year_of_exam || '2024'})</div>
     <table class="marks-table">
       <thead><tr>
         <th style="width:50%;text-align:left;padding-left:12px">Subject</th>
