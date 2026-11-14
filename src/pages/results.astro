@@ -369,7 +369,7 @@ datasets.forEach(d => {
           
           <div style="display: flex; align-items: center; gap: 0.5rem;">
             <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary);">Sort By:</span>
-            <select id="leaderboard-sort-select" class="form-input" style="width: auto; height: 32px; padding: 0 0.5rem; font-size: 0.8rem; border-radius: var(--radius-xs); cursor: pointer;">
+            <select id="leaderboard-sort-select" class="form-input" style="width: auto; max-width: 240px; height: 32px; padding: 0 0.5rem; font-size: 0.8rem; border-radius: var(--radius-xs); cursor: pointer;">
               <option value="grand_total">Grand Total (Overall)</option>
             </select>
           </div>
@@ -397,9 +397,12 @@ datasets.forEach(d => {
 
       <!-- Subject Toppers list -->
       <div class="card" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
-        <h3 style="font-size: 1.25rem; font-family: var(--font-display); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0;">
-          🥇 Subject Toppers
-        </h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+          <h3 style="font-size: 1.25rem; font-family: var(--font-display); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0;">
+            🥇 Subject Toppers
+          </h3>
+          <input type="text" id="subject-toppers-filter" class="form-input" placeholder="Filter subjects..." autocomplete="off" style="width: 180px; max-width: 100%; height: 32px; padding: 0 0.65rem; font-size: 0.8rem; border-radius: var(--radius-xs);" />
+        </div>
         <p style="color: var(--text-secondary); font-size: 0.825rem; margin-top: -0.5rem;">Click a row to view the student's complete marks card.</p>
         
         <div id="subject-toppers-list" style="display: flex; flex-direction: column; gap: 0.75rem; border-top: 1px solid var(--border-color); padding-top: 1rem; max-height: 400px; overflow-y: auto;">
@@ -411,13 +414,19 @@ datasets.forEach(d => {
 
     <!-- Paper-wise Analysis Section -->
     <div class="card" id="paper-analysis-section" style="padding: 2rem;">
-      <h3 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-        📊 Paper-wise Analysis
-      </h3>
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+          <h3 style="font-size: 1.25rem; font-family: var(--font-display); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+            📊 Paper-wise Analysis
+          </h3>
+          <span id="paper-analysis-count" class="badge badge-primary" style="font-size: 0.75rem; font-weight: 700;">0 papers</span>
+        </div>
+        <input type="text" id="paper-analysis-filter" class="form-input" placeholder="Filter papers..." autocomplete="off" style="width: 220px; max-width: 100%; height: 34px; padding: 0 0.75rem; font-size: 0.82rem; border-radius: var(--radius-xs);" />
+      </div>
       <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
         Deep-dive into how students performed in each paper — highest, average, lowest marks, pass rate, and grade distribution.
       </p>
-      <div id="paper-analysis-output" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;"></div>
+      <div id="paper-analysis-output" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; max-height: 620px; overflow-y: auto; padding-right: 0.25rem;"></div>
     </div>
 
     <!-- Student Comparison Widget -->
@@ -1267,6 +1276,8 @@ datasets.forEach(d => {
   let currentDatasetMetadata = null;
   let selectedMajor = 'All';
   let comparisonChart = null;
+  let currentSubjectToppers = [];
+  let currentPaperAnalysisEntries = [];
 
   // Custom comparator for grand total (descending), tie-broken by student name (alphabetically ascending)
   const grandTotalComparator = (a, b) => {
@@ -1274,6 +1285,13 @@ datasets.forEach(d => {
       return b.grand_total - a.grand_total;
     }
     return a.student_name.localeCompare(b.student_name);
+  };
+
+  const normalizeSearchText = (text) => String(text || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  const matchesStudentQuery = (student, rawQuery) => {
+    const q = normalizeSearchText(rawQuery);
+    if (!q) return false;
+    return student.roll_number === q || normalizeSearchText(student.student_name).includes(q);
   };
 
   // DOM Elements
@@ -1311,6 +1329,11 @@ datasets.forEach(d => {
 
   // Toppers DOM Element
   let subjectToppersList;
+  let subjectToppersFilterInput;
+
+  // Paper Analysis DOM Elements
+  let paperAnalysisFilterInput;
+  let paperAnalysisCountEl;
 
   // Comparison DOM Elements
   let compareBtn;
@@ -1382,6 +1405,27 @@ datasets.forEach(d => {
       .replace(/Digital Systems/gi, "Digital Sys")
       .replace(/Mathematics/gi, "Math")
       .replace(/Composition/gi, "Comp");
+  }
+
+  // --- Utility: Paper ID & HTML Escaping ---
+  function escapeHtml(str) {
+    return String(str ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function getPaperId(key, subObj) {
+    return `${key}::${cleanSubjectName(subObj?.subject)}`;
+  }
+
+  function parsePaperId(paperId) {
+    const str = String(paperId || '');
+    const idx = str.indexOf('::');
+    if (idx === -1) return { slotKey: str, targetName: '' };
+    return { slotKey: str.slice(0, idx), targetName: str.slice(idx + 2) };
   }
 
   // --- Utility: Get Student Major ---
@@ -1542,6 +1586,8 @@ datasets.forEach(d => {
     if (compareRoll1) compareRoll1.value = '';
     if (compareRoll2) compareRoll2.value = '';
     if (comparisonResultOutput) comparisonResultOutput.innerHTML = '';
+    if (subjectToppersFilterInput) subjectToppersFilterInput.value = '';
+    if (paperAnalysisFilterInput) paperAnalysisFilterInput.value = '';
     selectedMajor = 'All';
 
     // Show loading state in lists
@@ -1631,24 +1677,33 @@ datasets.forEach(d => {
       };
     }
 
-    // Update Leaderboard sorting selectors
+    // Update Leaderboard sorting selectors (keyed by paperId so all unique papers are preserved)
     const subjectKeysMap = {};
     for (const student of filteredData) {
       if (!student.subjects) continue;
       for (const [key, subObj] of Object.entries(student.subjects)) {
         if (!subObj || subObj.subject === undefined) continue;
-        subjectKeysMap[key] = cleanSubjectName(subObj.subject);
+        const paperId = getPaperId(key, subObj);
+        if (!subjectKeysMap[paperId]) {
+          subjectKeysMap[paperId] = cleanSubjectName(subObj.subject);
+        }
       }
     }
 
     if (leaderboardSortSelect) {
+      const sortedPapers = Object.entries(subjectKeysMap).sort((a, b) =>
+        a[1].localeCompare(b[1]) || a[0].localeCompare(b[0])
+      );
       let optHtml = '<option value="grand_total">Grand Total (Overall)</option>';
-      for (const [key, cleanName] of Object.entries(subjectKeysMap)) {
-        optHtml += `<option value="${key}">${cleanName}</option>`;
+      for (const [paperId, cleanName] of sortedPapers) {
+        optHtml += `<option value="${escapeHtml(paperId)}">${escapeHtml(cleanName)}</option>`;
       }
       leaderboardSortSelect.innerHTML = optHtml;
       leaderboardSortSelect.value = 'grand_total';
     }
+
+    if (subjectToppersFilterInput) subjectToppersFilterInput.value = '';
+    if (paperAnalysisFilterInput) paperAnalysisFilterInput.value = '';
 
     renderLeaderboard('grand_total');
     renderSubjectToppers(filteredData);
@@ -1669,29 +1724,47 @@ datasets.forEach(d => {
     }
 
     let sorted = [];
+    let activeSlotKey = '';
     if (sortBy === 'grand_total') {
       sorted = [...filteredData].sort(grandTotalComparator);
       if (leaderboardDesc) leaderboardDesc.textContent = "Top 10 students by Grand Total in this semester exam.";
     } else {
-      sorted = [...filteredData].sort((a, b) => {
-        const t1 = a.subjects[sortBy]?.total ?? 0;
-        const t2 = b.subjects[sortBy]?.total ?? 0;
+      const { slotKey, targetName } = parsePaperId(sortBy);
+      activeSlotKey = slotKey;
+      const matching = filteredData.filter(s => {
+        const sub = s.subjects?.[slotKey];
+        return (
+          sub &&
+          sub.subject !== undefined &&
+          sub.total !== null &&
+          sub.total !== undefined &&
+          !isNaN(Number(sub.total)) &&
+          cleanSubjectName(sub.subject) === targetName
+        );
+      });
+      sorted = [...matching].sort((a, b) => {
+        const t1 = Number(a.subjects[slotKey].total);
+        const t2 = Number(b.subjects[slotKey].total);
         if (t2 !== t1) {
           return t2 - t1;
         }
         return a.student_name.localeCompare(b.student_name);
       });
-      const subName = subjectToppersList?.querySelector(`[data-key="${sortBy}"]`) ? cleanSubjectName(filteredData[0]?.subjects[sortBy]?.subject) : 'Subject';
-      if (leaderboardDesc) leaderboardDesc.textContent = `Top 10 students sorted by marks in ${subName}.`;
+      if (leaderboardDesc) leaderboardDesc.textContent = `Top 10 students sorted by marks in ${targetName || 'Subject'}.`;
     }
 
     const top10 = sorted.slice(0, 10);
+
+    if (top10.length === 0) {
+      leaderboardTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 2rem; color: var(--text-secondary);">No leaderboard entries match filter.</td></tr>`;
+      return;
+    }
 
     leaderboardTableBody.innerHTML = top10.map((s, idx) => {
       const rank = idx + 1;
       const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
       const rankClass = rank === 1 ? 'rank-gold' : rank === 2 ? 'rank-silver' : rank === 3 ? 'rank-bronze' : '';
-      const score = sortBy === 'grand_total' ? s.grand_total : (s.subjects[sortBy]?.total ?? '-');
+      const score = sortBy === 'grand_total' ? s.grand_total : (s.subjects?.[activeSlotKey]?.total ?? '-');
       const subLabel = sortBy === 'grand_total' ? '' : `<span style="display: block; font-size: 0.72rem; color: var(--text-secondary); font-weight: 500; margin-top: 2px;">Overall: ${s.grand_total}</span>`;
 
       return `
@@ -1732,40 +1805,33 @@ datasets.forEach(d => {
   };
 
   // --- Subject Toppers Rendering ---
-  const renderSubjectToppers = (filteredData) => {
+  const renderSubjectToppersList = () => {
     if (!subjectToppersList) return;
 
-    const toppersMap = {};
-    for (const student of filteredData) {
-      if (!student.subjects) continue;
-      for (const [key, subObj] of Object.entries(student.subjects)) {
-        if (!subObj || subObj.total === null || subObj.total === undefined) continue;
-        const score = subObj.total;
-        const cleanName = cleanSubjectName(subObj.subject);
-        
-        if (!toppersMap[key] || score > toppersMap[key].maxScore || (score === toppersMap[key].maxScore && student.student_name.localeCompare(toppersMap[key].student.student_name) < 0)) {
-          toppersMap[key] = {
-            student,
-            maxScore: score,
-            subjectName: cleanName
-          };
-        }
-      }
-    }
-
-    const toppersList = Object.entries(toppersMap);
-
-    if (toppersList.length === 0) {
+    if (currentSubjectToppers.length === 0) {
       subjectToppersList.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--text-secondary);">No subject toppers available.</div>`;
       return;
     }
 
-    subjectToppersList.innerHTML = toppersList.map(([key, item]) => `
-      <div class="results-topper-compact-row" data-roll="${item.student.roll_number}" data-key="${key}">
+    const filterVal = normalizeSearchText(subjectToppersFilterInput?.value || '');
+    const visibleToppers = filterVal
+      ? currentSubjectToppers.filter(item =>
+          normalizeSearchText(item.subjectName).includes(filterVal) ||
+          normalizeSearchText(item.student.student_name).includes(filterVal)
+        )
+      : currentSubjectToppers;
+
+    if (visibleToppers.length === 0) {
+      subjectToppersList.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--text-secondary);">No matching subjects found.</div>`;
+      return;
+    }
+
+    subjectToppersList.innerHTML = visibleToppers.map(item => `
+      <div class="results-topper-compact-row" data-roll="${escapeHtml(item.student.roll_number)}" data-key="${escapeHtml(item.paperId)}">
         <div class="rtc-medal">🏅</div>
         <div class="rtc-info">
-          <span class="rtc-subject">${item.subjectName}</span>
-          <span class="rtc-name">${item.student.student_name}</span>
+          <span class="rtc-subject">${escapeHtml(item.subjectName)}</span>
+          <span class="rtc-name">${escapeHtml(item.student.student_name)}</span>
         </div>
         <span class="rtc-score" style="display: inline-block; flex-shrink: 0; min-width: 38px; text-align: center; white-space: nowrap; padding: 0.2rem 0.6rem; border-radius: var(--radius-full); background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.3); color: var(--accent-primary); font-weight: 800; font-size: 0.85rem; font-family: monospace;">${item.maxScore}</span>
       </div>
@@ -1785,43 +1851,68 @@ datasets.forEach(d => {
     });
   };
 
-  // --- Paper-wise Analysis Rendering ---
-  const renderPaperAnalysis = (filteredData) => {
-    const container = document.getElementById('paper-analysis-output');
-    if (!container) return;
+  const renderSubjectToppers = (filteredData) => {
+    if (!subjectToppersList) return;
 
-    // Collect stats per subject key
-    const subjectStats = {};
+    const toppersMap = {};
     for (const student of filteredData) {
       if (!student.subjects) continue;
       for (const [key, subObj] of Object.entries(student.subjects)) {
-        if (!subObj || !subObj.subject || subObj.total === null || subObj.total === undefined) continue;
-        if (!subjectStats[key]) {
-          subjectStats[key] = {
-            name: cleanSubjectName(subObj.subject),
-            fullName: subObj.subject,
-            scores: [],
-            topperName: '',
-            topperScore: 0
-          };
-        }
+        if (!subObj || subObj.subject === undefined || subObj.total === null || subObj.total === undefined) continue;
         const score = Number(subObj.total);
         if (isNaN(score)) continue;
-        subjectStats[key].scores.push(score);
-        if (score > subjectStats[key].topperScore || (score === subjectStats[key].topperScore && student.student_name.localeCompare(subjectStats[key].topperName) < 0)) {
-          subjectStats[key].topperScore = score;
-          subjectStats[key].topperName = student.student_name;
+        const cleanName = cleanSubjectName(subObj.subject);
+        const paperId = getPaperId(key, subObj);
+
+        if (!toppersMap[paperId] || score > toppersMap[paperId].maxScore || (score === toppersMap[paperId].maxScore && student.student_name.localeCompare(toppersMap[paperId].student.student_name) < 0)) {
+          toppersMap[paperId] = {
+            paperId,
+            student,
+            maxScore: score,
+            subjectName: cleanName
+          };
         }
       }
     }
 
-    const entries = Object.entries(subjectStats).filter(([_, s]) => s.scores.length > 0);
-    if (entries.length === 0) {
+    currentSubjectToppers = Object.values(toppersMap).sort((a, b) =>
+      a.subjectName.localeCompare(b.subjectName) || a.paperId.localeCompare(b.paperId)
+    );
+    renderSubjectToppersList();
+  };
+
+  // --- Paper-wise Analysis Rendering ---
+  const renderPaperAnalysisList = () => {
+    const container = document.getElementById('paper-analysis-output');
+    if (!container) return;
+
+    const totalPapers = currentPaperAnalysisEntries.length;
+    if (totalPapers === 0) {
+      if (paperAnalysisCountEl) paperAnalysisCountEl.textContent = '0 papers';
       container.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-secondary); grid-column: 1 / -1;">No paper analysis data available.</div>';
       return;
     }
 
-    container.innerHTML = entries.map(([key, stat]) => {
+    const filterVal = normalizeSearchText(paperAnalysisFilterInput?.value || '');
+    const filteredEntries = filterVal
+      ? currentPaperAnalysisEntries.filter(([_, stat]) =>
+          normalizeSearchText(stat.name).includes(filterVal) ||
+          normalizeSearchText(stat.fullName).includes(filterVal)
+        )
+      : currentPaperAnalysisEntries;
+
+    if (paperAnalysisCountEl) {
+      paperAnalysisCountEl.textContent = filterVal
+        ? `${filteredEntries.length} of ${totalPapers} papers`
+        : `${totalPapers} paper${totalPapers === 1 ? '' : 's'}`;
+    }
+
+    if (filteredEntries.length === 0) {
+      container.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-secondary); grid-column: 1 / -1;">No matching papers found.</div>';
+      return;
+    }
+
+    container.innerHTML = filteredEntries.map(([paperId, stat]) => {
       const scores = stat.scores;
       const count = scores.length;
       const highest = Math.max(...scores);
@@ -1856,9 +1947,9 @@ datasets.forEach(d => {
       const barF = ((gradeF / total) * 100).toFixed(1);
 
       return `
-        <div class="paper-analysis-card">
+        <div class="paper-analysis-card" data-paper-id="${escapeHtml(paperId)}">
           <div class="pac-header">
-            <span class="pac-title">${stat.name}</span>
+            <span class="pac-title">${escapeHtml(stat.name)}</span>
             <span class="pac-count">${count} students</span>
           </div>
 
@@ -1879,7 +1970,7 @@ datasets.forEach(d => {
 
           <div class="pac-topper-row">
             <span>🏆</span>
-            <span class="pac-topper-name">${stat.topperName}</span>
+            <span class="pac-topper-name">${escapeHtml(stat.topperName)}</span>
             <span class="pac-topper-score">${stat.topperScore}</span>
           </div>
 
@@ -1907,6 +1998,43 @@ datasets.forEach(d => {
     }).join('');
   };
 
+  const renderPaperAnalysis = (filteredData) => {
+    const container = document.getElementById('paper-analysis-output');
+    if (!container) return;
+
+    // Collect stats per unique paperId
+    const subjectStats = {};
+    for (const student of filteredData) {
+      if (!student.subjects) continue;
+      for (const [key, subObj] of Object.entries(student.subjects)) {
+        if (!subObj || !subObj.subject || subObj.total === null || subObj.total === undefined) continue;
+        const score = Number(subObj.total);
+        if (isNaN(score)) continue;
+        const paperId = getPaperId(key, subObj);
+        if (!subjectStats[paperId]) {
+          subjectStats[paperId] = {
+            name: cleanSubjectName(subObj.subject),
+            fullName: subObj.subject,
+            scores: [],
+            topperName: '',
+            topperScore: 0
+          };
+        }
+        subjectStats[paperId].scores.push(score);
+        if (score > subjectStats[paperId].topperScore || (score === subjectStats[paperId].topperScore && student.student_name.localeCompare(subjectStats[paperId].topperName) < 0)) {
+          subjectStats[paperId].topperScore = score;
+          subjectStats[paperId].topperName = student.student_name;
+        }
+      }
+    }
+
+    currentPaperAnalysisEntries = Object.entries(subjectStats)
+      .filter(([_, s]) => s.scores.length > 0)
+      .sort((a, b) => a[1].name.localeCompare(b[1].name) || a[0].localeCompare(b[0]));
+
+    renderPaperAnalysisList();
+  };
+
   // --- Search Results ---
   const performSearch = () => {
     if (!searchInput || !searchOutput) return;
@@ -1918,11 +2046,7 @@ datasets.forEach(d => {
     }
 
     // Resolve query
-    const student = currentResultsDataset.find(s => 
-      s.roll_number === query || 
-      s.student_name.toLowerCase() === query ||
-      s.student_name.toLowerCase().includes(query)
-    );
+    const student = currentResultsDataset.find(s => matchesStudentQuery(s, query));
 
     if (!student) {
       searchOutput.innerHTML = `
@@ -2216,8 +2340,8 @@ datasets.forEach(d => {
       return;
     }
 
-    const s1 = currentResultsDataset.find(s => s.roll_number === r1 || s.student_name.toLowerCase().includes(r1));
-    const s2 = currentResultsDataset.find(s => s.roll_number === r2 || s.student_name.toLowerCase().includes(r2));
+    const s1 = currentResultsDataset.find(s => matchesStudentQuery(s, r1));
+    const s2 = currentResultsDataset.find(s => matchesStudentQuery(s, r2));
 
     const errors = [];
     if (!s1) errors.push(r1);
@@ -2443,10 +2567,7 @@ datasets.forEach(d => {
       // 1. Filter by search query first
       let list = [...baselineRanked];
       if (searchQuery) {
-        list = list.filter(s => 
-          s.student_name.toLowerCase().includes(searchQuery) || 
-          s.roll_number.includes(searchQuery)
-        );
+        list = list.filter(s => matchesStudentQuery(s, searchQuery));
       }
 
       // 2. Sort the filtered list
@@ -2604,7 +2725,7 @@ datasets.forEach(d => {
 
     const matches = currentResultsDataset.filter(s => {
       const matchesMajor = selectedMajor === 'All' || s.major === selectedMajor;
-      const matchesQuery = s.roll_number.includes(val) || s.student_name.toLowerCase().includes(val);
+      const matchesQuery = matchesStudentQuery(s, val);
       return matchesMajor && matchesQuery;
     }).slice(0, 6);
 
@@ -2646,7 +2767,7 @@ datasets.forEach(d => {
 
       const matches = currentResultsDataset.filter(s => {
         const matchesMajor = selectedMajor === 'All' || s.major === selectedMajor;
-        const matchesQuery = s.roll_number.includes(val) || s.student_name.toLowerCase().includes(val);
+        const matchesQuery = matchesStudentQuery(s, val);
         return matchesMajor && matchesQuery;
       }).slice(0, 6);
 
@@ -2705,6 +2826,9 @@ datasets.forEach(d => {
     leaderboardDesc = document.getElementById('leaderboard-desc');
 
     subjectToppersList = document.getElementById('subject-toppers-list');
+    subjectToppersFilterInput = document.getElementById('subject-toppers-filter') as HTMLInputElement;
+    paperAnalysisFilterInput = document.getElementById('paper-analysis-filter') as HTMLInputElement;
+    paperAnalysisCountEl = document.getElementById('paper-analysis-count');
 
     compareBtn = document.getElementById('compare-btn');
     compareRoll1 = document.getElementById('compare-roll-1') as HTMLInputElement;
@@ -2805,10 +2929,12 @@ datasets.forEach(d => {
       if (compareRoll1 && compareRoll1.value && compareRoll2 && compareRoll2.value) performComparison();
     });
 
-    // 7. Leaderboard Sort select trigger
+    // 7. Leaderboard Sort & Subject/Paper Filter triggers
     leaderboardSortSelect?.addEventListener('change', (e) => {
       renderLeaderboard((e.target as HTMLSelectElement).value);
     });
+    subjectToppersFilterInput?.addEventListener('input', renderSubjectToppersList);
+    paperAnalysisFilterInput?.addEventListener('input', renderPaperAnalysisList);
 
     // 8. Listen to hash routing changes (registered once globally)
     if (!(window as any).__hashchange_bound) {
