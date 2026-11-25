@@ -16,26 +16,100 @@ datasets.forEach(d => {
   }
   groupedDatasets[d.batch].push(d);
 });
+
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How to check Kolhan University UG Semester 1 & 2 Result 2026 online?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can check Kolhan University UG Semester 1, 2, 3, 4, 6 & 7 results for all 37 affiliated colleges on KolhanResult.in by roll number or student name, or download the official provisional marksheet from kuuniv.in/result/login."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How to download Kolhan University marksheet PDF by roll number?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Visit kuuniv.in/result/login, select FYUGP (NEP), choose your semester, enter your 12-digit University Roll Number, and click Print / Save as PDF. Tata College students can also view detailed marks cards directly on KolhanHub."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the minimum passing marks in Kolhan University NEP FYUGP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Under Kolhan University NEP 2020 FYUGP rules, students generally need at least 40% combined marks (Internal + End-Semester Theory/Practical) in each paper to pass. Failing up to a limited number of papers results in Promoted status, allowing students to clear backlogs in the next odd/even exam."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I do if my Kolhan University result shows Promoted, Absent (AB), or lower marks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If your practical or internal marks show AB, contact your college department immediately for marks rectification. For lower-than-expected theory marks, apply for answer sheet recheck or photocopy through the university notification (see our Recheck Guide at kolhanhub.in/recheck/)."
+      }
+    }
+  ]
+});
 ---
 
 <Layout 
-  title="Kolhan University Result — Tata College Semester Results & Analysis" 
+  title="Kolhan University Result 2026 — UG Sem 1, 2, 3, 4 Check" 
+  rawTitle={true}
   activeTab="results"
-  description="Kolhan University result for Tata College, Chaibasa — search semester-wise student results by roll number or name, check pass percentages, view batch leaderboards, subject toppers, and compare student marks for NEP 2020 FYUGP batch."
-  keywords="Kolhan University result, Kolhan result, Kolhan University exam result 2024, Kolhan University marks, Tata College result, Tata College Chaibasa result, semester result Kolhan University, NEP batch results, student marks card Kolhan, pass percentage Kolhan University, Tata College pass percentage, Kolhan University roll number result"
+  description="Check Kolhan University Result 2026 online for UG Sem 1, 2, 3, 4, 5, 6 & 7 (NEP FYUGP). All 37 colleges portal, Tata College leaderboard & pass analysis."
+  keywords="Kolhan University result, Kolhan University result 2026, Kolhan result, KU Chaibasa result, Kolhan University result UG semester 1, Kolhan University result UG semester 2, Kolhan University result UG semester 3, Kolhan University sem 4 result, Kolhan University sem 5 6 7 result, Kolhan University marksheet PDF, Tata College result, कोल्हान यूनिवर्सिटी रिजल्ट 2026"
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={faqSchema} />
+  </Fragment>
 
   <!-- ========================================== -->
   <!--   RESULTS SELECTION HUB (Default View)     -->
   <!-- ========================================== -->
   <div id="results-hub-view" class="animated-slide-up">
-    <!-- Header -->
-    <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
-      <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">Kolhan University Result</h1>
-      <p style="color: var(--text-secondary); max-width: 650px; font-size: 1.05rem; line-height: 1.6;">
-        Search <strong>Kolhan University semester results</strong> for Tata College, Chaibasa.
-        Find your result by roll number or name, view the batch leaderboard, subject toppers,
-        and perform <strong>side-by-side student comparisons</strong> for the NEP 2020 FYUGP batch.
+    <!-- Compact Mobile-First Header -->
+    <div style="margin-bottom: 1rem;">
+      <h1 style="font-size: clamp(1.45rem, 5.5vw, 1.95rem); font-family: var(--font-display); letter-spacing: -0.03em; line-height: 1.18; margin: 0;">Kolhan University Result 2026</h1>
+      <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.45; margin-top: 0.3rem;">UG Sem 1–7 &amp; Marksheet (NEP FYUGP) &bull; All 37 Colleges</p>
+    </div>
+
+    <!-- All-37-Colleges Funnel Card -->
+    <div class="kr-funnel-card">
+      <div class="kr-funnel-inner">
+        <div style="display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; flex: 1;">
+          <span class="kr-funnel-pill">🌐 ALL 37 KU COLLEGES • 1.25L+ RECORDS</span>
+          <div style="font-size: 1rem; font-weight: 800; font-family: var(--font-display); color: var(--text-primary); line-height: 1.25;">
+            Check Any Kolhan University College Result
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; margin: 0;">
+            Search by Roll No or Name, college rankings &amp; toppers for Batches 2022–24.
+          </p>
+        </div>
+        <a
+          href="https://kolhanresult.in"
+          target="_blank"
+          rel="noopener"
+          class="btn btn-primary kr-funnel-btn"
+          title="Kolhan University Result Portal — All 37 Colleges"
+          onclick="window.gtag && window.gtag('event', 'kolhanresult_click', { location: 'results_hero' })"
+        >
+          Open KolhanResult.in <ArrowUpRight size="16" />
+        </a>
+      </div>
+    </div>
+
+    <!-- Tata College Explorer Label -->
+    <div style="display: flex; flex-direction: column; gap: 0.15rem; margin-bottom: 0.9rem;">
+      <h2 style="font-size: 1.05rem; font-family: var(--font-display); font-weight: 800; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.4rem;">
+        🏛️ Tata College, Chaibasa — Live Explorer
+      </h2>
+      <p style="font-size: 0.78rem; color: var(--text-tertiary); margin: 0;">
+        Tap any semester below for instant marks, leaderboard &amp; pass stats.
       </p>
     </div>
 
@@ -546,6 +620,57 @@ datasets.forEach(d => {
 </Layout>
 
 <style is:global>
+  /* KolhanResult.in All-College Funnel Card */
+  .kr-funnel-card {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.06) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: var(--radius-md);
+    padding: 0.95rem 1rem;
+    margin-bottom: 1.35rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .kr-funnel-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .kr-funnel-btn {
+    width: 100%;
+    height: 40px;
+    padding: 0 1.15rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .kr-funnel-pill {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--accent-primary);
+    background: rgba(99, 102, 241, 0.14);
+    border: 1px solid rgba(99, 102, 241, 0.28);
+    padding: 0.18rem 0.55rem;
+    border-radius: var(--radius-full);
+    width: fit-content;
+  }
+  @media (min-width: 640px) {
+    .kr-funnel-card {
+      padding: 1.1rem 1.25rem;
+    }
+    .kr-funnel-inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+    }
+    .kr-funnel-btn {
+      width: auto;
+    }
+  }
+
   /* Results selection cards styling */
   .results-card-select {
     padding: 1.5rem;
