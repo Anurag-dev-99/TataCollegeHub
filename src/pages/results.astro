@@ -1,12 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import resultsData from '../../public/data/results.json';
+import kuColleges from '../../public/data/ku_colleges.json';
+import examArchiveData from '../../public/data/exam-archive.json';
 import { 
   Trophy, Award, TrendingUp, CheckCircle, ArrowUpRight, Sparkles, 
-  Calendar, Globe, ArrowLeft, Search, GitCompare, Crown, ExternalLink
+  Calendar, Globe, ArrowLeft, Search, GitCompare, Crown, ExternalLink, FileText
 } from '@lucide/astro';
 
-const { announcements, passPercentageBySemester, passPercentageByDepartment, yearlyTrends, datasets = [] } = resultsData;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { datasets = [] } = resultsData;
 
 // Group datasets by batch/session and sort batches & semesters ascending
 const groupedDatasets: Record<string, typeof datasets> = {};
@@ -22,6 +25,33 @@ const sortedBatchGroups = Object.entries(groupedDatasets)
     batchName,
     [...items].sort((a, b) => (a.semNum ?? 99) - (b.semNum ?? 99))
   ] as const);
+
+const QUICK_CHIP_LABELS: Record<string, string> = {
+  '1305': 'Tata College',
+  '0405': 'Ghatshila',
+  '0505': 'Graduate',
+  '1005': 'L.B.S.M.',
+  '1205': 'S.B. College',
+  '1605': 'Karim City',
+  '0605': 'Co-op College',
+  '0805': 'J.L.N. College'
+};
+const quickColleges = kuColleges.slice(0, 8);
+const kuCollegesJson = JSON.stringify(kuColleges);
+
+const PDF_STATUS_NOTES: Record<string, string> = {
+  '2022': 'Sem 7: Online Only • Sem 8: Exam Pending',
+  '2023': 'Sem 4: Result Awaited',
+  '2024': 'Sem 3: Exam Pending'
+};
+const pdfBatches = (examArchiveData.batches || [])
+  .filter(b => ['2022', '2023', '2024'].includes(b.batch))
+  .map(b => ({
+    batch: b.batch,
+    sessionRange: b.sessionRange,
+    statusNote: PDF_STATUS_NOTES[b.batch] || '',
+    pdfs: b.semesters.filter(s => Boolean(s.result))
+  }));
 
 const faqSchema = JSON.stringify({
   "@context": "https://schema.org",
@@ -109,18 +139,76 @@ const faqSchema = JSON.stringify({
       </div>
     </div>
 
-    <!-- Tata College Explorer Label -->
-    <div style="display: flex; flex-direction: column; gap: 0.15rem; margin-bottom: 0.9rem;">
-      <h2 style="font-size: 1.05rem; font-family: var(--font-display); font-weight: 800; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.4rem;">
-        🏛️ Tata College, Chaibasa — Live Explorer
-      </h2>
-      <p style="font-size: 0.78rem; color: var(--text-tertiary); margin: 0;">
-        Tap any semester below for instant marks, leaderboard &amp; pass stats.
+    <!-- All-37-Colleges Selector Header -->
+    <div class="kr-picker-header">
+      <div class="kr-picker-top">
+        <h2 id="selected-college-heading" class="kr-picker-heading">🏛️ Tata College, Chaibasa</h2>
+        <span id="selected-college-mode" class="kr-mode-badge">⚡ Local Hub</span>
+      </div>
+      <p id="selected-college-sub" class="kr-picker-sub">
+        Tap any semester for instant marks, leaderboard &amp; pass stats — or switch to any of the 37 KU colleges.
       </p>
+
+      <!-- Searchable 37-College Dropdown -->
+      <div class="kr-college-picker-wrap" id="college-picker-wrap">
+        <button
+          type="button"
+          id="college-picker-btn"
+          class="kr-picker-btn"
+          aria-expanded="false"
+          aria-controls="college-picker-menu"
+        >
+          <span class="kr-picker-btn-left">
+            <span aria-hidden="true">🏫</span>
+            <span id="college-picker-label">Tata College, Chaibasa (1305)</span>
+          </span>
+          <span class="kr-picker-chevron" aria-hidden="true">▾</span>
+        </button>
+
+        <div id="college-picker-menu" class="kr-college-menu" style="display: none;">
+          <div class="kr-picker-search-wrap">
+            <input
+              type="text"
+              id="college-picker-search"
+              class="kr-picker-search"
+              placeholder="Search college name, city, or code..."
+              autocomplete="off"
+            />
+          </div>
+          <div id="college-picker-list" class="kr-college-list">
+            {kuColleges.map(c => (
+              <button
+                type="button"
+                class={`kr-college-opt ${c.code === '1305' ? 'active' : ''}`}
+                data-code={c.code}
+                data-search={`${c.fullName} ${c.shortName} ${c.location} ${c.code}`.toLowerCase()}
+              >
+                <span class="kr-college-opt-name">{c.fullName}</span>
+                <span class="kr-college-opt-meta">
+                  {c.code === '1305' ? '⚡ Local' : c.code}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick-Pick College Chips -->
+      <div class="kr-quick-chips" role="group" aria-label="Quick college selector">
+        {quickColleges.map(c => (
+          <button
+            type="button"
+            class={`kr-quick-chip ${c.code === '1305' ? 'active' : ''}`}
+            data-code={c.code}
+          >
+            {QUICK_CHIP_LABELS[c.code] || c.shortName}
+          </button>
+        ))}
+      </div>
     </div>
 
     <!-- Selection Groups (Separated by Batch) -->
-    <div class="kr-batches-stack">
+    <div class="kr-batches-stack" id="college-batches-stack">
       {sortedBatchGroups.map(([batchName, items]) => (
         <div class="kr-batch-card">
           <div class="kr-batch-header">
@@ -150,150 +238,73 @@ const faqSchema = JSON.stringify({
       ))}
     </div>
 
-    <!-- Grid for Announcements and Analytics -->
-    <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;" class="md:grid-cols-3">
-      <!-- Left 2 Cols: Result Declarations Table -->
-      <div class="md:col-span-2" style="display: flex; flex-direction: column; gap: 2rem;">
-        <div>
-          <h2 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-            <CheckCircle style="color: var(--accent-success);" /> Declared Results & Alerts
-          </h2>
-          
-          <div class="card" style="padding: 0; overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
-              <thead>
-                <tr style="border-bottom: 1px solid var(--border-color); background-color: var(--bg-tertiary);">
-                  <th style="padding: 1rem; font-weight: 700; color: var(--text-secondary);">Result Announcement</th>
-                  <th style="padding: 1rem; font-weight: 700; color: var(--text-secondary);">Date</th>
-                  <th style="padding: 1rem; font-weight: 700; color: var(--text-secondary);">Status</th>
-                  <th style="padding: 1rem; font-weight: 700; color: var(--text-secondary);">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {announcements.map(res => {
-                  const isDeclared = res.status === 'Declared';
-                  return (
-                    <tr style="border-bottom: 1px solid var(--border-color); transition: background-color 0.2s;" class="hover:bg-tertiary">
-                      <td style="padding: 1rem; font-weight: 600; color: var(--text-primary);">{res.title}</td>
-                      <td style="padding: 1rem; color: var(--text-secondary); font-size: 0.85rem;">{res.date}</td>
-                      <td style="padding: 1rem;">
-                        <span class={`badge ${isDeclared ? 'badge-success' : 'badge-warning'}`} style="font-size: 0.75rem;">
-                          {res.status}
-                        </span>
-                      </td>
-                      <td style="padding: 1rem;">
-                        {isDeclared ? (
-                          <a href={res.link} target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" style="font-size: 0.8rem; gap: 0.25rem; white-space: nowrap; padding: 0.35rem 0.65rem;">
-                            View Marks <ArrowUpRight size="14" />
-                          </a>
-                        ) : (
-                          <span style="font-size: 0.8rem; color: var(--text-tertiary);">Pending</span>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
+    <!-- External College Hub Link (Shown when non-Tata college selected) -->
+    <div id="college-external-footer" class="kr-ext-footer" style="display: none;"></div>
 
-        <!-- Department Toppers -->
-        <div>
-          <h2 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-            <Trophy style="color: var(--accent-warning);" /> Department Toppers (NEP Batch)
-          </h2>
-          
-          <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;" class="md:grid-cols-2">
-            {passPercentageByDepartment.map(dept => (
-              <div class="card" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
-                  <h3 style="font-size: 1.05rem; font-weight: 700;">{dept.department}</h3>
-                  <span class="badge badge-success" style="font-size: 0.75rem;">{dept.passPercentage}% Pass</span>
-                </div>
-                
-                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                  {dept.toppers.map((topper, idx) => (
-                    <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;">
-                      <Award size="16" style={`color: ${idx === 0 ? 'var(--accent-warning)' : 'var(--text-tertiary)'};`} />
-                      <span style="color: var(--text-primary); font-weight: 500;">{topper}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+    <!-- Embedded 37-College Data for Client Switcher -->
+    <script id="ku-colleges-data" type="application/json" set:html={kuCollegesJson} />
+
+    <!-- Official Result Gazette PDFs (All 37 Colleges) -->
+    <section class="kr-pdf-section" aria-labelledby="pdf-gazette-heading">
+      <div style="margin-bottom: 0.85rem;">
+        <h2 id="pdf-gazette-heading" class="kr-section-title">
+          <FileText size="18" style="color: var(--accent-primary); flex-shrink: 0;" />
+          <span>Official Result Gazette PDFs</span>
+        </h2>
+        <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0.2rem 0 0 0; line-height: 1.45;">
+          Official Kolhan University result PDFs for all 37 colleges (including Sem 1–3).
+        </p>
       </div>
 
-      <!-- Right Column: Semester Pass Rates & Updates -->
-      <div style="display: flex; flex-direction: column; gap: 2rem;">
-        <div>
-          <h2 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-            <TrendingUp style="color: var(--accent-primary);" /> Semester Pass Rates
-          </h2>
-          
-          <div class="card" style="display: flex; flex-direction: column; gap: 1.25rem;">
-            <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
-              Comparative analysis of pass percentages across the undergraduate batches.
-            </p>
-            
-            {passPercentageBySemester.map(item => (
-              <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
-                  <span style="font-weight: 700; color: var(--text-primary);">{item.semester}</span>
-                  <span style="font-size: 0.8rem; color: var(--text-secondary);">
-                    <strong style="color: var(--text-primary);">{item.passPercentage}%</strong> ({item.totalStudents} students)
-                  </span>
-                </div>
-                
-                <div style="background-color: var(--bg-tertiary); height: 10px; border-radius: var(--radius-full); overflow: hidden; display: flex;">
-                  <div style={`width: ${item.passPercentage}%; background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-success) 100%); border-radius: var(--radius-full);`}></div>
-                </div>
-              </div>
-            ))}
+      <div class="kr-pdf-stack">
+        {pdfBatches.map(b => (
+          <div class="kr-pdf-card">
+            <div class="kr-pdf-header">
+              <h3 class="kr-pdf-batch-title">🎓 Batch {b.sessionRange}</h3>
+              {b.statusNote && <span class="kr-pdf-status">{b.statusNote}</span>}
+            </div>
+            <div class="kr-pdf-chips">
+              {b.pdfs.map(s => (
+                <a
+                  href={s.result}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="kr-pdf-chip"
+                  onclick={`window.gtag && window.gtag('event', 'result_pdf_click', { batch: '${b.batch}', sem: '${s.sem}' })`}
+                >
+                  <span>📄 Sem {s.sem} PDF</span>
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
+        ))}
+      </div>
 
-        <!-- University Comparison -->
-        <div class="card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%); border: 1px dashed var(--border-color); padding: 1.25rem;">
-          <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem; color: var(--accent-primary);">
-            <GitCompare size="16" /> Tata College vs KU Average
-          </h3>
-          <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 1rem;">
-            Semester 2 pass rate comparison across all 32 colleges.
+      <!-- Official KU Marksheet Portal Strip -->
+      <div class="kr-official-strip">
+        <div style="min-width: 0; flex: 1;">
+          <div style="font-size: 0.92rem; font-weight: 800; font-family: var(--font-display); color: var(--text-primary);">
+            🏛️ Official Provisional Marksheet (kuuniv.in)
+          </div>
+          <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0.18rem 0 0 0; line-height: 1.4;">
+            Download your official university marksheet PDF using your 12-digit Roll Number.
           </p>
-          
-          <div style="display: flex; flex-direction: column; gap: 1rem;">
-            <!-- Tata College Bar -->
-            <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
-                <span style="font-weight: 700; color: var(--text-primary);">Tata College</span>
-                <span style="font-size: 0.8rem; color: var(--text-secondary);">
-                  <strong style="color: var(--accent-primary);">{resultsData.universityComparison?.tataCollege || 40.9}%</strong>
-                </span>
-              </div>
-              <div style="background-color: var(--bg-tertiary); height: 10px; border-radius: var(--radius-full); overflow: hidden; display: flex;">
-                <div style={`width: ${resultsData.universityComparison?.tataCollege || 40.9}%; background: linear-gradient(90deg, var(--accent-primary) 0%, #8b5cf6 100%); border-radius: var(--radius-full);`}></div>
-              </div>
-            </div>
-            
-            <!-- Kolhan University Bar -->
-            <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
-                <span style="font-weight: 700; color: var(--text-primary);">Kolhan University</span>
-                <span style="font-size: 0.8rem; color: var(--text-secondary);">
-                  <strong style="color: var(--accent-success);">{resultsData.universityComparison?.kolhanUniversity || 50.9}%</strong>
-                </span>
-              </div>
-              <div style="background-color: var(--bg-tertiary); height: 10px; border-radius: var(--radius-full); overflow: hidden; display: flex;">
-                <div style={`width: ${resultsData.universityComparison?.kolhanUniversity || 50.9}%; background: linear-gradient(90deg, var(--accent-success) 0%, #10b981 100%); border-radius: var(--radius-full);`}></div>
-              </div>
-            </div>
-          </div>
         </div>
+        <a
+          href="https://www.kuuniv.in/result/login"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-secondary kr-official-btn"
+        >
+          Open kuuniv.in <ArrowUpRight size="15" />
+        </a>
       </div>
-    </div>
+
+      <p style="font-size: 0.78rem; color: var(--text-tertiary); margin: 0.75rem 0 0 0; text-align: center;">
+        Looking for exam dates, centre lists, or form notices?{' '}
+        <a href={`${baseUrl}/exam-archive`} style="font-weight: 700; color: var(--accent-primary);">View Exam Archive →</a>
+      </p>
+    </section>
   </div>
 
 
@@ -836,6 +847,341 @@ const faqSchema = JSON.stringify({
     }
   }
   
+  /* College Selector & Gazette PDF Styles */
+  .kr-picker-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin-bottom: 0.95rem;
+  }
+  .kr-picker-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .kr-picker-heading {
+    font-size: 1.05rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.25;
+  }
+  .kr-mode-badge {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: var(--accent-primary);
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.28);
+    padding: 0.18rem 0.55rem;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .kr-mode-badge.is-external {
+    color: var(--accent-success);
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.28);
+  }
+  .kr-picker-sub {
+    font-size: 0.78rem;
+    color: var(--text-tertiary);
+    margin: 0;
+    line-height: 1.4;
+  }
+  .kr-college-picker-wrap {
+    position: relative;
+    width: 100%;
+  }
+  .kr-picker-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.62rem 0.85rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  .kr-picker-btn:hover,
+  .kr-picker-btn:focus-visible {
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-sm);
+  }
+  .kr-picker-btn-left {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-width: 0;
+    flex: 1;
+  }
+  #college-picker-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .kr-picker-chevron {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .kr-college-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 60;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+  .kr-picker-search-wrap {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-tertiary);
+  }
+  .kr-picker-search {
+    width: 100%;
+    height: 36px;
+    padding: 0 0.7rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xs);
+    color: var(--text-primary);
+    font-size: 0.82rem;
+  }
+  .kr-picker-search:focus {
+    border-color: var(--accent-primary);
+  }
+  .kr-college-list {
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 0.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .kr-college-opt {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: var(--radius-xs);
+    text-align: left;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color 0.15s;
+  }
+  .kr-college-opt:hover {
+    background-color: var(--bg-tertiary);
+  }
+  .kr-college-opt.active {
+    background-color: rgba(99, 102, 241, 0.14);
+    color: var(--accent-primary);
+    font-weight: 700;
+  }
+  .kr-college-opt-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .kr-college-opt-meta {
+    font-size: 0.68rem;
+    font-weight: 700;
+    font-family: monospace;
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--radius-xs);
+    flex-shrink: 0;
+  }
+  .kr-quick-chips {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    overflow-x: auto;
+    max-width: 100%;
+    min-width: 0;
+    padding-bottom: 0.15rem;
+    scrollbar-width: none;
+  }
+  .kr-quick-chips::-webkit-scrollbar {
+    display: none;
+  }
+  .kr-quick-chip {
+    flex-shrink: 0;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  .kr-quick-chip:hover {
+    border-color: var(--accent-primary);
+    color: var(--text-primary);
+  }
+  .kr-quick-chip.active {
+    background-color: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #fff;
+    font-weight: 700;
+  }
+  .kr-sem-tile.kr-sem-external {
+    text-decoration: none;
+    color: inherit;
+  }
+  .kr-ext-footer {
+    margin-top: -0.95rem;
+    margin-bottom: 1.75rem;
+    display: flex;
+    justify-content: center;
+  }
+  .kr-ext-link-btn {
+    width: 100%;
+    height: 40px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+  }
+  .kr-pdf-section {
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .kr-section-title {
+    font-size: 1.08rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .kr-pdf-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .kr-pdf-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.85rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .kr-pdf-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.65rem;
+  }
+  .kr-pdf-batch-title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    font-family: var(--font-display);
+    color: var(--text-primary);
+    margin: 0;
+  }
+  .kr-pdf-status {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--accent-warning);
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    padding: 0.14rem 0.5rem;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+  }
+  .kr-pdf-chips {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+  .kr-pdf-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.35rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.24);
+    border-radius: var(--radius-xs);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+  }
+  .kr-pdf-chip:hover {
+    background: rgba(99, 102, 241, 0.16);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+  .kr-official-strip {
+    margin-top: 0.85rem;
+    background-color: var(--bg-secondary);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .kr-official-btn {
+    width: 100%;
+    height: 38px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  @media (min-width: 640px) {
+    .kr-pdf-card {
+      padding: 1rem 1.1rem;
+    }
+    .kr-pdf-chips {
+      grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+      gap: 0.55rem;
+    }
+    .kr-pdf-chip {
+      font-size: 0.78rem;
+    }
+    .kr-official-strip {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.15rem;
+    }
+    .kr-official-btn,
+    .kr-ext-link-btn {
+      width: auto;
+    }
+  }
+
   /* Suggestions items */
   .results-suggestion-item {
     display: flex;
@@ -3133,13 +3479,201 @@ const faqSchema = JSON.stringify({
     updatesBtn = document.getElementById('dashboard-updates-btn');
     updatesCount = document.getElementById('updates-count');
 
-    // 1. Exam cards open dashboard click handlers
-    examCards.forEach(card => {
-      card.addEventListener('click', () => {
+    // 1. Exam cards open dashboard (delegated on #college-batches-stack so college switch works cleanly)
+    const batchesStack = document.getElementById('college-batches-stack');
+    if (batchesStack && !batchesStack.dataset.delegated) {
+      batchesStack.addEventListener('click', (e) => {
+        const card = (e.target as HTMLElement)?.closest('.results-card-select');
+        if (!card) return;
         const examId = card.getAttribute('data-exam');
-        window.location.hash = `#results?exam=${examId}`;
+        if (examId) window.location.hash = `#results?exam=${examId}`;
       });
-    });
+      batchesStack.dataset.delegated = '1';
+    }
+
+    // 1b. All-37-Colleges Selector Logic
+    const collegesDataEl = document.getElementById('ku-colleges-data');
+    const pickerWrap = document.getElementById('college-picker-wrap');
+    const pickerBtn = document.getElementById('college-picker-btn');
+    const pickerMenu = document.getElementById('college-picker-menu');
+    const pickerSearch = document.getElementById('college-picker-search') as HTMLInputElement;
+    const pickerLabel = document.getElementById('college-picker-label');
+    const selectedHeading = document.getElementById('selected-college-heading');
+    const selectedMode = document.getElementById('selected-college-mode');
+    const selectedSub = document.getElementById('selected-college-sub');
+    const extFooter = document.getElementById('college-external-footer');
+
+    if (batchesStack && collegesDataEl && !batchesStack.dataset.collegeInit) {
+      const tataBatchesHtml = batchesStack.innerHTML;
+      let kuCollegesList: any[] = [];
+      try {
+        kuCollegesList = JSON.parse(collegesDataEl.textContent || '[]');
+      } catch (err) {
+        console.error('Failed to parse ku_colleges JSON', err);
+      }
+
+      const BATCH_LABELS: Record<string, string> = {
+        '2022': '2022-2026',
+        '2023': '2023-2027',
+        '2024': '2024-2028'
+      };
+
+      const closeCollegeMenu = () => {
+        if (pickerMenu) pickerMenu.style.display = 'none';
+        pickerBtn?.setAttribute('aria-expanded', 'false');
+      };
+
+      const selectCollege = (code: string) => {
+        const college = kuCollegesList.find(c => c.code === code);
+        if (!college) return;
+
+        document.querySelectorAll('.kr-quick-chip').forEach(ch => {
+          ch.classList.toggle('active', ch.getAttribute('data-code') === code);
+        });
+        document.querySelectorAll('.kr-college-opt').forEach(opt => {
+          opt.classList.toggle('active', opt.getAttribute('data-code') === code);
+        });
+
+        if (pickerLabel) pickerLabel.textContent = `${college.fullName} (${college.code})`;
+        if (selectedHeading) selectedHeading.textContent = `🏛️ ${college.fullName}`;
+
+        if (code === '1305') {
+          batchesStack.innerHTML = tataBatchesHtml;
+          if (selectedMode) {
+            selectedMode.textContent = '⚡ Local Hub';
+            selectedMode.classList.remove('is-external');
+          }
+          if (selectedSub) {
+            selectedSub.textContent = 'Tap any semester for instant marks, leaderboard & pass stats — or switch to any of the 37 KU colleges.';
+          }
+          if (extFooter) {
+            extFooter.style.display = 'none';
+            extFooter.innerHTML = '';
+          }
+        } else {
+          const toppers = college.toppers || {};
+          const byBatch: Record<string, Array<{ sem: number; name: string; marks: number; course: string }>> = {};
+          for (const [key, val] of Object.entries(toppers) as Array<[string, any]>) {
+            const parts = key.split('_');
+            if (parts.length !== 2) continue;
+            const [batch, semStr] = parts;
+            const sem = Number(semStr);
+            if (!byBatch[batch]) byBatch[batch] = [];
+            byBatch[batch].push({
+              sem,
+              name: val?.name || 'View Toppers',
+              marks: val?.marks || 0,
+              course: val?.course || 'All Streams'
+            });
+          }
+
+          const batchKeys = ['2022', '2023', '2024'].filter(b => (byBatch[b] || []).length > 0);
+          batchesStack.innerHTML = batchKeys.map(batch => {
+            const items = byBatch[batch].sort((a, b) => a.sem - b.sem);
+            const batchRange = BATCH_LABELS[batch] || batch;
+            return `
+              <div class="kr-batch-card">
+                <div class="kr-batch-header">
+                  <h3 class="kr-batch-title">🎓 Batch ${batchRange}</h3>
+                  <span class="kr-batch-count">${items.length} ${items.length === 1 ? 'Semester' : 'Semesters'} Declared</span>
+                </div>
+                <div class="kr-sem-grid">
+                  ${items.map(item => `
+                    <a
+                      href="https://kolhanresult.in/college/${escapeHtml(code)}?batch=${escapeHtml(batch)}&sem=${item.sem}"
+                      target="_blank"
+                      rel="noopener"
+                      class="kr-sem-tile kr-sem-external"
+                      onclick="window.gtag && window.gtag('event', 'kolhanresult_college_sem', { college: '${escapeHtml(code)}', batch: '${escapeHtml(batch)}', sem: '${item.sem}' })"
+                    >
+                      <div class="kr-sem-top">
+                        <span class="kr-sem-name">Semester ${item.sem}</span>
+                        <span class="kr-sem-arrow" aria-hidden="true">↗</span>
+                      </div>
+                      <div class="kr-sem-topper">
+                        <span class="kr-sem-crown" aria-hidden="true">👑</span>
+                        <span class="kr-sem-topper-name">${escapeHtml(item.name)}</span>
+                      </div>
+                      <div class="kr-sem-bottom">
+                        <span class="kr-sem-course">${escapeHtml(item.course)}</span>
+                        ${item.marks ? `<span class="kr-sem-score">${item.marks}</span>` : ''}
+                      </div>
+                    </a>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          if (selectedMode) {
+            selectedMode.textContent = 'KolhanResult.in ↗';
+            selectedMode.classList.add('is-external');
+          }
+          if (selectedSub) {
+            selectedSub.textContent = `Tap any semester below to open ${college.shortName} marks & leaderboard on KolhanResult.in.`;
+          }
+          if (extFooter) {
+            extFooter.innerHTML = `
+              <a
+                href="https://kolhanresult.in/college/${escapeHtml(code)}"
+                target="_blank"
+                rel="noopener"
+                class="btn btn-primary kr-ext-link-btn"
+              >
+                Open Full ${escapeHtml(college.shortName)} Hub on KolhanResult.in ↗
+              </a>
+            `;
+            extFooter.style.display = 'flex';
+          }
+        }
+        closeCollegeMenu();
+      };
+
+      pickerBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!pickerMenu) return;
+        const isOpen = pickerMenu.style.display === 'block';
+        pickerMenu.style.display = isOpen ? 'none' : 'block';
+        pickerBtn.setAttribute('aria-expanded', String(!isOpen));
+        if (!isOpen && pickerSearch) {
+          pickerSearch.value = '';
+          document.querySelectorAll('.kr-college-opt').forEach(opt => {
+            (opt as HTMLElement).style.display = 'flex';
+          });
+          setTimeout(() => pickerSearch.focus(), 40);
+        }
+      });
+
+      pickerSearch?.addEventListener('input', () => {
+        const q = normalizeSearchText(pickerSearch.value);
+        document.querySelectorAll('.kr-college-opt').forEach(opt => {
+          const hay = opt.getAttribute('data-search') || '';
+          (opt as HTMLElement).style.display = !q || hay.includes(q) ? 'flex' : 'none';
+        });
+      });
+
+      document.querySelectorAll('.kr-college-opt').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const code = opt.getAttribute('data-code');
+          if (code) selectCollege(code);
+        });
+      });
+
+      document.querySelectorAll('.kr-quick-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          const code = chip.getAttribute('data-code');
+          if (code) selectCollege(code);
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (pickerWrap && !pickerWrap.contains(e.target as Node)) {
+          closeCollegeMenu();
+        }
+      });
+
+      batchesStack.dataset.collegeInit = '1';
+    }
 
     // 2. Back to Selection Hub button click
     backBtn?.addEventListener('click', () => {
