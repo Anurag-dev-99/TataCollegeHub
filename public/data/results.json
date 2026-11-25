@@ -250,6 +250,11 @@
     {
       "id": "sem7_master_2022-2026",
       "title": "Semester 7 — All Streams (Science + Arts)",
+      "shortTitle": "Semester 7",
+      "semNum": 7,
+      "topperName": "BIBHA MAHTO",
+      "topperCourse": "BSc Botany",
+      "topperScore": 409,
       "batch": "Session 2022-2026",
       "university": "Kolhan University",
       "date": "2026-11-14",
@@ -281,6 +286,11 @@
     {
       "id": "sem2_master_2024-2028",
       "title": "Semester 2 — All Streams (Science + Arts)",
+      "shortTitle": "Semester 2",
+      "semNum": 2,
+      "topperName": "AKASH BODRA",
+      "topperCourse": "BSc Zoology",
+      "topperScore": 390,
       "batch": "Session 2024-2028",
       "university": "Kolhan University",
       "date": "2026-08-24",
@@ -297,6 +307,11 @@
     {
       "id": "sem1_master_2024-2028",
       "title": "Semester 1 — All Streams (Science + Arts)",
+      "shortTitle": "Semester 1",
+      "semNum": 1,
+      "topperName": "SUMITRA PURTY",
+      "topperCourse": "BSc Botany",
+      "topperScore": 376,
       "batch": "Session 2024-2028",
       "university": "Kolhan University",
       "date": "2026-07-27",
@@ -313,6 +328,11 @@
     {
       "id": "sem4_master_2022-2026",
       "title": "Semester 4 — All Streams (Science + Arts)",
+      "shortTitle": "Semester 4",
+      "semNum": 4,
+      "topperName": "AKANKSHA PRADHAN",
+      "topperCourse": "BA Odia",
+      "topperScore": 395,
       "batch": "Session 2022-2026",
       "university": "Kolhan University",
       "date": "2026-07-24",
@@ -344,6 +364,11 @@
     {
       "id": "sem2_master_2023-2027",
       "title": "Semester 2 — All Streams (Science + Arts)",
+      "shortTitle": "Semester 2",
+      "semNum": 2,
+      "topperName": "NEHA FIRDOUS",
+      "topperCourse": "BA Urdu",
+      "topperScore": 388,
       "batch": "Session 2023-2027",
       "university": "Kolhan University",
       "date": "2026-07-26",
@@ -365,6 +390,11 @@
     {
       "id": "sem3_master_2023-2027",
       "title": "Semester 3 — All Streams (Science + Arts)",
+      "shortTitle": "Semester 3",
+      "semNum": 3,
+      "topperName": "HIMADRI BODRA",
+      "topperCourse": "BA Psychology",
+      "topperScore": 397,
       "batch": "Session 2023-2027",
       "university": "Kolhan University",
       "date": "2026-07-23",
@@ -396,8 +426,34 @@
       ]
     },
     {
+      "id": "sem5_master_2022-2026",
+      "title": "Semester 5 — All Streams (Science + Arts)",
+      "shortTitle": "Semester 5",
+      "semNum": 5,
+      "topperName": "PRITI KORAH",
+      "topperCourse": "BSc Zoology",
+      "topperScore": 428,
+      "batch": "Session 2022-2026",
+      "university": "Kolhan University",
+      "date": "2026-04-10",
+      "status": "Declared",
+      "file": "results_sem5_master.json",
+      "updates": [
+        {
+          "version": "1.0",
+          "title": "All 18 Departments Complete",
+          "desc": "Full Tata College Sem 5 (2022 batch) results: History (246), Political Science (131), Hindi (130), Economics (96), Ho (84), Geography (69), Mathematics (69), English (67), Psychology (63), Chemistry (49), Physics (46), Zoology (39), Anthropology (38), Computer Application (17), Botany (9), Philosophy (7), Urdu (5), Odia (1). Grand total: 1,166 students across 18 departments (93.1% pass rate)."
+        }
+      ]
+    },
+    {
       "id": "sem6_master_2022-2026",
       "title": "Semester 6 — All Streams (Science + Arts)",
+      "shortTitle": "Semester 6",
+      "semNum": 6,
+      "topperName": "PRITI KORAH",
+      "topperCourse": "BSc Zoology",
+      "topperScore": 419,
       "batch": "Session 2022-2026",
       "university": "Kolhan University",
       "date": "2026-07-31",

@@ -8,7 +8,7 @@ import {
 
 const { announcements, passPercentageBySemester, passPercentageByDepartment, yearlyTrends, datasets = [] } = resultsData;
 
-// Group datasets by batch/session
+// Group datasets by batch/session and sort batches & semesters ascending
 const groupedDatasets: Record<string, typeof datasets> = {};
 datasets.forEach(d => {
   if (!groupedDatasets[d.batch]) {
@@ -16,6 +16,12 @@ datasets.forEach(d => {
   }
   groupedDatasets[d.batch].push(d);
 });
+const sortedBatchGroups = Object.entries(groupedDatasets)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([batchName, items]) => [
+    batchName,
+    [...items].sort((a, b) => (a.semNum ?? 99) - (b.semNum ?? 99))
+  ] as const);
 
 const faqSchema = JSON.stringify({
   "@context": "https://schema.org",
@@ -114,40 +120,30 @@ const faqSchema = JSON.stringify({
     </div>
 
     <!-- Selection Groups (Separated by Batch) -->
-    <div style="display: flex; flex-direction: column; gap: 2.25rem; margin-bottom: 2.5rem;">
-      {Object.entries(groupedDatasets).map(([batchName, items]) => (
-        <div style="display: flex; flex-direction: column; gap: 0.85rem;">
-          <div style="display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
-            <span style="font-size: 1.25rem; line-height: 1;">🎓</span>
-            <h2 style="font-size: 1.15rem; font-family: var(--font-display); font-weight: 800; color: var(--accent-primary); letter-spacing: -0.01em;">
-              Batch {batchName.replace('Session ', '')}
-            </h2>
+    <div class="kr-batches-stack">
+      {sortedBatchGroups.map(([batchName, items]) => (
+        <div class="kr-batch-card">
+          <div class="kr-batch-header">
+            <h3 class="kr-batch-title">🎓 Batch {batchName.replace('Session ', '')}</h3>
+            <span class="kr-batch-count">{items.length} {items.length === 1 ? 'Semester' : 'Semesters'} Declared</span>
           </div>
-          
-          <div class="results-hub-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+
+          <div class="kr-sem-grid">
             {items.map(d => (
-              <div class="results-card-select card card-interactive" data-exam={d.id} style="display: flex; flex-direction: column; gap: 1rem; cursor: pointer; text-decoration: none; color: inherit;">
-                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
-                  <div style="background-color: rgba(99, 102, 241, 0.1); color: var(--accent-primary); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
-                    <Award size="22" />
-                  </div>
-                  <div style="display: flex; gap: 0.5rem; align-items: center;">
-                    <span class={`badge ${d.batch.includes('2022-2026') ? 'badge-primary' : 'badge-warning'}`} style="font-size: 0.75rem; font-weight: 800; padding: 0.25rem 0.625rem; border-radius: var(--radius-xs); letter-spacing: normal; text-transform: none;">
-                      {d.batch}
-                    </span>
-                    <span class="badge badge-success" style="font-size: 0.75rem; font-weight: 800; padding: 0.25rem 0.625rem; text-transform: uppercase; border-radius: var(--radius-xs);">{d.status}</span>
-                  </div>
+              <button type="button" class="results-card-select kr-sem-tile" data-exam={d.id}>
+                <div class="kr-sem-top">
+                  <span class="kr-sem-name">{d.shortTitle || d.title.split('—')[0].trim()}</span>
+                  <span class="kr-sem-arrow" aria-hidden="true">→</span>
                 </div>
-                
-                <div>
-                  <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.15rem; tracking: -0.015em; line-height: 1.35;">{d.title}</h3>
+                <div class="kr-sem-topper">
+                  <span class="kr-sem-crown" aria-hidden="true">👑</span>
+                  <span class="kr-sem-topper-name">{d.topperName || 'View Toppers'}</span>
                 </div>
-                
-                <div style="display: flex; justify-content: space-between; width: 100%; border-top: 1px solid var(--border-color); padding-top: 0.875rem; margin-top: auto; font-size: 0.8rem; color: var(--text-secondary);">
-                  <span style="display: flex; align-items: center; gap: 0.25rem;"><Calendar size="14" /> {d.date}</span>
-                  <span style="display: flex; align-items: center; gap: 0.25rem; font-weight: 700; color: var(--accent-primary);">Open Dashboard →</span>
+                <div class="kr-sem-bottom">
+                  <span class="kr-sem-course">{d.topperCourse || 'All Streams'}</span>
+                  {d.topperScore && <span class="kr-sem-score">{d.topperScore}</span>}
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -671,10 +667,173 @@ const faqSchema = JSON.stringify({
     }
   }
 
-  /* Results selection cards styling */
-  .results-card-select {
-    padding: 1.5rem;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Compact Mobile Batch & Semester Grid (KolhanResult Style) */
+  .kr-batches-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    margin-bottom: 1.75rem;
+  }
+  .kr-batch-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.85rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .kr-batch-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.7rem;
+  }
+  .kr-batch-title {
+    font-size: 0.98rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    color: var(--accent-primary);
+    letter-spacing: -0.01em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+  .kr-batch-count {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    padding: 0.18rem 0.55rem;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .kr-sem-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+  .kr-sem-tile {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0.72rem 0.68rem;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    min-width: 0;
+  }
+  .kr-sem-tile:hover,
+  .kr-sem-tile:focus-visible {
+    border-color: var(--accent-primary);
+    background-color: var(--bg-hover);
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+    transform: translateY(-1px);
+  }
+  .kr-sem-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem;
+    width: 100%;
+  }
+  .kr-sem-name {
+    font-size: 0.9rem;
+    font-weight: 800;
+    font-family: var(--font-display);
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+  .kr-sem-arrow {
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+    flex-shrink: 0;
+  }
+  .kr-sem-tile:hover .kr-sem-arrow {
+    color: var(--accent-primary);
+    transform: translateX(2px);
+  }
+  .kr-sem-topper {
+    display: flex;
+    align-items: center;
+    gap: 0.28rem;
+    min-width: 0;
+    width: 100%;
+  }
+  .kr-sem-crown {
+    font-size: 0.75rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .kr-sem-topper-name {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--accent-warning);
+    letter-spacing: 0.01em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .kr-sem-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem;
+    width: 100%;
+    margin-top: auto;
+  }
+  .kr-sem-course {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .kr-sem-score {
+    font-size: 0.72rem;
+    font-weight: 800;
+    font-family: monospace;
+    color: var(--accent-success);
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    padding: 0.08rem 0.42rem;
+    border-radius: var(--radius-xs);
+    flex-shrink: 0;
+    line-height: 1.35;
+  }
+  @media (min-width: 640px) {
+    .kr-batch-card {
+      padding: 1.1rem;
+    }
+    .kr-sem-grid {
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 0.85rem;
+    }
+    .kr-sem-tile {
+      padding: 0.9rem;
+      gap: 0.55rem;
+    }
+    .kr-sem-name {
+      font-size: 0.98rem;
+    }
+    .kr-sem-topper-name {
+      font-size: 0.78rem;
+    }
+    .kr-sem-course,
+    .kr-sem-score {
+      font-size: 0.76rem;
+    }
   }
   
   /* Suggestions items */
