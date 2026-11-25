@@ -157,7 +157,11 @@ kolhan-syllabus-browser.html
 # Generated data & reports
 seo_*.json
 seo_*.md
+seo_dashboard.html
 temp_*.json
+gsc_service_account.json
+*service_account*.json
+*.bat
 
 # Documentation (local only)
 ASTRO_REBUILD_SPEC.md
