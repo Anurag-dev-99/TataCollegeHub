@@ -53,43 +53,36 @@ const pdfBatches = (examArchiveData.batches || [])
     pdfs: b.semesters.filter(s => Boolean(s.result))
   }));
 
+const faqItems = [
+  {
+    q: "How to check Kolhan University UG Semester 1 & 2 Result 2026 online?",
+    a: "You can check Kolhan University UG Semester 1, 2, 3, 4, 5, 6 & 7 results for all 37 affiliated colleges on KolhanResult.in by roll number or student name, or download the official provisional marksheet from kuuniv.in/result/login."
+  },
+  {
+    q: "How to download Kolhan University marksheet PDF by roll number?",
+    a: "Visit kuuniv.in/result/login, select FYUGP (NEP), choose your semester, enter your 12-digit University Roll Number, and click Print / Save as PDF. Tata College students can also view detailed marks cards directly on KolhanHub."
+  },
+  {
+    q: "What are the minimum passing marks in Kolhan University NEP FYUGP?",
+    a: "Under Kolhan University NEP 2020 FYUGP rules, students generally need at least 40% combined marks (Internal + End-Semester Theory/Practical) in each paper to pass. Failing up to a limited number of papers results in Promoted status, allowing students to clear backlogs in the next odd/even exam."
+  },
+  {
+    q: "What should I do if my Kolhan University result shows Promoted, Absent (AB), or lower marks?",
+    a: "If your practical or internal marks show AB, contact your college department immediately for marks rectification. For lower-than-expected theory marks, apply for answer sheet recheck or photocopy through the university notification (see our Recheck Guide at kolhanhub.in/recheck/)."
+  }
+];
+
 const faqSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How to check Kolhan University UG Semester 1 & 2 Result 2026 online?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "You can check Kolhan University UG Semester 1, 2, 3, 4, 6 & 7 results for all 37 affiliated colleges on KolhanResult.in by roll number or student name, or download the official provisional marksheet from kuuniv.in/result/login."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How to download Kolhan University marksheet PDF by roll number?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Visit kuuniv.in/result/login, select FYUGP (NEP), choose your semester, enter your 12-digit University Roll Number, and click Print / Save as PDF. Tata College students can also view detailed marks cards directly on KolhanHub."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What are the minimum passing marks in Kolhan University NEP FYUGP?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Under Kolhan University NEP 2020 FYUGP rules, students generally need at least 40% combined marks (Internal + End-Semester Theory/Practical) in each paper to pass. Failing up to a limited number of papers results in Promoted status, allowing students to clear backlogs in the next odd/even exam."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What should I do if my Kolhan University result shows Promoted, Absent (AB), or lower marks?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "If your practical or internal marks show AB, contact your college department immediately for marks rectification. For lower-than-expected theory marks, apply for answer sheet recheck or photocopy through the university notification (see our Recheck Guide at kolhanhub.in/recheck/)."
-      }
+  "mainEntity": faqItems.map(item => ({
+    "@type": "Question",
+    "name": item.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.a
     }
-  ]
+  }))
 });
 ---
 
@@ -143,7 +136,18 @@ const faqSchema = JSON.stringify({
     <div class="kr-picker-header">
       <div class="kr-picker-top">
         <h2 id="selected-college-heading" class="kr-picker-heading">🏛️ Tata College, Chaibasa</h2>
-        <span id="selected-college-mode" class="kr-mode-badge">⚡ Local Hub</span>
+        <div class="kr-picker-actions">
+          <button
+            type="button"
+            id="pin-college-btn"
+            class="kr-pin-btn"
+            aria-pressed="false"
+            title="Save this college as your default on this device"
+          >
+            📌 Pin College
+          </button>
+          <span id="selected-college-mode" class="kr-mode-badge">⚡ Local Hub</span>
+        </div>
       </div>
       <p id="selected-college-sub" class="kr-picker-sub">
         Tap any semester for instant marks, leaderboard &amp; pass stats — or switch to any of the 37 KU colleges.
@@ -304,6 +308,99 @@ const faqSchema = JSON.stringify({
         Looking for exam dates, centre lists, or form notices?{' '}
         <a href={`${baseUrl}/exam-archive`} style="font-weight: 700; color: var(--accent-primary);">View Exam Archive →</a>
       </p>
+    </section>
+
+    <!-- Step 5A: 4-Step Guide to Check Result & Marksheet PDF -->
+    <section class="kr-guide-card" aria-labelledby="how-to-check-heading">
+      <h2 id="how-to-check-heading" class="kr-section-title" style="margin-bottom: 0.7rem;">
+        <span>📋 How to Check Kolhan University Result 2026 &amp; Marksheet PDF</span>
+      </h2>
+      <ol class="kr-guide-list">
+        <li>
+          <span class="kr-step-num">1</span>
+          <span>Select your college in the <strong>37-college picker</strong> above (or open <a href="https://kolhanresult.in" target="_blank" rel="noopener">KolhanResult.in</a> to search by Roll No or Student Name).</span>
+        </li>
+        <li>
+          <span class="kr-step-num">2</span>
+          <span>For your official marksheet PDF, visit <a href="https://www.kuuniv.in/result/login" target="_blank" rel="noopener noreferrer">kuuniv.in/result/login</a> and select <strong>FYUGP (NEP)</strong> + your semester.</span>
+        </li>
+        <li>
+          <span class="kr-step-num">3</span>
+          <span>Enter your <strong>12-digit University Roll Number</strong> from your Admit Card and click <strong>Get Result</strong>.</span>
+        </li>
+        <li>
+          <span class="kr-step-num">4</span>
+          <span>Tap <strong>Print / Save as PDF</strong> to keep your marksheet, or download the batch-wise <strong>Gazette PDF</strong> above for the complete college list.</span>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Step 5B: Compact Hindi Helper Box -->
+    <section class="kr-hindi-card" aria-labelledby="hindi-guide-heading" lang="hi">
+      <h2 id="hindi-guide-heading" class="kr-section-title" style="margin-bottom: 0.55rem;">
+        <span>🇮🇳 कोल्हान यूनिवर्सिटी रिजल्ट 2026 कैसे चेक करें?</span>
+      </h2>
+      <ul class="kr-hindi-list">
+        <li>ऊपर दिए गए <strong>37 कॉलेज सेलेक्टर</strong> से अपना कॉलेज चुनें और <strong>Pin College</strong> दबाएँ — या सीधे <a href="https://kolhanresult.in" target="_blank" rel="noopener">KolhanResult.in</a> पर रोल नंबर / नाम से सर्च करें।</li>
+        <li>ऑफिशियल मार्कशीट PDF के लिए <a href="https://www.kuuniv.in/result/login" target="_blank" rel="noopener noreferrer">kuuniv.in/result/login</a> खोलें, <strong>FYUGP (NEP)</strong> और सेमेस्टर चुनें, फिर 12 अंकों का रोल नंबर डालें।</li>
+        <li><strong>Batch 2022–26, 2023–27 और 2024–28</strong> के सभी कॉलेजों की <strong>Result Gazette PDF</strong> ऊपर दी गई हैं।</li>
+        <li>अगर रिजल्ट में <strong>AB (Absent)</strong> या <strong>Promoted</strong> दिखे या नंबर कम लगें, तो कॉलेज विभाग से संपर्क करें या <a href={`${baseUrl}/recheck`}>Recheck Guide</a> देखें।</li>
+      </ul>
+    </section>
+
+    <!-- Step 5C: Visible FAQ Accordion -->
+    <section class="kr-faq-section" aria-labelledby="results-faq-heading">
+      <h2 id="results-faq-heading" class="kr-section-title" style="margin-bottom: 0.7rem;">
+        <span>❓ Frequently Asked Questions</span>
+      </h2>
+      <div class="kr-faq-stack">
+        {faqItems.map((item, idx) => (
+          <details class="kr-faq-item" open={idx === 0}>
+            <summary class="kr-faq-q">
+              <span>{item.q}</span>
+              <span class="kr-faq-chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="kr-faq-a">
+              <p style="margin: 0;">{item.a}</p>
+              {idx === 3 && (
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                  <a href={`${baseUrl}/recheck`} style="font-weight: 700; font-size: 0.78rem;">📝 Open Recheck Guide →</a>
+                  <a href={`${baseUrl}/cgpa`} style="font-weight: 700; font-size: 0.78rem;">🧮 SGPA to % Calculator →</a>
+                </div>
+              )}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <!-- Step 5D: Student Tools Cross-Link Strip -->
+    <section class="kr-tools-section" aria-labelledby="student-tools-heading">
+      <h2 id="student-tools-heading" class="kr-section-title" style="margin-bottom: 0.7rem;">
+        <span>🛠️ Next Steps &amp; Student Tools</span>
+      </h2>
+      <div class="kr-tools-grid">
+        <a href={`${baseUrl}/cgpa`} class="kr-tool-card">
+          <span class="kr-tool-icon" aria-hidden="true">🧮</span>
+          <span class="kr-tool-title">CGPA Calculator</span>
+          <span class="kr-tool-sub">SGPA to % convert</span>
+        </a>
+        <a href={`${baseUrl}/recheck`} class="kr-tool-card">
+          <span class="kr-tool-icon" aria-hidden="true">📝</span>
+          <span class="kr-tool-title">Recheck Guide</span>
+          <span class="kr-tool-sub">Promoted / AB fix</span>
+        </a>
+        <a href={`${baseUrl}/pyqs`} class="kr-tool-card">
+          <span class="kr-tool-icon" aria-hidden="true">📄</span>
+          <span class="kr-tool-title">PYQ Papers</span>
+          <span class="kr-tool-sub">Next sem prep</span>
+        </a>
+        <a href={`${baseUrl}/syllabus`} class="kr-tool-card">
+          <span class="kr-tool-icon" aria-hidden="true">📚</span>
+          <span class="kr-tool-title">NEP Syllabus</span>
+          <span class="kr-tool-sub">FYUGP units &amp; PDFs</span>
+        </a>
+      </div>
     </section>
   </div>
 
@@ -1179,6 +1276,195 @@ const faqSchema = JSON.stringify({
     .kr-official-btn,
     .kr-ext-link-btn {
       width: auto;
+    }
+  }
+
+  /* Pin College Button + Step 5 SEO Sections */
+  .kr-picker-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .kr-pin-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    padding: 0.18rem 0.55rem;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  .kr-pin-btn:hover {
+    border-color: var(--accent-warning);
+    color: var(--text-primary);
+  }
+  .kr-pin-btn.is-pinned {
+    color: var(--accent-warning);
+    background: rgba(245, 158, 11, 0.14);
+    border-color: rgba(245, 158, 11, 0.45);
+    font-weight: 800;
+  }
+  .kr-college-opt.is-pinned-opt .kr-college-opt-meta {
+    color: var(--accent-warning);
+    background: rgba(245, 158, 11, 0.14);
+  }
+
+  .kr-guide-card,
+  .kr-hindi-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.95rem;
+    margin-bottom: 1.15rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .kr-hindi-card {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, rgba(99, 102, 241, 0.05) 100%);
+    border-color: rgba(16, 185, 129, 0.25);
+  }
+  .kr-guide-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .kr-guide-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.48;
+  }
+  .kr-step-num {
+    width: 22px;
+    height: 22px;
+    border-radius: var(--radius-full);
+    background: rgba(99, 102, 241, 0.14);
+    color: var(--accent-primary);
+    font-size: 0.72rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .kr-hindi-list {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.48rem;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .kr-faq-section {
+    margin-bottom: 1.25rem;
+  }
+  .kr-faq-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .kr-faq-item {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .kr-faq-q {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding: 0.78rem 0.9rem;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    cursor: pointer;
+    line-height: 1.35;
+  }
+  .kr-faq-q::-webkit-details-marker {
+    display: none;
+  }
+  .kr-faq-chev {
+    color: var(--text-tertiary);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    transition: transform var(--transition-fast);
+  }
+  .kr-faq-item[open] .kr-faq-chev {
+    transform: rotate(180deg);
+    color: var(--accent-primary);
+  }
+  .kr-faq-a {
+    padding: 0 0.9rem 0.85rem 0.9rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.65rem;
+  }
+  .kr-tools-section {
+    margin-bottom: 0.5rem;
+  }
+  .kr-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+  .kr-tool-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.75rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    min-width: 0;
+    transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  .kr-tool-card:hover {
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
+  }
+  .kr-tool-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+  .kr-tool-title {
+    font-size: 0.84rem;
+    font-weight: 800;
+    font-family: var(--font-display);
+    color: var(--text-primary);
+    margin-top: 0.15rem;
+  }
+  .kr-tool-sub {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+  }
+  @media (min-width: 640px) {
+    .kr-guide-card,
+    .kr-hindi-card {
+      padding: 1.1rem 1.2rem;
+    }
+    .kr-tools-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
     }
   }
 
@@ -3504,6 +3790,37 @@ const faqSchema = JSON.stringify({
     const extFooter = document.getElementById('college-external-footer');
 
     if (batchesStack && collegesDataEl && !batchesStack.dataset.collegeInit) {
+      const PIN_STORAGE_KEY = 'kolhanhub_pinned_college';
+      const pinBtn = document.getElementById('pin-college-btn');
+      let activeCollegeCode = '1305';
+
+      const getPinnedCollege = (): string | null => {
+        try {
+          return localStorage.getItem(PIN_STORAGE_KEY);
+        } catch {
+          return null;
+        }
+      };
+
+      const updatePinButton = () => {
+        const pinnedCode = getPinnedCollege();
+        const isPinned = pinnedCode === activeCollegeCode;
+        if (pinBtn) {
+          pinBtn.textContent = isPinned ? '📌 Pinned ✓' : '📌 Pin College';
+          pinBtn.classList.toggle('is-pinned', isPinned);
+          pinBtn.setAttribute('aria-pressed', String(isPinned));
+        }
+        document.querySelectorAll('.kr-college-opt').forEach(opt => {
+          const optCode = opt.getAttribute('data-code') || '';
+          const optPinned = pinnedCode === optCode;
+          opt.classList.toggle('is-pinned-opt', optPinned);
+          const metaEl = opt.querySelector('.kr-college-opt-meta');
+          if (metaEl) {
+            metaEl.textContent = optPinned ? '📌 Pinned' : (optCode === '1305' ? '⚡ Local' : optCode);
+          }
+        });
+      };
+
       const tataBatchesHtml = batchesStack.innerHTML;
       let kuCollegesList: any[] = [];
       try {
@@ -3526,6 +3843,7 @@ const faqSchema = JSON.stringify({
       const selectCollege = (code: string) => {
         const college = kuCollegesList.find(c => c.code === code);
         if (!college) return;
+        activeCollegeCode = code;
 
         document.querySelectorAll('.kr-quick-chip').forEach(ch => {
           ch.classList.toggle('active', ch.getAttribute('data-code') === code);
@@ -3626,8 +3944,22 @@ const faqSchema = JSON.stringify({
             extFooter.style.display = 'flex';
           }
         }
+        updatePinButton();
         closeCollegeMenu();
       };
+
+      pinBtn?.addEventListener('click', () => {
+        try {
+          if (getPinnedCollege() === activeCollegeCode) {
+            localStorage.removeItem(PIN_STORAGE_KEY);
+          } else {
+            localStorage.setItem(PIN_STORAGE_KEY, activeCollegeCode);
+          }
+        } catch (err) {
+          console.error('Failed to save pinned college', err);
+        }
+        updatePinButton();
+      });
 
       pickerBtn?.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -3671,6 +4003,13 @@ const faqSchema = JSON.stringify({
           closeCollegeMenu();
         }
       });
+
+      const savedCode = getPinnedCollege();
+      if (savedCode && kuCollegesList.some(c => c.code === savedCode) && savedCode !== '1305') {
+        selectCollege(savedCode);
+      } else {
+        updatePinButton();
+      }
 
       batchesStack.dataset.collegeInit = '1';
     }
