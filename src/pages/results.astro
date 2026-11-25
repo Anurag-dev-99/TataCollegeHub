@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import resultsData from '../../public/data/results.json';
 import kuColleges from '../../public/data/ku_colleges.json';
+import kuInsights from '../../public/data/ku_insights.json';
 import examArchiveData from '../../public/data/exam-archive.json';
 import { 
   Trophy, Award, TrendingUp, CheckCircle, ArrowUpRight, Sparkles, 
@@ -38,9 +39,11 @@ const QUICK_CHIP_LABELS: Record<string, string> = {
 };
 const quickColleges = kuColleges.slice(0, 8);
 const kuCollegesJson = JSON.stringify(kuColleges);
+const kuInsightsJson = JSON.stringify(kuInsights);
+const defaultToppers = kuInsights.toppers['2022_7'] || [];
 
 const PDF_STATUS_NOTES: Record<string, string> = {
-  '2022': 'Sem 7: Online Only • Sem 8: Exam Pending',
+  '2022': 'Sem 8: Exam Pending',
   '2023': 'Sem 4: Result Awaited',
   '2024': 'Sem 3: Exam Pending'
 };
@@ -247,6 +250,135 @@ const faqSchema = JSON.stringify({
 
     <!-- Embedded 37-College Data for Client Switcher -->
     <script id="ku-colleges-data" type="application/json" set:html={kuCollegesJson} />
+
+    <!-- Kolhan University Insights (1-Card Tabbed Hub) -->
+    <section class="kr-insights-card" id="ku-insights-section" aria-labelledby="ku-insights-heading">
+      <div class="kr-ins-head">
+        <h2 id="ku-insights-heading" class="kr-section-title">
+          <span>🌐 Kolhan University Insights</span>
+        </h2>
+        <span class="kr-ins-pill">All 37 Colleges</span>
+      </div>
+
+      <!-- 3-Tab Bar -->
+      <div class="kr-ins-tabs" role="tablist" aria-label="Kolhan University Insights">
+        <button type="button" class="kr-ins-tab active" data-ins-tab="toppers" role="tab" aria-selected="true">🏆 Toppers</button>
+        <button type="button" class="kr-ins-tab" data-ins-tab="colleges" role="tab" aria-selected="false">🏫 Ranks</button>
+        <button type="button" class="kr-ins-tab" data-ins-tab="records" role="tab" aria-selected="false">🔥 Records</button>
+      </div>
+
+      <!-- Shared Batch Selector Pills -->
+      <div class="kr-ins-batch-bar" role="group" aria-label="Select semester">
+        <button type="button" class="kr-ins-batch-pill active" data-ins-key="2022_7">2022 Sem 7</button>
+        <button type="button" class="kr-ins-batch-pill" data-ins-key="2023_3">2023 Sem 3</button>
+        <button type="button" class="kr-ins-batch-pill" data-ins-key="2024_2">2024 Sem 2</button>
+      </div>
+
+      <!-- Tab 1: Toppers + Quick Rank Check -->
+      <div id="ins-panel-toppers" class="kr-ins-panel">
+        <div id="ins-toppers-list" class="kr-ins-list">
+          {defaultToppers.map((t, idx) => {
+            const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉';
+            return (
+              <a
+                href={`https://kolhanresult.in/result/${t.rollno}`}
+                target="_blank"
+                rel="noopener"
+                class="kr-ins-row"
+              >
+                <span class="kr-ins-medal" aria-hidden="true">{medal}</span>
+                <div class="kr-ins-info">
+                  <span class="kr-ins-name">{t.name}</span>
+                  <span class="kr-ins-sub">{t.college} &bull; {t.course}</span>
+                </div>
+                <span class="kr-ins-score">{t.marks}</span>
+              </a>
+            );
+          })}
+        </div>
+
+        <form id="ku-quick-rank-form" class="kr-rank-form">
+          <input
+            type="text"
+            id="ku-quick-rank-input"
+            class="kr-rank-input"
+            placeholder="Enter Roll No or Name to check rank..."
+            autocomplete="off"
+          />
+          <button type="submit" class="btn btn-primary kr-rank-btn">Go ↗</button>
+        </form>
+
+        <a
+          href="https://kolhanresult.in/leaderboard"
+          target="_blank"
+          rel="noopener"
+          class="kr-ins-footer-link"
+        >
+          Filter Top 100 &amp; Subject Toppers on KolhanResult.in ↗
+        </a>
+      </div>
+
+      <!-- Tab 2: Top 5 Colleges + Selected/Pinned College Rank -->
+      <div id="ins-panel-colleges" class="kr-ins-panel" style="display: none;">
+        <p style="font-size: 0.76rem; color: var(--text-tertiary); margin: 0 0 0.55rem 0;">
+          Top 5 colleges by Pass % (50+ students) + your selected college's rank.
+        </p>
+        <div id="ins-colleges-list" class="kr-ins-list"></div>
+        <div id="ins-my-college-box"></div>
+        <a
+          href="https://kolhanresult.in/colleges"
+          target="_blank"
+          rel="noopener"
+          class="kr-ins-footer-link"
+        >
+          Compare All 37 Colleges on KolhanResult.in ↗
+        </a>
+      </div>
+
+      <!-- Tab 3: Your College #1 vs Uni #1 + Records + Swipeable Champions -->
+      <div id="ins-panel-records" class="kr-ins-panel" style="display: none;">
+        <div id="ins-vs-box" class="kr-vs-grid"></div>
+
+        <div class="kr-champ-label">🔥 University High Scores</div>
+        <div class="kr-records-row">
+          {kuInsights.records.map(r => (
+            <a
+              href={`https://kolhanresult.in/result/${r.rollno}`}
+              target="_blank"
+              rel="noopener"
+              class="kr-record-tile"
+            >
+              <span class="kr-rec-label">{r.label}</span>
+              <span class="kr-rec-marks">{r.marks}<small>/500</small></span>
+              <span class="kr-rec-name">{r.name}</span>
+              <span class="kr-rec-meta">{r.meta}</span>
+            </a>
+          ))}
+        </div>
+
+        <div class="kr-champ-label">🏆 University #1 Champions (swipe →)</div>
+        <div class="kr-champ-strip">
+          {kuInsights.champions.map(ch => (
+            <a
+              href={`https://kolhanresult.in/result/${ch.rollno}`}
+              target="_blank"
+              rel="noopener"
+              class="kr-champ-card"
+            >
+              <div class="kr-champ-top">
+                <span class="kr-champ-sem">{ch.label}</span>
+                <span class="kr-champ-marks">{ch.marks}</span>
+              </div>
+              <div class="kr-champ-name">👑 {ch.name}</div>
+              <div class="kr-champ-college">{ch.college}</div>
+              <div class="kr-champ-course">{ch.course}</div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <script id="ku-insights-data" type="application/json" set:html={kuInsightsJson} />
+    </section>
 
     <!-- Official Result Gazette PDFs (All 37 Colleges) -->
     <section class="kr-pdf-section" aria-labelledby="pdf-gazette-heading">
@@ -1465,6 +1597,382 @@ const faqSchema = JSON.stringify({
     .kr-tools-grid {
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 0.75rem;
+    }
+  }
+
+  /* 1-Card Tabbed Kolhan University Insights Hub */
+  .kr-insights-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.9rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .kr-ins-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.7rem;
+  }
+  .kr-ins-pill {
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    padding: 0.16rem 0.52rem;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .kr-ins-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem;
+    padding: 0.25rem;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.65rem;
+  }
+  .kr-ins-tab {
+    padding: 0.42rem 0.25rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    border-radius: var(--radius-xs);
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+  }
+  .kr-ins-tab.active {
+    background-color: var(--accent-primary);
+    color: #fff;
+  }
+  .kr-ins-batch-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    overflow-x: auto;
+    max-width: 100%;
+    min-width: 0;
+    margin-bottom: 0.7rem;
+    scrollbar-width: none;
+  }
+  .kr-ins-batch-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .kr-ins-batch-pill {
+    flex-shrink: 0;
+    padding: 0.24rem 0.62rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  .kr-ins-batch-pill.active {
+    color: var(--accent-primary);
+    background: rgba(99, 102, 241, 0.14);
+    border-color: rgba(99, 102, 241, 0.4);
+  }
+  .kr-ins-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.42rem;
+  }
+  .kr-ins-row {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.55rem 0.65rem;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: inherit;
+    min-width: 0;
+    transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  }
+  .kr-ins-row:hover {
+    border-color: var(--accent-primary);
+    background-color: var(--bg-hover);
+  }
+  .kr-ins-row.is-mine {
+    border-color: rgba(245, 158, 11, 0.45);
+    background: rgba(245, 158, 11, 0.08);
+  }
+  .kr-ins-medal {
+    font-size: 1rem;
+    font-weight: 800;
+    min-width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+  }
+  .kr-ins-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.08rem;
+    flex: 1;
+    min-width: 0;
+  }
+  .kr-ins-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .kr-ins-sub {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .kr-ins-score {
+    font-size: 0.78rem;
+    font-weight: 800;
+    font-family: monospace;
+    color: var(--accent-success);
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    padding: 0.14rem 0.48rem;
+    border-radius: var(--radius-xs);
+    flex-shrink: 0;
+  }
+  .kr-rank-form {
+    display: flex;
+    gap: 0.45rem;
+    margin-top: 0.7rem;
+  }
+  .kr-rank-input {
+    flex: 1;
+    min-width: 0;
+    height: 38px;
+    padding: 0 0.75rem;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+  }
+  .kr-rank-input:focus {
+    border-color: var(--accent-primary);
+  }
+  .kr-rank-btn {
+    height: 38px;
+    padding: 0 0.95rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .kr-my-college-divider {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--accent-warning);
+    margin: 0.6rem 0 0.35rem 0;
+  }
+  .kr-ins-footer-link {
+    display: block;
+    margin-top: 0.7rem;
+    text-align: center;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    text-decoration: none;
+  }
+  .kr-vs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+  }
+  .kr-vs-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.22rem;
+    min-width: 0;
+  }
+  .kr-vs-card.is-uni {
+    border-color: rgba(99, 102, 241, 0.35);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, transparent 100%);
+  }
+  .kr-vs-tag {
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-tertiary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .kr-vs-score {
+    font-size: 1.15rem;
+    font-weight: 900;
+    font-family: monospace;
+    color: var(--accent-success);
+    line-height: 1.1;
+  }
+  .kr-vs-name {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .kr-vs-sub {
+    font-size: 0.66rem;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .kr-champ-label {
+    font-size: 0.74rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    margin: 0 0 0.45rem 0;
+  }
+  .kr-records-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+    margin-bottom: 0.85rem;
+  }
+  .kr-record-tile {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.45rem;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.14rem;
+    min-width: 0;
+    transition: border-color var(--transition-fast);
+  }
+  .kr-record-tile:hover {
+    border-color: var(--accent-primary);
+  }
+  .kr-rec-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .kr-rec-marks {
+    font-size: 0.98rem;
+    font-weight: 900;
+    font-family: monospace;
+    color: var(--accent-warning);
+    line-height: 1.15;
+  }
+  .kr-rec-marks small {
+    font-size: 0.62rem;
+    color: var(--text-tertiary);
+    font-weight: 600;
+  }
+  .kr-rec-name {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .kr-rec-meta {
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+  }
+  .kr-champ-strip {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    max-width: 100%;
+    min-width: 0;
+    padding-bottom: 0.2rem;
+    scrollbar-width: none;
+  }
+  .kr-champ-strip::-webkit-scrollbar {
+    display: none;
+  }
+  .kr-champ-card {
+    flex: 0 0 164px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    transition: border-color var(--transition-fast);
+  }
+  .kr-champ-card:hover {
+    border-color: var(--accent-primary);
+  }
+  .kr-champ-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.3rem;
+  }
+  .kr-champ-sem {
+    font-size: 0.64rem;
+    font-weight: 800;
+    color: var(--accent-primary);
+  }
+  .kr-champ-marks {
+    font-size: 0.68rem;
+    font-weight: 800;
+    font-family: monospace;
+    color: var(--accent-success);
+  }
+  .kr-champ-name {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--accent-warning);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .kr-champ-college,
+  .kr-champ-course {
+    font-size: 0.64rem;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  @media (min-width: 640px) {
+    .kr-insights-card {
+      padding: 1.15rem;
+    }
+    .kr-ins-tab {
+      font-size: 0.82rem;
     }
   }
 
@@ -3835,6 +4343,131 @@ const faqSchema = JSON.stringify({
         '2024': '2024-2028'
       };
 
+      const insightsDataEl = document.getElementById('ku-insights-data');
+      let kuInsightsData: any = null;
+      if (insightsDataEl) {
+        try {
+          kuInsightsData = JSON.parse(insightsDataEl.textContent || 'null');
+        } catch (err) {
+          console.error('Failed to parse ku_insights JSON', err);
+        }
+      }
+      let activeInsTab = 'toppers';
+      let activeInsKey = '2022_7';
+
+      const INS_KEY_LABELS: Record<string, string> = {
+        '2022_7': 'Batch 2022 Sem 7',
+        '2023_3': 'Batch 2023 Sem 3',
+        '2024_2': 'Batch 2024 Sem 2'
+      };
+
+      const renderInsights = () => {
+        if (!kuInsightsData) return;
+
+        // 1. Tab 1: Top 3 University Toppers
+        const toppersListEl = document.getElementById('ins-toppers-list');
+        if (toppersListEl) {
+          const topList = kuInsightsData.toppers?.[activeInsKey] || [];
+          toppersListEl.innerHTML = topList.map((t: any, idx: number) => {
+            const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉';
+            return `
+              <a
+                href="https://kolhanresult.in/result/${escapeHtml(t.rollno)}"
+                target="_blank"
+                rel="noopener"
+                class="kr-ins-row"
+              >
+                <span class="kr-ins-medal" aria-hidden="true">${medal}</span>
+                <div class="kr-ins-info">
+                  <span class="kr-ins-name">${escapeHtml(t.name)}</span>
+                  <span class="kr-ins-sub">${escapeHtml(t.college)} &bull; ${escapeHtml(t.course)}</span>
+                </div>
+                <span class="kr-ins-score">${t.marks}</span>
+              </a>
+            `;
+          }).join('');
+        }
+
+        // 2. Tab 2: Top 5 Colleges + Selected/Pinned College Rank
+        const collegesListEl = document.getElementById('ins-colleges-list');
+        const myCollegeBox = document.getElementById('ins-my-college-box');
+        const rankBucket = kuInsightsData.collegeRanks?.[activeInsKey];
+        if (collegesListEl && myCollegeBox && rankBucket) {
+          const top5 = rankBucket.top5 || [];
+          const inTop5 = top5.some((c: any) => c.code === activeCollegeCode);
+
+          collegesListEl.innerHTML = top5.map((c: any) => {
+            const isMine = c.code === activeCollegeCode;
+            return `
+              <a
+                href="https://kolhanresult.in/college/${escapeHtml(c.code)}"
+                target="_blank"
+                rel="noopener"
+                class="kr-ins-row ${isMine ? 'is-mine' : ''}"
+              >
+                <span class="kr-ins-medal">#${c.rank}</span>
+                <div class="kr-ins-info">
+                  <span class="kr-ins-name">${escapeHtml(c.name)}${isMine ? ' ★' : ''}</span>
+                  <span class="kr-ins-sub">${c.total} students</span>
+                </div>
+                <span class="kr-ins-score">${c.passPct}%</span>
+              </a>
+            `;
+          }).join('');
+
+          const mine = rankBucket.byCode?.[activeCollegeCode];
+          if (inTop5) {
+            myCollegeBox.innerHTML = '';
+          } else if (mine) {
+            myCollegeBox.innerHTML = `
+              <div class="kr-my-college-divider">Your Selected College</div>
+              <a
+                href="https://kolhanresult.in/college/${escapeHtml(activeCollegeCode)}"
+                target="_blank"
+                rel="noopener"
+                class="kr-ins-row is-mine"
+              >
+                <span class="kr-ins-medal">#${mine.rank}</span>
+                <div class="kr-ins-info">
+                  <span class="kr-ins-name">${escapeHtml(mine.name)}</span>
+                  <span class="kr-ins-sub">Rank #${mine.rank} of ${mine.totalColleges} colleges &bull; ${mine.total} students</span>
+                </div>
+                <span class="kr-ins-score">${mine.passPct}%</span>
+              </a>
+            `;
+          } else {
+            myCollegeBox.innerHTML = `
+              <p style="font-size: 0.74rem; color: var(--text-tertiary); margin: 0.55rem 0 0 0;">
+                No data for this college in ${INS_KEY_LABELS[activeInsKey] || activeInsKey}.
+              </p>
+            `;
+          }
+        }
+
+        // 3. Tab 3: Selected College #1 vs University #1
+        const vsBox = document.getElementById('ins-vs-box');
+        if (vsBox && rankBucket) {
+          const mine = rankBucket.byCode?.[activeCollegeCode];
+          const uni = rankBucket.uniTopper;
+          const selectedObj = kuCollegesList.find(c => c.code === activeCollegeCode);
+          const colLabel = mine?.name || selectedObj?.shortName || 'Your College';
+          vsBox.innerHTML = `
+            <div class="kr-vs-card">
+              <span class="kr-vs-tag">🏛️ ${escapeHtml(colLabel)} #1</span>
+              <span class="kr-vs-score">${mine ? mine.topperMarks : '—'}</span>
+              <span class="kr-vs-name">${mine ? escapeHtml(mine.topperName) : 'No data'}</span>
+              <span class="kr-vs-sub">${mine ? `${mine.passPct}% Pass (#${mine.rank})` : (INS_KEY_LABELS[activeInsKey] || '')}</span>
+            </div>
+            <div class="kr-vs-card is-uni">
+              <span class="kr-vs-tag">🌐 University #1</span>
+              <span class="kr-vs-score">${uni?.marks || '—'}</span>
+              <span class="kr-vs-name">${escapeHtml(uni?.name || '—')}</span>
+              <span class="kr-vs-sub">${escapeHtml(uni?.college || '')}</span>
+            </div>
+          `;
+        }
+      };
+
       const closeCollegeMenu = () => {
         if (pickerMenu) pickerMenu.style.display = 'none';
         pickerBtn?.setAttribute('aria-expanded', 'false');
@@ -3945,8 +4578,57 @@ const faqSchema = JSON.stringify({
           }
         }
         updatePinButton();
+        renderInsights();
         closeCollegeMenu();
       };
+
+      // Insights Tabs & Batch Pills
+      document.querySelectorAll('.kr-ins-tab').forEach(tabBtn => {
+        tabBtn.addEventListener('click', () => {
+          const targetTab = tabBtn.getAttribute('data-ins-tab') || 'toppers';
+          activeInsTab = targetTab;
+          document.querySelectorAll('.kr-ins-tab').forEach(b => {
+            const isActive = b.getAttribute('data-ins-tab') === targetTab;
+            b.classList.toggle('active', isActive);
+            b.setAttribute('aria-selected', String(isActive));
+          });
+          const pTop = document.getElementById('ins-panel-toppers');
+          const pCol = document.getElementById('ins-panel-colleges');
+          const pRec = document.getElementById('ins-panel-records');
+          if (pTop) pTop.style.display = targetTab === 'toppers' ? 'block' : 'none';
+          if (pCol) pCol.style.display = targetTab === 'colleges' ? 'block' : 'none';
+          if (pRec) pRec.style.display = targetTab === 'records' ? 'block' : 'none';
+        });
+      });
+
+      document.querySelectorAll('.kr-ins-batch-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          const key = pill.getAttribute('data-ins-key');
+          if (!key) return;
+          activeInsKey = key;
+          document.querySelectorAll('.kr-ins-batch-pill').forEach(p => {
+            p.classList.toggle('active', p.getAttribute('data-ins-key') === key);
+          });
+          renderInsights();
+        });
+      });
+
+      const quickRankForm = document.getElementById('ku-quick-rank-form');
+      const quickRankInput = document.getElementById('ku-quick-rank-input') as HTMLInputElement;
+      quickRankForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = (quickRankInput?.value || '').trim();
+        if (!val) {
+          quickRankInput?.focus();
+          return;
+        }
+        const isRoll = /^\d{6,16}$/.test(val);
+        const dest = isRoll
+          ? `https://kolhanresult.in/result/${encodeURIComponent(val)}`
+          : `https://kolhanresult.in/search?name=${encodeURIComponent(val)}`;
+        (window as any).gtag && (window as any).gtag('event', 'ku_quick_rank_search', { mode: isRoll ? 'roll' : 'name' });
+        window.open(dest, '_blank', 'noopener');
+      });
 
       pinBtn?.addEventListener('click', () => {
         try {
@@ -4009,6 +4691,7 @@ const faqSchema = JSON.stringify({
         selectCollege(savedCode);
       } else {
         updatePinButton();
+        renderInsights();
       }
 
       batchesStack.dataset.collegeInit = '1';
