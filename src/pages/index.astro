@@ -4,6 +4,14 @@ import noticesData from '../../public/data/notices.json';
 import calendarData from '../../public/data/calendar.json';
 import pyqsData from '../../public/data/pyqs.json';
 import holidaysData from '../../public/data/holidays-2026.json';
+const homeHolidaysJson = JSON.stringify(
+  holidaysData.map((h: any) => ({
+    s: h.dates[0],
+    e: h.dates[h.dates.length - 1],
+    n: h.name.split(' (')[0],
+    d: h.dates
+  }))
+).replace(/</g, '\\u003c');
 import { Bell, Calendar, Download, FileSpreadsheet, FileCode, GraduationCap, ChevronRight, AlertTriangle, Clock, ArrowRight, HelpCircle, Calculator, X, ClipboardCheck } from '@lucide/astro';
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -75,7 +83,71 @@ const popularPapers = [...pyqsData]
     <p style="color: var(--text-secondary); max-width: 650px; font-size: 1.08rem; line-height: 1.6; font-weight: 500; margin: 0;">
       in one place
     </p>
+    <!-- LIVE COLLEGE STATUS PILL (links to /holiday-list/) -->
+    <a
+      id="home-college-status"
+      href={`${baseUrl}/holiday-list/`}
+      style="display: inline-flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; width: fit-content; max-width: 100%; padding: 0.45rem 0.8rem; border-radius: 12px; background: rgba(52, 211, 153, 0.08); border: 1px solid rgba(52, 211, 153, 0.28); text-decoration: none; margin-top: 0.35rem; transition: border-color 0.2s ease, background 0.2s ease;"
+    >
+      <span id="home-status-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #34d399; flex-shrink: 0; box-shadow: 0 0 8px rgba(52,211,153,0.7);"></span>
+      <span id="home-status-text" style="font-size: 0.78rem; font-weight: 700; color: var(--text-primary);">Check if college is open today</span>
+      <span id="home-status-meta" style="font-size: 0.7rem; font-weight: 700; color: #34d399; margin-left: auto;">Holiday List →</span>
+    </a>
   </div>
+
+  <script type="application/json" id="home-holidays-data" set:html={homeHolidaysJson}></script>
+  <script is:inline>
+    (function () {
+      var el = document.getElementById("home-college-status");
+      var dot = document.getElementById("home-status-dot");
+      var txt = document.getElementById("home-status-text");
+      var meta = document.getElementById("home-status-meta");
+      var dataEl = document.getElementById("home-holidays-data");
+      if (!el || !dot || !txt || !meta || !dataEl) return;
+      var list = [];
+      try { list = JSON.parse(dataEl.textContent || "[]"); } catch (e) { return; }
+      var qDate = new URLSearchParams(window.location.search).get("date");
+      var today = (qDate && /^\d{4}-\d{2}-\d{2}$/.test(qDate))
+        ? qDate
+        : new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
+      var dateMap = Object.create(null);
+      list.forEach(function (h) {
+        (h.d || []).forEach(function (dt) { if (!dateMap[dt]) dateMap[dt] = h; });
+      });
+      var cur = dateMap[today] || null;
+      var isSun = new Date(today + "T00:00:00Z").getUTCDay() === 0;
+      function setTheme(color, bg, border, glow) {
+        el.style.background = bg;
+        el.style.borderColor = border;
+        dot.style.background = color;
+        dot.style.boxShadow = "0 0 8px " + glow;
+        meta.style.color = color;
+      }
+      if (cur) {
+        setTheme("#f87171", "rgba(248, 113, 113, 0.1)", "rgba(248, 113, 113, 0.35)", "rgba(248,113,113,0.7)");
+        txt.textContent = "College is closed today · " + cur.n;
+        meta.textContent = "Holiday List →";
+      } else if (isSun) {
+        setTheme("#f87171", "rgba(248, 113, 113, 0.1)", "rgba(248, 113, 113, 0.35)", "rgba(248,113,113,0.7)");
+        txt.textContent = "College is closed today · Sunday";
+        meta.textContent = "Holiday List →";
+      } else if (today > "2026-12-31") {
+        setTheme("#818cf8", "rgba(129, 140, 248, 0.1)", "rgba(129, 140, 248, 0.35)", "rgba(129,140,248,0.7)");
+        txt.textContent = "Kolhan University Holiday List 2027";
+        meta.textContent = "View Calendar →";
+      } else {
+        setTheme("#34d399", "rgba(52, 211, 153, 0.08)", "rgba(52, 211, 153, 0.3)", "rgba(52,211,153,0.7)");
+        txt.textContent = "College is open today";
+        var next = list.find(function (h) { return h.s > today; });
+        if (next) {
+          var daysAway = Math.round((new Date(next.s + "T00:00:00Z").getTime() - new Date(today + "T00:00:00Z").getTime()) / 86400000);
+          meta.textContent = "Next: " + next.n + " (" + daysAway + "d) →";
+        } else {
+          meta.textContent = "Holiday List →";
+        }
+      }
+    })();
+  </script>
 
   <!-- ═══════════════════════════════════════════════════════════════
        SEM 3 EXAM PREPARATION HUB + SEM 7 RESULT LIVE (2022-26 BATCH)

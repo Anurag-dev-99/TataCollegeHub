@@ -29,12 +29,6 @@ function parseUTC(dateStr: string): Date {
   return new Date(`${dateStr}T00:00:00Z`);
 }
 
-function addDaysUTC(dateStr: string, offsetDays: number): string {
-  const dt = parseUTC(dateStr);
-  dt.setUTCDate(dt.getUTCDate() + offsetDays);
-  return dt.toISOString().slice(0, 10);
-}
-
 const hl = [...holidaysRaw]
   .sort((a, b) => a.dates[0].localeCompare(b.dates[0]))
   .map((item) => {
@@ -66,26 +60,6 @@ const hl = [...holidaysRaw]
     const emoji = EMOJI_MAP[item.id] || '📅';
     const typeLabel = TYPE_LABELS[item.type] || 'Holiday';
 
-    const gcalEnd = addDaysUTC(end, 1).replace(/-/g, '');
-    const gcal = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`${title} — Kolhan University Holiday`)}&dates=${start.replace(/-/g, '')}/${gcalEnd}&details=${encodeURIComponent('Kolhan University Holiday List 2026 · https://kolhanhub.in/holiday-list/')}`;
-
-    const monthNamesSet = new Set<string>();
-    const monthShortSet = new Set<string>();
-    for (const d of item.dates) {
-      const m = parseUTC(d).getUTCMonth();
-      monthNamesSet.add(MONTHS_FULL[m]);
-      monthShortSet.add(MONTHS_SHORT[m]);
-    }
-    const search = [
-      item.name,
-      sub,
-      item.dateDisplay,
-      rangeLabel,
-      typeLabel,
-      ...monthNamesSet,
-      ...monthShortSet
-    ].join(' ').toLowerCase();
-
     return {
       id: item.id,
       name: item.name,
@@ -103,9 +77,7 @@ const hl = [...holidaysRaw]
       wd,
       rangeLabel,
       dayLabel,
-      sundayCount,
-      gcal,
-      search
+      sundayCount
     };
   });
 
@@ -127,53 +99,116 @@ const totalHolidays = hl.length;
 const totalDays = allUniqueDates.size;
 const nonSundayDays = [...allUniqueDates].filter((d) => parseUTC(d).getUTCDay() !== 0).length;
 const longestBreak = [...hl].sort((a, b) => b.days - a.days)[0];
-const nationalCount = hl.filter((h) => h.type === 'national').length;
-const festivalCount = hl.filter((h) => h.type === 'festival').length;
 const longBreakCount = hl.filter((h) => h.days >= 3).length;
 
 const ssrTodayIST = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
 const ssrRemainingCount = hl.filter((h) => h.end >= ssrTodayIST).length;
 
-const BREAK_THEMES: Record<string, { label?: string; grad: string; border: string; accent: string }> = {
+interface CardTheme {
+  label?: string;
+  grad: string;
+  border: string;
+  accent: string;
+  accentLight: string;
+}
+
+const BREAK_THEMES: Record<string, CardTheme> = {
   '9': {
     grad: 'linear-gradient(135deg, rgba(244,114,182,0.18) 0%, rgba(167,139,250,0.16) 52%, rgba(96,165,250,0.18) 100%)',
     border: 'rgba(244,114,182,0.35)',
-    accent: '#f472b6'
+    accent: '#f472b6',
+    accentLight: '#be185d'
   },
   '19': {
     grad: 'linear-gradient(135deg, rgba(245,158,11,0.18) 0%, rgba(239,68,68,0.16) 100%)',
     border: 'rgba(245,158,11,0.35)',
-    accent: '#fbbf24'
+    accent: '#fbbf24',
+    accentLight: '#b45309'
   },
   '36': {
     grad: 'linear-gradient(135deg, rgba(249,115,22,0.18) 0%, rgba(220,38,38,0.16) 100%)',
     border: 'rgba(249,115,22,0.35)',
-    accent: '#fb923c'
+    accent: '#fb923c',
+    accentLight: '#c2410c'
   },
   '37': {
     label: 'Deepawali & Chhath',
     grad: 'linear-gradient(135deg, rgba(251,191,36,0.18) 0%, rgba(249,115,22,0.16) 100%)',
     border: 'rgba(251,191,36,0.35)',
-    accent: '#fbbf24'
+    accent: '#fbbf24',
+    accentLight: '#b45309'
   },
   '39': {
     grad: 'linear-gradient(135deg, rgba(34,197,94,0.18) 0%, rgba(14,165,233,0.16) 100%)',
     border: 'rgba(52,211,153,0.35)',
-    accent: '#34d399'
+    accent: '#34d399',
+    accentLight: '#047857'
   }
 };
 
-const bigBreaks = hl
-  .filter((h) => h.days >= 3)
-  .map((h) => ({
+const NATIONAL_THEME: CardTheme = {
+  grad: 'linear-gradient(135deg, rgba(251,191,36,0.16) 0%, rgba(99,102,241,0.16) 100%)',
+  border: 'rgba(251,191,36,0.34)',
+  accent: '#fbbf24',
+  accentLight: '#b45309'
+};
+
+const FESTIVAL_PALETTE: CardTheme[] = [
+  {
+    grad: 'linear-gradient(135deg, rgba(244,114,182,0.16) 0%, rgba(139,92,246,0.16) 100%)',
+    border: 'rgba(244,114,182,0.32)',
+    accent: '#f472b6',
+    accentLight: '#be185d'
+  },
+  {
+    grad: 'linear-gradient(135deg, rgba(34,211,238,0.16) 0%, rgba(99,102,241,0.16) 100%)',
+    border: 'rgba(56,189,248,0.32)',
+    accent: '#38bdf8',
+    accentLight: '#0369a1'
+  },
+  {
+    grad: 'linear-gradient(135deg, rgba(52,211,153,0.16) 0%, rgba(20,184,166,0.16) 100%)',
+    border: 'rgba(52,211,153,0.32)',
+    accent: '#34d399',
+    accentLight: '#047857'
+  },
+  {
+    grad: 'linear-gradient(135deg, rgba(251,191,36,0.16) 0%, rgba(244,63,94,0.16) 100%)',
+    border: 'rgba(251,146,60,0.32)',
+    accent: '#fb923c',
+    accentLight: '#c2410c'
+  },
+  {
+    grad: 'linear-gradient(135deg, rgba(168,85,247,0.16) 0%, rgba(236,72,153,0.16) 100%)',
+    border: 'rgba(192,132,252,0.32)',
+    accent: '#c084fc',
+    accentLight: '#7e22ce'
+  },
+  {
+    grad: 'linear-gradient(135deg, rgba(56,189,248,0.16) 0%, rgba(139,92,246,0.16) 100%)',
+    border: 'rgba(129,140,248,0.32)',
+    accent: '#818cf8',
+    accentLight: '#4338ca'
+  }
+];
+
+let festIdx = 0;
+const allCards = hl.map((h) => {
+  let theme: CardTheme;
+  if (BREAK_THEMES[h.id]) {
+    theme = BREAK_THEMES[h.id];
+  } else if (h.type === 'national') {
+    theme = NATIONAL_THEME;
+  } else {
+    theme = FESTIVAL_PALETTE[festIdx % FESTIVAL_PALETTE.length];
+    festIdx++;
+  }
+  return {
     ...h,
-    displayTitle: BREAK_THEMES[h.id]?.label || h.title,
-    theme: BREAK_THEMES[h.id] || {
-      grad: 'linear-gradient(135deg, rgba(99,102,241,0.18) 0%, rgba(168,85,247,0.16) 100%)',
-      border: 'rgba(129,140,248,0.35)',
-      accent: '#818cf8'
-    }
-  }));
+    displayTitle: theme.label || h.title,
+    theme
+  };
+});
 
 const tentative2027 = [
   { name: "New Year's Day", date: '1 Jan 2027', day: 'Fri', emoji: '🎆' },
@@ -225,7 +260,7 @@ const faqSchema = JSON.stringify({
 });
 
 const hlJson = JSON.stringify(
-  hl.map(({ id, title, sub, emoji, type, typeLabel, days, dates, start, end, rangeLabel, wd, gcal }) => ({
+  hl.map(({ id, title, sub, emoji, type, typeLabel, days, dates, start, end, rangeLabel, wd }) => ({
     id,
     title,
     sub,
@@ -237,8 +272,7 @@ const hlJson = JSON.stringify(
     start,
     end,
     rangeLabel,
-    wd,
-    gcal
+    wd
   }))
 ).replace(/</g, '\\u003c');
 ---
@@ -259,15 +293,12 @@ const hlJson = JSON.stringify(
     <header class="hl-hero hl-anim" style="--hl-delay: 0ms;">
       <div class="hl-pill-row">
         <span class="hl-pill hl-pill-ind">📅 Official KU Notification</span>
-        <span class="hl-pill hl-pill-ok">🏛️ All 37 Colleges</span>
         <span class="hl-pill hl-pill-muted">Updated Nov 2026</span>
       </div>
       <h1 class="hl-h1">
         Kolhan University Holiday List <span class="hl-grad">2026 &amp; 2027</span>
       </h1>
-      <p class="hl-sub">
-        All {totalHolidays} holidays ({totalDays} days) for Tata College, Co-operative College, Graduate College, Karim City &amp; every Kolhan University college — with live "Is college open today?" status &amp; official PDF.
-      </p>
+      <p class="hl-sub">{totalHolidays} holidays · {totalDays} days off · All 37 KU colleges</p>
     </header>
 
     <!-- 2. LIVE STATUS CARD -->
@@ -281,7 +312,6 @@ const hlJson = JSON.stringify(
         </div>
 
         <div id="hl-live-body" aria-live="polite">
-          <!-- Loading skeleton (prevents CLS before JS runs) -->
           <div class="hl-skel-wrap">
             <div class="hl-skel hl-skel-lg"></div>
             <div class="hl-skel hl-skel-sm"></div>
@@ -334,44 +364,8 @@ const hlJson = JSON.stringify(
       </div>
     </section>
 
-    <!-- 3. QUICK STATS 2x2 -->
-    <section class="hl-stats hl-anim" aria-label="2026 Holiday Summary" style="--hl-delay: 120ms;">
-      <div class="hl-stat-card">
-        <div class="hl-stat-top">
-          <span class="hl-stat-num hl-countup" data-target={totalHolidays}>{totalHolidays}</span>
-          <span class="hl-stat-emo">🎉</span>
-        </div>
-        <div class="hl-stat-label">Holidays in 2026</div>
-        <div class="hl-stat-sub">Official KU circular</div>
-      </div>
-      <div class="hl-stat-card">
-        <div class="hl-stat-top">
-          <span class="hl-stat-num hl-countup" data-target={totalDays}>{totalDays}</span>
-          <span class="hl-stat-emo">📆</span>
-        </div>
-        <div class="hl-stat-label">Total days off</div>
-        <div class="hl-stat-sub">{nonSundayDays} excl. Sundays</div>
-      </div>
-      <div class="hl-stat-card">
-        <div class="hl-stat-top">
-          <span class="hl-stat-num hl-countup" data-target={longestBreak.days}>{longestBreak.days}</span>
-          <span class="hl-stat-emo">☀️</span>
-        </div>
-        <div class="hl-stat-label">Longest break</div>
-        <div class="hl-stat-sub">Summer Vacation</div>
-      </div>
-      <div class="hl-stat-card">
-        <div class="hl-stat-top">
-          <span id="hl-stat-left" class="hl-stat-num hl-countup" data-target={ssrRemainingCount}>{ssrRemainingCount}</span>
-          <span class="hl-stat-emo">⏳</span>
-        </div>
-        <div class="hl-stat-label">Left this year</div>
-        <div class="hl-stat-sub">Remaining in 2026</div>
-      </div>
-    </section>
-
-    <!-- 4. YEAR SWITCHER -->
-    <div class="hl-year-bar hl-anim" role="tablist" aria-label="Holiday List Year" style="--hl-delay: 160ms;">
+    <!-- 3. YEAR SWITCHER -->
+    <div class="hl-year-bar hl-anim" role="tablist" aria-label="Holiday List Year" style="--hl-delay: 120ms;">
       <div id="hl-year-slider" class="hl-year-slider" aria-hidden="true"></div>
       <button
         type="button"
@@ -397,39 +391,51 @@ const hlJson = JSON.stringify(
       </button>
     </div>
 
-    <!-- 5. 2026 PANEL -->
+    <!-- 4. 2026 PANEL -->
     <div id="hl-panel-2026" role="tabpanel" aria-labelledby="hl-tab-2026">
-      <!-- 5a. Big Vacations -->
-      <section class="hl-sec" aria-labelledby="hl-big-heading">
+      <!-- 4a. Swipeable Holiday Cards (All 39 + Big Breaks toggle) -->
+      <section id="hl-cards-sec" class="hl-sec" aria-labelledby="hl-cards-heading">
         <div class="hl-sec-head">
-          <h2 id="hl-big-heading" class="hl-h2">Big Vacations 2026</h2>
-          <span class="hl-sec-hint">Swipe →</span>
+          <h2 id="hl-cards-heading" class="hl-h2">2026 Holidays &amp; Vacations</h2>
+          <div class="hl-mini-tabs" role="group" aria-label="Filter swipe cards">
+            <button type="button" class="hl-mini-tab is-active" data-cards="all" aria-pressed="true">
+              All {totalHolidays}
+            </button>
+            <button type="button" class="hl-mini-tab" data-cards="big" aria-pressed="false">
+              Big Breaks · {longBreakCount}
+            </button>
+          </div>
         </div>
+
         <div id="hl-breaks-row" class="hl-breaks-row">
-          {bigBreaks.map((b) => (
+          {allCards.map((c) => (
             <button
               type="button"
               class="hl-break-card"
-              data-id={b.id}
-              data-start={b.start}
-              data-end={b.end}
-              style={`background: ${b.theme.grad}, var(--bg-secondary); border-color: ${b.theme.border}; --hl-card-accent: ${b.theme.accent};`}
+              data-id={c.id}
+              data-start={c.start}
+              data-end={c.end}
+              data-big={c.days >= 3 ? '1' : '0'}
+              style={`background: ${c.theme.grad}, var(--bg-secondary); border-color: ${c.theme.border}; --hl-card-accent: ${c.theme.accent}; --hl-card-accent-light: ${c.theme.accentLight};`}
             >
               <div class="hl-break-top">
-                <span class="hl-break-emo">{b.emoji}</span>
-                <span class="hl-break-chip" data-chip-id={b.id}>
-                  {ssrTodayIST > b.end ? '✓ Done' : ssrTodayIST >= b.start ? 'Ongoing' : 'Upcoming'}
+                <span class="hl-break-emo">{c.emoji}</span>
+                <span class="hl-break-chip" data-chip-id={c.id}>
+                  {ssrTodayIST > c.end ? '✓ Done' : ssrTodayIST >= c.start ? 'Ongoing' : 'Upcoming'}
                 </span>
               </div>
-              <div class="hl-break-title">{b.displayTitle}</div>
-              <div class="hl-break-range">{b.rangeLabel}</div>
-              <div class="hl-break-days">{b.days} days</div>
+              <div class="hl-break-title">{c.displayTitle}</div>
+              <div class="hl-break-range">{c.rangeLabel} · {c.wd}</div>
+              <div class="hl-break-foot">
+                <span class="hl-break-days">{c.days} {c.days === 1 ? 'day' : 'days'}</span>
+                <span class="hl-break-type">{c.typeLabel}</span>
+              </div>
             </button>
           ))}
         </div>
       </section>
 
-      <!-- 5b. Interactive Calendar 2026 -->
+      <!-- 4b. Interactive Calendar 2026 -->
       <section class="hl-sec" aria-labelledby="hl-cal-heading">
         <h2 id="hl-cal-heading" class="hl-h2">Kolhan University Holiday Calendar 2026</h2>
         <div id="hl-cal" class="hl-cal-card">
@@ -453,56 +459,32 @@ const hlJson = JSON.stringify(
           <div id="hl-cal-detail" class="hl-cal-detail" aria-live="polite"></div>
 
           <div class="hl-cal-legend">
-            <span><i class="hl-dot hl-dot-nat"></i> National</span>
-            <span><i class="hl-dot hl-dot-fest"></i> Festival</span>
-            <span><i class="hl-dot hl-dot-break"></i> Vacation</span>
-            <span><i class="hl-dot hl-dot-sun"></i> Sunday</span>
+            <span><i class="hl-lg-hol"></i> Holiday</span>
+            <span><b class="hl-lg-sun">S</b> Sunday</span>
+            <span><i class="hl-lg-today"></i> Today</span>
           </div>
         </div>
       </section>
 
-      <!-- 5c. Month-wise SSR List + Search + Filters -->
+      <!-- 4c. Month-wise SSR List + 3-option Filter (Upcoming default) -->
       <section class="hl-sec" aria-labelledby="hl-list-heading">
         <h2 id="hl-list-heading" class="hl-h2">Kolhan University Holiday List 2026 — Month-wise</h2>
 
-        <div class="hl-controls">
-          <div class="hl-search-box">
-            <span class="hl-search-icon" aria-hidden="true">🔍</span>
-            <input
-              type="search"
-              id="hl-search"
-              class="hl-search-input"
-              placeholder="Search holiday or month… e.g. Puja, Holi, Dec"
-              aria-label="Search Kolhan University holidays"
-              autocomplete="off"
-            />
-            <button type="button" id="hl-search-clear" class="hl-search-clear" aria-label="Clear search" hidden>×</button>
-          </div>
-
-          <div class="hl-chips-row" role="group" aria-label="Filter holidays">
-            <button type="button" class="hl-chip" data-filter="upcoming">
-              Upcoming <span id="hl-chip-up-count">({ssrRemainingCount})</span>
-            </button>
-            <button type="button" class="hl-chip is-active" data-filter="all">
-              All {totalHolidays}
-            </button>
-            <button type="button" class="hl-chip" data-filter="break">
-              Long Vacations {longBreakCount}
-            </button>
-            <button type="button" class="hl-chip" data-filter="national">
-              National {nationalCount}
-            </button>
-            <button type="button" class="hl-chip" data-filter="festival">
-              Festivals {festivalCount}
-            </button>
-          </div>
-
-          <div id="hl-result-count" class="hl-result-count">Showing {totalHolidays} holidays</div>
+        <div class="hl-seg" role="group" aria-label="Filter holidays">
+          <button type="button" class="hl-seg-btn is-active" data-filter="upcoming" aria-pressed="true">
+            Upcoming · <span id="hl-seg-up-count">{ssrRemainingCount}</span>
+          </button>
+          <button type="button" class="hl-seg-btn" data-filter="all" aria-pressed="false">
+            All · {totalHolidays}
+          </button>
+          <button type="button" class="hl-seg-btn" data-filter="break" aria-pressed="false">
+            Vacations · {longBreakCount}
+          </button>
         </div>
 
         <div id="hl-empty-state" class="hl-empty" hidden>
-          <p id="hl-empty-msg">😕 No holiday matches your search. Try 'Puja' or 'Dec'.</p>
-          <button type="button" id="hl-reset-filter" class="hl-btn hl-btn-ghost">Show all 39 holidays</button>
+          <p id="hl-empty-msg">No holidays match this filter.</p>
+          <button type="button" id="hl-reset-filter" class="hl-btn hl-btn-ghost">Show all {totalHolidays} holidays</button>
         </div>
 
         <div id="hl-months-list" class="hl-months-list">
@@ -524,9 +506,8 @@ const hlJson = JSON.stringify(
                     data-start={item.start}
                     data-end={item.end}
                     data-days={item.days}
-                    data-search={item.search}
                   >
-                    <div class={`hl-tile hl-tile-${item.type}`}>
+                    <div class="hl-tile">
                       <span class="hl-tile-mon">{group.shortName.toUpperCase()}</span>
                       <span class={`hl-tile-day ${item.dayLabel.length > 3 ? 'is-range' : ''}`}>{item.dayLabel}</span>
                     </div>
@@ -538,28 +519,19 @@ const hlJson = JSON.stringify(
                         <span>{item.title}</span>
                       </div>
                       {item.sub && <div class="hl-row-sub">{item.sub}</div>}
-                      <div class="hl-row-meta">{item.wd} · {item.rangeLabel}</div>
-                      <div class="hl-row-pills">
-                        <span class={`hl-tag hl-tag-${item.type}`}>{item.typeLabel}</span>
-                        <span class="hl-tag hl-tag-muted">{item.days} {item.days === 1 ? 'day' : 'days'}</span>
-                        {item.sundayCount > 0 && (
-                          <span class="hl-tag hl-tag-sun">incl. {item.sundayCount} {item.sundayCount === 1 ? 'Sunday' : 'Sundays'}</span>
-                        )}
+                      <div class="hl-row-meta">
+                        {item.wd} · {item.days} {item.days === 1 ? 'day' : 'days'}{item.sundayCount > 0 ? ` · incl. ${item.sundayCount} ${item.sundayCount === 1 ? 'Sunday' : 'Sundays'}` : ''}
                       </div>
+                      {(item.type === 'national' || item.type === 'break') && (
+                        <div class="hl-row-pills">
+                          {item.type === 'national' && <span class="hl-tag hl-tag-national">🇮🇳 National</span>}
+                          {item.type === 'break' && <span class="hl-tag hl-tag-break">Vacation</span>}
+                        </div>
+                      )}
                     </div>
 
                     <div class="hl-row-right">
                       <span class="hl-status-chip" data-status-id={item.id}></span>
-                      <a
-                        href={item.gcal}
-                        target="_blank"
-                        rel="nofollow noopener"
-                        class="hl-gcal-btn"
-                        aria-label={`Add ${item.title} to Google Calendar`}
-                        title="Add to Google Calendar"
-                      >
-                        📅
-                      </a>
                     </div>
                   </article>
                 ))}
@@ -569,7 +541,7 @@ const hlJson = JSON.stringify(
         </div>
       </section>
 
-      <!-- 5d. Full Print-Friendly Table -->
+      <!-- 4d. Full Print-Friendly Table -->
       <section class="hl-sec">
         <details class="hl-table-details">
           <summary class="hl-table-summary">
@@ -603,15 +575,48 @@ const hlJson = JSON.stringify(
         </details>
       </section>
 
-      <!-- 5e. Bulk .ICS Download -->
-      <section class="hl-sec">
-        <button type="button" id="hl-ics-btn" class="hl-ics-btn">
-          <span>📲 Add all {totalHolidays} holidays to your phone calendar (.ics)</span>
-        </button>
+      <!-- 4e. 2026 Holiday Insights (Stats only) -->
+      <section class="hl-sec" aria-labelledby="hl-insights-heading">
+        <h2 id="hl-insights-heading" class="hl-h2">2026 Holiday Insights</h2>
+
+        <div class="hl-stats" aria-label="2026 Holiday Summary">
+          <div class="hl-stat-card">
+            <div class="hl-stat-top">
+              <span class="hl-stat-num hl-countup" data-target={totalHolidays}>{totalHolidays}</span>
+              <span class="hl-stat-emo">🎉</span>
+            </div>
+            <div class="hl-stat-label">Holidays in 2026</div>
+            <div class="hl-stat-sub">Official KU circular</div>
+          </div>
+          <div class="hl-stat-card">
+            <div class="hl-stat-top">
+              <span class="hl-stat-num hl-countup" data-target={totalDays}>{totalDays}</span>
+              <span class="hl-stat-emo">📆</span>
+            </div>
+            <div class="hl-stat-label">Total days off</div>
+            <div class="hl-stat-sub">{nonSundayDays} excl. Sundays</div>
+          </div>
+          <div class="hl-stat-card">
+            <div class="hl-stat-top">
+              <span class="hl-stat-num hl-countup" data-target={longestBreak.days}>{longestBreak.days}</span>
+              <span class="hl-stat-emo">☀️</span>
+            </div>
+            <div class="hl-stat-label">Longest break</div>
+            <div class="hl-stat-sub">Summer Vacation</div>
+          </div>
+          <div class="hl-stat-card">
+            <div class="hl-stat-top">
+              <span id="hl-stat-left" class="hl-stat-num hl-countup" data-target={ssrRemainingCount}>{ssrRemainingCount}</span>
+              <span class="hl-stat-emo">⏳</span>
+            </div>
+            <div class="hl-stat-label">Left this year</div>
+            <div class="hl-stat-sub">Remaining in 2026</div>
+          </div>
+        </div>
       </section>
     </div>
 
-    <!-- 6. 2027 PANEL -->
+    <!-- 5. 2027 PANEL -->
     <div id="hl-panel-2027" role="tabpanel" aria-labelledby="hl-tab-2027" hidden>
       <section class="hl-sec">
         <div class="hl-card-2027">
@@ -660,7 +665,7 @@ const hlJson = JSON.stringify(
       </section>
     </div>
 
-    <!-- 7. PDF + SHARE CARD -->
+    <!-- 6. PDF + SHARE CARD -->
     <section class="hl-sec" aria-labelledby="hl-pdf-heading">
       <div class="hl-pdf-card">
         <div class="hl-pdf-top">
@@ -701,7 +706,7 @@ const hlJson = JSON.stringify(
       </div>
     </section>
 
-    <!-- 8. HINDI HELPER BOX -->
+    <!-- 7. HINDI HELPER BOX -->
     <section class="hl-sec" lang="hi" aria-labelledby="hl-hindi-heading">
       <div class="hl-hindi-card">
         <h2 id="hl-hindi-heading" class="hl-hindi-title">🇮🇳 कोल्हान यूनिवर्सिटी छुट्टी लिस्ट 2026 / 2027 (आज छुट्टी है क्या?)</h2>
@@ -714,7 +719,7 @@ const hlJson = JSON.stringify(
       </div>
     </section>
 
-    <!-- 9. VISIBLE FAQ ACCORDION -->
+    <!-- 8. VISIBLE FAQ ACCORDION -->
     <section class="hl-sec" aria-labelledby="hl-faq-heading">
       <h2 id="hl-faq-heading" class="hl-h2">Kolhan University Holiday List — FAQs</h2>
       <div class="hl-faq-list">
@@ -730,7 +735,7 @@ const hlJson = JSON.stringify(
       </div>
     </section>
 
-    <!-- 10. STUDENT TOOLS 2x2 -->
+    <!-- 9. STUDENT TOOLS 2x2 -->
     <section class="hl-sec" aria-labelledby="hl-tools-heading">
       <h2 id="hl-tools-heading" class="hl-h2">More Kolhan University Tools</h2>
       <div class="hl-tools-grid">
@@ -757,7 +762,7 @@ const hlJson = JSON.stringify(
       </div>
     </section>
 
-    <!-- 11. SOURCE NOTE -->
+    <!-- 10. SOURCE NOTE -->
     <p class="hl-source-note">
       Source: Official Kolhan University Holiday List 2026 notification. Dates may change by university order — always verify with your college.
     </p>
@@ -798,7 +803,6 @@ const hlJson = JSON.stringify(
         hlTrack('holiday_pdf_download', { location: loc || 'page' });
       }
 
-      // Parse optional ?date=YYYY-MM-DD test override
       var params = new URLSearchParams(window.location.search);
       var testDateParam = params.get('date');
       var timeOffsetMs = 0;
@@ -902,9 +906,9 @@ const hlJson = JSON.stringify(
         }, 2500);
       }
 
-      // Compute status and render everything dependent on today's IST date
       var currentToday = todayIST();
-      var currentFilter = 'all';
+      var currentFilter = 'upcoming';
+      var currentCardsMode = 'all';
       var currentCalMonth = currentToday.slice(0, 4) === '2026' ? (parseInt(currentToday.slice(5, 7), 10) - 1) : 0;
       var selectedCalHolidayId = null;
 
@@ -1087,7 +1091,6 @@ const hlJson = JSON.stringify(
           countdownTimer = null;
         }
 
-        // Update year progress strip
         var progNums = document.getElementById('hl-progress-nums');
         if (progNums) {
           progNums.textContent = ctx.doneCount + ' done · ' + ctx.leftCount + ' left';
@@ -1106,7 +1109,6 @@ const hlJson = JSON.stringify(
           }
         });
 
-        // Update WhatsApp share messages with dynamic next holiday info
         var baseShare = '📅 Kolhan University Holiday List 2026 — live "Is college open today?" status, next holiday countdown & PDF: https://kolhanhub.in/holiday-list/';
         var waText = baseShare;
         if (ctx.next) {
@@ -1120,6 +1122,34 @@ const hlJson = JSON.stringify(
         if (cardWa) cardWa.setAttribute('href', waUrl);
       }
 
+      function scrollBreaksRowToTarget() {
+        var breaksRow = document.getElementById('hl-breaks-row');
+        if (!breaksRow) return;
+        var visibleCards = Array.prototype.filter.call(
+          breaksRow.querySelectorAll('.hl-break-card'),
+          function (c) { return !c.hidden; }
+        );
+        if (!visibleCards.length) return;
+        var target = visibleCards.find(function (c) {
+          return (c.getAttribute('data-end') || '') >= currentToday;
+        }) || visibleCards[0];
+        breaksRow.scrollLeft = Math.max(0, target.offsetLeft - 12);
+      }
+
+      function applyCardsMode(mode) {
+        currentCardsMode = mode;
+        document.querySelectorAll('.hl-mini-tab[data-cards]').forEach(function (btn) {
+          var active = btn.getAttribute('data-cards') === mode;
+          btn.classList.toggle('is-active', active);
+          btn.setAttribute('aria-pressed', String(active));
+        });
+        document.querySelectorAll('#hl-breaks-row .hl-break-card').forEach(function (card) {
+          var isBig = card.getAttribute('data-big') === '1';
+          card.hidden = (mode === 'big' && !isBig);
+        });
+        scrollBreaksRowToTarget();
+      }
+
       function updateQuickStatsAndRows(ctx) {
         var leftEl = document.getElementById('hl-stat-left');
         if (leftEl) {
@@ -1127,14 +1157,11 @@ const hlJson = JSON.stringify(
           leftEl.textContent = String(ctx.leftCount);
         }
 
-        var upChip = document.getElementById('hl-chip-up-count');
-        if (upChip) upChip.textContent = '(' + ctx.leftCount + ')';
+        var upCountEl = document.getElementById('hl-seg-up-count');
+        if (upCountEl) upCountEl.textContent = String(ctx.leftCount);
 
-        // Update Big Vacation cards chips & horizontal scroll
         var breakCards = document.querySelectorAll('#hl-breaks-row .hl-break-card');
-        var targetScrollCard = null;
         breakCards.forEach(function (card) {
-          var id = card.getAttribute('data-id');
           var start = card.getAttribute('data-start') || '';
           var end = card.getAttribute('data-end') || '';
           var chip = card.querySelector('.hl-break-chip');
@@ -1145,20 +1172,14 @@ const hlJson = JSON.stringify(
           } else if (start <= ctx.today && end >= ctx.today) {
             card.classList.add('is-active');
             if (chip) chip.textContent = 'Ongoing 🎉';
-            if (!targetScrollCard) targetScrollCard = card;
           } else {
             var d = diffDays(ctx.today, start);
             if (chip) chip.textContent = d === 1 ? 'Tomorrow' : 'In ' + d + ' days';
-            if (!targetScrollCard) targetScrollCard = card;
           }
         });
 
-        var breaksRow = document.getElementById('hl-breaks-row');
-        if (breaksRow && targetScrollCard) {
-          breaksRow.scrollLeft = Math.max(0, targetScrollCard.offsetLeft - 12);
-        }
+        applyCardsMode(currentCardsMode);
 
-        // Update SSR holiday rows (status chips, past dim, next highlight)
         var rows = document.querySelectorAll('#hl-months-list .hl-row');
         rows.forEach(function (row) {
           var id = row.getAttribute('data-id');
@@ -1247,7 +1268,6 @@ const hlJson = JSON.stringify(
           subEl.textContent = mHolidays.length + (mHolidays.length === 1 ? ' holiday' : ' holidays') + ' · ' + mDaysOff + (mDaysOff === 1 ? ' day' : ' days') + ' off';
         }
 
-        // 12-month mini heat strip
         var maxMonthDays = 23;
         var stripHTML = '';
         for (var m = 0; m < 12; m++) {
@@ -1268,7 +1288,6 @@ const hlJson = JSON.stringify(
           });
         });
 
-        // Build month cells
         var firstDay = new Date(Date.UTC(2026, currentCalMonth, 1)).getUTCDay();
         var daysInMonth = new Date(Date.UTC(2026, currentCalMonth + 1, 0)).getUTCDate();
         var mm = (currentCalMonth + 1) < 10 ? '0' + (currentCalMonth + 1) : String(currentCalMonth + 1);
@@ -1293,7 +1312,7 @@ const hlJson = JSON.stringify(
           if (isPast) classes.push('is-past');
 
           if (h) {
-            classes.push('is-holiday', 'is-type-' + h.type);
+            classes.push('is-holiday');
             if (selectedCalHolidayId === h.id) classes.push('is-selected');
             var prevIso = addDays(iso, -1);
             var nextIso = addDays(iso, 1);
@@ -1325,7 +1344,6 @@ const hlJson = JSON.stringify(
           });
         });
 
-        // Render detail panel
         var selected = HOLIDAYS.find(function (h) { return h.id === selectedCalHolidayId; }) || mHolidays[0] || null;
         if (!selected) {
           detailEl.innerHTML = '<div class="hl-cal-detail-empty">No holidays listed in ' + MONTHS_FULL[currentCalMonth] + ' 2026.</div>';
@@ -1351,7 +1369,6 @@ const hlJson = JSON.stringify(
                   '<span class="hl-tag hl-tag-muted">' + selected.days + (selected.days === 1 ? ' day' : ' days') + '</span>' +
                   '<span class="hl-tag hl-tag-ind">' + escapeHTML(statusText) + '</span>' +
                 '</div>' +
-                '<a href="' + selected.gcal + '" target="_blank" rel="nofollow noopener" class="hl-cal-gcal">📅 Add to Google Calendar</a>' +
               '</div>' +
             '</div>';
         }
@@ -1376,7 +1393,6 @@ const hlJson = JSON.stringify(
         });
       }
 
-      // Swipe left/right on calendar grid
       var calGrid = document.getElementById('hl-cal-grid');
       if (calGrid) {
         var touchStartX = 0;
@@ -1400,7 +1416,14 @@ const hlJson = JSON.stringify(
         }, { passive: true });
       }
 
-      // Big vacation card click -> jump to calendar month & select
+      // Swipe card mini-tabs toggle
+      document.querySelectorAll('.hl-mini-tab[data-cards]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          applyCardsMode(btn.getAttribute('data-cards') || 'all');
+        });
+      });
+
+      // Holiday card click -> jump to calendar month below & select
       document.querySelectorAll('#hl-breaks-row .hl-break-card').forEach(function (card) {
         card.addEventListener('click', function () {
           var id = card.getAttribute('data-id');
@@ -1410,15 +1433,17 @@ const hlJson = JSON.stringify(
           selectedCalHolidayId = h.id;
           renderCalendar(getContextForDate(currentToday));
           var calEl = document.getElementById('hl-cal');
-          if (calEl) calEl.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'nearest' });
+          if (calEl) {
+            window.scrollTo({
+              top: calEl.getBoundingClientRect().top + window.scrollY - 80,
+              behavior: reducedMotion ? 'auto' : 'smooth'
+            });
+          }
         });
       });
 
-      // Filters & Search
-      var searchInput = document.getElementById('hl-search');
-      var searchClear = document.getElementById('hl-search-clear');
-      var filterChips = document.querySelectorAll('.hl-chip[data-filter]');
-      var resultCountEl = document.getElementById('hl-result-count');
+      // 3-Option Segmented Filter (Upcoming default)
+      var filterChips = document.querySelectorAll('.hl-seg-btn[data-filter]');
       var emptyEl = document.getElementById('hl-empty-state');
       var emptyMsgEl = document.getElementById('hl-empty-msg');
       var resetFilterBtn = document.getElementById('hl-reset-filter');
@@ -1426,33 +1451,26 @@ const hlJson = JSON.stringify(
       function setActiveChip(filterVal) {
         currentFilter = filterVal;
         filterChips.forEach(function (c) {
-          c.classList.toggle('is-active', c.getAttribute('data-filter') === filterVal);
+          var active = c.getAttribute('data-filter') === filterVal;
+          c.classList.toggle('is-active', active);
+          c.setAttribute('aria-pressed', String(active));
         });
       }
 
       function applyListFilters() {
-        var q = searchInput ? searchInput.value.trim().toLowerCase() : '';
-        if (searchClear) searchClear.hidden = q.length === 0;
-
         var visibleCount = 0;
         var monthSections = document.querySelectorAll('#hl-months-list .hl-month');
         monthSections.forEach(function (sec) {
           var rows = sec.querySelectorAll('.hl-row');
           var secVisible = 0;
           rows.forEach(function (row) {
-            var type = row.getAttribute('data-type') || '';
             var end = row.getAttribute('data-end') || '';
             var days = parseInt(row.getAttribute('data-days') || '1', 10);
-            var hay = row.getAttribute('data-search') || '';
 
-            var matchFilter = true;
-            if (currentFilter === 'upcoming') matchFilter = end >= currentToday;
-            else if (currentFilter === 'break') matchFilter = days >= 3;
-            else if (currentFilter === 'national') matchFilter = type === 'national';
-            else if (currentFilter === 'festival') matchFilter = type === 'festival';
+            var show = true;
+            if (currentFilter === 'upcoming') show = end >= currentToday;
+            else if (currentFilter === 'break') show = days >= 3;
 
-            var matchSearch = !q || hay.indexOf(q) !== -1;
-            var show = matchFilter && matchSearch;
             row.hidden = !show;
             if (show) {
               secVisible++;
@@ -1462,111 +1480,30 @@ const hlJson = JSON.stringify(
           sec.hidden = secVisible === 0;
         });
 
-        if (resultCountEl) {
-          resultCountEl.textContent = 'Showing ' + visibleCount + (visibleCount === 1 ? ' holiday' : ' holidays');
-        }
         if (emptyEl) {
           emptyEl.hidden = visibleCount > 0;
           if (visibleCount === 0 && emptyMsgEl) {
-            emptyMsgEl.textContent = q
-              ? '😕 No holiday matches "' + q + '". Try \'Puja\' or \'Dec\'.'
-              : '😕 No upcoming holidays match this filter.';
+            emptyMsgEl.textContent = currentFilter === 'upcoming'
+              ? '🎉 No more holidays left in 2026 — check the 2027 tab.'
+              : 'No holidays match this filter.';
           }
         }
       }
 
       filterChips.forEach(function (chip) {
         chip.addEventListener('click', function () {
-          setActiveChip(chip.getAttribute('data-filter') || 'all');
+          setActiveChip(chip.getAttribute('data-filter') || 'upcoming');
           applyListFilters();
         });
       });
 
-      if (searchInput) {
-        var searchDebounce = null;
-        searchInput.addEventListener('input', function () {
-          clearTimeout(searchDebounce);
-          searchDebounce = setTimeout(applyListFilters, 120);
-        });
-      }
-      if (searchClear) {
-        searchClear.addEventListener('click', function () {
-          if (searchInput) searchInput.value = '';
-          applyListFilters();
-          if (searchInput) searchInput.focus();
-        });
-      }
       if (resetFilterBtn) {
         resetFilterBtn.addEventListener('click', function () {
-          if (searchInput) searchInput.value = '';
           setActiveChip('all');
           applyListFilters();
         });
       }
 
-      // .ICS Bulk Download
-      function foldICSLine(line) {
-        if (line.length <= 73) return line;
-        var out = [];
-        var pos = 0;
-        out.push(line.slice(0, 73));
-        pos = 73;
-        while (pos < line.length) {
-          out.push(' ' + line.slice(pos, pos + 72));
-          pos += 72;
-        }
-        return out.join('\r\n');
-      }
-
-      function escapeICSText(str) {
-        return String(str)
-          .replace(/\\/g, '\\\\')
-          .replace(/;/g, '\\;')
-          .replace(/,/g, '\\,')
-          .replace(/\r?\n/g, '\\n');
-      }
-
-      var icsBtn = document.getElementById('hl-ics-btn');
-      if (icsBtn) {
-        icsBtn.addEventListener('click', function () {
-          var dtstamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
-          var lines = [
-            'BEGIN:VCALENDAR',
-            'VERSION:2.0',
-            'PRODID:-//KolhanHub//Holidays 2026//EN',
-            'CALSCALE:GREGORIAN',
-            'METHOD:PUBLISH',
-            'X-WR-CALNAME:Kolhan University Holidays 2026'
-          ];
-          HOLIDAYS.forEach(function (h) {
-            var dtStart = h.start.replace(/-/g, '');
-            var dtEnd = addDays(h.end, 1).replace(/-/g, '');
-            var summary = h.title + (h.sub ? ' (' + h.sub + ')' : '') + ' — Kolhan University';
-            lines.push('BEGIN:VEVENT');
-            lines.push('UID:ku-2026-' + h.id + '@kolhanhub.in');
-            lines.push('DTSTAMP:' + dtstamp);
-            lines.push('DTSTART;VALUE=DATE:' + dtStart);
-            lines.push('DTEND;VALUE=DATE:' + dtEnd);
-            lines.push(foldICSLine('SUMMARY:' + escapeICSText(summary)));
-            lines.push(foldICSLine('DESCRIPTION:' + escapeICSText('Official Kolhan University Holiday List 2026 · https://kolhanhub.in/holiday-list/')));
-            lines.push('END:VEVENT');
-          });
-          lines.push('END:VCALENDAR');
-
-          var blob = new Blob([lines.join('\r\n') + '\r\n'], { type: 'text/calendar;charset=utf-8' });
-          var url = URL.createObjectURL(blob);
-          var a = document.createElement('a');
-          a.href = url;
-          a.download = 'kolhan-university-holidays-2026.ics';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
-          hlTrack('holiday_ics_download');
-        });
-      }
-
-      // Copy Link Toast (appended to document.body to avoid transform ancestor issues)
       function showToast(msg) {
         var existing = document.getElementById('hl-toast');
         if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
@@ -1614,7 +1551,6 @@ const hlJson = JSON.stringify(
         });
       }
 
-      // Tracking on PDF downloads & WhatsApp shares
       document.querySelectorAll('.hl-pdf-dl').forEach(function (el) {
         el.addEventListener('click', function () {
           trackPdf(el.getAttribute('data-loc') || 'page');
@@ -1626,7 +1562,6 @@ const hlJson = JSON.stringify(
         });
       });
 
-      // Count-up animation on Quick Stats
       function setupCountUp() {
         var els = document.querySelectorAll('.hl-countup');
         if (!els.length || reducedMotion || typeof IntersectionObserver === 'undefined') return;
@@ -1673,11 +1608,7 @@ const hlJson = JSON.stringify(
         renderCalendar(ctx);
 
         if (!isMidnightRollover) {
-          if (ctx.leftCount >= 3) {
-            setActiveChip('upcoming');
-          } else {
-            setActiveChip('all');
-          }
+          setActiveChip(ctx.leftCount >= 1 ? 'upcoming' : 'all');
         }
         applyListFilters();
       }
@@ -1727,7 +1658,7 @@ const hlJson = JSON.stringify(
   .hl-hero {
     display: flex;
     flex-direction: column;
-    gap: 0.55rem;
+    gap: 0.5rem;
   }
 
   .hl-pill-row {
@@ -1752,12 +1683,6 @@ const hlJson = JSON.stringify(
     color: var(--hl-ind);
     background: rgba(var(--hl-ind-rgb), 0.12);
     border-color: rgba(var(--hl-ind-rgb), 0.28);
-  }
-
-  .hl-pill-ok {
-    color: var(--hl-break);
-    background: rgba(var(--hl-break-rgb), 0.12);
-    border-color: rgba(var(--hl-break-rgb), 0.28);
   }
 
   .hl-pill-warn {
@@ -1796,8 +1721,8 @@ const hlJson = JSON.stringify(
 
   .hl-sub {
     color: var(--text-secondary);
-    font-size: 0.86rem;
-    line-height: 1.5;
+    font-size: 0.84rem;
+    line-height: 1.45;
     margin: 0;
   }
 
@@ -2187,60 +2112,7 @@ const hlJson = JSON.stringify(
     animation: hlConfetti 1.8s ease-in forwards;
   }
 
-  /* 3. Quick Stats */
-  .hl-stats {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.6rem;
-  }
-
-  @media (min-width: 560px) {
-    .hl-stats {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
-
-  .hl-stat-card {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 0.8rem 0.85rem;
-    min-width: 0;
-  }
-
-  .hl-stat-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .hl-stat-num {
-    font-family: var(--font-display);
-    font-size: 1.55rem;
-    font-weight: 800;
-    line-height: 1.1;
-    color: var(--text-primary);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .hl-stat-emo {
-    font-size: 1.25rem;
-  }
-
-  .hl-stat-label {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-top: 0.2rem;
-  }
-
-  .hl-stat-sub {
-    font-size: 0.68rem;
-    color: var(--text-secondary);
-    margin-top: 1px;
-  }
-
-  /* 4. Year Switcher */
+  /* 3. Year Switcher */
   .hl-year-bar {
     position: relative;
     display: grid;
@@ -2306,15 +2178,10 @@ const hlJson = JSON.stringify(
 
   .hl-sec-head {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-  }
-
-  .hl-sec-hint {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--text-tertiary);
+    flex-wrap: wrap;
   }
 
   .hl-h2 {
@@ -2325,10 +2192,35 @@ const hlJson = JSON.stringify(
     color: var(--text-primary);
   }
 
-  /* 5a. Big Vacations Scroll Row */
+  /* 4a. Top Swipeable Holiday Cards */
+  .hl-mini-tabs {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 3px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+  }
+
+  .hl-mini-tab {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .hl-mini-tab.is-active {
+    color: var(--text-primary);
+    background: rgba(var(--hl-ind-rgb), 0.2);
+  }
+
   .hl-breaks-row {
     display: flex;
-    gap: 0.7rem;
+    gap: 0.65rem;
     overflow-x: auto;
     min-width: 0;
     scroll-snap-type: x mandatory;
@@ -2342,12 +2234,12 @@ const hlJson = JSON.stringify(
   }
 
   .hl-break-card {
-    flex: 0 0 78%;
-    max-width: 280px;
+    flex: 0 0 70%;
+    max-width: 245px;
     scroll-snap-align: start;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
-    padding: 0.9rem;
+    padding: 0.85rem;
     text-align: left;
     display: flex;
     flex-direction: column;
@@ -2355,69 +2247,99 @@ const hlJson = JSON.stringify(
     transition: transform var(--transition-fast);
   }
 
+  .hl-break-card[hidden] {
+    display: none !important;
+  }
+
   .hl-break-card:active {
     transform: scale(0.98);
   }
 
   .hl-break-card.is-past {
-    opacity: 0.72;
+    opacity: 0.82;
   }
 
   .hl-break-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
-    margin-bottom: 0.2rem;
+    gap: 0.45rem;
+    margin-bottom: 0.15rem;
   }
 
   .hl-break-emo {
-    font-size: 1.9rem;
+    font-size: 1.95rem;
     line-height: 1;
   }
 
   .hl-break-chip {
-    font-size: 0.64rem;
+    font-size: 0.62rem;
     font-weight: 800;
     border-radius: 20px;
-    padding: 3px 9px;
+    padding: 3px 8px;
     background: rgba(15, 23, 42, 0.35);
     color: var(--text-primary);
     border: 1px solid rgba(255, 255, 255, 0.14);
+    white-space: nowrap;
   }
 
   html[data-theme="light"] .hl-break-chip {
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.8);
     border-color: rgba(15, 23, 42, 0.12);
   }
 
   .hl-break-title {
     font-family: var(--font-display);
-    font-size: 0.96rem;
+    font-size: 0.94rem;
     font-weight: 800;
+    line-height: 1.25;
     color: var(--text-primary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .hl-break-range {
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     color: var(--text-secondary);
+  }
+
+  .hl-break-foot {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.4rem;
+    margin-top: auto;
+    padding-top: 0.35rem;
   }
 
   .hl-break-days {
     font-family: var(--font-display);
-    font-size: 1.15rem;
+    font-size: 1.08rem;
     font-weight: 800;
     color: var(--hl-card-accent, var(--hl-ind));
-    margin-top: 0.25rem;
   }
 
-  /* 5b. Interactive Calendar */
+  html[data-theme="light"] .hl-break-days {
+    color: var(--hl-card-accent-light, var(--hl-ind));
+  }
+
+  .hl-break-type {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* 4b. Interactive Calendar */
   .hl-cal-card {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: 0.9rem;
-    min-height: 430px;
+    min-height: 410px;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -2484,7 +2406,7 @@ const hlJson = JSON.stringify(
   }
 
   .hl-strip-m.is-active {
-    background: rgba(var(--hl-ind-rgb), 0.2);
+    background: rgba(var(--hl-sun-rgb), 0.16);
   }
 
   .hl-strip-bar-wrap {
@@ -2496,11 +2418,11 @@ const hlJson = JSON.stringify(
   .hl-strip-bar {
     width: 6px;
     border-radius: 3px;
-    background: rgba(var(--hl-ind-rgb), 0.55);
+    background: rgba(var(--hl-sun-rgb), 0.55);
   }
 
   .hl-strip-m.is-active .hl-strip-bar {
-    background: var(--hl-ind);
+    background: var(--hl-sun);
   }
 
   .hl-strip-lbl {
@@ -2564,26 +2486,13 @@ const hlJson = JSON.stringify(
   }
 
   .hl-cal-cell.is-holiday {
+    background: rgba(var(--hl-sun-rgb), 0.2);
+    color: var(--hl-sun);
     cursor: pointer;
   }
 
-  .hl-cal-cell.is-type-national {
-    background: rgba(var(--hl-nat-rgb), 0.22);
-    color: var(--hl-nat);
-  }
-
-  .hl-cal-cell.is-type-festival {
-    background: rgba(var(--hl-fest-rgb), 0.22);
-    color: var(--hl-fest);
-  }
-
-  .hl-cal-cell.is-type-break {
-    background: rgba(var(--hl-break-rgb), 0.2);
-    color: var(--hl-break);
-  }
-
   .hl-cal-cell.is-selected {
-    box-shadow: inset 0 0 0 2px currentColor;
+    background: rgba(var(--hl-sun-rgb), 0.4);
   }
 
   .hl-cal-cell.hl-range-start {
@@ -2617,7 +2526,7 @@ const hlJson = JSON.stringify(
     padding: 0.8rem;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.55rem;
     animation: hlUp 0.2s ease-out both;
   }
 
@@ -2672,17 +2581,6 @@ const hlJson = JSON.stringify(
     gap: 0.35rem;
   }
 
-  .hl-cal-gcal {
-    font-size: 0.74rem;
-    font-weight: 700;
-    color: var(--hl-ind);
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 20px;
-    background: rgba(var(--hl-ind-rgb), 0.12);
-    border: 1px solid rgba(var(--hl-ind-rgb), 0.28);
-  }
-
   .hl-cal-detail-empty {
     font-size: 0.78rem;
     color: var(--text-secondary);
@@ -2694,7 +2592,7 @@ const hlJson = JSON.stringify(
     display: flex;
     flex-wrap: wrap;
     gap: 0.55rem 0.9rem;
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     color: var(--text-secondary);
     padding-top: 0.25rem;
     border-top: 1px solid var(--border-color);
@@ -2703,105 +2601,56 @@ const hlJson = JSON.stringify(
   .hl-cal-legend span {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.35rem;
   }
 
-  .hl-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+  .hl-lg-hol {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+    background: rgba(var(--hl-sun-rgb), 0.35);
     display: inline-block;
   }
-  .hl-dot-nat { background: var(--hl-nat); }
-  .hl-dot-fest { background: var(--hl-fest); }
-  .hl-dot-break { background: var(--hl-break); }
-  .hl-dot-sun { background: var(--hl-sun); }
 
-  /* 5c. Search + Filter Chips + SSR Rows */
-  .hl-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    min-width: 0;
+  .hl-lg-sun {
+    color: var(--hl-sun);
+    font-weight: 800;
   }
 
-  .hl-search-box {
-    position: relative;
-    display: flex;
-    align-items: center;
+  .hl-lg-today {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 2px var(--hl-ind);
+    display: inline-block;
   }
 
-  .hl-search-icon {
-    position: absolute;
-    left: 0.85rem;
-    font-size: 0.9rem;
-    pointer-events: none;
-  }
-
-  .hl-search-input {
-    width: 100%;
-    min-height: 44px;
-    padding: 0 2.5rem 0 2.4rem;
-    border-radius: 12px;
+  /* 4c. Segmented Filter + Month-wise SSR Rows */
+  .hl-seg {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+    padding: 4px;
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    font-size: 0.86rem;
+    border-radius: var(--radius-full);
   }
 
-  .hl-search-input:focus {
-    border-color: var(--hl-ind);
-  }
-
-  .hl-search-clear {
-    position: absolute;
-    right: 0.45rem;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    font-size: 1.15rem;
-    color: var(--text-secondary);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .hl-chips-row {
-    display: flex;
-    gap: 0.45rem;
-    overflow-x: auto;
-    min-width: 0;
-    padding-bottom: 2px;
-    scrollbar-width: none;
-  }
-
-  .hl-chips-row::-webkit-scrollbar {
-    display: none;
-  }
-
-  .hl-chip {
-    flex-shrink: 0;
-    min-height: 40px;
-    padding: 0 0.85rem;
-    border-radius: 20px;
+  .hl-seg-btn {
+    min-height: 38px;
+    border-radius: var(--radius-full);
     font-size: 0.76rem;
     font-weight: 700;
     color: var(--text-secondary);
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
     white-space: nowrap;
+    padding: 0 0.4rem;
+    transition: color var(--transition-fast), background-color var(--transition-fast);
   }
 
-  .hl-chip.is-active {
+  .hl-seg-btn.is-active {
     color: var(--text-primary);
-    background: rgba(var(--hl-ind-rgb), 0.18);
-    border-color: rgba(var(--hl-ind-rgb), 0.45);
-  }
-
-  .hl-result-count {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--text-tertiary);
+    background: rgba(var(--hl-sun-rgb), 0.16);
+    box-shadow: inset 0 0 0 1px rgba(var(--hl-sun-rgb), 0.4);
   }
 
   .hl-empty {
@@ -2836,7 +2685,6 @@ const hlJson = JSON.stringify(
   #hl-panel-2026[hidden],
   #hl-panel-2027[hidden],
   #hl-native-share[hidden],
-  .hl-search-clear[hidden],
   .hl-row-next-tag[hidden] {
     display: none !important;
   }
@@ -2858,9 +2706,9 @@ const hlJson = JSON.stringify(
   }
 
   .hl-month-meta {
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    color: var(--text-tertiary);
+    color: var(--text-secondary);
   }
 
   .hl-rows {
@@ -2876,14 +2724,9 @@ const hlJson = JSON.stringify(
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
-    padding: 0.72rem;
+    padding: 0.75rem;
     min-width: 0;
     transition: border-color var(--transition-fast);
-  }
-
-  .hl-row.is-past {
-    opacity: 0.6;
-    filter: grayscale(0.25);
   }
 
   .hl-row.is-next {
@@ -2892,8 +2735,8 @@ const hlJson = JSON.stringify(
   }
 
   .hl-row.is-today {
-    border-color: rgba(var(--hl-break-rgb), 0.6);
-    box-shadow: 0 0 14px rgba(var(--hl-break-rgb), 0.18);
+    border-color: rgba(var(--hl-sun-rgb), 0.6);
+    box-shadow: 0 0 14px rgba(var(--hl-sun-rgb), 0.18);
   }
 
   .hl-tile {
@@ -2912,12 +2755,14 @@ const hlJson = JSON.stringify(
     font-weight: 800;
     letter-spacing: 0.06em;
     padding: 3px 0;
-    color: #090d16;
-    background: var(--hl-fest);
+    color: #ffffff;
+    background: linear-gradient(135deg, #ef4444, #f43f5e);
   }
 
-  .hl-tile-national .hl-tile-mon { background: var(--hl-nat); }
-  .hl-tile-break .hl-tile-mon { background: var(--hl-break); }
+  .hl-row.is-past .hl-tile-mon {
+    background: var(--bg-hover);
+    color: var(--text-secondary);
+  }
 
   .hl-tile-day {
     display: block;
@@ -2971,8 +2816,8 @@ const hlJson = JSON.stringify(
   }
 
   .hl-row-sub {
-    font-size: 0.72rem;
-    color: var(--text-tertiary);
+    font-size: 0.73rem;
+    color: var(--text-secondary);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -2980,7 +2825,7 @@ const hlJson = JSON.stringify(
   }
 
   .hl-row-meta {
-    font-size: 0.73rem;
+    font-size: 0.74rem;
     color: var(--text-secondary);
   }
 
@@ -3001,8 +2846,7 @@ const hlJson = JSON.stringify(
 
   .hl-tag-national { color: var(--hl-nat); background: rgba(var(--hl-nat-rgb), 0.14); }
   .hl-tag-festival { color: var(--hl-fest); background: rgba(var(--hl-fest-rgb), 0.14); }
-  .hl-tag-break { color: var(--hl-break); background: rgba(var(--hl-break-rgb), 0.14); }
-  .hl-tag-sun { color: var(--hl-sun); background: rgba(var(--hl-sun-rgb), 0.14); }
+  .hl-tag-break { color: var(--hl-sun); background: rgba(var(--hl-sun-rgb), 0.14); }
   .hl-tag-ind { color: var(--hl-ind); background: rgba(var(--hl-ind-rgb), 0.14); }
   .hl-tag-muted { color: var(--text-secondary); background: var(--bg-tertiary); }
 
@@ -3022,25 +2866,12 @@ const hlJson = JSON.stringify(
     white-space: nowrap;
   }
   .hl-status-chip:empty { display: none; }
-  .hl-status-chip.is-done { color: var(--text-tertiary); background: var(--bg-tertiary); }
+  .hl-status-chip.is-done { color: var(--text-secondary); background: var(--bg-tertiary); }
   .hl-status-chip.is-up { color: var(--hl-ind); background: rgba(var(--hl-ind-rgb), 0.12); }
   .hl-status-chip.is-next { color: var(--hl-ind); background: rgba(var(--hl-ind-rgb), 0.2); border: 1px solid rgba(var(--hl-ind-rgb), 0.35); }
-  .hl-status-chip.is-today { color: var(--hl-break); background: rgba(var(--hl-break-rgb), 0.18); }
+  .hl-status-chip.is-today { color: var(--hl-sun); background: rgba(var(--hl-sun-rgb), 0.16); }
 
-  .hl-gcal-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border-color);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-size: 0.85rem;
-  }
-
-  /* 5d. Print-friendly Table */
+  /* 4d. Print-friendly Table */
   .hl-table-details {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -3089,21 +2920,60 @@ const hlJson = JSON.stringify(
     white-space: nowrap;
   }
 
-  /* 5e. ICS button */
-  .hl-ics-btn {
-    width: 100%;
-    min-height: 46px;
-    border-radius: var(--radius-md);
-    background: rgba(var(--hl-ind-rgb), 0.12);
-    border: 1px solid rgba(var(--hl-ind-rgb), 0.35);
-    color: var(--hl-ind);
-    font-size: 0.82rem;
-    font-weight: 700;
-    padding: 0.65rem 0.9rem;
-    cursor: pointer;
+  /* 4e. Insights: Quick Stats */
+  .hl-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
   }
 
-  /* 6. 2027 Panel */
+  @media (min-width: 560px) {
+    .hl-stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .hl-stat-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.8rem 0.85rem;
+    min-width: 0;
+  }
+
+  .hl-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hl-stat-num {
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hl-stat-emo {
+    font-size: 1.25rem;
+  }
+
+  .hl-stat-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 0.2rem;
+  }
+
+  .hl-stat-sub {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    margin-top: 1px;
+  }
+
+  /* 5. 2027 Panel */
   .hl-card-2027 {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -3200,7 +3070,7 @@ const hlJson = JSON.stringify(
     gap: 0.55rem;
   }
 
-  /* 7. PDF & Share Card */
+  /* 6. PDF & Share Card */
   .hl-pdf-card {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -3291,7 +3161,7 @@ const hlJson = JSON.stringify(
     color: #057a37;
   }
 
-  /* 8. Hindi Box */
+  /* 7. Hindi Box */
   .hl-hindi-card {
     background: linear-gradient(135deg, rgba(251, 191, 36, 0.06), rgba(52, 211, 153, 0.05)), var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -3318,7 +3188,7 @@ const hlJson = JSON.stringify(
     line-height: 1.5;
   }
 
-  /* 9. FAQ */
+  /* 8. FAQ */
   .hl-faq-list {
     display: flex;
     flex-direction: column;
@@ -3362,7 +3232,7 @@ const hlJson = JSON.stringify(
     transform: rotate(180deg);
   }
 
-  /* 10. Student Tools 2x2 */
+  /* 9. Student Tools 2x2 */
   .hl-tools-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3393,7 +3263,7 @@ const hlJson = JSON.stringify(
     color: var(--text-secondary);
   }
 
-  /* 11. Source Note */
+  /* 10. Source Note */
   .hl-source-note {
     font-size: 0.72rem;
     color: var(--text-tertiary);
