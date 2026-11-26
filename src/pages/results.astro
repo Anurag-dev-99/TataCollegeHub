@@ -444,7 +444,7 @@ const faqSchema = JSON.stringify({
 
       <p style="font-size: 0.78rem; color: var(--text-tertiary); margin: 0.75rem 0 0 0; text-align: center;">
         Looking for exam dates, centre lists, or form notices?{' '}
-        <a href={`${baseUrl}/exam-archive`} style="font-weight: 700; color: var(--accent-primary);">View Exam Archive →</a>
+        <a href={`${baseUrl}/exam-archive/`} style="font-weight: 700; color: var(--accent-primary);">View Exam Archive →</a>
       </p>
     </section>
 
@@ -482,7 +482,7 @@ const faqSchema = JSON.stringify({
         <li>ऊपर दिए गए <strong>37 कॉलेज सेलेक्टर</strong> से अपना कॉलेज चुनें और <strong>Pin College</strong> दबाएँ — या सीधे <a href="https://kolhanresult.in" target="_blank" rel="noopener">KolhanResult.in</a> पर रोल नंबर / नाम से सर्च करें।</li>
         <li>ऑफिशियल मार्कशीट PDF के लिए <a href="https://www.kuuniv.in/result/login" target="_blank" rel="noopener noreferrer">kuuniv.in/result/login</a> खोलें, <strong>FYUGP (NEP)</strong> और सेमेस्टर चुनें, फिर 12 अंकों का रोल नंबर डालें।</li>
         <li><strong>Batch 2022–26, 2023–27 और 2024–28</strong> के सभी कॉलेजों की <strong>Result Gazette PDF</strong> ऊपर दी गई हैं।</li>
-        <li>अगर रिजल्ट में <strong>AB (Absent)</strong> या <strong>Promoted</strong> दिखे या नंबर कम लगें, तो कॉलेज विभाग से संपर्क करें या <a href={`${baseUrl}/recheck`}>Recheck Guide</a> देखें।</li>
+        <li>अगर रिजल्ट में <strong>AB (Absent)</strong> या <strong>Promoted</strong> दिखे या नंबर कम लगें, तो कॉलेज विभाग से संपर्क करें या <a href={`${baseUrl}/recheck/`}>Recheck Guide</a> देखें।</li>
       </ul>
     </section>
 
@@ -502,8 +502,8 @@ const faqSchema = JSON.stringify({
               <p style="margin: 0;">{item.a}</p>
               {idx === 3 && (
                 <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem;">
-                  <a href={`${baseUrl}/recheck`} style="font-weight: 700; font-size: 0.78rem;">📝 Open Recheck Guide →</a>
-                  <a href={`${baseUrl}/cgpa`} style="font-weight: 700; font-size: 0.78rem;">🧮 SGPA to % Calculator →</a>
+                  <a href={`${baseUrl}/recheck/`} style="font-weight: 700; font-size: 0.78rem;">📝 Open Recheck Guide →</a>
+                  <a href={`${baseUrl}/cgpa/`} style="font-weight: 700; font-size: 0.78rem;">🧮 SGPA to % Calculator →</a>
                 </div>
               )}
             </div>
@@ -518,22 +518,22 @@ const faqSchema = JSON.stringify({
         <span>🛠️ Next Steps &amp; Student Tools</span>
       </h2>
       <div class="kr-tools-grid">
-        <a href={`${baseUrl}/cgpa`} class="kr-tool-card">
+        <a href={`${baseUrl}/cgpa/`} class="kr-tool-card">
           <span class="kr-tool-icon" aria-hidden="true">🧮</span>
           <span class="kr-tool-title">CGPA Calculator</span>
           <span class="kr-tool-sub">SGPA to % convert</span>
         </a>
-        <a href={`${baseUrl}/recheck`} class="kr-tool-card">
+        <a href={`${baseUrl}/recheck/`} class="kr-tool-card">
           <span class="kr-tool-icon" aria-hidden="true">📝</span>
           <span class="kr-tool-title">Recheck Guide</span>
           <span class="kr-tool-sub">Promoted / AB fix</span>
         </a>
-        <a href={`${baseUrl}/pyqs`} class="kr-tool-card">
+        <a href={`${baseUrl}/pyqs/`} class="kr-tool-card">
           <span class="kr-tool-icon" aria-hidden="true">📄</span>
           <span class="kr-tool-title">PYQ Papers</span>
           <span class="kr-tool-sub">Next sem prep</span>
         </a>
-        <a href={`${baseUrl}/syllabus`} class="kr-tool-card">
+        <a href={`${baseUrl}/syllabus/`} class="kr-tool-card">
           <span class="kr-tool-icon" aria-hidden="true">📚</span>
           <span class="kr-tool-title">NEP Syllabus</span>
           <span class="kr-tool-sub">FYUGP units &amp; PDFs</span>
