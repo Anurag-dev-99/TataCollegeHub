@@ -267,11 +267,17 @@ const faqSchema = JSON.stringify({
         <button type="button" class="kr-ins-tab" data-ins-tab="records" role="tab" aria-selected="false">🔥 Records</button>
       </div>
 
-      <!-- Shared Batch Selector Pills -->
-      <div class="kr-ins-batch-bar" role="group" aria-label="Select semester">
-        <button type="button" class="kr-ins-batch-pill active" data-ins-key="2022_7">2022 Sem 7</button>
-        <button type="button" class="kr-ins-batch-pill" data-ins-key="2023_3">2023 Sem 3</button>
-        <button type="button" class="kr-ins-batch-pill" data-ins-key="2024_2">2024 Sem 2</button>
+      <!-- Shared Batch + Semester Selector Pills -->
+      <div class="kr-ins-batch-bar" role="group" aria-label="Select batch">
+        <button type="button" class="kr-ins-batch-pill active" data-ins-batch="2022">Batch 2022–26</button>
+        <button type="button" class="kr-ins-batch-pill" data-ins-batch="2023">Batch 2023–27</button>
+        <button type="button" class="kr-ins-batch-pill" data-ins-batch="2024">Batch 2024–28</button>
+      </div>
+      <div id="ins-sem-bar" class="kr-ins-sem-bar" role="group" aria-label="Select semester">
+        <button type="button" class="kr-ins-sem-pill" data-ins-sem="4">Sem 4</button>
+        <button type="button" class="kr-ins-sem-pill" data-ins-sem="5">Sem 5</button>
+        <button type="button" class="kr-ins-sem-pill" data-ins-sem="6">Sem 6</button>
+        <button type="button" class="kr-ins-sem-pill active" data-ins-sem="7">Sem 7</button>
       </div>
 
       <!-- Tab 1: Toppers + Quick Rank Check -->
@@ -1616,6 +1622,9 @@ const faqSchema = JSON.stringify({
     gap: 0.5rem;
     margin-bottom: 0.7rem;
   }
+  .kr-ins-head .kr-section-title {
+    font-size: 0.96rem;
+  }
   .kr-ins-pill {
     font-size: 0.66rem;
     font-weight: 700;
@@ -1659,11 +1668,41 @@ const faqSchema = JSON.stringify({
     overflow-x: auto;
     max-width: 100%;
     min-width: 0;
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.45rem;
     scrollbar-width: none;
   }
   .kr-ins-batch-bar::-webkit-scrollbar {
     display: none;
+  }
+  .kr-ins-sem-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.38rem;
+    overflow-x: auto;
+    max-width: 100%;
+    min-width: 0;
+    margin-bottom: 0.7rem;
+    scrollbar-width: none;
+  }
+  .kr-ins-sem-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .kr-ins-sem-pill {
+    flex-shrink: 0;
+    padding: 0.2rem 0.58rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xs);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  .kr-ins-sem-pill.active {
+    color: var(--accent-success);
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.35);
   }
   .kr-ins-batch-pill {
     flex-shrink: 0;
@@ -4353,11 +4392,24 @@ const faqSchema = JSON.stringify({
         }
       }
       let activeInsTab = 'toppers';
+      let activeInsBatch = '2022';
+      let activeInsSem = '7';
       let activeInsKey = '2022_7';
 
+      const INS_BATCH_SEMS: Record<string, string[]> = {
+        '2022': ['4', '5', '6', '7'],
+        '2023': ['2', '3'],
+        '2024': ['1', '2']
+      };
+
       const INS_KEY_LABELS: Record<string, string> = {
+        '2022_4': 'Batch 2022 Sem 4',
+        '2022_5': 'Batch 2022 Sem 5',
+        '2022_6': 'Batch 2022 Sem 6',
         '2022_7': 'Batch 2022 Sem 7',
+        '2023_2': 'Batch 2023 Sem 2',
         '2023_3': 'Batch 2023 Sem 3',
+        '2024_1': 'Batch 2024 Sem 1',
         '2024_2': 'Batch 2024 Sem 2'
       };
 
@@ -4601,14 +4653,46 @@ const faqSchema = JSON.stringify({
         });
       });
 
+      const renderInsSemPills = () => {
+        const semBar = document.getElementById('ins-sem-bar');
+        if (!semBar) return;
+        const sems = INS_BATCH_SEMS[activeInsBatch] || [];
+        semBar.innerHTML = sems.map(sem => `
+          <button
+            type="button"
+            class="kr-ins-sem-pill ${sem === activeInsSem ? 'active' : ''}"
+            data-ins-sem="${sem}"
+          >
+            Sem ${sem}
+          </button>
+        `).join('');
+
+        semBar.querySelectorAll('.kr-ins-sem-pill').forEach(pill => {
+          pill.addEventListener('click', () => {
+            const sem = pill.getAttribute('data-ins-sem');
+            if (!sem) return;
+            activeInsSem = sem;
+            activeInsKey = `${activeInsBatch}_${activeInsSem}`;
+            semBar.querySelectorAll('.kr-ins-sem-pill').forEach(p => {
+              p.classList.toggle('active', p.getAttribute('data-ins-sem') === sem);
+            });
+            renderInsights();
+          });
+        });
+      };
+
       document.querySelectorAll('.kr-ins-batch-pill').forEach(pill => {
         pill.addEventListener('click', () => {
-          const key = pill.getAttribute('data-ins-key');
-          if (!key) return;
-          activeInsKey = key;
+          const batch = pill.getAttribute('data-ins-batch');
+          if (!batch) return;
+          activeInsBatch = batch;
+          const sems = INS_BATCH_SEMS[batch] || ['1'];
+          activeInsSem = sems[sems.length - 1];
+          activeInsKey = `${activeInsBatch}_${activeInsSem}`;
           document.querySelectorAll('.kr-ins-batch-pill').forEach(p => {
-            p.classList.toggle('active', p.getAttribute('data-ins-key') === key);
+            p.classList.toggle('active', p.getAttribute('data-ins-batch') === batch);
           });
+          renderInsSemPills();
           renderInsights();
         });
       });
@@ -4686,6 +4770,7 @@ const faqSchema = JSON.stringify({
         }
       });
 
+      renderInsSemPills();
       const savedCode = getPinnedCollege();
       if (savedCode && kuCollegesList.some(c => c.code === savedCode) && savedCode !== '1305') {
         selectCollege(savedCode);

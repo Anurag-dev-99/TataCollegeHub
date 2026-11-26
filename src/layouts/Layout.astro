@@ -7,7 +7,7 @@ interface Props {
   rawTitle?: boolean;
   description?: string;
   keywords?: string;
-  activeTab?: 'home' | 'syllabus' | 'pyqs' | 'results' | 'notices' | 'cgpa' | 'recheck' | 'exam-archive';
+  activeTab?: 'home' | 'syllabus' | 'pyqs' | 'results' | 'notices' | 'cgpa' | 'recheck' | 'exam-archive' | 'holidays';
 }
 
 const { title, rawTitle = false, activeTab } = Astro.props;
@@ -37,7 +37,8 @@ const activePageName =
   activeTab === 'results'  ? 'Kolhan University Result & Analysis' :
   activeTab === 'notices'  ? 'Notices & Announcements' :
   activeTab === 'cgpa'     ? 'CGPA Calculator' :
-  activeTab === 'recheck'  ? 'Answer Sheet Recheck & Photocopy Guide' : null;
+  activeTab === 'recheck'  ? 'Answer Sheet Recheck & Photocopy Guide' :
+  activeTab === 'holidays' ? 'Kolhan University Holiday List 2026' : null;
 if (activePageName && activeTab !== 'home') {
   breadcrumbItems.push({ name: activePageName, item: canonicalUrl });
 }
@@ -347,6 +348,8 @@ const webPageSchema = JSON.stringify({
             <div>
               <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); margin-bottom: 0.4rem;">Site</p>
               <p style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.75rem; align-items: center;">
+                <a href={`${baseUrl}/holiday-list/`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">Holiday List 2026</a>
+                <span style="color: var(--text-tertiary);">•</span>
                 <a href={`${baseUrl}/about`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">About</a>
                 <span style="color: var(--text-tertiary);">•</span>
                 <a href={`${baseUrl}/privacy`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">Privacy Policy</a>

@@ -2,7 +2,7 @@
 
 > **Read this file first in every new conversation / with every new AI model.**
 > Keep it updated: add a line to the Changelog (section 11) after every meaningful change.
-> Last updated: 2026-10-30
+> Last updated: 2026-11-26
 
 ---
 
@@ -29,7 +29,7 @@ Task: <describe what you want>
 ## 2. Hard rules (never break)
 
 1. **NEVER run `git commit` / `git push` / stage files.** The owner does all Git manually (see `.agents/AGENTS.md`).
-2. **Always run `npm run build` after edits.** It must finish with 0 errors. (Last known: 143 pages.)
+2. **Always run `npm run build` after edits.** It must finish with 0 errors. (Last known: 146 pages.)
 3. **Only touch what the task asks.** `src/pages/index.astro` is ~2,300 lines with many unrelated sections — never "tidy up" other sections.
 4. When deleting a section, also delete its own `<script>` block and any now-unused data. Leave at most one blank line behind.
 5. Use **inline styles** + the CSS variables already used in the file. Don't introduce new CSS frameworks/classes.
@@ -65,7 +65,7 @@ TataCollegeHub/
 │  ├─ styles/global.css         # CSS variables (--text-primary, --radius-sm, --font-display …)
 │  └─ pages/
 │     ├─ index.astro            # HOMEPAGE (most edits happen here)
-│     ├─ notices.astro  results.astro  recheck.astro  cgpa.astro
+│     ├─ notices.astro  results.astro  recheck.astro  cgpa.astro  holiday-list.astro
 │     ├─ exam-archive.astro  faq.astro  about.astro  contact.astro  privacy.astro
 │     ├─ pyqs/ ([category]/…)   # PYQ browser pages
 │     └─ syllabus/ (index, [department])
@@ -198,6 +198,7 @@ Collection message to contributors (soft tone): *"Thank you for sharing! If you'
 
 | Date | Change |
 |---|---|
+| 2026-11-26 | **Dedicated `/holiday-list/` Page (SEO + Mobile-First App UX).** Created `src/pages/holiday-list.astro` (`https://kolhanhub.in/holiday-list/`) featuring a live IST "Is Kolhan University Open Today?" hero card with next-holiday countdown / active vacation progress / 39-segment year strip / one-time confetti, 2×2 quick stats, `2026 | 2027` year switcher with tentative 2027 fixed dates, swipeable Big Vacations cards, interactive monthly calendar with continuous multi-day pills & 12-month heat strip, SSR month-wise searchable & filterable list of all 39 holidays, print-friendly full table, bulk `.ics` calendar export, official PDF download (`KU_holiday_list_2026.pdf`) + WhatsApp/copy/native share, Hindi helper box (`lang="hi"`), `FAQPage` JSON-LD + accordion, and `?date=YYYY-MM-DD` test override. Fixed `id: "1"` (New Year Day) `daysOfWeek` in `public/data/holidays-2026.json` (`Wednesday` → `Thursday`). Added `'holidays'` tab/breadcrumb & footer link in `src/layouts/Layout.astro`, plus internal links from `src/pages/index.astro` and `src/pages/notices.astro`. |
 | 2026-11-26 | **Tabbed Kolhan University Insights Card + Batch 2022 Sem 7 Result PDF.** Added `public/data/ku_insights.json` (`18.7 KB`) and built the compact 1-card tabbed **Kolhan University Insights** section on `/results/` (`Toppers` with Top 3 Uni Toppers + smart Roll No / Name quick jump to `kolhanresult.in`, `Ranks` with Top 5 colleges + live selected/pinned college rank, and `Records` with Selected College #1 vs Uni #1 + batch high scores + swipeable 8-sem #1 Champions strip). Added Batch 2022 Sem 7 Result Gazette PDF link to `exam-archive.json`. |
 | 2026-11-25 | **`/results/` SEO & Mobile Landing Overhaul + Tata College Sem 5.** Added `rawTitle` + `head` slot and changed header logo `<h1>` → `<span>` in `Layout.astro`. Added `results_sem5_master.json` (`1,166` Tata College students) and `ku_colleges.json` (37 colleges). Redesigned `/results/` landing view (`results.astro`): 57-char SEO `<title>`, `FAQPage` JSON-LD + accordion, `kolhanresult.in` funnel card, searchable 37-college selector with `localStorage` pinning (`kolhanhub_pinned_college`), compact 2-column batch/semester grid (Tata opens local dashboards; other 36 deep-link to `kolhanresult.in`), Official Result Gazette PDFs + `kuuniv.in` link, 4-step guide, Hindi helper box, and 2×2 Student Tools strip (`/cgpa`, `/recheck`, `/pyqs`, `/syllabus`). |
 | 2026-10-31 | **Maths Major Sem 3 (MJ-04 & MJ-05) Deep Content Upgrade.** Consolidated 14 JSON files from AI Studio into `public/data/maths-sem3-complete.json` (cleaned all `[cite:...]` artifacts, merged 2022 & 2023 batch PYQs with step-by-step solutions, unit weightage, book chapters, strategy, FAQs, and Tata College 2023-batch Sem 3 result stats). Added build-time KaTeX math renderer (`src/utils/renderMath.ts`). Upgraded `/syllabus/mathematics` (batch selector 2022–24 vs 2025–26, interactive MJ-04/MJ-05 unit breakdown, must-do vs skip, book chapters, 2023 result stats, notes box, FAQs) and `/pyqs/major/mathematics/3` (full text PYQs + collapsible step-by-step solutions for 2022 & 2023 batches, repeated theorems, senior advice, 3-day plan, result stats, FAQs). |

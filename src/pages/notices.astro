@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { ExternalLink, Bell } from '@lucide/astro';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Layout title="Kolhan University Notices & Notifications — Tata College, Chaibasa" activeTab="notices">
@@ -10,6 +11,22 @@ import { ExternalLink, Bell } from '@lucide/astro';
     <p style="color: var(--text-secondary); max-width: 600px; font-size: 1.05rem;">
       Official notices & circulars from Kolhan University.
     </p>
+  </div>
+
+  <!-- HOLIDAY LIST LINK -->
+  <div style="margin-bottom: 1rem; border: 1px solid rgba(52,211,153,0.22); border-radius: var(--radius-sm); padding: 0.75rem 1rem; background: linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(0,0,0,0.12) 100%);">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:0.6rem; flex-wrap:wrap;">
+      <div style="display:flex; align-items:center; gap:0.55rem; min-width:0;">
+        <span style="font-size:1.1rem; flex-shrink:0;">🎉</span>
+        <div style="min-width:0;">
+          <div style="font-size:0.84rem; font-weight:800; color:#34d399; font-family:var(--font-display);">Kolhan University Holiday List 2026</div>
+          <div style="font-size:0.7rem; color:var(--text-secondary); margin-top:1px;">Live open/holiday status, calendar &amp; PDF</div>
+        </div>
+      </div>
+      <a href={`${baseUrl}/holiday-list/`} style="display:inline-flex; align-items:center; gap:0.3rem; font-size:0.72rem; font-weight:700; color:#34d399; text-decoration:none; background:rgba(52,211,153,0.12); border:1px solid rgba(52,211,153,0.28); border-radius:20px; padding:5px 12px; white-space:nowrap;">
+        View List →
+      </a>
+    </div>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════════
