@@ -3,12 +3,19 @@ import Layout from '../../../../layouts/Layout.astro';
 import pyqsData from '../../../../../public/data/pyqs.json';
 import notesData from '../../../../../public/data/notes.json';
 import mathsSem3Data from '../../../../../public/data/maths-sem3-complete.json';
+import syllabusData from '../../../../../public/data/syllabus.json';
+import mdcData from '../../../../../public/data/mdc.json';
+import aecData from '../../../../../public/data/aec.json';
+import vacData from '../../../../../public/data/vac.json';
+import secData from '../../../../../public/data/sec.json';
+import iksData from '../../../../../public/data/iks.json';
+import markingSchemes from '../../../../../public/data/paper_marking_schemes.json';
 import { renderMathText } from '../../../../utils/renderMath';
-import { ChevronLeft, Calendar, Download, FileCode, AlertCircle, HelpCircle, ExternalLink, BookOpen, Globe, Sparkles, Eye, MessageCircle } from '@lucide/astro';
+import { ChevronLeft, Download, FileCode, AlertCircle, HelpCircle, ExternalLink, BookOpen, Globe, Sparkles, GraduationCap, CheckCircle2 } from '@lucide/astro';
 
 export async function getStaticPaths() {
   const pathsMap = new Map();
-  
+
   // Include ALL papers — available ones AND missing AEC papers so those pages render
   pyqsData.forEach(item => {
     // For non-AEC categories, only show pages that have an actual downloadUrl
@@ -30,13 +37,14 @@ export async function getStaticPaths() {
       });
     }
   });
-  
+
   return Array.from(pathsMap.values());
 }
 
 const { category, subject, semester } = Astro.params;
 const { originalCategory, originalSubject, originalSemester } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const siteUrl = 'https://kolhanhub.in';
 
 const isMathsMajorSem3 = category === 'major' && subject === 'mathematics' && semester === '3';
 
@@ -44,159 +52,587 @@ const isMathsMajorSem3 = category === 'major' && subject === 'mathematics' && se
 const paidNotes = notesData.products.filter(n => n.available && n.match.category === category && n.match.subject === subject && n.match.semester === semester);
 const notesWaLink = (item: string, price: number) => `https://api.whatsapp.com/send?phone=${notesData.whatsapp}&text=${encodeURIComponent(`Hi KolhanHub! 👋 I want to buy: ${item} – ₹${price}. Please send the payment QR.`)}`;
 
-// Filter papers matching these exactly
-const matchingPapers = pyqsData.filter(p => 
+// Filter entries matching this category/subject/semester
+const matchingPapers = pyqsData.filter(p =>
   p.category.toLowerCase() === category &&
   p.subject.toLowerCase() === subject &&
   p.semester.toString() === semester
 );
+
+// Separate question papers from inline notes (e.g., IKS notes stored in pyqs.json)
+const questionPapers = matchingPapers.filter((p: any) => p.type !== 'notes');
+const inlineNotes = matchingPapers.filter((p: any) => p.type === 'notes' && !!p.downloadUrl);
+const availablePapers = questionPapers.filter(p => !!p.downloadUrl);
+const availableCount = availablePapers.length;
+
+// Display-only formatter for the 21 raw filenames in pyqs.json (keeps raw paper.title untouched for Google Sheets tracking)
+function formatPaperDisplayTitle(paper: any): string {
+  const raw = String(paper.title || '').trim();
+  if (!/\.pdf$/i.test(raw) && !raw.includes('_')) {
+    return raw;
+  }
+
+  const codeMatch = raw.match(/(?:^|[^a-z0-9])(mj|mn|mdc|sec|aec|vac)[-_ ]?(\d+[a-z]?)(?=$|[^a-z0-9])/i);
+  let codeTag = codeMatch ? `${codeMatch[1].toUpperCase()}-${codeMatch[2].toUpperCase()}` : '';
+  if (!codeTag && ['SEC', 'AEC', 'VAC', 'MDC'].includes(paper.category)) {
+    codeTag = `${paper.category}-${paper.semester}`;
+  }
+
+  const yr = paper.year ? ` — ${paper.year}` : '';
+  const setPart = paper.set ? ` (${paper.set})` : '';
+
+  if (paper.category === 'Major' || paper.category === 'Minor') {
+    return `${paper.subject} ${paper.category}${codeTag ? ' ' + codeTag : ''} Sem ${paper.semester} Question Paper${yr}${setPart}`;
+  }
+  return `${paper.subject}${codeTag ? ` (${codeTag})` : ''} Question Paper${yr}${setPart}`;
+}
+
+// Sibling semesters for the same category + subject (only semesters that generate a page)
+const siblingSemesters = [...new Set(
+  pyqsData
+    .filter(p =>
+      p.category.toLowerCase() === category &&
+      p.subject.toLowerCase() === subject &&
+      (p.category === 'AEC' || !!p.downloadUrl)
+    )
+    .map(p => Number(p.semester))
+)].sort((a, b) => a - b);
+
+// Category exam pattern & passing marks backed by paper_marking_schemes.json
+type ExamPattern = { badge: string; total: string; split: string; pass: string; duration: string; note: string };
+
+function getExamPattern(cat: string, subj: string, sem: string | number): ExamPattern {
+  const SUBJECT_ALIASES: Record<string, string> = {
+    'bba': 'business administration',
+    'evs': 'environment & water management',
+    'bca': 'computer application',
+    'it': 'information technology',
+    'mass communication': 'mass communication and video production'
+  };
+  const subLower = subj.toLowerCase().trim();
+  const normalizedSub = SUBJECT_ALIASES[subLower] || subLower;
+  const semNum = Number(sem);
+
+  if (cat === 'major' || cat === 'minor') {
+    let isPractical = markingSchemes.subjects.alwaysPractical.some(
+      s => s.toLowerCase() === normalizedSub
+    );
+
+    if (!isPractical && cat === 'minor') {
+      isPractical = markingSchemes.exceptions.nonPracticalSubjectsThatHavePracticalInSpecificMinorPapers.some(
+        ex => ex.sem === semNum && ex.paper.toLowerCase().includes(normalizedSub)
+      );
+    }
+
+    if (markingSchemes.subjects.mixedVocationalSubjects.some(s => s.toLowerCase() === normalizedSub)) {
+      const isMixedNonPrac = markingSchemes.exceptions.mixedSubjectsNonPracticalPapers.some(
+        ex => ex.sem === semNum && ex.paper.toLowerCase().includes(normalizedSub) && ex.paper.toLowerCase().includes(cat)
+      );
+      isPractical = !isMixedNonPrac;
+    }
+
+    const acNote = cat === 'minor' ? ' 2025 batch onwards, Minor is officially called Associated Core (AC).' : '';
+    if (isPractical) {
+      const fm = markingSchemes.schemes['100_PRACTICAL'].fullMarks;
+      const pm = markingSchemes.schemes['100_PRACTICAL'].passMarks;
+      return {
+        badge: cat === 'major' ? 'MJ · 100 Marks (Practical)' : 'MN / AC · 100 Marks (Practical)',
+        total: `${fm.total} Marks`,
+        split: `${fm.theory} Th + ${fm.internal} Int + ${fm.practical} Prac`,
+        pass: `${pm.total} Total (${pm.theory} / ${pm.internal} / ${pm.practical})`,
+        duration: '3 Hours',
+        note: `Minimum 40% required in each component: Theory (${pm.theory}/${fm.theory}), Internal (${pm.internal}/${fm.internal}), and Practical (${pm.practical}/${fm.practical}).${acNote}`
+      };
+    } else {
+      const fm = markingSchemes.schemes['100_NON_PRACTICAL'].fullMarks;
+      const pm = markingSchemes.schemes['100_NON_PRACTICAL'].passMarks;
+      return {
+        badge: cat === 'major' ? 'MJ · 100 Marks' : 'MN / AC · 100 Marks',
+        total: `${fm.total} Marks`,
+        split: `${fm.theory} Theory + ${fm.internal} Internal`,
+        pass: `${pm.total} Total (${pm.theory} Th / ${pm.internal} Int)`,
+        duration: '3 Hours',
+        note: `Minimum 40% required in each component: Theory (${pm.theory}/${fm.theory}) and Internal (${pm.internal}/${fm.internal}).${acNote}`
+      };
+    }
+  }
+
+  const staticPatterns: Record<string, ExamPattern> = {
+    mdc: {
+      badge: 'MDC · 75 Marks',
+      total: '75 Marks',
+      split: '75 Theory Only',
+      pass: '30 Marks (40%)',
+      duration: '3 Hours',
+      note: 'Theory-only paper (no internal or practical). MDC syllabus is identical for Semester 1, 2 & 3 — papers from any of these semesters help.'
+    },
+    sec: {
+      badge: 'SEC · 75 Marks',
+      total: '75 Marks',
+      split: '75 Theory Only',
+      pass: '30 Marks (40%)',
+      duration: '3 Hours',
+      note: 'Theory-only paper (no internal or practical).'
+    },
+    aec: {
+      badge: 'AEC · 50 Marks',
+      total: '50 Marks',
+      split: '50 Theory Only',
+      pass: '20 Marks (40%)',
+      duration: '2 Hours',
+      note: 'Theory-only paper (no internal or practical). AEC-3 (Sem 3) and AEC-4 (Sem 4) follow the same chosen language.'
+    },
+    vac: {
+      badge: 'VAC · 50 Marks',
+      total: '50 Marks',
+      split: '50 Theory Only',
+      pass: '20 Marks (40%)',
+      duration: '2 Hours',
+      note: 'Theory-only paper (no internal or practical).'
+    },
+    iks: {
+      badge: 'IKS · Compulsory',
+      total: '50 Marks',
+      split: '50 MCQs (OMR)',
+      pass: '20 Marks (40%)',
+      duration: '1.5 Hours',
+      note: 'Compulsory NEP paper for Semester 1 across Kolhan University.'
+    }
+  };
+
+  return staticPatterns[cat] || {
+    badge: originalCategory,
+    total: '75–100 Marks',
+    split: 'NEP FYUGP Pattern',
+    pass: '40% Aggregate',
+    duration: '3 Hours',
+    note: ''
+  };
+}
+
+const pattern = getExamPattern(category, originalSubject, originalSemester);
+
+// Matching syllabus resolver
+type SyllabusLink = { label: string; subtitle: string; href: string; external: boolean };
+const matchedSyllabi: SyllabusLink[] = [];
+
+if (category === 'major') {
+  const deptMatch = syllabusData.find(s => !s.department.toLowerCase().includes('minor') && s.department.toLowerCase() === subject);
+  if (deptMatch) {
+    const slug = deptMatch.department.toLowerCase().replace(/\s+/g, '-');
+    matchedSyllabi.push({
+      label: `${deptMatch.department} Major Syllabus (Sem 1–8)`,
+      subtitle: 'Unit-wise syllabus & PDF downloads on KolhanHub',
+      href: `${baseUrl}/syllabus/${slug}/`,
+      external: false
+    });
+  }
+} else if (category === 'minor') {
+  const minorMatch = syllabusData.find(s => s.department.toLowerCase() === `${subject} minor`);
+  const fallbackMajor = syllabusData.find(s => !s.department.toLowerCase().includes('minor') && s.department.toLowerCase() === subject);
+  const chosen = minorMatch || fallbackMajor;
+  if (chosen) {
+    const slug = chosen.department.toLowerCase().replace(/\s+/g, '-');
+    matchedSyllabi.push({
+      label: minorMatch ? `${chosen.department} Syllabus` : `${chosen.department} Syllabus (NEP FYUGP)`,
+      subtitle: minorMatch ? 'Official Minor / AC curriculum PDF & units' : 'Check department syllabus hub for Major & Minor units',
+      href: `${baseUrl}/syllabus/${slug}/`,
+      external: false
+    });
+  }
+} else if (category === 'mdc') {
+  let mdcMatches = mdcData.filter(m => m.name.toLowerCase() === subject);
+  if (mdcMatches.length === 0 && subject === 'information technology') {
+    mdcMatches = mdcData.filter(m => m.name.toLowerCase().includes('information technology'));
+  }
+  if (mdcMatches.length === 0) {
+    mdcMatches = mdcData.filter(m => m.name.toLowerCase().includes(subject));
+  }
+  mdcMatches.forEach(m => {
+    matchedSyllabi.push({
+      label: `${m.name} (MDC) Syllabus PDF`,
+      subtitle: `Common for Sem 1, 2 & 3 • ${m.category}`,
+      href: m.link,
+      external: true
+    });
+  });
+} else if (category === 'aec') {
+  const aecMatches = aecData.filter(a =>
+    a.semester === `Semester ${originalSemester}` &&
+    a.name.toLowerCase().includes(subject)
+  );
+  aecMatches.forEach(a => {
+    matchedSyllabi.push({
+      label: `${a.name} Syllabus PDF`,
+      subtitle: `${a.semester} • Official Kolhan University PDF`,
+      href: a.link,
+      external: true
+    });
+  });
+} else if (category === 'vac') {
+  const vacMatches = vacData.filter(v => {
+    const n = v.name.toLowerCase();
+    if (subject.includes('understanding india')) return n.includes('understanding india');
+    if (subject.includes('global citizenship')) return n.includes('global citizenship');
+    if (subject.includes('environmental')) return n.includes('environmental');
+    return n.includes(subject);
+  });
+  vacMatches.forEach(v => {
+    matchedSyllabi.push({
+      label: `${v.name} Syllabus PDF`,
+      subtitle: `${v.semester} • Value Added Course`,
+      href: v.link,
+      external: true
+    });
+  });
+} else if (category === 'sec') {
+  if (subject.includes('mathematical') && semester === '3') {
+    matchedSyllabi.push({
+      label: 'SEC-3 Syllabus & Unit Breakdown',
+      subtitle: 'Complete interactive unit guide + PYQ weightage',
+      href: `${baseUrl}/syllabus/sec-3/`,
+      external: false
+    });
+  }
+  const secMatches = secData.filter(s => {
+    const n = s.name.toLowerCase();
+    if (subject.includes('communication skill')) return n.includes('communication skill');
+    if (subject.includes('digital education')) return n.includes('digital education');
+    if (subject.includes('news writing')) return n.includes('news writing');
+    if (subject.includes('mathematical')) return n.includes('mathematical');
+    return n.includes(subject);
+  });
+  secMatches.forEach(s => {
+    matchedSyllabi.push({
+      label: `${s.name} Syllabus PDF`,
+      subtitle: `${s.semester} • Skill Enhancement Course`,
+      href: s.link,
+      external: true
+    });
+  });
+} else if (category === 'iks') {
+  if (Array.isArray(iksData) && iksData[0]) {
+    matchedSyllabi.push({
+      label: `${iksData[0].name} Syllabus PDF`,
+      subtitle: `${iksData[0].semester} • ${iksData[0].type || 'Compulsory'}`,
+      href: iksData[0].link,
+      external: true
+    });
+  }
+}
+
+if (matchedSyllabi.length === 0) {
+  matchedSyllabi.push({
+    label: 'Browse All Kolhan University Syllabi',
+    subtitle: 'Official NEP FYUGP Curriculum PDFs',
+    href: `${baseUrl}/syllabus/`,
+    external: false
+  });
+}
+
+// Dynamic SEO metadata
+const uniqueYears = [...new Set(availablePapers.map(p => String(p.year || '')).filter(Boolean))].sort();
+const yearsSummary = uniqueYears.length > 0 ? uniqueYears.join(', ') : '2022–2026';
+
+const SHORT_SUBJECT_MAP: Record<string, string> = {
+  'global citizenship education for sustainable development': 'Global Citizenship',
+  'mathematical & computational thinking and analysis': 'Maths & Comp. Thinking',
+  'communication skill and personality development': 'Communication Skills',
+  'indian knowledge system': 'IKS (Indian Knowledge System)'
+};
+const shortSubject = SHORT_SUBJECT_MAP[subject] || originalSubject;
+
+let seoTitle = '';
+if (isMathsMajorSem3) {
+  seoTitle = 'Kolhan University B.Sc Maths Major Sem 3 PYQs (MJ-04 & MJ-05) with Solutions';
+} else {
+  const c1 = `${shortSubject} Sem ${originalSemester} ${originalCategory} Question Paper PDF — Kolhan University`;
+  const c2 = `${shortSubject} Sem ${originalSemester} ${originalCategory} Question Paper PDF — KU`;
+  const c3 = `${shortSubject} Sem ${originalSemester} ${originalCategory} PYQ PDF — KU`;
+  seoTitle = c1.length <= 62 ? c1 : (c2.length <= 62 ? c2 : c3);
+}
+
+const seoDescription = isMathsMajorSem3
+  ? 'Download Kolhan University B.Sc. Mathematics Honours Semester 3 Previous Year Question Papers (MJ-04 Real Analysis & MJ-05 Vectors) for 2022 & 2023 batches with complete step-by-step solved answers, repeated questions, book guide, and 2023 batch result stats.'
+  : (availableCount > 0
+      ? `Download free Kolhan University ${originalSubject} (${originalCategory}) Semester ${originalSemester} previous year question paper PDF (${yearsSummary} — ${availableCount} ${availableCount === 1 ? 'paper' : 'papers'}) for NEP FYUGP all 37 colleges.`
+      : `Kolhan University ${originalSubject} (${originalCategory}) Semester ${originalSemester} previous year question paper archive for NEP FYUGP all 37 colleges. Request or upload this paper on KolhanHub.`);
+
+const seoKeywords = `${originalSubject} sem ${originalSemester} question paper, ${originalSubject} ${originalCategory} sem ${originalSemester} pyq, Kolhan University ${originalSubject} previous year question paper pdf, ${originalCategory} ${originalSubject} sem ${originalSemester}, NEP FYUGP ${originalSubject} pyq, Kolhan University question paper 2025 2026`;
+
+// Visible + Schema FAQs
+const autoFaqs = [
+  {
+    q: `How to download Kolhan University ${originalSubject} (${originalCategory}) Semester ${originalSemester} PYQ PDF?`,
+    a: availableCount > 0
+      ? `Tap any "Download PDF" button at the top of this page to open the free ${originalSubject} Semester ${originalSemester} (${originalCategory}) question paper directly on Google Drive without login or fees.`
+      : `This paper is currently missing from our archive. Tap "Request Paper" below to notify us, or share a clear photo/PDF if you already have it.`
+  },
+  {
+    q: `Which years and batches are included in ${originalSubject} Sem ${originalSemester} PYQs?`,
+    a: availableCount > 0
+      ? `This page currently includes ${availableCount} ${availableCount === 1 ? 'paper' : 'papers'} (${yearsSummary}) applicable across all 37 Kolhan University colleges under the NEP 2020 FYUGP syllabus.`
+      : `Kolhan University NEP FYUGP batches (2022–2029) follow the same core university examination framework across all 37 affiliated colleges.`
+  },
+  {
+    q: `What is the exam pattern and passing marks for ${originalCategory} papers in Kolhan University NEP FYUGP?`,
+    a: `${originalCategory} papers carry ${pattern.total} (${pattern.split}) with a ${pattern.duration} exam duration. You need at least ${pattern.pass} to qualify under Kolhan University NEP FYUGP rules.${pattern.note ? ' ' + pattern.note : ''}`
+  }
+];
+
+const schemaFaqEntities = isMathsMajorSem3
+  ? mathsSem3Data.papers.flatMap((p: any) => p.faqs || []).slice(0, 6)
+  : autoFaqs;
+
+const canonicalSubpageUrl = `${siteUrl}/pyqs/${encodeURIComponent(category)}/${encodeURIComponent(subject)}/${encodeURIComponent(semester)}/`;
+
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": schemaFaqEntities.map((item: any) => ({
+    "@type": "Question",
+    "name": item.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.a
+    }
+  }))
+});
+
+const breadcrumbSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": `${siteUrl}/` },
+    { "@type": "ListItem", "position": 2, "name": "PYQs", "item": `${siteUrl}/pyqs/` },
+    { "@type": "ListItem", "position": 3, "name": originalCategory, "item": `${siteUrl}/pyqs/#${category}-pyq-trigger` },
+    { "@type": "ListItem", "position": 4, "name": `${originalSubject} Sem ${originalSemester}`, "item": canonicalSubpageUrl }
+  ]
+});
 ---
 
 <Layout
-  title={isMathsMajorSem3 ? 'Kolhan University B.Sc Maths Major Sem 3 PYQs (MJ-04 Real Analysis & MJ-05 Vectors) with Solutions' : `${originalSubject} Sem ${originalSemester} PYQs`}
-  description={isMathsMajorSem3 ? 'Download Kolhan University B.Sc. Mathematics Honours Semester 3 Previous Year Question Papers (MJ-04 Real Analysis & MJ-05 Vectors) for 2022 & 2023 batches with complete step-by-step solved answers, repeated questions, book guide, and 2023 batch result stats.' : undefined}
+  title={seoTitle}
+  rawTitle={true}
+  description={seoDescription}
+  keywords={seoKeywords}
   activeTab="pyqs"
 >
-  {isMathsMajorSem3 && (
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
-  )}
+  <Fragment slot="head">
+    {isMathsMajorSem3 && (
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+    )}
+    <script type="application/ld+json" set:html={faqSchema} />
+    <script type="application/ld+json" set:html={breadcrumbSchema} />
+  </Fragment>
 
   <!-- Breadcrumb Navigation -->
-  <div style="margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.85rem;">
-    <a href={`${baseUrl}/pyqs`} style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 600; color: var(--text-secondary);">
-      <ChevronLeft size="16" /> PYQs Database
+  <nav aria-label="Breadcrumb" style="margin-bottom: 1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; font-size: 0.82rem; min-width: 0;">
+    <a href={`${baseUrl}/pyqs/`} style="display: inline-flex; align-items: center; gap: 0.2rem; font-weight: 700; color: var(--text-secondary); text-decoration: none;">
+      <ChevronLeft size="15" /> PYQs
     </a>
     <span style="color: var(--text-tertiary);">/</span>
     <span style="color: var(--text-secondary); font-weight: 500;">{originalCategory}</span>
     <span style="color: var(--text-tertiary);">/</span>
-    <span style="color: var(--text-secondary); font-weight: 500;">{originalSubject}</span>
+    <span style="color: var(--text-secondary); font-weight: 500; overflow-wrap: anywhere;">{originalSubject}</span>
     <span style="color: var(--text-tertiary);">/</span>
-    <span style="color: var(--text-primary); font-weight: 600;">Sem {originalSemester}</span>
-  </div>
+    <span style="color: var(--text-primary); font-weight: 700;">Sem {originalSemester}</span>
+  </nav>
 
-  <!-- Page Header -->
-  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
-    <h1 style="font-size: 1.75rem; font-family: var(--font-display); tracking: -0.03em;">
-      {originalSubject} Question Papers
+  <!-- Compact Page Header -->
+  <div style="margin-bottom: 1.15rem; display: flex; flex-direction: column; gap: 0.5rem;">
+    <h1 style="font-size: clamp(1.35rem, 5.2vw, 1.85rem); font-family: var(--font-display); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; margin: 0; overflow-wrap: anywhere;">
+      {originalSubject} Sem {originalSemester} PYQs
     </h1>
-    <p style="color: var(--text-secondary); font-size: 1rem;">
-      Category: <strong>{originalCategory}</strong> • Semester: <strong>{originalSemester}</strong>
-      {isMathsMajorSem3 && <> • Papers: <strong>MJ-04 (Real Analysis) &amp; MJ-05 (Vectors)</strong></>}
-    </p>
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;">
+      <span style="font-size: 0.68rem; font-weight: 700; background: rgba(99,102,241,0.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,0.28); border-radius: 20px; padding: 2px 9px;">
+        {pattern.badge}
+      </span>
+      {availableCount > 0 && (
+        <span style="font-size: 0.68rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.28); border-radius: 20px; padding: 2px 9px;">
+          {availableCount} Free {availableCount === 1 ? 'PDF' : 'PDFs'}
+        </span>
+      )}
+      <span style="font-size: 0.68rem; font-weight: 600; color: var(--text-tertiary); background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 20px; padding: 2px 9px;">
+        NEP FYUGP · All 37 Colleges
+      </span>
+    </div>
+    {isMathsMajorSem3 && (
+      <p style="color: var(--text-secondary); font-size: 0.84rem; margin: 0;">
+        Papers: <strong>MJ-04 (Real Analysis) &amp; MJ-05 (Vectors)</strong> &bull; Solved PYQs Included
+      </p>
+    )}
   </div>
 
-  {matchingPapers.length === 0 ? (
-    <div class="card" style="text-align: center; padding: 4rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
-      <AlertCircle size="40" style="color: var(--text-tertiary);" />
+  <!-- Sibling Semester Switcher Pills -->
+  {siblingSemesters.length > 1 && (
+    <div style="margin-bottom: 1.25rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; padding: 0.65rem 0.85rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-tertiary); margin-right: 0.15rem;">Switch Semester:</span>
+      {siblingSemesters.map(sem => {
+        const isCurrent = String(sem) === semester;
+        return isCurrent ? (
+          <span
+            aria-current="page"
+            style="font-size: 0.74rem; font-weight: 800; padding: 4px 11px; border-radius: 20px; background: var(--accent-primary); color: #ffffff; border: 1px solid var(--accent-primary);"
+          >
+            Sem {sem}
+          </span>
+        ) : (
+          <a
+            href={`${baseUrl}/pyqs/${category}/${subject}/${sem}/`}
+            style="font-size: 0.74rem; font-weight: 700; padding: 4px 11px; border-radius: 20px; background: var(--bg-tertiary); color: var(--text-secondary); border: 1px solid var(--border-color); text-decoration: none;"
+          >
+            Sem {sem}
+          </a>
+        );
+      })}
+    </div>
+  )}
+
+  <!-- Free Question Papers List -->
+  {questionPapers.length === 0 ? (
+    <div class="card" style="text-align: center; padding: 3rem 1rem; display: flex; flex-direction: column; align-items: center; gap: 0.85rem;">
+      <AlertCircle size="36" style="color: var(--text-tertiary);" />
       <div>
-        <h3 style="font-size: 1.25rem; font-family: var(--font-display);">No papers available yet</h3>
-        <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.25rem;">
+        <h2 style="font-size: 1.15rem; font-family: var(--font-display); margin: 0;">No papers available yet</h2>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; margin-top: 0.3rem;">
           We are currently checking archives for this subject paper.
         </p>
       </div>
-      <button 
-        class="btn btn-primary btn-sm" 
-        style="margin-top: 0.5rem;"
-        onclick={`document.dispatchEvent(new CustomEvent('open-request-modal', { detail: { subject: '${originalSubject}', semester: '${originalSemester}', category: '${originalCategory}' } }));`}
+      <button
+        class="btn btn-primary btn-sm open-prefilled-request"
+        data-req-subject={originalSubject}
+        data-req-semester={originalSemester}
+        data-req-category={originalCategory}
+        style="margin-top: 0.25rem;"
       >
         Request Paper Now
       </button>
     </div>
   ) : (
-    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-      {matchingPapers.map(paper => {
+    <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+      {questionPapers.map((paper: any) => {
         const hasUrl = !!paper.downloadUrl;
-        const isMissing = !!(paper as any).missing;
-        
-        return (
-          <div 
-            class="card animate-fade-in" 
-            style={`display: flex; flex-direction: column; gap: 1rem; border-color: ${isMissing ? 'rgba(245,158,11,0.3)' : 'var(--border-color)'}; ${isMissing ? 'background: linear-gradient(135deg, rgba(245,158,11,0.04) 0%, var(--bg-secondary) 100%);' : ''}`}
-          >
+        const isMissing = !!paper.missing;
+        const displayTitle = formatPaperDisplayTitle(paper);
 
-            {/* Missing paper top-banner — AEC only */}
+        return (
+          <div
+            class="card animate-fade-in"
+            style={`padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; border-color: ${isMissing ? 'rgba(245,158,11,0.3)' : 'var(--border-color)'}; ${isMissing ? 'background: linear-gradient(135deg, rgba(245,158,11,0.04) 0%, var(--bg-secondary) 100%);' : ''}`}
+          >
             {isMissing && (
-              <div style="display: flex; align-items: center; gap: 0.5rem; background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-xs); padding: 0.5rem 0.85rem; font-size: 0.78rem; color: #d97706; font-weight: 600; margin-bottom: -0.25rem;">
+              <div style="display: flex; align-items: center; gap: 0.45rem; background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.75rem; color: #d97706; font-weight: 600;">
                 <AlertCircle size="14" style="flex-shrink:0;" />
                 <span>Not Available — This paper is missing from our archive.</span>
               </div>
             )}
-            
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-              <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
-                <div style={`background-color: ${isMissing ? 'rgba(245,158,11,0.12)' : 'var(--bg-tertiary)'}; color: ${isMissing ? '#d97706' : 'var(--accent-primary)'}; width: 40px; height: 40px; border-radius: var(--radius-xs); display: flex; align-items: center; justify-content: center; flex-shrink: 0;`}>
-                  {isMissing ? <HelpCircle size="20" /> : <FileCode size="20" />}
+
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; min-width: 0;">
+              <div style="display: flex; gap: 0.7rem; align-items: flex-start; min-width: 0; flex: 1;">
+                <div style={`background-color: ${isMissing ? 'rgba(245,158,11,0.12)' : 'var(--bg-tertiary)'}; color: ${isMissing ? '#d97706' : 'var(--accent-primary)'}; width: 38px; height: 38px; border-radius: var(--radius-xs); display: flex; align-items: center; justify-content: center; flex-shrink: 0;`}>
+                  {isMissing ? <HelpCircle size="18" /> : <FileCode size="18" />}
                 </div>
-                <div>
-                  <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary);">{paper.title}</h3>
-                  <div style="display: flex; gap: 0.75rem; font-size: 0.775rem; color: var(--text-secondary); margin-top: 0.25rem; flex-wrap: wrap;">
-                    <span>Year: <strong>{paper.year}</strong></span>
-                    {(paper as any).set && <><span>•</span><span>{(paper as any).set}</span></>}
-                    {!isMissing && <><span>•</span><span style="display: flex; align-items: center; gap: 0.15rem;"><Download size="12" /> <span class="live-paper-download-count" data-subject-title={paper.title}>—</span> downloads</span></>}
+                <div style="min-width: 0; flex: 1;">
+                  <h3 style="font-size: 0.96rem; font-weight: 700; color: var(--text-primary); line-height: 1.35; margin: 0; overflow-wrap: anywhere;">{displayTitle}</h3>
+                  <div style="display: flex; gap: 0.45rem; font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.3rem; flex-wrap: wrap; align-items: center;">
+                    <span>Batch/Year: <strong>{paper.year}</strong></span>
+                    {paper.set && <><span>&bull;</span><span>{paper.set}</span></>}
+                    {paper.university && (
+                      <>
+                        <span>&bull;</span>
+                        <span>{paper.university}</span>
+                      </>
+                    )}
+                    {paper.matchRating && (
+                      <span style="font-size: 0.65rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.28); border-radius: 20px; padding: 1px 7px;">
+                        {paper.matchRating} Match
+                      </span>
+                    )}
+                    {!isMissing && (
+                      <span class="live-paper-dl-wrap" style="display: none; align-items: center; gap: 0.2rem; color: var(--accent-success); font-weight: 600;">
+                        <span>&bull;</span>
+                        <Download size="11" />
+                        <span class="live-paper-download-count" data-subject-title={paper.title}></span>
+                        <span>downloads</span>
+                      </span>
+                    )}
                   </div>
+                  {paper.matchNote && (
+                    <p style="font-size: 0.73rem; color: var(--text-tertiary); margin: 0.3rem 0 0; line-height: 1.45;">
+                      {paper.matchNote}
+                    </p>
+                  )}
                 </div>
               </div>
-              
-              <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem; flex-shrink: 0;">
-                <span class="badge badge-primary" style="font-size: 0.7rem;">{paper.category}</span>
+
+              <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; flex-shrink: 0;">
+                <span class="badge badge-primary" style="font-size: 0.68rem;">{paper.category}</span>
                 {isMissing && (
-                  <span style="font-size: 0.62rem; font-weight: 700; background: rgba(245,158,11,0.15); color: #d97706; border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 2px 7px; white-space: nowrap;">Missing</span>
+                  <span style="font-size: 0.6rem; font-weight: 700; background: rgba(245,158,11,0.15); color: #d97706; border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 2px 7px; white-space: nowrap;">Missing</span>
                 )}
               </div>
             </div>
 
             <!-- Download / Upload CTA -->
-            <div style="border-top: 1px solid var(--border-color); padding-top: 0.875rem; display: flex; justify-content: flex-end; align-items: center; gap: 0.75rem;">
+            <div style="border-top: 1px solid var(--border-color); padding-top: 0.75rem; display: flex; justify-content: flex-end; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
               {hasUrl ? (
-              <a 
-                  href={paper.downloadUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  class="btn btn-primary btn-sm" 
-                  style="gap: 0.35rem; font-size: 0.85rem;"
-                  onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.title}', category: '${paper.category}', semester: '${paper.semester}' });`}
+                <a
+                  href={paper.downloadUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-primary btn-sm pyq-download-btn"
+                  data-track-subject={paper.title}
+                  data-track-category={paper.category}
+                  data-track-semester={String(paper.semester)}
+                  data-track-university={paper.university || ''}
+                  style="gap: 0.35rem; font-size: 0.84rem; padding: 0.5rem 1rem;"
                 >
-                  Download Paper <ExternalLink size="14" />
+                  Download PDF <ExternalLink size="14" />
                 </a>
               ) : isMissing ? (
                 <div style="display: flex; align-items: center; gap: 0.5rem; width: 100%; justify-content: space-between; flex-wrap: wrap;">
-                  <span style="font-size: 0.8rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.3rem;">
+                  <span style="font-size: 0.78rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.3rem;">
                     <AlertCircle size="13" /> Paper not yet in our archive
                   </span>
-                  <div style="display: flex; gap: 0.5rem;">
-                    <button 
-                      class="btn btn-sm" 
-                      style="font-size: 0.8rem; white-space: nowrap; background: rgba(245,158,11,0.12); color: #d97706; border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 0.35rem 0.85rem; cursor: pointer; transition: background 0.2s;"
-                      onclick={`document.dispatchEvent(new CustomEvent('open-submit-modal'));`}
+                  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button
+                      class="btn btn-sm"
+                      style="font-size: 0.78rem; white-space: nowrap; background: rgba(245,158,11,0.12); color: #d97706; border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 0.35rem 0.85rem; cursor: pointer;"
+                      onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));"
                     >
                       📤 Upload if you have it
                     </button>
-                    <button 
-                      class="btn btn-outline btn-sm" 
-                      style="font-size: 0.8rem; white-space: nowrap;"
-                      onclick={`document.dispatchEvent(new CustomEvent('open-request-modal', { detail: { subject: '${paper.title}', semester: '${paper.semester}', category: '${paper.category}' } }));`}
+                    <button
+                      class="btn btn-outline btn-sm open-prefilled-request"
+                      data-req-subject={paper.title}
+                      data-req-semester={String(paper.semester)}
+                      data-req-category={paper.category}
+                      style="font-size: 0.78rem; white-space: nowrap;"
                     >
                       Request Paper
                     </button>
                   </div>
                 </div>
               ) : (
-                <div style="display: flex; align-items: center; gap: 0.5rem; width: 100%; justify-content: space-between;">
-                  <span style="font-size: 0.8rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.25rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; width: 100%; justify-content: space-between; flex-wrap: wrap;">
+                  <span style="font-size: 0.78rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.25rem;">
                     <AlertCircle size="14" /> PDF link awaiting upload
                   </span>
-                  <div style="display: flex; gap: 0.5rem;">
-                    <button 
-                      disabled 
-                      class="btn btn-secondary btn-sm" 
-                      style="opacity: 0.6; cursor: not-allowed; font-size: 0.8rem; background: var(--bg-hover);"
+                  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button
+                      disabled
+                      class="btn btn-secondary btn-sm"
+                      style="opacity: 0.6; cursor: not-allowed; font-size: 0.78rem; background: var(--bg-hover);"
                     >
                       Coming Soon
                     </button>
-                    <button 
-                      class="btn btn-outline btn-sm" 
-                      style="font-size: 0.8rem; white-space: nowrap;"
-                      onclick={`document.dispatchEvent(new CustomEvent('open-request-modal', { detail: { subject: '${paper.title}', semester: '${paper.semester}', category: '${paper.category}' } }));`}
+                    <button
+                      class="btn btn-outline btn-sm open-prefilled-request"
+                      data-req-subject={paper.title}
+                      data-req-semester={String(paper.semester)}
+                      data-req-category={paper.category}
+                      style="font-size: 0.78rem; white-space: nowrap;"
                     >
                       Request Paper
                     </button>
@@ -204,16 +640,50 @@ const matchingPapers = pyqsData.filter(p =>
                 </div>
               )}
             </div>
-
           </div>
         );
       })}
     </div>
   )}
 
+  {/* ── Inline Free Study Notes (e.g. IKS) ─────────────────────── */}
+  {inlineNotes.length > 0 && (
+    <div style="margin-top: 1.5rem;">
+      <div style="display: flex; align-items: center; gap: 0.55rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+        <BookOpen size="17" style="color: var(--accent-primary); flex-shrink: 0;" />
+        <h2 style="font-size: 0.98rem; font-weight: 800; color: var(--text-primary); margin: 0;">Free Study Notes</h2>
+        <span style="font-size: 0.6rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 2px 7px;">FREE</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+        {inlineNotes.map((note: any) => (
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; border: 1px solid rgba(99,102,241,0.28); border-radius: var(--radius-sm); padding: 0.85rem 1rem; background: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(0,0,0,0.12) 100%);">
+            <div style="min-width: 0; flex: 1;">
+              <div style="font-size: 0.9rem; font-weight: 800; color: var(--accent-primary);">{note.title}</div>
+              <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px;">
+                {note.year} Batch &bull; Complete Unit Notes PDF
+              </div>
+            </div>
+            <a
+              href={note.downloadUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-secondary btn-sm note-download-btn"
+              data-track-subject={note.subject}
+              data-track-category={note.category}
+              data-track-semester={String(note.semester)}
+              style="font-size: 0.78rem; gap: 0.35rem; white-space: nowrap;"
+            >
+              Download Notes <ExternalLink size="13" />
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
   {/* ── Paid Notes (from notes.json) ─────────────────────── */}
   {paidNotes.length > 0 && (
-    <div style="margin-top: 2rem;">
+    <div style="margin-top: 1.75rem;">
       <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.85rem; flex-wrap: wrap;">
         <BookOpen size="18" style="color: #818cf8; flex-shrink: 0;" />
         <h2 style="font-size: 1rem; font-weight: 800; color: var(--text-primary); margin: 0;">Notes for this paper</h2>
@@ -222,7 +692,7 @@ const matchingPapers = pyqsData.filter(p =>
       <div style="display: flex; flex-direction: column; gap: 0.6rem;">
         {paidNotes.map(n => (
           <div style={`display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; border: 1px solid ${n.color}33; border-radius: var(--radius-sm); padding: 0.75rem 1rem; background: linear-gradient(135deg, ${n.color}0d 0%, rgba(0,0,0,0.12) 100%);`}>
-            <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0; flex: 1;">
               <span style="font-size: 1.2rem; flex-shrink: 0;">{n.emoji}</span>
               <div style="min-width: 0;">
                 <div style={`font-size: 0.88rem; font-weight: 800; color: ${n.color};`}>{n.title} Notes</div>
@@ -246,9 +716,9 @@ const matchingPapers = pyqsData.filter(p =>
           </div>
         ))}
       </div>
-      <a href={`${baseUrl}/notes`}
+      <a href={`${baseUrl}/notes/`}
          onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Notes Hub Link', language: 'See All Notes Click', category: 'PYQ Page', medium: 'PYQ_PAGE' });"
-         style="display: inline-block; margin-top: 0.6rem; font-size: 0.72rem; color: var(--text-secondary); text-decoration: underline;">See combos & all notes in the Notes Hub →</a>
+         style="display: inline-block; margin-top: 0.6rem; font-size: 0.72rem; color: var(--text-secondary); text-decoration: underline;">See combos &amp; all notes in the Notes Hub →</a>
       <script is:inline>
         document.querySelectorAll('[data-notes-event]').forEach(function (el) {
           el.addEventListener('click', function () {
@@ -266,6 +736,146 @@ const matchingPapers = pyqsData.filter(p =>
           });
         });
       </script>
+    </div>
+  )}
+
+  {/* ── Free Study Notes Section (MDC Psychology & Economics) ─────────────────────── */}
+  {category === 'mdc' && (subject === 'psychology' || subject === 'economics') && (
+    <div style="margin-top: 1.75rem;">
+      <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.85rem;">
+        <BookOpen size="18" style="color: #06b6d4; flex-shrink: 0;" />
+        <h2 style="font-size: 1rem; font-weight: 800; color: var(--text-primary); margin: 0; letter-spacing: -0.01em;">Study Notes Available</h2>
+        <span style="font-size: 0.6rem; font-weight: 700; background: rgba(6,182,212,0.12); color: #06b6d4; border: 1px solid rgba(6,182,212,0.3); border-radius: 20px; padding: 2px 7px; white-space: nowrap;">FREE</span>
+      </div>
+
+      <div style="background: linear-gradient(135deg, rgba(6,182,212,0.06) 0%, rgba(245,158,11,0.04) 100%); border: 1px solid rgba(6,182,212,0.2); border-radius: var(--radius-sm); padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.8rem;">
+        <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; margin: 0;">
+          Handwritten study notes for <strong style="color: var(--text-primary);">MDC {subject === 'psychology' ? 'Psychology' : 'Economics'}</strong> — covering key concepts, important questions, and exam-focused summaries. Available in Hindi &amp; English.
+        </p>
+
+        {subject === 'psychology' && (
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <a
+              href="https://drive.google.com/file/d/14pbl6LnBudXXh4G7i6zU4cCFKiypkrVO/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.65rem 0.9rem; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.25); border-radius: var(--radius-xs); text-decoration: none; transition: background 0.2s; cursor: pointer;"
+              onmouseover="this.style.background='rgba(6,182,212,0.18)'"
+              onmouseout="this.style.background='rgba(6,182,212,0.1)'"
+              onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Psychology', language: 'Hindi', category: 'MDC', medium: 'HI' });"
+            >
+              <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+                <span style="font-size: 1rem; flex-shrink: 0;">📝</span>
+                <div style="min-width: 0;">
+                  <div style="font-size: 0.85rem; font-weight: 700; color: #06b6d4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Psychology Notes — Hindi</div>
+                  <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 0.05rem;">हिंदी माध्यम में नोट्स</div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
+                <span style="font-size: 0.65rem; font-weight: 700; background: rgba(6,182,212,0.15); color: #06b6d4; border: 1px solid rgba(6,182,212,0.25); border-radius: 10px; padding: 1px 6px;">HI</span>
+                <ExternalLink size="13" style="color: #06b6d4;" />
+              </div>
+            </a>
+
+            <a
+              href="https://drive.google.com/file/d/1HF_YhACN2FaNEYe-twiVsl5gxjXoFmfl/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.65rem 0.9rem; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.22); border-radius: var(--radius-xs); text-decoration: none; transition: background 0.2s; cursor: pointer;"
+              onmouseover="this.style.background='rgba(245,158,11,0.16)'"
+              onmouseout="this.style.background='rgba(245,158,11,0.08)'"
+              onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Psychology', language: 'English', category: 'MDC', medium: 'EN' });"
+            >
+              <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
+                <span style="font-size: 1rem; flex-shrink: 0;">📝</span>
+                <div style="min-width: 0;">
+                  <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-warning); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Psychology Notes — English</div>
+                  <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 0.05rem;">English medium notes</div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
+                <span style="font-size: 0.65rem; font-weight: 700; background: rgba(245,158,11,0.15); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 10px; padding: 1px 6px;">EN</span>
+                <ExternalLink size="13" style="color: var(--accent-warning);" />
+              </div>
+            </a>
+          </div>
+        )}
+
+        {subject === 'economics' && (
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div>
+              <div style="font-size: 0.65rem; font-weight: 700; color: #06b6d4; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.3rem;">🇮🇳 Hindi Notes — 6 Parts</div>
+              <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                {[
+                  'https://drive.google.com/file/d/1zQtrK7oKtcgwgEHvyva3AjMzWgmltbMe/view?usp=drive_link',
+                  'https://drive.google.com/file/d/10H5g8bSTqmfC52zbMOZJBpvi087IfHi8/view?usp=drive_link',
+                  'https://drive.google.com/file/d/1bJnM-vubtpwJ-GedFWaG8xz8moWM9pzq/view?usp=drive_link',
+                  'https://drive.google.com/file/d/1bfyP9n9lqZBvYP8NGzi1ckPUMpevJnQq/view?usp=drive_link',
+                  'https://drive.google.com/file/d/17AVOKb_nkJLfTOm70cEUnjG9dybdSu7Y/view?usp=drive_link',
+                  'https://drive.google.com/file/d/1N74vTH34MxTumRylAI0UBL7IG4M2RuyT/view?usp=drive_link',
+                ].map((url, i) => (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.55rem 0.85rem; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.25); border-radius: var(--radius-xs); text-decoration: none; transition: background 0.2s;"
+                    onmouseover="this.style.background='rgba(6,182,212,0.18)'"
+                    onmouseout="this.style.background='rgba(6,182,212,0.1)'"
+                    onclick={`if(window.trackDownload) window.trackDownload('note', { subject: 'Economics', language: 'Hindi', category: 'MDC', medium: 'HI', part: ${i + 1} });`}
+                  >
+                    <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
+                      <span style="font-size: 0.85rem; flex-shrink: 0;">📝</span>
+                      <div style="font-size: 0.82rem; font-weight: 700; color: #06b6d4;">Economics Notes — Hindi · Part {i + 1}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
+                      <span style="font-size: 0.6rem; font-weight: 700; background: rgba(6,182,212,0.15); color: #06b6d4; border: 1px solid rgba(6,182,212,0.25); border-radius: 10px; padding: 1px 5px;">HI</span>
+                      <ExternalLink size="12" style="color: #06b6d4;" />
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size: 0.65rem; font-weight: 700; color: var(--accent-warning); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.3rem;">🇬🇧 English Notes — 6 Parts</div>
+              <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                {[
+                  'https://drive.google.com/file/d/1QK023k5qJka4CgGqFA4acZRrphTOTZni/view?usp=drive_link',
+                  'https://drive.google.com/file/d/1dK737cXukGiN4Dc-RS1zCJv0a5eumeYF/view?usp=drive_link',
+                  'https://drive.google.com/file/d/10WkAns8spzpIY21bClNSbU6Hb344Y2Wm/view?usp=drive_link',
+                  'https://drive.google.com/file/d/12pyJeseGPT0fk6U9OG37W7V7T0AjRy40/view?usp=drive_link',
+                  'https://drive.google.com/file/d/1ch1t7_aefSDyaubVY7bpY9VAq0jP0jvH/view?usp=drive_link',
+                  'https://drive.google.com/file/d/1pUXjwAV13pyM1KOEHbHgjjPgf3l-Ahjf/view?usp=drive_link',
+                ].map((url, i) => (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.55rem 0.85rem; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.22); border-radius: var(--radius-xs); text-decoration: none; transition: background 0.2s;"
+                    onmouseover="this.style.background='rgba(245,158,11,0.16)'"
+                    onmouseout="this.style.background='rgba(245,158,11,0.08)'"
+                    onclick={`if(window.trackDownload) window.trackDownload('note', { subject: 'Economics', language: 'English', category: 'MDC', medium: 'EN', part: ${i + 1} });`}
+                  >
+                    <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
+                      <span style="font-size: 0.85rem; flex-shrink: 0;">📝</span>
+                      <div style="font-size: 0.82rem; font-weight: 700; color: var(--accent-warning);">Economics Notes — English · Part {i + 1}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
+                      <span style="font-size: 0.6rem; font-weight: 700; background: rgba(245,158,11,0.15); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 10px; padding: 1px 5px;">EN</span>
+                      <ExternalLink size="12" style="color: var(--accent-warning);" />
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <p style="font-size: 0.7rem; color: var(--text-tertiary); margin: 0; display: flex; align-items: center; gap: 0.3rem;">
+          <Globe size="11" />
+          Notes open in Google Drive. No account required to view.
+        </p>
+      </div>
     </div>
   )}
 
@@ -289,7 +899,7 @@ const matchingPapers = pyqsData.filter(p =>
               Read every question in text format, click "Show Answer" for step-by-step university solutions, and check repeated questions &amp; book advice.
             </p>
           </div>
-          <a href={`${baseUrl}/syllabus/mathematics`} style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 800; color: #0b0b12; background: #818cf8; border-radius: 20px; padding: 7px 14px; text-decoration: none; white-space: nowrap;">
+          <a href={`${baseUrl}/syllabus/mathematics/`} style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 800; color: #0b0b12; background: #818cf8; border-radius: 20px; padding: 7px 14px; text-decoration: none; white-space: nowrap;">
             📚 View Sem 3 Syllabus &amp; Unit Weightage →
           </a>
         </div>
@@ -365,9 +975,11 @@ const matchingPapers = pyqsData.filter(p =>
                     href={bPaper.downloadUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="btn btn-primary btn-sm"
+                    class="btn btn-primary btn-sm pyq-download-btn"
+                    data-track-subject={bPaper.pdfTitle}
+                    data-track-category="Major"
+                    data-track-semester="3"
                     style="font-size: 0.78rem; gap: 0.35rem;"
-                    onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${bPaper.pdfTitle}', category: 'Major', semester: '3' });`}
                   >
                     <Download size="13" /> Original Question Paper PDF
                   </a>
@@ -389,7 +1001,6 @@ const matchingPapers = pyqsData.filter(p =>
                   <div style="display: flex; flex-direction: column; gap: 0.75rem;">
                     {grp.questions.map((q: any) => (
                       <div style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.85rem 1rem; background: rgba(0,0,0,0.14); display: flex; flex-direction: column; gap: 0.55rem;">
-                        <!-- Question Metadata Row -->
                         <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
                           <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
                             <span style="font-size: 0.72rem; font-weight: 800; background: #818cf8; color: #0b0b12; border-radius: 5px; padding: 2px 7px;">
@@ -409,10 +1020,8 @@ const matchingPapers = pyqsData.filter(p =>
                           </span>
                         </div>
 
-                        <!-- Question Text -->
                         <div style="font-size: 0.9rem; color: var(--text-primary); line-height: 1.65; font-weight: 500;" set:html={renderMathText(q.question)} />
 
-                        <!-- Interactive Show Answer / Solution Accordion -->
                         {q.solution && (
                           <details class="pyq-solution-details" style="margin-top: 0.2rem; border-top: 1px dashed var(--border-color); padding-top: 0.5rem;">
                             <summary style="font-size: 0.78rem; font-weight: 800; color: #34d399; cursor: pointer; user-select: none; display: inline-flex; align-items: center; gap: 0.35rem;">
@@ -489,7 +1098,7 @@ const matchingPapers = pyqsData.filter(p =>
                   <div style="font-size: 0.66rem; color: var(--text-tertiary);">Highest Internal · Avg: {p.resultStats.averageInternal}</div>
                 </div>
               </div>
-              <a href={`${baseUrl}/syllabus/mathematics`} style="margin-top: auto; font-size: 0.75rem; font-weight: 700; color: #34d399; text-decoration: underline;">
+              <a href={`${baseUrl}/syllabus/mathematics/`} style="margin-top: auto; font-size: 0.75rem; font-weight: 700; color: #34d399; text-decoration: underline;">
                 See full unit-wise syllabus &amp; "what to skip" list →
               </a>
             </div>
@@ -526,7 +1135,6 @@ const matchingPapers = pyqsData.filter(p =>
 
       <script is:inline>
         (function() {
-          // Paper switcher (MJ-04 vs MJ-05)
           var paperTabs = document.querySelectorAll('.pyq-paper-tab');
           var paperPanels = document.querySelectorAll('.pyq-paper-panel');
           paperTabs.forEach(function(tab) {
@@ -543,7 +1151,6 @@ const matchingPapers = pyqsData.filter(p =>
             });
           });
 
-          // Batch sub-tabs (2022-2026 vs 2023-2027)
           var batchBtns = document.querySelectorAll('.pyq-batch-subtab');
           batchBtns.forEach(function(btn) {
             btn.addEventListener('click', function() {
@@ -561,7 +1168,6 @@ const matchingPapers = pyqsData.filter(p =>
             });
           });
 
-          // Expand / Collapse all solutions button
           document.querySelectorAll('.toggle-all-solutions-btn').forEach(function(btn) {
             var expanded = false;
             btn.addEventListener('click', function() {
@@ -580,157 +1186,198 @@ const matchingPapers = pyqsData.filter(p =>
     </div>
   )}
 
-  {/* ── Study Notes Section (MDC Psychology & Economics) ─────────────────────── */}
-  {category === 'mdc' && (subject === 'psychology' || subject === 'economics') && (
-    <div style="margin-top: 2rem;">
-      <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem;">
-        <BookOpen size="18" style="color: #06b6d4; flex-shrink: 0;" />
-        <h2 style="font-size: 1rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.01em;">Study Notes Available</h2>
-        <span style="font-size: 0.6rem; font-weight: 700; background: rgba(6,182,212,0.12); color: #06b6d4; border: 1px solid rgba(6,182,212,0.3); border-radius: 20px; padding: 2px 7px; white-space: nowrap;">FREE</span>
+  {/* ── MDC Same-Syllabus Cross-Link Callout ─────────────────────── */}
+  {category === 'mdc' && (
+    <div style="margin-top: 1.5rem; background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.28); border-radius: var(--radius-sm); padding: 0.9rem 1rem; display: flex; flex-direction: column; gap: 0.55rem;">
+      <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+        <strong style="color: var(--accent-warning);">💡 Pro Tip:</strong> MDC {originalSubject} syllabus is the <strong>same for Semester 1, 2 &amp; 3</strong> — papers from other semesters are equally helpful for your exam.
       </div>
-
-      <div style="background: linear-gradient(135deg, rgba(6,182,212,0.06) 0%, rgba(245,158,11,0.04) 100%); border: 1px solid rgba(6,182,212,0.2); border-radius: var(--radius-sm); padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.85rem;">
-
-        <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
-          Handwritten study notes for <strong style="color: var(--text-primary);">MDC {subject === 'psychology' ? 'Psychology' : 'Economics'}</strong> — covering key concepts, important questions, and exam-focused summaries. Available in Hindi &amp; English.
-        </p>
-
-        {subject === 'psychology' && (
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-
-            {/* Hindi Notes */}
+      {siblingSemesters.filter(s => String(s) !== semester).length > 0 && (
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;">
+          <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-tertiary);">Also check:</span>
+          {siblingSemesters.filter(s => String(s) !== semester).map(sem => (
             <a
-              href="https://drive.google.com/file/d/14pbl6LnBudXXh4G7i6zU4cCFKiypkrVO/view?usp=drive_link"
+              href={`${baseUrl}/pyqs/${category}/${subject}/${sem}/`}
+              style="font-size: 0.72rem; font-weight: 700; color: var(--accent-warning); background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 3px 10px; text-decoration: none;"
+            >
+              MDC {originalSubject} Sem {sem} →
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
+
+  {/* ── Matching Syllabus Card ─────────────────────── */}
+  <div style="margin-top: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.7rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <BookOpen size="17" style="color: var(--accent-primary); flex-shrink: 0;" />
+      <h2 style="font-size: 0.98rem; font-weight: 800; margin: 0; color: var(--text-primary);">{originalSubject} Syllabus</h2>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+      {matchedSyllabi.map(syl => (
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; padding: 0.65rem 0.85rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs);">
+          <div style="min-width: 0; flex: 1;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); overflow-wrap: anywhere;">{syl.label}</div>
+            <div style="font-size: 0.72rem; color: var(--text-tertiary); margin-top: 1px;">{syl.subtitle}</div>
+          </div>
+          {syl.external ? (
+            <a
+              href={syl.href}
               target="_blank"
               rel="noopener noreferrer"
-              style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.65rem 1rem; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.25); border-radius: var(--radius-xs); text-decoration: none; transition: background 0.2s; cursor: pointer;"
-              onmouseover="this.style.background='rgba(6,182,212,0.18)'"
-              onmouseout="this.style.background='rgba(6,182,212,0.1)'"
-              onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Psychology', language: 'Hindi', category: 'MDC', medium: 'HI' });"
+              class="btn btn-outline btn-sm syl-download-btn"
+              data-track-subject={syl.label}
+              data-track-category={originalCategory}
+              data-track-semester={originalSemester}
+              style="font-size: 0.76rem; padding: 0.38rem 0.8rem; gap: 0.3rem; white-space: nowrap;"
             >
-              <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
-                <span style="font-size: 1rem; flex-shrink: 0;">📝</span>
-                <div style="min-width: 0;">
-                  <div style="font-size: 0.85rem; font-weight: 700; color: #06b6d4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Psychology Notes — Hindi</div>
-                  <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 0.05rem;">हिंदी माध्यम में नोट्स</div>
-                </div>
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
-                <span style="font-size: 0.65rem; font-weight: 700; background: rgba(6,182,212,0.15); color: #06b6d4; border: 1px solid rgba(6,182,212,0.25); border-radius: 10px; padding: 1px 6px;">HI</span>
-                <ExternalLink size="13" style="color: #06b6d4;" />
-              </div>
+              Download Syllabus PDF <ExternalLink size="12" />
             </a>
-
-            {/* English Notes */}
+          ) : (
             <a
-              href="https://drive.google.com/file/d/1HF_YhACN2FaNEYe-twiVsl5gxjXoFmfl/view?usp=drive_link"
-              target="_blank"
-              rel="noopener noreferrer"
-              style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.65rem 1rem; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.22); border-radius: var(--radius-xs); text-decoration: none; transition: background 0.2s; cursor: pointer;"
-              onmouseover="this.style.background='rgba(245,158,11,0.16)'"
-              onmouseout="this.style.background='rgba(245,158,11,0.08)'"
-              onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Psychology', language: 'English', category: 'MDC', medium: 'EN' });"
+              href={syl.href}
+              class="btn btn-outline btn-sm"
+              style="font-size: 0.76rem; padding: 0.38rem 0.8rem; white-space: nowrap;"
             >
-              <div style="display: flex; align-items: center; gap: 0.6rem; min-width: 0;">
-                <span style="font-size: 1rem; flex-shrink: 0;">📝</span>
-                <div style="min-width: 0;">
-                  <div style="font-size: 0.85rem; font-weight: 700; color: var(--accent-warning); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Psychology Notes — English</div>
-                  <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 0.05rem;">English medium notes</div>
-                </div>
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
-                <span style="font-size: 0.65rem; font-weight: 700; background: rgba(245,158,11,0.15); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 10px; padding: 1px 6px;">EN</span>
-                <ExternalLink size="13" style="color: var(--accent-warning);" />
-              </div>
+              View Syllabus →
             </a>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
 
-          </div>
-        )}
+  {/* ── Compact Exam Pattern & Passing Marks Strip ─────────────────────── */}
+  <div style="margin-top: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(16,185,129,0.03) 100%); display: flex; flex-direction: column; gap: 0.75rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <GraduationCap size="17" style="color: var(--accent-success); flex-shrink: 0;" />
+      <h2 style="font-size: 0.95rem; font-weight: 800; margin: 0; color: var(--text-primary);">Exam Pattern &amp; Passing Marks ({originalCategory})</h2>
+    </div>
+    <div class="exam-pattern-grid">
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.7rem; min-width: 0;">
+        <div style="font-size: 0.66rem; color: var(--text-tertiary); font-weight: 700; text-transform: uppercase;">Full Marks</div>
+        <div style="font-size: 0.85rem; font-weight: 800; color: var(--accent-primary); margin-top: 2px;">{pattern.total}</div>
+      </div>
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.7rem; min-width: 0;">
+        <div style="font-size: 0.66rem; color: var(--text-tertiary); font-weight: 700; text-transform: uppercase;">Marks Split</div>
+        <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); margin-top: 2px;">{pattern.split}</div>
+      </div>
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.7rem; min-width: 0;">
+        <div style="font-size: 0.66rem; color: var(--text-tertiary); font-weight: 700; text-transform: uppercase;">Pass Marks</div>
+        <div style="font-size: 0.85rem; font-weight: 800; color: var(--accent-success); margin-top: 2px;">{pattern.pass}</div>
+      </div>
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.7rem; min-width: 0;">
+        <div style="font-size: 0.66rem; color: var(--text-tertiary); font-weight: 700; text-transform: uppercase;">Duration</div>
+        <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin-top: 2px;">{pattern.duration}</div>
+      </div>
+    </div>
+    {pattern.note && (
+      <p style="font-size: 0.74rem; color: var(--text-secondary); margin: 0; line-height: 1.5; display: flex; align-items: flex-start; gap: 0.35rem;">
+        <CheckCircle2 size="13" style="color: var(--accent-success); flex-shrink: 0; margin-top: 2px;" />
+        <span>{pattern.note}</span>
+      </p>
+    )}
+  </div>
 
-        {subject === 'economics' && (
-          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-
-            {/* Hindi Notes — 6 Parts */}
-            <div>
-              <div style="font-size: 0.65rem; font-weight: 700; color: #06b6d4; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.3rem;">🇮🇳 Hindi Notes — 6 Parts</div>
-              <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-                {[
-                  'https://drive.google.com/file/d/1zQtrK7oKtcgwgEHvyva3AjMzWgmltbMe/view?usp=drive_link',
-                  'https://drive.google.com/file/d/10H5g8bSTqmfC52zbMOZJBpvi087IfHi8/view?usp=drive_link',
-                  'https://drive.google.com/file/d/1bJnM-vubtpwJ-GedFWaG8xz8moWM9pzq/view?usp=drive_link',
-                  'https://drive.google.com/file/d/1bfyP9n9lqZBvYP8NGzi1ckPUMpevJnQq/view?usp=drive_link',
-                  'https://drive.google.com/file/d/17AVOKb_nkJLfTOm70cEUnjG9dybdSu7Y/view?usp=drive_link',
-                  'https://drive.google.com/file/d/1N74vTH34MxTumRylAI0UBL7IG4M2RuyT/view?usp=drive_link',
-                ].map((url, i) => (
-                  <a
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.55rem 0.85rem; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.25); border-radius: var(--radius-xs); text-decoration: none; transition: background 0.2s;"
-                    onmouseover="this.style.background='rgba(6,182,212,0.18)'"
-                    onmouseout="this.style.background='rgba(6,182,212,0.1)'"
-                    onclick={`if(window.trackDownload) window.trackDownload('note', { subject: 'Economics', language: 'Hindi', category: 'MDC', medium: 'HI', part: ${i + 1} });`}
-                  >
-                    <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
-                      <span style="font-size: 0.85rem; flex-shrink: 0;">📝</span>
-                      <div style="font-size: 0.82rem; font-weight: 700; color: #06b6d4;">Economics Notes — Hindi · Part {i + 1}</div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
-                      <span style="font-size: 0.6rem; font-weight: 700; background: rgba(6,182,212,0.15); color: #06b6d4; border: 1px solid rgba(6,182,212,0.25); border-radius: 10px; padding: 1px 5px;">HI</span>
-                      <ExternalLink size="12" style="color: #06b6d4;" />
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* English Notes — 6 Parts */}
-            <div>
-              <div style="font-size: 0.65rem; font-weight: 700; color: var(--accent-warning); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.3rem;">🇬🇧 English Notes — 6 Parts</div>
-              <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-                {[
-                  'https://drive.google.com/file/d/1QK023k5qJka4CgGqFA4acZRrphTOTZni/view?usp=drive_link',
-                  'https://drive.google.com/file/d/1dK737cXukGiN4Dc-RS1zCJv0a5eumeYF/view?usp=drive_link',
-                  'https://drive.google.com/file/d/10WkAns8spzpIY21bClNSbU6Hb344Y2Wm/view?usp=drive_link',
-                  'https://drive.google.com/file/d/12pyJeseGPT0fk6U9OG37W7V7T0AjRy40/view?usp=drive_link',
-                  'https://drive.google.com/file/d/1ch1t7_aefSDyaubVY7bpY9VAq0jP0jvH/view?usp=drive_link',
-                  'https://drive.google.com/file/d/1pUXjwAV13pyM1KOEHbHgjjPgf3l-Ahjf/view?usp=drive_link',
-                ].map((url, i) => (
-                  <a
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.55rem 0.85rem; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.22); border-radius: var(--radius-xs); text-decoration: none; transition: background 0.2s;"
-                    onmouseover="this.style.background='rgba(245,158,11,0.16)'"
-                    onmouseout="this.style.background='rgba(245,158,11,0.08)'"
-                    onclick={`if(window.trackDownload) window.trackDownload('note', { subject: 'Economics', language: 'English', category: 'MDC', medium: 'EN', part: ${i + 1} });`}
-                  >
-                    <div style="display: flex; align-items: center; gap: 0.5rem; min-width: 0;">
-                      <span style="font-size: 0.85rem; flex-shrink: 0;">📝</span>
-                      <div style="font-size: 0.82rem; font-weight: 700; color: var(--accent-warning);">Economics Notes — English · Part {i + 1}</div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 0.35rem; flex-shrink: 0;">
-                      <span style="font-size: 0.6rem; font-weight: 700; background: rgba(245,158,11,0.15); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 10px; padding: 1px 5px;">EN</span>
-                      <ExternalLink size="12" style="color: var(--accent-warning);" />
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        )}
-
-        <p style="font-size: 0.7rem; color: var(--text-tertiary); margin: 0; display: flex; align-items: center; gap: 0.3rem;">
-          <Globe size="11" />
-          Notes open in Google Drive. No account required to view.
-        </p>
+  {/* ── Compact 3-Question Visible FAQ (non-Maths Sem 3 pages; Maths Sem 3 already has deep FAQs) ─────────────────────── */}
+  {!isMathsMajorSem3 && (
+    <div style="margin-top: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.6rem;">
+      <h2 style="font-size: 0.95rem; font-weight: 800; margin: 0; color: var(--text-primary);">❓ Frequently Asked Questions</h2>
+      <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+        {autoFaqs.map(faq => (
+          <details style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.65rem 0.85rem; background: var(--bg-tertiary);">
+            <summary style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); cursor: pointer;">{faq.q}</summary>
+            <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.55; margin: 0.5rem 0 0; padding-top: 0.5rem; border-top: 1px solid var(--border-color);">{faq.a}</p>
+          </details>
+        ))}
       </div>
     </div>
   )}
 
+  {/* ── Bottom Quick Action Row ─────────────────────── */}
+  <div style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: space-between; align-items: center;">
+    <a href={`${baseUrl}/pyqs/`} class="btn btn-secondary btn-sm" style="font-size: 0.8rem; gap: 0.3rem;">
+      <ChevronLeft size="14" /> Back to All PYQs
+    </a>
+    <button
+      type="button"
+      class="btn btn-outline btn-sm open-prefilled-request"
+      data-req-subject={originalSubject}
+      data-req-semester={originalSemester}
+      data-req-category={originalCategory}
+      style="font-size: 0.8rem;"
+    >
+      Request Missing Paper
+    </button>
+  </div>
+
+  <style>
+    .exam-pattern-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+    @media (min-width: 600px) {
+      .exam-pattern-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+  </style>
+
   <script is:inline>
     (function() {
+      // Track PYQ, inline notes, and external syllabus PDF clicks cleanly via data attributes
+      document.querySelectorAll('.pyq-download-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (window.trackDownload) {
+            window.trackDownload('pyq', {
+              subject: btn.getAttribute('data-track-subject') || '',
+              category: btn.getAttribute('data-track-category') || '',
+              semester: btn.getAttribute('data-track-semester') || '',
+              university: btn.getAttribute('data-track-university') || ''
+            });
+          }
+        });
+      });
+
+      document.querySelectorAll('.note-download-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (window.trackDownload) {
+            window.trackDownload('note', {
+              subject: btn.getAttribute('data-track-subject') || '',
+              category: btn.getAttribute('data-track-category') || '',
+              semester: btn.getAttribute('data-track-semester') || ''
+            });
+          }
+        });
+      });
+
+      document.querySelectorAll('.syl-download-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (window.trackDownload) {
+            window.trackDownload('syllabus', {
+              subject: btn.getAttribute('data-track-subject') || '',
+              category: btn.getAttribute('data-track-category') || '',
+              semester: btn.getAttribute('data-track-semester') || ''
+            });
+          }
+        });
+      });
+
+      document.querySelectorAll('.open-prefilled-request').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          document.dispatchEvent(new CustomEvent('open-request-modal', {
+            detail: {
+              subject: btn.getAttribute('data-req-subject') || '',
+              semester: btn.getAttribute('data-req-semester') || '1',
+              category: btn.getAttribute('data-req-category') || 'Major'
+            }
+          }));
+        });
+      });
+
+      // Live download counts — reveal only when count > 0
       var elements = document.querySelectorAll('.live-paper-download-count');
       if (!elements.length) return;
       var url = 'https://script.google.com/macros/s/AKfycbx3ZJ1VuRgNc71FSKnrIAzLsv3qxnUeBwA8HALHWhDxlpJC93YzOwCV5rmLLT-swLaXHQ/exec?action=papercounts';
@@ -740,16 +1387,16 @@ const matchingPapers = pyqsData.filter(p =>
           if (data.status === 'ok' && data.counts) {
             elements.forEach(function(el) {
               var title = el.getAttribute('data-subject-title');
-              var count = data.counts[title] || 0;
-              el.textContent = count.toLocaleString();
+              var count = Number(data.counts[title] || 0);
+              if (count > 0) {
+                el.textContent = count.toLocaleString();
+                var wrap = el.closest('.live-paper-dl-wrap');
+                if (wrap) wrap.style.display = 'inline-flex';
+              }
             });
           }
         })
-        .catch(function() {
-          elements.forEach(function(el) {
-            el.textContent = '0';
-          });
-        });
+        .catch(function() {});
     })();
   </script>
 </Layout>

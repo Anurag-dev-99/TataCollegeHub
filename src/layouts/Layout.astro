@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { LayoutGrid, FileText, BookOpen, Bell, TrendingUp, Calculator, Moon, Sun, Search, X, CheckCircle, Archive, HelpCircle } from '@lucide/astro';
+import { LayoutGrid, FileText, BookOpen, Bell, TrendingUp, Calculator, Moon, Sun, X, CheckCircle, Archive, HelpCircle } from '@lucide/astro';
 
 interface Props {
   title: string;
@@ -14,9 +14,9 @@ const { title, rawTitle = false, activeTab } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing slash if any
 const siteUrl = 'https://kolhanhub.in';
 
-const pageDescription = Astro.props.description ?? 'Free Kolhan University PYQ (previous year question papers) and NEP 2020 syllabus for Tata College, Chaibasa students. Download exam papers, check results, and get academic resources for Kolhan University 2022 batch — Semester 1 to 8.';
+const pageDescription = Astro.props.description ?? 'Free Kolhan University PYQs, NEP FYUGP syllabus, exam results, notices, and academic resources for all 37 colleges — Semester 1 to 8.';
 
-const pageKeywords = Astro.props.keywords ?? 'Kolhan University PYQ, Kolhan University result, Kolhan University syllabus, Kolhan University Chaibasa, Kolhan University question papers download, Tata College Chaibasa, NEP 2020 Kolhan University, FYUGP syllabus Kolhan University, Tata College PYQ, 2022 batch Kolhan University';
+const pageKeywords = Astro.props.keywords ?? 'Kolhan University PYQ, Kolhan University result, Kolhan University syllabus, Kolhan University Chaibasa, Kolhan University question papers download, Tata College Chaibasa, NEP 2020 Kolhan University, FYUGP syllabus Kolhan University, KolhanHub';
 
 // Strip BASE_URL prefix from pathname so canonical always points to kolhanhub.in
 // When served from GitHub Pages, Astro.url.pathname includes /TataCollegeHub/ prefix
@@ -25,7 +25,7 @@ const cleanPath = Astro.url.pathname.startsWith(baseUrl) && baseUrl !== ''
   ? Astro.url.pathname.slice(baseUrl.length) || '/'
   : Astro.url.pathname;
 const canonicalUrl = `${siteUrl}${cleanPath}`;
-const pageTitle = rawTitle ? title : `${title} | Kolhan University — Tata College, Chaibasa`;
+const pageTitle = rawTitle ? title : (/kolhanhub/i.test(title) ? title : `${title} | KolhanHub`);
 
 // Breadcrumb & per-page WebPage structured data
 const breadcrumbItems: Array<{name: string; item: string}> = [
@@ -52,13 +52,8 @@ const webPageSchema = JSON.stringify({
   "inLanguage": "en-IN",
   "isPartOf": {
     "@type": "WebSite",
-    "name": "Kolhan University Student Hub — Tata College, Chaibasa",
-    "url": siteUrl,
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": `${siteUrl}/pyqs/?q={search_term_string}`,
-      "query-input": "required name=search_term_string"
-    }
+    "name": "KolhanHub — Kolhan University Student Portal",
+    "url": siteUrl
   },
   "about": {
     "@type": "CollegeOrUniversity",
@@ -120,17 +115,17 @@ const webPageSchema = JSON.stringify({
       };
     </script>
 
-    <!-- Google Analytics: deferred after page load to not block render -->
+    <!-- Google Analytics: expose window.gtag globally, load script after page load -->
     <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ window.dataLayer.push(arguments); };
       window.addEventListener('load', function() {
         var s = document.createElement('script');
         s.src = 'https://www.googletagmanager.com/gtag/js?id=G-TV5YZQ3ELX';
         s.async = true;
         document.head.appendChild(s);
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-TV5YZQ3ELX', { 'send_page_view': true });
+        window.gtag('js', new Date());
+        window.gtag('config', 'G-TV5YZQ3ELX', { 'send_page_view': true });
       });
     </script>
 
@@ -142,7 +137,7 @@ const webPageSchema = JSON.stringify({
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <meta name="keywords" content={pageKeywords} />
-    <meta name="author" content="Tata College Hub" />
+    <meta name="author" content="KolhanHub" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonicalUrl} />
 
@@ -151,7 +146,7 @@ const webPageSchema = JSON.stringify({
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
-    <meta property="og:site_name" content="Tata College Hub" />
+    <meta property="og:site_name" content="KolhanHub" />
     <meta property="og:locale" content="en_IN" />
 
     <!-- Twitter Card -->
@@ -164,12 +159,12 @@ const webPageSchema = JSON.stringify({
       {
         "@context": "https://schema.org",
         "@type": "EducationalOrganization",
-        "name": "Tata College Hub",
-        "alternateName": "Tata College Chaibasa Student Portal",
-        "description": "Free Kolhan University PYQ (previous year question papers), NEP 2020 syllabus, exam results and notices for Tata College, Chaibasa. For Kolhan University 2022 batch FYUGP students — Semester 1 to 8.",
+        "name": "KolhanHub",
+        "alternateName": "Kolhan University Student Portal (Tata College Hub)",
+        "description": "Free Kolhan University PYQs (previous year question papers), NEP FYUGP syllabus, exam results, holiday list, and academic resources for all 37 colleges — Semester 1 to 8.",
         "url": "https://kolhanhub.in",
         "sameAs": [],
-        "keywords": "Kolhan University PYQ, Kolhan University result, Kolhan University syllabus, Tata College Chaibasa",
+        "keywords": "Kolhan University PYQ, Kolhan University result, Kolhan University syllabus, KolhanHub, Tata College Chaibasa",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Chaibasa",
@@ -236,25 +231,25 @@ const webPageSchema = JSON.stringify({
           <a href={`${baseUrl}/`} class={`mobile-nav-item ${activeTab === 'home' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <LayoutGrid /> <span style="font-size: 0.95rem; font-weight: 600;">Home</span>
           </a>
-          <a href={`${baseUrl}/pyqs`} class={`mobile-nav-item ${activeTab === 'pyqs' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+          <a href={`${baseUrl}/pyqs/`} class={`mobile-nav-item ${activeTab === 'pyqs' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <FileText /> <span style="font-size: 0.95rem; font-weight: 600;">PYQs</span>
           </a>
-          <a href={`${baseUrl}/syllabus`} class={`mobile-nav-item ${activeTab === 'syllabus' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+          <a href={`${baseUrl}/syllabus/`} class={`mobile-nav-item ${activeTab === 'syllabus' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <BookOpen /> <span style="font-size: 0.95rem; font-weight: 600;">Syllabus</span>
           </a>
-          <a href={`${baseUrl}/notices`} class={`mobile-nav-item ${activeTab === 'notices' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+          <a href={`${baseUrl}/notices/`} class={`mobile-nav-item ${activeTab === 'notices' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <Bell /> <span style="font-size: 0.95rem; font-weight: 600;">Notices</span>
           </a>
-          <a href={`${baseUrl}/exam-archive`} class={`mobile-nav-item ${activeTab === 'exam-archive' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+          <a href={`${baseUrl}/exam-archive/`} class={`mobile-nav-item ${activeTab === 'exam-archive' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <Archive /> <span style="font-size: 0.95rem; font-weight: 600;">Exam Archive</span>
           </a>
-          <a href={`${baseUrl}/results`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+          <a href={`${baseUrl}/results/`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <TrendingUp /> <span style="font-size: 0.95rem; font-weight: 600;">Results</span>
           </a>
-          <a href={`${baseUrl}/cgpa`} class={`mobile-nav-item ${activeTab === 'cgpa' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+          <a href={`${baseUrl}/cgpa/`} class={`mobile-nav-item ${activeTab === 'cgpa' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <Calculator /> <span style="font-size: 0.95rem; font-weight: 600;">CGPA</span>
           </a>
-          <a href={`${baseUrl}/faq`} class={`mobile-nav-item ${activeTab === 'faq' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
+          <a href={`${baseUrl}/faq/`} class={`mobile-nav-item ${activeTab === 'faq' ? 'active' : ''}`} style="flex-direction: row; justify-content: flex-start; gap: 1rem; padding: 0.75rem 1rem; height: auto;">
             <HelpCircle /> <span style="font-size: 0.95rem; font-weight: 600;">FAQ</span>
           </a>
         </nav>
@@ -285,23 +280,8 @@ const webPageSchema = JSON.stringify({
             </span>
           </a>
 
-          <!-- Header Search Bar Container -->
-          <div id="header-search-container" class="header-search-container hidden-search-mobile">
-            <Search style="position: absolute; left: 0.875rem; width: 18px; height: 18px; color: var(--text-tertiary);" />
-            <input type="text" id="global-search-input" class="form-input" placeholder="Search syllabus, papers..." style="padding-left: 2.5rem; height: 40px; border-radius: var(--radius-full); font-size: 0.875rem;" />
-            
-            <!-- Dynamic search suggestion box -->
-            <div id="search-suggestions" class="card" style="display: none; position: absolute; top: 46px; left: 0; right: 0; z-index: 60; max-height: 300px; overflow-y: auto; padding: 0.5rem; box-shadow: var(--shadow-lg); border-radius: var(--radius-md);">
-            </div>
-          </div>
-
           <!-- Action buttons -->
-          <div style="display: flex; align-items: center; gap: 0.75rem;">
-            <!-- Mobile Search Icon Trigger Button -->
-            <button id="mobile-search-toggle" class="btn btn-secondary" style="width: 40px; height: 40px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; padding: 0; background-color: var(--bg-tertiary); border: 1px solid var(--border-color);" aria-label="Search">
-              <Search size="20" />
-            </button>
-
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
             <!-- Theme Toggle -->
             <button id="theme-toggle-mobile" class="btn btn-secondary" style="width: 40px; height: 40px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; padding: 0; background-color: var(--bg-tertiary); border: 1px solid var(--border-color);" aria-label="Toggle Theme">
               <Sun class="sun-icon" style="display: none;" />
@@ -309,7 +289,7 @@ const webPageSchema = JSON.stringify({
             </button>
 
             <!-- Request Button -->
-            <button id="header-request-btn" class="btn btn-primary" style="font-size: 0.85rem; height: 40px; padding: 0 1rem; border-radius: var(--radius-full); font-weight: 700;" class="md:flex">
+            <button id="header-request-btn" class="btn btn-primary" style="font-size: 0.85rem; height: 40px; padding: 0 1rem; border-radius: var(--radius-full); font-weight: 700; white-space: nowrap; flex-shrink: 0;">
               Request Paper
             </button>
           </div>
@@ -350,11 +330,11 @@ const webPageSchema = JSON.stringify({
               <p style="display: flex; flex-wrap: wrap; gap: 0.3rem 0.75rem; align-items: center;">
                 <a href={`${baseUrl}/holiday-list/`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">Holiday List 2026</a>
                 <span style="color: var(--text-tertiary);">•</span>
-                <a href={`${baseUrl}/about`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">About</a>
+                <a href={`${baseUrl}/about/`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">About</a>
                 <span style="color: var(--text-tertiary);">•</span>
-                <a href={`${baseUrl}/privacy`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">Privacy Policy</a>
+                <a href={`${baseUrl}/privacy/`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">Privacy Policy</a>
                 <span style="color: var(--text-tertiary);">•</span>
-                <a href={`${baseUrl}/contact`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">Contact</a>
+                <a href={`${baseUrl}/contact/`} style="color: var(--accent-primary); font-size: 0.825rem; font-weight: 600; text-decoration: none;">Contact</a>
               </p>
             </div>
 
@@ -378,19 +358,19 @@ const webPageSchema = JSON.stringify({
         <a href={`${baseUrl}/`} class={`mobile-nav-item ${activeTab === 'home' ? 'active' : ''}`}>
           <LayoutGrid /> <span>Home</span>
         </a>
-        <a href={`${baseUrl}/pyqs`} class={`mobile-nav-item ${activeTab === 'pyqs' ? 'active' : ''}`}>
+        <a href={`${baseUrl}/pyqs/`} class={`mobile-nav-item ${activeTab === 'pyqs' ? 'active' : ''}`}>
           <FileText /> <span>PYQs</span>
         </a>
-        <a href={`${baseUrl}/syllabus`} class={`mobile-nav-item ${activeTab === 'syllabus' ? 'active' : ''}`}>
+        <a href={`${baseUrl}/syllabus/`} class={`mobile-nav-item ${activeTab === 'syllabus' ? 'active' : ''}`}>
           <BookOpen /> <span>Syllabus</span>
         </a>
-        <a href={`${baseUrl}/exam-archive`} class={`mobile-nav-item ${activeTab === 'exam-archive' ? 'active' : ''}`}>
+        <a href={`${baseUrl}/exam-archive/`} class={`mobile-nav-item ${activeTab === 'exam-archive' ? 'active' : ''}`}>
           <Archive /> <span>Archive</span>
         </a>
-        <a href={`${baseUrl}/results`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`}>
+        <a href={`${baseUrl}/results/`} class={`mobile-nav-item ${activeTab === 'results' ? 'active' : ''}`}>
           <TrendingUp /> <span>Results</span>
         </a>
-        <a href={`${baseUrl}/faq`} class={`mobile-nav-item ${activeTab === 'faq' ? 'active' : ''}`}>
+        <a href={`${baseUrl}/faq/`} class={`mobile-nav-item ${activeTab === 'faq' ? 'active' : ''}`}>
           <HelpCircle /> <span>FAQ</span>
         </a>
       </nav>
@@ -775,6 +755,10 @@ const webPageSchema = JSON.stringify({
         const webhookUrl = window._WEBHOOK;
 
         const handleSuccess = () => {
+          if (typeof window.gtag === 'function') {
+            window.gtag('event', 'pyq_request_submit', { category, semester, type });
+          }
+
           // Hide form and show success state
           requestForm.style.display = 'none';
           if (successState) successState.style.display = 'flex';
@@ -978,272 +962,6 @@ const webPageSchema = JSON.stringify({
       });
 
       initToast();
-
-
-      // 3. Global Search Suggestion Engine
-      const searchInput = document.getElementById('global-search-input');
-      const suggestionsBox = document.getElementById('search-suggestions');
-
-      let searchDatabase = { syllabus: [], pyqs: [] };
-
-      // Load database from json files client-side for immediate reactive matching
-      const fetchSearchData = async () => {
-        try {
-          const resSyl = await fetch(`${baseUrl}/data/syllabus.json`);
-          const syllabus = await resSyl.json();
-          
-          const resMdc = await fetch(`${baseUrl}/data/mdc.json`);
-          const mdc = await resMdc.json();
-          
-          const resAec = await fetch(`${baseUrl}/data/aec.json`);
-          const aec = await resAec.json();
-          
-          const resVac = await fetch(`${baseUrl}/data/vac.json`);
-          const vac = await resVac.json();
-          
-          const resPyq = await fetch(`${baseUrl}/data/pyqs.json`);
-          const pyqs = await resPyq.json();
-
-          const formattedSyllabus = [];
-
-          syllabus.forEach(item => {
-            const isMinor = item.department.toLowerCase().includes('minor');
-            formattedSyllabus.push({
-              type: isMinor ? 'minor' : 'major',
-              title: item.title,
-              subtitle: `${item.department} • ${item.semester}`,
-              searchString: `${item.title} ${item.department} ${item.description} ${item.modules ? item.modules.join(' ') : ''} ${isMinor ? 'minor' : 'major honours hons'}`.toLowerCase(),
-              link: `${baseUrl}/syllabus/${item.department.toLowerCase().replace(/\s+/g, '-')}`,
-              targetBlank: false,
-              download: false
-            });
-          });
-
-          mdc.forEach(item => {
-            formattedSyllabus.push({
-              type: 'mdc',
-              title: `${item.name} (MDC) Syllabus`,
-              subtitle: `Multidisciplinary Course • ${item.category}`,
-              searchString: `${item.name} mdc multidisciplinary ${item.category} syllabus`.toLowerCase(),
-              link: item.link,
-              targetBlank: true,
-              download: false
-            });
-          });
-
-          aec.forEach(item => {
-            formattedSyllabus.push({
-              type: 'aec',
-              title: `${item.name} (AEC) Syllabus`,
-              subtitle: `Ability Enhancement Course • ${item.semester}`,
-              searchString: `${item.name} aec ability enhancement language ${item.semester} syllabus`.toLowerCase(),
-              link: item.link,
-              targetBlank: true,
-              download: false
-            });
-          });
-
-          vac.forEach(item => {
-            formattedSyllabus.push({
-              type: 'vac',
-              title: `${item.name} (VAC) Syllabus`,
-              subtitle: `Value Added Course • ${item.semester} • ${item.type}`,
-              searchString: `${item.name} vac value added ${item.semester} ${item.type} syllabus`.toLowerCase(),
-              link: `${baseUrl}${item.link}`,
-              targetBlank: false,
-              download: true
-            });
-          });
-
-          const formattedPyqs = pyqs
-            .filter(item => !!item.downloadUrl)
-            .map(item => ({
-              title: `${item.subject} (${item.category})`,
-              subtitle: `Sem ${item.semester} • ${item.year} Exam Paper`,
-              searchString: `${item.subject} ${item.category} ${item.title} sem ${item.semester} ${item.year} pyq pyqs exam paper question`.toLowerCase(),
-              link: `${baseUrl}/pyqs/${item.category.toLowerCase()}/${item.subject.toLowerCase()}/${item.semester}`,
-              category: item.category,
-              subject: item.subject,
-              semester: item.semester,
-              year: item.year
-            }));
-
-          searchDatabase = {
-            syllabus: formattedSyllabus,
-            pyqs: formattedPyqs
-          };
-        } catch (err) {
-          console.error("Failed to load search index: ", err);
-        }
-      };
-      fetchSearchData();
-
-      searchInput?.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase().trim();
-        if (!query) {
-          suggestionsBox.style.display = 'none';
-          return;
-        }
-
-        const queryWords = query.split(/\s+/).filter(w => w.length > 0);
-        
-        // Map common synonyms to standardized search terms
-        const wordMapping = {
-          'maths': 'mathematics',
-          'math': 'mathematics',
-          'phy': 'physics',
-          'chem': 'chemistry',
-          'eng': 'english',
-          'evs': 'environmental'
-        };
-        const searchWords = queryWords.map(w => wordMapping[w] || w);
-
-        // Check if query is explicitly searching for pyqs
-        const isQueryingPyq = searchWords.some(w => ['pyq', 'pyqs', 'paper', 'papers', 'question', 'questions', 'previous', 'exam', 'exams'].includes(w));
-
-        const getScore = (item, isPyqItem) => {
-          let score = 0;
-          let matchCount = 0;
-
-          for (const word of searchWords) {
-            if (item.searchString.includes(word)) {
-              matchCount++;
-              score += 10;
-              if (item.title.toLowerCase().includes(word)) {
-                score += 20;
-              }
-            }
-          }
-
-          if (matchCount === searchWords.length) {
-            score += 100; // Perfect match bonus for matching all words
-          }
-
-          // Category-specific boosts
-          if (searchWords.includes('major') && item.type === 'major') score += 50;
-          if (searchWords.includes('minor') && item.type === 'minor') score += 50;
-          if (searchWords.includes('mdc') && item.type === 'mdc') score += 50;
-          if (searchWords.includes('aec') && item.type === 'aec') score += 50;
-          if (searchWords.includes('vac') && item.type === 'vac') score += 50;
-
-          // Priority bias: syllabus first unless query is explicitly about pyq
-          if (!isPyqItem && !isQueryingPyq) {
-            score += 30; // boost syllabus
-          }
-          if (isPyqItem && isQueryingPyq) {
-            score += 50; // boost PYQ matches if search query is about pyqs
-          }
-
-          return score;
-        };
-
-        const scoredSyllabus = searchDatabase.syllabus
-          .map(item => ({ item, score: getScore(item, false) }))
-          .filter(res => res.score > 0)
-          .sort((a, b) => b.score - a.score)
-          .map(res => res.item);
-
-        const scoredPyqs = searchDatabase.pyqs
-          .map(item => ({ item, score: getScore(item, true) }))
-          .filter(res => res.score > 0)
-          .sort((a, b) => b.score - a.score)
-          .map(res => res.item);
-
-        const filteredSyllabus = scoredSyllabus.slice(0, 4);
-        const filteredPyqs = scoredPyqs.slice(0, 4);
-
-        if (filteredSyllabus.length === 0 && filteredPyqs.length === 0) {
-          suggestionsBox.innerHTML = `
-            <div style="padding: 0.75rem; color: var(--text-secondary); text-align: center; font-size: 0.9rem;">
-              No matches found. 
-              <button class="btn btn-outline btn-sm" id="search-req-btn" style="margin-top: 0.5rem; width: 100%;">
-                Request this paper
-              </button>
-            </div>
-          `;
-          suggestionsBox.style.display = 'block';
-          
-          document.getElementById('search-req-btn')?.addEventListener('click', () => {
-            suggestionsBox.style.display = 'none';
-            openModal(query);
-          });
-          return;
-        }
-
-        let syllabusHtml = '';
-        if (filteredSyllabus.length > 0) {
-          syllabusHtml += `<div style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase;">Syllabus Modules</div>`;
-          filteredSyllabus.forEach(item => {
-            const downloadAttr = item.download ? 'download' : '';
-            const targetAttr = item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '';
-            syllabusHtml += `
-              <a href="${item.link}" ${downloadAttr} ${targetAttr} style="display: block; padding: 0.625rem 0.75rem; border-radius: var(--radius-xs); color: var(--text-primary); transition: background 0.15s;" class="hover:bg-tertiary">
-                <div style="font-weight: 600; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
-                  <span>${item.title}</span>
-                  ${item.download ? '<span style="font-size: 0.7rem;" class="badge badge-primary">Download</span>' : ''}
-                </div>
-                <div style="font-size: 0.75rem; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.subtitle}</div>
-              </a>
-            `;
-          });
-        }
-
-        let pyqHtml = '';
-        if (filteredPyqs.length > 0) {
-          pyqHtml += `<div style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase;">Previous Papers</div>`;
-          filteredPyqs.forEach(item => {
-            pyqHtml += `
-              <a href="${item.link}" style="display: block; padding: 0.625rem 0.75rem; border-radius: var(--radius-xs); color: var(--text-primary); transition: background 0.15s;" class="hover:bg-tertiary">
-                <div style="font-weight: 600; font-size: 0.9rem;">${item.title}</div>
-                <div style="font-size: 0.75rem; color: var(--text-secondary); display: flex; justify-content: space-between;">
-                  <span>${item.subtitle}</span>
-                  <span style="color: var(--accent-primary); font-weight: 500;">Download →</span>
-                </div>
-              </a>
-            `;
-          });
-        }
-
-        if (isQueryingPyq) {
-          // If PYQ section is shown first, add margin top to syllabus section if both exist
-          if (filteredSyllabus.length > 0 && filteredPyqs.length > 0) {
-            syllabusHtml = syllabusHtml.replace('style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase;"', 'style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase; margin-top: 0.5rem;"');
-          }
-          suggestionsBox.innerHTML = pyqHtml + syllabusHtml;
-        } else {
-          // If Syllabus section is shown first, add margin top to PYQ section if both exist
-          if (filteredSyllabus.length > 0 && filteredPyqs.length > 0) {
-            pyqHtml = pyqHtml.replace('style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase;"', 'style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); padding: 0.5rem 0.75rem; text-transform: uppercase; margin-top: 0.5rem;"');
-          }
-          suggestionsBox.innerHTML = syllabusHtml + pyqHtml;
-        }
-        suggestionsBox.style.display = 'block';
-      });
-
-      // Close suggestions when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!searchInput?.contains(e.target) && !suggestionsBox?.contains(e.target)) {
-          if (suggestionsBox) suggestionsBox.style.display = 'none';
-        }
-      });
-
-      // Mobile search trigger toggle
-      const mobileSearchToggle = document.getElementById('mobile-search-toggle');
-      const headerEl = document.querySelector('header');
-      mobileSearchToggle?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        headerEl?.classList.toggle('show-mobile-search');
-        if (headerEl?.classList.contains('show-mobile-search')) {
-          searchInput?.focus();
-        }
-      });
-      // Close search when clicking outside
-      document.addEventListener('click', (e) => {
-        const searchContainer = document.getElementById('header-search-container');
-        if (!searchContainer?.contains(e.target) && !mobileSearchToggle?.contains(e.target)) {
-          headerEl?.classList.remove('show-mobile-search');
-        }
-      });
     </script>
   </body>
 </html>

@@ -2,7 +2,7 @@
 
 > **Read this file first in every new conversation / with every new AI model.**
 > Keep it updated: add a line to the Changelog (section 11) after every meaningful change.
-> Last updated: 2026-11-26
+> Last updated: 2026-11-27
 
 ---
 
@@ -85,7 +85,8 @@ Related but **separate** repo/folder: `kolhan-result` (Next.js results/leaderboa
 
 | File | Purpose | Key shape |
 |---|---|---|
-| `pyqs.json` | Every PYQ (≈230). Powers PYQ pages, homepage stats, "What's New" | `{id, title, year:"2022-2026", semester, category, subject, downloadCount, fileSize, downloadUrl}` |
+| `pyqs.json` | Every PYQ (223 entries). Powers PYQ pages, homepage stats, "What's New" | `{id, title, paperCode?, year:"2022-2026", semester, category, subject, set?, downloadCount, fileSize, downloadUrl}` |
+| `paper_marking_schemes.json` | Official NEP FYUGP marks & 40% passing rules (Practical vs Non-Practical) | `{schemes, categoryRules, subjects, exceptions}` |
 | `notices.json` | Notices page + homepage pinned notices | `{id, title, date, category, isPinned, isArchived, description, links[]}` |
 | `syllabus.json`, `kolhan_syllabi.json` | Syllabus listings | — |
 | `mdc.json`, `sec.json`, `vac.json`, `aec.json`, `iks.json` | Subject lists per course type | — |
@@ -165,7 +166,17 @@ Collection message to contributors (soft tone): *"Thank you for sharing! If you'
 
 **B. Remove an expired section** — delete HTML + its `<script>`; archive related notice in `notices.json`; build.
 
-**C. Add PYQs** — add entries to `pyqs.json` (unique `id`, correct `category`/`subject`/`semester`/`year`), run `python verify_pyqs.py` / relevant `check_*.py`, build. Log the request in `ideas_and_todo.md` "Request Completed Log".
+**C. Add PYQs (Naming & Upload Standard)**
+1. **Google Drive PDF filename:** `{cat}_{subject}_sem{n}[_{code}]_{batch}[_set{k}].pdf`
+   - Examples: `mj_mathematics_sem3_mj04_2023-2027.pdf`, `mn_physics_sem1_mn1a_2024-2028.pdf`, `mdc_psychology_sem1_2025-2029.pdf`, `aec_hindi_sem1_aec1_2024-2028_set1.pdf`, `vac_understanding_india_sem1_vac1_2025-2029_set1.pdf`.
+2. **`year` field:** Always use 4-year batch format (`2022-2026`, `2023-2027`, `2024-2028`, `2025-2029`) for Kolhan University papers (4-digit exam year allowed only for non-Kolhan reference papers like BBMKU/VBU IKS).
+3. **`pyqs.json` entry shape & clean `title`:**
+   - Required: `id`, `title`, `category`, `subject`, `semester` (int 1–8), `year`, `downloadUrl` (`https://drive.google.com/file/d/<ID>/view?usp=drive_link`). Optional: `paperCode`, `set`.
+   - Title patterns (no `.pdf`, no `_`, no mojibake):
+     - Major/Minor: `{Subject} Major (MJ-04) — Sem 3 (2023-2027 Batch)`
+     - MDC: `{Subject} MDC — Sem 1 (2025-2029 Batch)`
+     - AEC/VAC/SEC: `AEC-1 Hindi — Sem 1 (2024-2028 Batch · Set 1)`
+4. Validate & build: `python check_pyqs_standard.py` → must pass with 0 errors, then `npm run build`. Log completed requests in `ideas_and_todo.md`.
 
 **D. Add/Update a contributor** — see section 6.
 
@@ -198,6 +209,7 @@ Collection message to contributors (soft tone): *"Thank you for sharing! If you'
 
 | Date | Change |
 |---|---|
+| 2026-11-27 | **PYQs Overhaul (Subpages + Hub + `Layout.astro` + `pyqs.json` Standard).** Upgraded all ~98 `[semester].astro` pages (dynamic SEO `<title>` & `<meta description>`, `FAQPage` + `BreadcrumbList` JSON-LD, sibling semester switcher pills, Matching Syllabus links, MDC Sem 1–3 cross-links, verified Practical vs Non-Practical marking schemes via `public/data/paper_marking_schemes.json`). Overhauled `src/pages/pyqs/index.astro` (57-char title `Kolhan University Previous Year Question Papers (PYQ) PDF`, `Sem 1–8 (NEP FYUGP) • All 37 Colleges` subtitle, removed top search/filter clutter so Browse by Course Category appears immediately, un-orphaned AEC/VAC/IKS internal links, clickable Most Downloaded, fixed 3 stray `</div>` bugs & contributor avatars, Hindi helper, FAQ, Student Tools strip). Cleaned `src/layouts/Layout.astro` (removed header search bar & 5-JSON loader, exposed `window.gtag` globally, shortened default title suffix to `| KolhanHub`, added `pyq_request_submit` GA4 event while keeping `#req-contact` required). Standardized all `223` real entries in `public/data/pyqs.json` (removed 7 empty placeholders, fixed 12 mojibake titles, unified batch years & clean titles) and added `check_pyqs_standard.py`. |
 | 2026-11-26 | **Homepage live college status pill + `/holiday-list/` v3 polish.** Added a live IST "College is open/closed today" clickable pill inside the hero of `src/pages/index.astro` linking directly to `/holiday-list/` (with next-holiday countdown hint and `?date=` support). On `src/pages/holiday-list.astro`: removed all "Add to Google Calendar" links from the calendar detail card and removed the bulk `.ics` download button, reordered the month-wise segmented filter to default to `Upcoming` when any holiday remains, moved the swipeable cards carousel to the top of the 2026 tab and expanded it to all 39 holidays with a `All 39 | Big Breaks · 5` toggle and vibrant themes, and simplified `2026 Holiday Insights` to the 4 summary cards. |
 | 2026-11-26 | **Holiday page v2 polish (`/holiday-list/`).** Shortened hero intro to 2 pills + 1-line summary, moved the interactive calendar directly below the live status card, unified calendar holidays in red (`--hl-sun`) without boxy per-cell outlines, improved month-wise list readability (removed past-row opacity fade, removed search box and per-row Google Calendar buttons, switched to a 3-option segmented filter `All | Upcoming | Vacations`, decluttered rows), and moved quick stats + Big Vacations into a new **2026 Holiday Insights** section below the list. |
 | 2026-11-26 | **Dedicated `/holiday-list/` Page (SEO + Mobile-First App UX).** Created `src/pages/holiday-list.astro` (`https://kolhanhub.in/holiday-list/`) featuring a live IST "Is Kolhan University Open Today?" hero card with next-holiday countdown / active vacation progress / 39-segment year strip / one-time confetti, 2×2 quick stats, `2026 | 2027` year switcher with tentative 2027 fixed dates, swipeable Big Vacations cards, interactive monthly calendar with continuous multi-day pills & 12-month heat strip, SSR month-wise searchable & filterable list of all 39 holidays, print-friendly full table, bulk `.ics` calendar export, official PDF download (`KU_holiday_list_2026.pdf`) + WhatsApp/copy/native share, Hindi helper box (`lang="hi"`), `FAQPage` JSON-LD + accordion, and `?date=YYYY-MM-DD` test override. Fixed `id: "1"` (New Year Day) `daysOfWeek` in `public/data/holidays-2026.json` (`Wednesday` → `Thursday`). Added `'holidays'` tab/breadcrumb & footer link in `src/layouts/Layout.astro`, plus internal links from `src/pages/index.astro` and `src/pages/notices.astro`. |

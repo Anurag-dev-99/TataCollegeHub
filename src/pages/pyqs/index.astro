@@ -1,136 +1,772 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import pyqsData from '../../../public/data/pyqs.json';
-import { ChevronRight, FileText, Download, HelpCircle, GraduationCap, Search, Award, BookOpen } from '@lucide/astro';
+import notesData from '../../../public/data/notes.json';
+import markingSchemes from '../../../public/data/paper_marking_schemes.json';
+import { ChevronRight, FileText, Download, GraduationCap, Award, BookOpen } from '@lucide/astro';
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// Only show papers that have a download URL (all categories)
-const availablePyqs = pyqsData.filter(item => !!item.downloadUrl);
+// Available question papers (exclude inline notes entries)
+const availablePyqs = pyqsData.filter((p: any) => !!p.downloadUrl && p.type !== 'notes');
 
-// ── AEC PYQ subject groups ────────────────────────────────────────────────────
-// AEC groups by (semester, subject) — e.g. (1,'Hindi'), (2,'English'), (3,'Hindi'), …
-const aecPapers = availablePyqs.filter(p => p.category === 'AEC');
+// Check if a (catLower, subjectLower, sem) has notes or solved PYQs
+const hasNotesFor = (catLower: string, subjectLower: string, sem: number): boolean => {
+  const hasPaid = notesData.products.some(
+    n => n.available && n.match.category === catLower && n.match.subject === subjectLower && n.match.semester === String(sem)
+  );
+  if (hasPaid) return true;
+  if (catLower === 'mdc' && (subjectLower === 'psychology' || subjectLower === 'economics')) return true;
+  if (catLower === 'iks') return pyqsData.some((p: any) => p.category === 'IKS' && p.type === 'notes' && !!p.downloadUrl);
+  return false;
+};
 
-const aecGroupsRaw = [...new Map(
-  aecPapers.map(p => [`${p.semester}-${p.subject}`, { semester: p.semester, subject: p.subject }])
-).values()].sort((a, b) =>
-  a.semester !== b.semester ? a.semester - b.semester : a.subject.localeCompare(b.subject)
-);
+// Build unified flat index of all ~98 PYQ subpages (matches [semester].astro getStaticPaths)
+type SubpageEntry = {
+  cat: string;
+  catLower: string;
+  subject: string;
+  subjectLower: string;
+  sem: number;
+  count: number;
+  years: string[];
+  href: string;
+  hasNotes: boolean;
+  hasSolved: boolean;
+};
 
-const getAecGroupPapers = (sem: number, subject: string) =>
-  aecPapers
-    .filter(p => p.semester === sem && p.subject === subject)
-    .sort((a, b) => {
-      const yA = String(a.year || ''), yB = String(b.year || '');
-      if (yA !== yB) return yA.localeCompare(yB);
-      return String((a as any).set || '').localeCompare(String((b as any).set || ''));
+const subpageMap = new Map<string, SubpageEntry>();
+pyqsData.forEach((item: any) => {
+  if (item.category !== 'AEC' && !item.downloadUrl) return;
+  const catLower = item.category.toLowerCase();
+  const subjectLower = item.subject.toLowerCase();
+  const sem = Number(item.semester);
+  const key = `${catLower}|${subjectLower}|${sem}`;
+
+  if (!subpageMap.has(key)) {
+    subpageMap.set(key, {
+      cat: item.category,
+      catLower,
+      subject: item.subject,
+      subjectLower,
+      sem,
+      count: 0,
+      years: [],
+      href: `${baseUrl}/pyqs/${catLower}/${subjectLower}/${sem}/`,
+      hasNotes: hasNotesFor(catLower, subjectLower, sem),
+      hasSolved: catLower === 'major' && subjectLower === 'mathematics' && sem === 3
     });
+  }
 
-const aecSemesters = [...new Set(aecPapers.map(p => p.semester))].sort((a, b) => a - b);
-const aecTotal = aecPapers.length;
-
-
-
-// ── VAC PYQ subject groups ────────────────────────────────────────────────────
-const vacPapers = availablePyqs.filter(p => p.category === 'VAC' && !!p.downloadUrl);
-
-// Get unique VAC subjects sorted by semester then name
-const vacSubjects = [...new Set(vacPapers.map(p => p.subject))].sort((a, b) => {
-  const semA = Math.min(...vacPapers.filter(p => p.subject === a).map(p => p.semester));
-  const semB = Math.min(...vacPapers.filter(p => p.subject === b).map(p => p.semester));
-  return semA !== semB ? semA - semB : a.localeCompare(b);
+  if (item.downloadUrl && item.type !== 'notes') {
+    const entry = subpageMap.get(key)!;
+    entry.count += 1;
+    if (item.year && !entry.years.includes(String(item.year))) {
+      entry.years.push(String(item.year));
+    }
+  }
 });
 
-// Get all unique semesters for VAC
-const vacSemesters = [...new Set(vacPapers.map(p => p.semester))].sort((a, b) => a - b);
-
-// Get papers for a specific VAC subject
-const getVacPapersForSubject = (subject: string) =>
-  vacPapers.filter(p => p.subject === subject).sort((a, b) => {
-    if (a.semester !== b.semester) return a.semester - b.semester;
-    return String(a.year || '').localeCompare(String(b.year || ''));
-  });
-
-// ── SEC PYQ subject groups ────────────────────────────────────────────────────
-const secPapers = availablePyqs.filter(p => p.category === 'SEC' && !!p.downloadUrl);
-
-// Get unique SEC subjects sorted by semester then name
-const secSubjects = [...new Set(secPapers.map(p => p.subject))].sort((a, b) => {
-  const semA = Math.min(...secPapers.filter(p => p.subject === a).map(p => p.semester));
-  const semB = Math.min(...secPapers.filter(p => p.subject === b).map(p => p.semester));
-  return semA !== semB ? semA - semB : a.localeCompare(b);
+const allSubpages = Array.from(subpageMap.values()).sort((a, b) => {
+  if (a.sem !== b.sem) return a.sem - b.sem;
+  return a.subject.localeCompare(b.subject);
 });
+allSubpages.forEach(s => s.years.sort());
 
-// Get all unique semesters for SEC
-const secSemesters = [...new Set(secPapers.map(p => p.semester))].sort((a, b) => a - b);
+const subpagesJson = JSON.stringify(allSubpages);
 
-// Get papers for a specific SEC subject
-const getSecPapersForSubject = (subject: string) =>
-  secPapers.filter(p => p.subject === subject).sort((a, b) => {
-    if (a.semester !== b.semester) return a.semester - b.semester;
-    return String(a.year || '').localeCompare(String(b.year || ''));
-  });
-
-// ── Generic category helpers (Major, Minor, MDC) ─────────────────────────
-// Builds structured data for a given category: { subject, semesters[], totalPapers }
+// Category groupings for browse accordions
 const buildCatData = (cat: string) => {
-  const papers = availablePyqs.filter(p => p.category === cat && !!p.downloadUrl);
-  const subjects = [...new Set(papers.map(p => p.subject))].sort();
+  const catLower = cat.toLowerCase();
+  const entries = allSubpages.filter(s => s.cat === cat && s.count > 0);
+  const subjects = [...new Set(entries.map(e => e.subject))].sort((a, b) => a.localeCompare(b));
   return subjects.map(subject => {
-    const subPapers = papers.filter(p => p.subject === subject);
-    const sems = [...new Set(subPapers.map(p => p.semester))].sort((a, b) => a - b);
-    return { subject, sems, totalPapers: subPapers.length };
+    const subEntries = entries.filter(e => e.subject === subject).sort((a, b) => a.sem - b.sem);
+    return {
+      subject,
+      subjectLower: subject.toLowerCase(),
+      sems: subEntries.map(e => e.sem),
+      totalPapers: subEntries.reduce((sum, e) => sum + e.count, 0),
+      hasNotes: subEntries.some(e => e.hasNotes),
+      hasSolved: subEntries.some(e => e.hasSolved)
+    };
   });
 };
 
-const majorData   = buildCatData('Major');
-const minorData   = buildCatData('Minor');
-const mdcData     = buildCatData('MDC');
+const majorData = buildCatData('Major');
+const minorData = buildCatData('Minor');
+const mdcData = buildCatData('MDC');
 
-const majorSems   = [...new Set(availablePyqs.filter(p => p.category === 'Major' && !!p.downloadUrl).map(p => p.semester))].sort((a, b) => a - b);
-const minorSems   = [...new Set(availablePyqs.filter(p => p.category === 'Minor' && !!p.downloadUrl).map(p => p.semester))].sort((a, b) => a - b);
-const mdcSems     = [...new Set(availablePyqs.filter(p => p.category === 'MDC'   && !!p.downloadUrl).map(p => p.semester))].sort((a, b) => a - b);
+const buildSemSubjectGroups = (cat: string) =>
+  allSubpages
+    .filter(s => s.cat === cat)
+    .sort((a, b) => (a.sem !== b.sem ? a.sem - b.sem : a.subject.localeCompare(b.subject)));
 
-// Popular papers (non-AEC, has downloadUrl)
-const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
-  .sort((a, b) => (b.downloadCount || 0) - (a.downloadCount || 0))
-  .slice(0, 5);
+const aecGroups = buildSemSubjectGroups('AEC');
+const aecTotal = availablePyqs.filter(p => p.category === 'AEC').length;
+
+const vacGroups = buildSemSubjectGroups('VAC');
+const vacTotal = availablePyqs.filter(p => p.category === 'VAC').length;
+
+const secGroups = buildSemSubjectGroups('SEC');
+const secTotal = availablePyqs.filter(p => p.category === 'SEC').length;
+
+const iksPyqs = pyqsData.filter((p: any) => p.category === 'IKS' && p.type !== 'notes' && !!p.downloadUrl);
+const iksNotes = pyqsData.filter((p: any) => p.category === 'IKS' && p.type === 'notes' && !!p.downloadUrl);
+
+// Accurate schemes from paper_marking_schemes.json
+const pracFull = markingSchemes.schemes['100_PRACTICAL'].fullMarks;
+const pracPass = markingSchemes.schemes['100_PRACTICAL'].passMarks;
+const nonPracFull = markingSchemes.schemes['100_NON_PRACTICAL'].fullMarks;
+const nonPracPass = markingSchemes.schemes['100_NON_PRACTICAL'].passMarks;
+const mdcSecFull = markingSchemes.schemes['75_THEORY_ONLY'].fullMarks;
+const mdcSecPass = markingSchemes.schemes['75_THEORY_ONLY'].passMarks;
+const aecVacFull = markingSchemes.schemes['50_THEORY_ONLY'].fullMarks;
+const aecVacPass = markingSchemes.schemes['50_THEORY_ONLY'].passMarks;
+
+// Deduplicated completed PYQ requests
+const rawCompletedRequests = [
+  { e: '🧠', t: 'Psychology Major PYQ', s: 'Sem 1' },
+  { e: '📜', t: 'History Major PYQ', s: 'Sem 2' },
+  { e: '📊', t: 'Economics Major PYQ', s: 'Sem 1' },
+  { e: '⚛️', t: 'Physics Minor PYQ', s: 'Sem 1' },
+  { e: '🐍', t: 'Zoology Minor PYQ', s: 'Sem 1' },
+  { e: '📜', t: 'MDC History PYQ', s: 'Sem 1' },
+  { e: '🌿', t: 'Botany Minor PYQ', s: 'Sem 1' },
+  { e: '🏛️', t: 'Political Science Major PYQ', s: 'Sem 1' },
+  { e: '📖', t: 'English Major PYQ', s: 'Sem 1' },
+  { e: '📜', t: 'History Major PYQ', s: 'Sem 1' },
+  { e: '⚛️', t: 'Physics Major PYQ', s: 'Sem 1' },
+  { e: '🏛️', t: 'Political Science Minor PYQ', s: 'Sem 1' },
+  { e: '🐍', t: 'Zoology Major PYQ', s: 'Sem 1' },
+  { e: '🌿', t: 'Botany Major PYQ', s: 'Sem 1' },
+  { e: '🏠', t: 'MDC Home Science PYQ', s: 'Sem 1 & 3' },
+  { e: '📐', t: 'Maths Minor PYQ', s: 'Sem 1' },
+  { e: '🧪', t: 'Chemistry Minor PYQ', s: 'Sem 1' },
+  { e: '⚛️', t: 'Physics Major PYQ', s: 'Sem 1 · 2024 Batch' },
+  { e: '📐', t: 'Maths Major PYQ', s: 'Sem 1 · All Batches' },
+  { e: '⚛️', t: 'Physics Major PYQ', s: 'Sem 1–6' },
+  { e: '🧪', t: 'Chemistry Major PYQ', s: 'Sem 1–3' },
+  { e: '📖', t: 'English Major PYQ', s: 'Sem 1–4' },
+  { e: '🧠', t: 'MDC Psychology PYQ', s: 'Sem 1–3' },
+  { e: '📊', t: 'MDC Statistics PYQ', s: 'Sem 1' },
+  { e: '🧠', t: 'Philosophy MDC PYQ', s: 'Sem 1' },
+  { e: '🌍', t: 'MDC Geography PYQ', s: 'Sem 1' },
+  { e: '📱', t: 'SEC Digital India PYQ', s: 'Sem 1 (Set 1)' },
+  { e: '🧠', t: 'MDC Philosophy PYQ', s: 'Sem 1 (2025)' },
+  { e: '🧠', t: 'MDC Psychology PYQ', s: 'Sem 1 (2025)' }
+];
+const completedRequests = Array.from(
+  new Map(rawCompletedRequests.map(r => [`${r.t}|${r.s}`, r])).values()
+);
+
+const contributorsList = [
+  { i: 'A', c: '#f59e0b,#d97706', n: 'Ayushi Kumari', f: 'Geo Major, PolSci Minor, Phil MDC, Digital Edu Sem 1' },
+  { i: 'I', c: '#06b6d4,#0e7490', n: 'ISHA KUMARI', f: 'Economics Minor Sem 1' },
+  { i: 'I', c: '#ec4899,#be185d', n: 'Isha Kumari', f: 'History MDC, Chem Minor Sem 1' },
+  { i: 'G', c: '#3b82f6,#1d4ed8', n: 'Gouranga (GG)', f: 'Maths Minor, Geo MDC Sem 1' },
+  { i: 'P', c: '#a855f7,#7e22ce', n: 'Pooja Rani Pradhan', f: 'Home Science MDC Sem 1' },
+  { i: 'D', c: '#6366f1,#8b5cf6', n: 'Dheeraj', f: 'Physics Major Sem 1 & 2' },
+  { i: 'I', c: '#10b981,#059669', n: 'Indra', f: 'Physics Major Sem 3' },
+  { i: 'A', c: '#f59e0b,#d97706', n: 'Ankit', f: 'Chemistry Major Sem 1–3' },
+  { i: 'S', c: '#a78bfa,#7c3aed', n: 'Sunita', f: 'Maths Major Sem 5' },
+  { i: 'R', c: '#f97316,#ea580c', n: 'Ritik', f: 'Home Science MDC' },
+  { i: 'S', c: '#3b82f6,#2563eb', n: 'Suman', f: 'MDC Psychology, Geo' },
+  { i: 'P', c: '#f472b6,#ec4899', n: 'Priya Sinha', f: 'SEC Comm. Skills' },
+  { i: 'A', c: '#84cc16,#65a30d', n: 'Amit', f: 'MDC History Sem 2' }
+];
+
+// Visible FAQs + synced FAQPage JSON-LD
+const faqItems = [
+  {
+    q: 'How to download Kolhan University previous year question papers (PYQ PDF) for free?',
+    a: 'Choose your paper category (Major, Minor, MDC, AEC, VAC, SEC, or IKS) above, open your subject and semester, and tap Download PDF. All question papers open directly on Google Drive without login or fees.'
+  },
+  {
+    q: 'Are these PYQ papers valid for all 37 Kolhan University colleges?',
+    a: 'Yes! Kolhan University conducts a single unified university examination across all 37 constituent and affiliated colleges under the NEP 2020 FYUGP syllabus (Batches 2022–26, 2023–27, 2024–28, and 2025–29).'
+  },
+  {
+    q: 'What are MJ, MN/AC, MDC, AEC, VAC, SEC, and IKS papers in Kolhan University?',
+    a: 'Under NEP FYUGP: MJ is Major (100 marks), MN/AC is Minor / Associated Core (100 marks), MDC is Multidisciplinary Course (75 marks, same syllabus for Sem 1–3), SEC is Skill Enhancement (75 marks), AEC is Ability Enhancement Language (50 marks), VAC is Value Added Course like Understanding India (50 marks), and IKS is Indian Knowledge System (50 MCQs).'
+  },
+  {
+    q: 'What if my subject or semester question paper is missing?',
+    a: 'Tap "Request a Paper" on this page to submit the subject name, semester, and category. If you have a question paper PDF or clear photos, tap "Submit / Upload Paper" to share it with juniors.'
+  }
+];
+
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(item => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.a
+    }
+  }))
+});
 ---
 
-<Layout 
-  title="Kolhan University Previous Year Question Papers (PYQ) — Tata College"
-  description="Download free Kolhan University PYQ (previous year question papers) for Tata College, Chaibasa. Semester-wise exam papers for NEP FYUGP 2022 batch — Major, Minor, MDC, SEC, VAC, AEC for Semester 1 to 8. Free PDF download."
-  keywords="Kolhan University PYQ, Kolhan University previous year papers, Kolhan PYQ download, Kolhan University question papers, Tata College PYQ, Tata College Chaibasa question papers, NEP 2022 batch Kolhan University, Kolhan University exam papers 2024, Kolhan University semester papers, FYUGP question papers Kolhan"
+<Layout
+  title="Kolhan University Previous Year Question Papers (PYQ) PDF"
+  rawTitle={true}
+  description="Download free Kolhan University previous year question papers (PYQ PDF) for all 37 colleges — NEP FYUGP Sem 1 to 8 (Major, Minor, MDC, SEC, VAC, AEC, IKS)."
+  keywords="Kolhan University PYQ, Kolhan University previous year question papers, Kolhan University previous year question papers pdf download, Kolhan PYQ download 2025 2026, Kolhan University question paper sem 1 sem 2 sem 3 sem 4, Understanding India PYQ, IKS PYQ, AEC MDC VAC SEC Major Minor Kolhan University, कोल्हान यूनिवर्सिटी पिछले वर्ष के प्रश्न पत्र"
   activeTab="pyqs"
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={faqSchema} />
+  </Fragment>
 
-
-  <!-- Title only -->
-  <div style="margin-bottom: 1.5rem;">
-    <h1 style="font-size: 2.25rem; font-family: var(--font-display); font-weight: 800; tracking: -0.02em;">Kolhan University PYQ</h1>
+  <!-- Compact Hero Header -->
+  <div style="margin-bottom: 1.15rem;">
+    <h1 style="font-size: clamp(1.38rem, 5.2vw, 1.9rem); font-family: var(--font-display); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; margin: 0;">
+      Kolhan University Previous Year Question Papers (PYQ)
+    </h1>
+    <p style="color: var(--text-secondary); font-size: 0.84rem; line-height: 1.45; margin-top: 0.35rem;">
+      Sem 1–8 (NEP FYUGP) &bull; All 37 Colleges
+    </p>
   </div>
 
-  <!-- Compact PYQ Community Row -->
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem;">
+  <!-- ═══ BROWSE BY COURSE CATEGORY (7 Clean Collapsible Sections) ═══ -->
+  <section aria-label="Browse question papers by course category" class="card" style="padding: 1.15rem 1rem; margin-bottom: 1.25rem; background-color: var(--bg-secondary); border-color: var(--border-color); box-shadow: var(--shadow-lg);">
+    <h2 style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; margin: 0 0 0.85rem 0.25rem;">
+      Browse by Course Category
+    </h2>
 
+    <div style="display: flex; flex-direction: column; gap: 0.7rem;">
+
+      <!-- ─── 1. Major PYQ Accordion ─── -->
+      {majorData.length > 0 && (
+        <div class="accordion-item" style="border: 1px solid rgba(99,102,241,0.25); border-radius: var(--radius-sm); overflow: hidden;">
+          <button
+            id="major-pyq-trigger"
+            type="button"
+            class="accordion-trigger"
+            data-cat="major"
+            style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.95rem 1rem; transition: background 0.2s;"
+          >
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; min-width: 0;">
+              <span style="font-size: 1rem; font-weight: 700; color: var(--accent-primary);">Major Paper</span>
+              <span style="font-size: 0.62rem; font-weight: 700; background: rgba(99,102,241,0.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 2px 7px;">
+                MJ · 100 Marks
+              </span>
+              <span style="font-size: 0.66rem; font-weight: 600; color: var(--text-tertiary);">{majorData.length} subjects</span>
+            </div>
+            <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+          </button>
+
+          <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
+            <div style="padding: 0.85rem;">
+              <div class="pyq-cat-grid">
+                {majorData.map(({ subject, subjectLower, sems, totalPapers, hasSolved, hasNotes }) => (
+                  <div class="card pyq-subject-box" style="padding: 0.85rem; display: flex; flex-direction: column; gap: 0.55rem; min-width: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.4rem;">
+                      <span style="font-weight: 700; font-size: 0.92rem; color: var(--text-primary); overflow-wrap: anywhere;">{subject}</span>
+                      <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-primary); white-space: nowrap;">{totalPapers} PDFs</span>
+                    </div>
+                    {(hasSolved || hasNotes) && (
+                      <div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">
+                        {hasSolved && <span style="font-size: 0.6rem; font-weight: 700; background: rgba(16,185,129,0.12); color: #34d399; border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 1px 6px;">✨ Solved PYQs</span>}
+                        {hasNotes && <span style="font-size: 0.6rem; font-weight: 700; background: rgba(129,140,248,0.12); color: #818cf8; border: 1px solid rgba(129,140,248,0.3); border-radius: 20px; padding: 1px 6px;">📝 Notes</span>}
+                      </div>
+                    )}
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: auto;">
+                      {sems.map(sem => (
+                        <a
+                          href={`${baseUrl}/pyqs/major/${subjectLower}/${sem}/`}
+                          class="pyq-sem-link pyq-sem-link-primary"
+                        >
+                          Sem {sem}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <!-- ─── 2. Minor PYQ Accordion ─── -->
+      {minorData.length > 0 && (
+        <div class="accordion-item" style="border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-sm); overflow: hidden;">
+          <button
+            id="minor-pyq-trigger"
+            type="button"
+            class="accordion-trigger"
+            data-cat="minor"
+            style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.95rem 1rem; transition: background 0.2s;"
+          >
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; min-width: 0;">
+              <span style="font-size: 1rem; font-weight: 700; color: var(--accent-success);">Minor Paper</span>
+              <span style="font-size: 0.62rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 2px 7px;">
+                AC · 100 Marks
+              </span>
+              <span style="font-size: 0.66rem; font-weight: 600; color: var(--text-tertiary);">{minorData.length} subjects</span>
+            </div>
+            <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+          </button>
+
+          <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
+            <div style="padding: 0.85rem;">
+              <div style="display: flex; align-items: flex-start; gap: 0.5rem; background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-xs); padding: 0.6rem 0.85rem; font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.8rem;">
+                <span style="flex-shrink: 0;">ℹ️</span>
+                <span><strong style="color: var(--accent-success);">2025 batch onwards:</strong> "Minor" is officially renamed <strong>Associated Core (AC)</strong>. Same papers, new name.</span>
+              </div>
+              <div class="pyq-cat-grid">
+                {minorData.map(({ subject, subjectLower, sems, totalPapers }) => (
+                  <div class="card pyq-subject-box" style="padding: 0.85rem; display: flex; flex-direction: column; gap: 0.55rem; min-width: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.4rem;">
+                      <span style="font-weight: 700; font-size: 0.92rem; color: var(--text-primary); overflow-wrap: anywhere;">{subject}</span>
+                      <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-success); white-space: nowrap;">{totalPapers} PDFs</span>
+                    </div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: auto;">
+                      {sems.map(sem => (
+                        <a
+                          href={`${baseUrl}/pyqs/minor/${subjectLower}/${sem}/`}
+                          class="pyq-sem-link pyq-sem-link-success"
+                        >
+                          Sem {sem}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <!-- ─── 3. MDC PYQ Accordion ─── -->
+      {mdcData.length > 0 && (
+        <div class="accordion-item" style="border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-sm); overflow: hidden;">
+          <button
+            id="mdc-pyq-trigger"
+            type="button"
+            class="accordion-trigger"
+            data-cat="mdc"
+            style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.95rem 1rem; transition: background 0.2s;"
+          >
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; min-width: 0;">
+              <span style="font-size: 1rem; font-weight: 700; color: var(--accent-warning);">MDC Paper</span>
+              <span style="font-size: 0.62rem; font-weight: 700; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 7px;">
+                MDC · 75 Marks
+              </span>
+              <span style="font-size: 0.66rem; font-weight: 600; color: var(--text-tertiary);">{mdcData.length} subjects</span>
+            </div>
+            <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+          </button>
+
+          <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
+            <div style="padding: 0.85rem;">
+              <div style="display: flex; align-items: flex-start; gap: 0.5rem; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius-xs); padding: 0.6rem 0.85rem; font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.7rem;">
+                <span style="flex-shrink: 0;">💡</span>
+                <span><strong style="color: var(--accent-warning);">MDC syllabus is the same for Sem 1, 2 &amp; 3</strong> — check papers from all three semesters for better exam preparation.</span>
+              </div>
+
+              <!-- Collapsible MDC Guide -->
+              <details id="mdc-guide-details" style="margin-bottom: 0.85rem; border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-xs); overflow: hidden; background: rgba(245,158,11,0.04);">
+                <summary id="mdc-guide-summary" style="cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; font-size: 0.78rem; font-weight: 700; color: var(--accent-warning); user-select: none;">
+                  <span style="display: flex; align-items: center; gap: 0.4rem;">
+                    <span>📖</span>
+                    <span>MDC Guide — Rules &amp; how to choose your subject</span>
+                  </span>
+                  <span id="mdc-guide-arrow" style="font-size: 0.7rem; color: var(--text-tertiary); transition: transform 0.25s; display: inline-block;">▼</span>
+                </summary>
+
+                <div style="padding: 0.75rem 0.85rem 0.9rem; border-top: 1px solid rgba(245,158,11,0.15); display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.55;">
+                  <p style="margin: 0;">Under Kolhan University's <strong>NEP 2020 FYUGP</strong>, MDC runs in Sem 1, 2 &amp; 3 with the same syllabus pattern across all three semesters.</p>
+                  <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                    <div style="background: rgba(0,0,0,0.18); border-radius: 6px; padding: 0.45rem 0.6rem;">🔬 <strong>Science students</strong> → choose MDC from <strong>Arts or Commerce</strong>.</div>
+                    <div style="background: rgba(0,0,0,0.18); border-radius: 6px; padding: 0.45rem 0.6rem;">🎨 <strong>Arts students</strong> → choose MDC from <strong>Science or Commerce</strong> (prefer subjects not in 10+2 marksheet).</div>
+                    <div style="background: rgba(0,0,0,0.18); border-radius: 6px; padding: 0.45rem 0.6rem;">💼 <strong>Commerce students</strong> → cannot choose "Fundamentals of Commerce"; pick from <strong>Arts or Science</strong>.</div>
+                  </div>
+                </div>
+              </details>
+
+              <div class="pyq-cat-grid">
+                {mdcData.map(({ subject, subjectLower, sems, totalPapers, hasNotes }) => (
+                  <div class="card pyq-subject-box" style="padding: 0.85rem; display: flex; flex-direction: column; gap: 0.55rem; min-width: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.4rem;">
+                      <span style="font-weight: 700; font-size: 0.92rem; color: var(--text-primary); overflow-wrap: anywhere;">{subject}</span>
+                      <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-warning); white-space: nowrap;">{totalPapers} PDFs</span>
+                    </div>
+                    {hasNotes && (
+                      <span style="font-size: 0.6rem; font-weight: 700; color: #06b6d4; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.25); border-radius: 20px; padding: 1px 7px; width: fit-content;">
+                        📝 Free Notes (HI + EN)
+                      </span>
+                    )}
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: auto;">
+                      {sems.map(sem => (
+                        <a
+                          href={`${baseUrl}/pyqs/mdc/${subjectLower}/${sem}/`}
+                          class="pyq-sem-link pyq-sem-link-warning"
+                        >
+                          Sem {sem}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <!-- ─── 4. AEC PYQ Accordion (UN-ORPHANED — links to internal subpages!) ─── -->
+      <div class="accordion-item" style="border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-sm); overflow: hidden;">
+        <button
+          id="aec-pyq-trigger"
+          type="button"
+          class="accordion-trigger"
+          data-cat="aec"
+          style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.95rem 1rem; transition: background 0.2s;"
+        >
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; min-width: 0;">
+            <GraduationCap style="color: var(--accent-success); width: 17px; height: 17px; flex-shrink: 0;" />
+            <span style="font-size: 1rem; font-weight: 700; color: var(--accent-success);">AEC Paper</span>
+            <span style="font-size: 0.62rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 2px 7px;">
+              AEC · 50 Marks
+            </span>
+            <span style="font-size: 0.66rem; font-weight: 600; color: var(--text-tertiary);">{aecGroups.length} courses &bull; {aecTotal} PDFs</span>
+          </div>
+          <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+        </button>
+
+        <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
+          <div style="padding: 0.85rem;">
+            <p style="color: var(--text-secondary); font-size: 0.78rem; line-height: 1.5; margin: 0 0 0.8rem;">
+              Ability Enhancement Courses (AEC) run across Semesters 1–4 (AEC-1 Hindi, AEC-2 English, AEC-3 &amp; AEC-4 language options). Open any paper page to download all sets.
+            </p>
+            <div id="aec-pyq-grid" class="pyq-cat-grid">
+              {aecGroups.map(group => (
+                <a
+                  href={group.href}
+                  class="card pyq-direct-card"
+                  style="padding: 0.85rem; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; text-decoration: none; min-width: 0;"
+                >
+                  <div style="min-width: 0;">
+                    <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); overflow-wrap: anywhere;">
+                      AEC-{group.sem} {group.subject}
+                    </div>
+                    <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px;">
+                      Sem {group.sem} &bull; {group.count > 0 ? `${group.count} PDF${group.count !== 1 ? 's' : ''}` : 'Archive / Request'}
+                      {group.years.length > 0 ? ` (${group.years.join(', ')})` : ''}
+                    </div>
+                  </div>
+                  <ChevronRight size="16" style="color: var(--accent-success); flex-shrink: 0;" />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── 5. VAC PYQ Accordion (UN-ORPHANED — links to Understanding India & VAC-2!) ─── -->
+      <div class="accordion-item" style="border: 1px solid rgba(99,102,241,0.25); border-radius: var(--radius-sm); overflow: hidden;">
+        <button
+          id="vac-pyq-trigger"
+          type="button"
+          class="accordion-trigger"
+          data-cat="vac"
+          style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.95rem 1rem; transition: background 0.2s;"
+        >
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; min-width: 0;">
+            <Award style="color: var(--accent-primary); width: 17px; height: 17px; flex-shrink: 0;" />
+            <span style="font-size: 1rem; font-weight: 700; color: var(--accent-primary);">VAC Paper</span>
+            <span style="font-size: 0.62rem; font-weight: 700; background: rgba(99,102,241,0.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 2px 7px;">
+              VAC · 50 Marks
+            </span>
+            <span style="font-size: 0.66rem; font-weight: 600; color: var(--text-tertiary);">{vacGroups.length} subjects &bull; {vacTotal} PDFs</span>
+          </div>
+          <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+        </button>
+
+        <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
+          <div style="padding: 0.85rem;">
+            <p style="color: var(--text-secondary); font-size: 0.78rem; line-height: 1.5; margin: 0 0 0.8rem;">
+              Value Added Courses: VAC-1 (Understanding India) in Semester 1 and VAC-2 (Global Citizenship Education) in Semester 4.
+            </p>
+            <div id="vac-pyq-grid" class="pyq-cat-grid">
+              {vacGroups.map(group => (
+                <a
+                  href={group.href}
+                  class="card pyq-direct-card"
+                  style="padding: 0.85rem; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; text-decoration: none; min-width: 0;"
+                >
+                  <div style="min-width: 0;">
+                    <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); overflow-wrap: anywhere;">
+                      {group.subject}
+                    </div>
+                    <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px;">
+                      Sem {group.sem} &bull; {group.count} PDF{group.count !== 1 ? 's' : ''}
+                      {group.years.length > 0 ? ` (${group.years.join(', ')})` : ''}
+                    </div>
+                  </div>
+                  <ChevronRight size="16" style="color: var(--accent-primary); flex-shrink: 0;" />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── 6. SEC PYQ Accordion (UN-ORPHANED) ─── -->
+      <div class="accordion-item" style="border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-sm); overflow: hidden;">
+        <button
+          id="sec-pyq-trigger"
+          type="button"
+          class="accordion-trigger"
+          data-cat="sec"
+          style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.95rem 1rem; transition: background 0.2s;"
+        >
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; min-width: 0;">
+            <BookOpen style="color: var(--accent-warning); width: 17px; height: 17px; flex-shrink: 0;" />
+            <span style="font-size: 1rem; font-weight: 700; color: var(--accent-warning);">SEC Paper</span>
+            <span style="font-size: 0.62rem; font-weight: 700; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 7px;">
+              SEC · 75 Marks
+            </span>
+            <span style="font-size: 0.66rem; font-weight: 600; color: var(--text-tertiary);">{secGroups.length} subjects &bull; {secTotal} PDFs</span>
+          </div>
+          <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+        </button>
+
+        <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
+          <div style="padding: 0.85rem;">
+            <div style="display: flex; align-items: flex-start; gap: 0.5rem; background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-xs); padding: 0.6rem 0.85rem; font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.8rem;">
+              <span style="flex-shrink: 0;">ℹ️</span>
+              <span><strong style="color: var(--accent-warning);">Semester 2 choice:</strong> Students pick either Communication Skill &amp; Personality Development or News Writing — both papers are available below.</span>
+            </div>
+            <div id="sec-pyq-grid" class="pyq-cat-grid">
+              {secGroups.map(group => (
+                <a
+                  href={group.href}
+                  class="card pyq-direct-card"
+                  style="padding: 0.85rem; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; text-decoration: none; min-width: 0;"
+                >
+                  <div style="min-width: 0;">
+                    <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); overflow-wrap: anywhere;">
+                      {group.subject}
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px;">
+                      <span>Sem {group.sem} &bull; {group.count} PDF{group.count !== 1 ? 's' : ''}</span>
+                      {group.hasNotes && (
+                        <span style="font-size: 0.6rem; font-weight: 700; background: rgba(129,140,248,0.12); color: #818cf8; border: 1px solid rgba(129,140,248,0.3); border-radius: 20px; padding: 1px 6px;">📝 Notes</span>
+                      )}
+                    </div>
+                  </div>
+                  <ChevronRight size="16" style="color: var(--accent-warning); flex-shrink: 0;" />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── 7. IKS PYQ Accordion (UN-ORPHANED) ─── -->
+      <div class="accordion-item" style="border: 1px solid rgba(251,146,60,0.3); border-radius: var(--radius-sm); overflow: hidden;">
+        <button
+          id="iks-pyq-trigger"
+          type="button"
+          class="accordion-trigger"
+          data-cat="iks"
+          style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.95rem 1rem; transition: background 0.2s;"
+        >
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; min-width: 0;">
+            <span style="font-size: 1rem;">🏛️</span>
+            <span style="font-size: 1rem; font-weight: 700; color: #fb923c;">IKS Paper</span>
+            <span style="font-size: 0.62rem; font-weight: 700; background: rgba(251,146,60,0.12); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); border-radius: 20px; padding: 2px 7px;">
+              IKS · Compulsory
+            </span>
+            <span style="font-size: 0.66rem; font-weight: 600; color: var(--text-tertiary);">{iksPyqs.length} papers &bull; {iksNotes.length} notes</span>
+          </div>
+          <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+        </button>
+
+        <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
+          <div style="padding: 0.85rem; display: flex; flex-direction: column; gap: 0.85rem;">
+            <a
+              href={`${baseUrl}/pyqs/iks/indian knowledge system/1/`}
+              class="btn btn-primary btn-sm"
+              style="width: 100%; justify-content: space-between; font-size: 0.84rem; padding: 0.65rem 1rem;"
+            >
+              <span>📂 Open Full IKS Sem 1 Page ({iksPyqs.length} Papers + Notes)</span>
+              <ChevronRight size="16" />
+            </a>
+
+            <!-- Syllabus Match Analysis Table -->
+            <div style="background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.75rem 0.85rem; overflow-x: auto;">
+              <p style="font-size: 0.7rem; font-weight: 700; color: var(--text-secondary); margin: 0 0 0.5rem; letter-spacing: 0.04em; text-transform: uppercase;">Syllabus Match Analysis</p>
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem;">
+                <thead>
+                  <tr style="border-bottom: 1px solid var(--border-color);">
+                    <th style="text-align: left; padding: 0.3rem 0.4rem; color: var(--text-secondary);">University</th>
+                    <th style="text-align: center; padding: 0.3rem 0.4rem; color: var(--text-secondary);">Pattern</th>
+                    <th style="text-align: center; padding: 0.3rem 0.4rem; color: var(--text-secondary);">Match</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(59,130,246,0.05);">
+                    <td style="padding: 0.35rem 0.4rem; font-weight: 700; color: #3b82f6;">Kolhan University</td>
+                    <td style="padding: 0.35rem 0.4rem; text-align: center; color: #3b82f6; font-weight: 700;">Actual Paper</td>
+                    <td style="padding: 0.35rem 0.4rem; text-align: center; color: #3b82f6; font-weight: 700;">100%</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                    <td style="padding: 0.35rem 0.4rem; font-weight: 600; color: var(--text-primary);">BBMKU</td>
+                    <td style="padding: 0.35rem 0.4rem; text-align: center; color: #10b981; font-weight: 700;">50 MCQs/OMR</td>
+                    <td style="padding: 0.35rem 0.4rem; text-align: center; color: #10b981; font-weight: 700;">95%</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 0.35rem 0.4rem; font-weight: 600; color: var(--text-primary);">VBU (Set 1 &amp; 2)</td>
+                    <td style="padding: 0.35rem 0.4rem; text-align: center; color: var(--text-secondary);">Subjective</td>
+                    <td style="padding: 0.35rem 0.4rem; text-align: center; color: #f59e0b; font-weight: 700;">65–70%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Quick Direct IKS Downloads -->
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              {iksPyqs.map((paper: any) => (
+                <a
+                  href={paper.downloadUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="iks-direct-link"
+                  data-track-subject={paper.subject}
+                  data-track-semester={String(paper.semester)}
+                  data-track-university={paper.university || ''}
+                  style="display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; padding: 0.6rem 0.85rem; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); text-decoration: none; color: var(--text-primary); font-size: 0.8rem;"
+                >
+                  <span style="min-width: 0; overflow-wrap: anywhere;">
+                    <strong>{paper.university}</strong> ({paper.year}{paper.set ? ` · ${paper.set}` : ''})
+                  </span>
+                  <span style="display: inline-flex; align-items: center; gap: 0.3rem; color: #fb923c; font-weight: 700; flex-shrink: 0; font-size: 0.74rem;">
+                    PDF <Download size="12" />
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ MARKS & PASSING CRITERIA (Backed by paper_marking_schemes.json) ═══ -->
+  <section aria-label="Marks and passing criteria" style="background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(16,185,129,0.04) 100%); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+      <span style="font-size: 0.76rem; font-weight: 800; color: var(--text-primary); letter-spacing: 0.03em; text-transform: uppercase;">📊 Marks &amp; Passing Criteria (FYUGP)</span>
+      <span style="font-size: 0.7rem; color: var(--text-tertiary);">Qualifying: <strong style="color: var(--accent-success);">40% per component</strong></span>
+    </div>
+    <div class="pyq-marks-grid">
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.75rem; min-width: 0;">
+        <div style="font-size: 0.76rem; font-weight: 800; color: var(--accent-primary);">MJ / AC (Practical)</div>
+        <div style="font-size: 0.74rem; color: var(--text-secondary); margin-top: 2px;">{pracFull.total} Marks ({pracFull.theory} Th + {pracFull.internal} Int + {pracFull.practical} Prac)</div>
+        <div style="font-size: 0.7rem; color: var(--accent-success); font-weight: 700; margin-top: 2px;">Pass: {pracPass.total} ({pracPass.theory}/{pracPass.internal}/{pracPass.practical})</div>
+      </div>
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.75rem; min-width: 0;">
+        <div style="font-size: 0.76rem; font-weight: 800; color: var(--accent-primary);">MJ / AC (Non-Practical)</div>
+        <div style="font-size: 0.74rem; color: var(--text-secondary); margin-top: 2px;">{nonPracFull.total} Marks ({nonPracFull.theory} Th + {nonPracFull.internal} Int)</div>
+        <div style="font-size: 0.7rem; color: var(--accent-success); font-weight: 700; margin-top: 2px;">Pass: {nonPracPass.total} ({nonPracPass.theory}/{nonPracPass.internal})</div>
+      </div>
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.75rem; min-width: 0;">
+        <div style="font-size: 0.76rem; font-weight: 800; color: var(--accent-warning);">MDC / SEC</div>
+        <div style="font-size: 0.74rem; color: var(--text-secondary); margin-top: 2px;">{mdcSecFull.total} Marks (Theory Only)</div>
+        <div style="font-size: 0.7rem; color: var(--accent-success); font-weight: 700; margin-top: 2px;">Pass: {mdcSecPass.total}</div>
+      </div>
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.75rem; min-width: 0;">
+        <div style="font-size: 0.76rem; font-weight: 800; color: var(--accent-success);">AEC / VAC / IKS</div>
+        <div style="font-size: 0.74rem; color: var(--text-secondary); margin-top: 2px;">{aecVacFull.total} Marks (Theory / MCQs)</div>
+        <div style="font-size: 0.7rem; color: var(--accent-success); font-weight: 700; margin-top: 2px;">Pass: {aecVacPass.total}</div>
+      </div>
+    </div>
+    <p style="font-size: 0.71rem; color: var(--text-tertiary); margin: 0.65rem 0 0; line-height: 1.45;">
+      {markingSchemes.passingRule}
+    </p>
+  </section>
+
+  <!-- ═══ CLICKABLE MOST DOWNLOADED + MISSING A PAPER ═══ -->
+  <div class="pyq-two-col-grid" style="margin-bottom: 1.25rem;">
+    <!-- Most Downloaded -->
+    <div class="card" style="padding: 1rem; min-width: 0;">
+      <h2 style="font-size: 1.05rem; font-family: var(--font-display); margin: 0 0 0.85rem; display: flex; align-items: center; gap: 0.45rem;">
+        <GraduationCap size="18" style="color: var(--accent-success);" /> Most Downloaded
+      </h2>
+      <div id="most-downloaded-list" style="display: flex; flex-direction: column; gap: 0.55rem;">
+        {[1, 2, 3, 4, 5].map(() => (
+          <div style="display:flex; flex-direction:column; gap:0.25rem; padding:0.45rem 0; border-bottom:1px solid var(--border-color);">
+            <div style="height:0.85rem; width:65%; background:var(--bg-tertiary); border-radius:4px; animation: pulse 1.5s infinite;"></div>
+            <div style="height:0.7rem; width:45%; background:var(--bg-tertiary); border-radius:4px; animation: pulse 1.5s infinite;"></div>
+          </div>
+        ))}
+      </div>
+      <p id="most-downloaded-note" style="display:none; font-size:0.72rem; color:var(--text-tertiary); margin:0.65rem 0 0; text-align:center;">
+        Based on real student downloads
+      </p>
+    </div>
+
+    <!-- Missing a Paper / Contribute -->
+    <div class="card" style="padding: 1rem; background-color: var(--bg-tertiary); display: flex; flex-direction: column; justify-content: center; text-align: center; gap: 0.7rem; min-width: 0;">
+      <h2 style="font-size: 1.05rem; font-family: var(--font-display); margin: 0;">Missing a paper?</h2>
+      <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+        Request any missing question paper or share a PDF/photo from your semester to help juniors.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          style="width: 100%;"
+          onclick="document.dispatchEvent(new CustomEvent('open-request-modal'));"
+        >
+          Request a Paper
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline btn-sm"
+          style="width: 100%;"
+          onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));"
+        >
+          Submit / Upload Paper
+        </button>
+      </div>
+      <button
+        type="button"
+        onclick="document.dispatchEvent(new CustomEvent('open-report-modal'));"
+        style="background:none; border:none; padding:0; color: var(--accent-danger); font-size: 0.75rem; font-weight: 700; cursor:pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem;"
+      >
+        ⚠️ Report wrong paper or broken link
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ COMMUNITY ACCORDIONS (Below Papers — Fixed Independent Toggles & Avatars) ═══ -->
+  <div class="pyq-two-col-grid" style="margin-bottom: 1.25rem;">
     <!-- Completed PYQ Requests -->
-    <div style="border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(16,185,129,0.02) 0%, rgba(0,0,0,0.12) 100%);">
-      <button id="pyq-req-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; background: transparent; border: none; cursor: pointer; text-align: left;">
-        <div style="display: flex; align-items: center; gap: 0.4rem;">
-          <span style="display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; background: rgba(16,185,129,0.15); border-radius: 50%; font-size: 0.65rem;">✓</span>
+    <div style="border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(16,185,129,0.02) 0%, rgba(0,0,0,0.12) 100%); min-width: 0;">
+      <button id="pyq-req-trigger" type="button" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 0.9rem; background: transparent; border: none; cursor: pointer; text-align: left;">
+        <div style="display: flex; align-items: center; gap: 0.4rem; min-width: 0;">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; background: rgba(16,185,129,0.15); border-radius: 50%; font-size: 0.65rem; flex-shrink: 0;">✓</span>
           <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">PYQ Requests Done</span>
-          <span style="font-size: 0.6rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 1px 5px;">45</span>
+          <span style="font-size: 0.6rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 1px 6px;">{completedRequests.length}</span>
         </div>
         <ChevronRight id="pyq-req-chevron" size="14" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
       </button>
       <div id="pyq-req-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 1px solid rgba(16,185,129,0.12);">
         <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; background: rgba(0,0,0,0.15);">
-          {[{e:'🧠',t:'Psychology Major PYQ',s:'Sem 1'},{e:'📜',t:'History Major PYQ',s:'Sem 2'},{e:'📊',t:'Economics Major PYQ',s:'Sem 1'},{e:'⚛️',t:'Physics Minor PYQ',s:'Sem 1'},{e:'🐍',t:'Zoology Minor PYQ',s:'Sem 1'},{e:'📜',t:'MDC History PYQ',s:'Sem 1'},{e:'🌿',t:'Botany Minor PYQ',s:'Sem 1'},{e:'🏛️',t:'Political Science Major PYQ',s:'Sem 1'},{e:'📖',t:'English Major PYQ',s:'Sem 1'},{e:'📜',t:'History Major PYQ',s:'Sem 1'},{e:'📊',t:'Economics Major PYQ',s:'Sem 1'},{e:'⚛️',t:'Physics Major PYQ',s:'Sem 1'},{e:'🏛️',t:'Political Science Minor PYQ',s:'Sem 1'},{e:'🐍',t:'Zoology Major PYQ',s:'Sem 1'},{e:'🐍',t:'Zoology Minor PYQ',s:'Sem 1'},{e:'🌿',t:'Botany Major PYQ',s:'Sem 1'},{e:'🏠',t:'MDC Home Science PYQ',s:'Sem 1 & 3'},{e:'🏛️',t:'Political Science Minor PYQ',s:'Sem 1'},{e:'📐',t:'Maths Minor PYQ',s:'Sem 1'},{e:'🐍',t:'Zoology Minor PYQ',s:'Sem 1'},{e:'🌿',t:'Botany Major PYQ',s:'Sem 1'},{e:'🏠',t:'MDC Home Science PYQ',s:'Sem 1 & 3'},{e:'🧪',t:'Chemistry Minor PYQ',s:'Sem 1'},{e:'📜',t:'History Major PYQ',s:'Sem 1'},{e:'⚛️',t:'Physics Major PYQ',s:'Sem 1 · 2024 Batch'},{e:'📐',t:'Maths Major PYQ',s:'Sem 1 · All Batches'},{e:'⚛️',t:'Physics Major PYQ',s:'Sem 1–6'},{e:'🧪',t:'Chemistry Major PYQ',s:'Sem 1–3'},{e:'📖',t:'English Major PYQ',s:'Sem 1–4'},{e:'🧠',t:'MDC Psychology PYQ',s:'Sem 1–3'},{e:'📊',t:'MDC Statistics PYQ',s:'Sem 1'},{e:'📐',t:'Mathematics Minor PYQ',s:'Sem 1'},{e:'🧠',t:'Philosophy MDC PYQ',s:'Sem 1'},{e:'🌿',t:'Botany Minor PYQ',s:'Sem 1'},{e:'🧪',t:'Chemistry Minor PYQ',s:'Sem 1'},{e:'🌍',t:'MDC Geography PYQ',s:'Sem 1'},{e:'🏠',t:'MDC Home Science PYQ',s:'Sem 1'},{e:'📱',t:'SEC Digital India PYQ',s:'Sem 1 (Set 1)'},{e:'🧠',t:'MDC Philosophy PYQ',s:'Sem 1 (2025)'},{e:'🧠',t:'MDC Psychology PYQ',s:'Sem 1 (2025)'}].map(r => (
-            <div style="display: flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0;">
-              <span style="font-size: 0.65rem;">{r.e}</span>
-              <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-primary); flex: 1;">{r.t}</span>
-              <span style="font-size: 0.65rem; color: var(--accent-success); font-weight: 600;">{r.s}</span>
+          {completedRequests.map(r => (
+            <div style="display: flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0;">
+              <span style="font-size: 0.65rem; flex-shrink: 0;">{r.e}</span>
+              <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-primary); flex: 1; min-width: 0; overflow-wrap: anywhere;">{r.t}</span>
+              <span style="font-size: 0.65rem; color: var(--accent-success); font-weight: 600; white-space: nowrap;">{r.s}</span>
             </div>
           ))}
         </div>
@@ -138,1215 +774,158 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
     </div>
 
     <!-- PYQ File Contributors -->
-    <div style="border: 1px solid rgba(37,211,102,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(37,211,102,0.02) 0%, rgba(0,0,0,0.12) 100%);">
-      <button id="pyq-contrib-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; background: transparent; border: none; cursor: pointer; text-align: left;">
-        <div style="display: flex; align-items: center; gap: 0.4rem;">
-          <span style="font-size: 0.75rem;">📚</span>
+    <div style="border: 1px solid rgba(37,211,102,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(37,211,102,0.02) 0%, rgba(0,0,0,0.12) 100%); min-width: 0;">
+      <button id="pyq-contrib-trigger" type="button" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 0.9rem; background: transparent; border: none; cursor: pointer; text-align: left;">
+        <div style="display: flex; align-items: center; gap: 0.4rem; min-width: 0;">
+          <span style="font-size: 0.75rem; flex-shrink: 0;">📚</span>
           <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">PYQ Contributors</span>
+          <span style="font-size: 0.6rem; font-weight: 700; background: rgba(37,211,102,0.12); color: #34d399; border: 1px solid rgba(37,211,102,0.25); border-radius: 20px; padding: 1px 6px;">{contributorsList.length}</span>
         </div>
         <ChevronRight id="pyq-contrib-chevron" size="14" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
       </button>
       <div id="pyq-contrib-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 1px solid rgba(37,211,102,0.12);">
-        <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; background: rgba(0,0,0,0.15);">
-          {[{i:'A',c:'#f59e0b,#d97706',n:'Ayushi Kumari',f:'Geo Major, PolSci Minor, Phil MDC, Digital Edu Sem 1'},{i:'I',c:'#06b6d4,#0e7490',n:'ISHA KUMARI',f:'Economics Minor Sem 1'},{i:'I',c:'#ec4899,#be185d',n:'Isha Kumari',f:'History MDC, Chem Minor Sem 1'},{i:'G',c:'#3b82f6,#1d4ed8',n:'Gouranga (GG)',f:'Maths Minor, Geo MDC Sem 1'},{i:'P',c:'#a855f7,#7e22ce',n:'Pooja Rani Pradhan',f:'Home Science MDC Sem 1'},{i:'D',c:'#6366f1,#8b5cf6',n:'Dheeraj',f:'Physics Major Sem 1 & 2'},{i:'I',c:'#10b981,#059669',n:'Indra',f:'Physics Major Sem 3'},{i:'A',c:'#f59e0b,#d97706',n:'Ankit',f:'Chemistry Major Sem 1–3'},{i:'S',c:'#a78bfa,#7c3aed',n:'Sunita',f:'Maths Major Sem 5'},{i:'R',c:'#f97316,#ea580c',n:'Ritik',f:'Home Science MDC'},{i:'S',c:'#3b82f6,#2563eb',n:'Suman',f:'MDC Psychology, Geo'},{i:'P',c:'#f472b6,#ec4899',n:'Priya Sinha',f:'SEC Comm. Skills'},{i:'A',c:'#84cc16,#65a30d',n:'Amit',f:'MDC History Sem 2'}].map(c => (
-            <div style="display: flex; align-items: center; gap: 0.45rem; padding: 0.25rem 0;">
-              <div style={`width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #${c.c.split(',')[0]}, #${c.c.split(',')[1]}); display: flex; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 800; color: white; flex-shrink: 0;`}>{c.i}</div>
-              <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-primary); flex-shrink: 0;">{c.n}</span>
-              <span style="font-size: 0.65rem; color: var(--text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{c.f}</span>
-            </div>
-          ))}
-          <a href="https://api.whatsapp.com/send?phone=918002059887&text=Hi!%20I%20have%20some%20PYQ%20papers%20to%20share%20%F0%9F%93%9A" target="_blank" rel="noopener noreferrer" style="font-size: 0.7rem; color: rgba(37,211,102,0.9); font-weight: 600; text-decoration: none; margin-top: 0.25rem;">💬 Share PYQ files →</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-
-      
-      <!-- Styled Slate Container Card -->
-      <div class="card" style="padding: 1.5rem 1.25rem; background-color: var(--bg-secondary); border-color: var(--border-color); box-shadow: var(--shadow-lg);">
-        <h2 style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1rem; padding-left: 0.5rem;">
-          CHOOSE COURSE CATEGORY
-        </h2>
-        
-        <!-- Accordion Category List (non-AEC) -->
-        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-          <!-- ─── Major PYQ Widget ──────────────────────────────────────────────── -->
-          {majorData.length > 0 && (
-            <div class="accordion-item" style="border: 1px solid rgba(99,102,241,0.25); border-radius: var(--radius-sm); overflow: hidden;">
-              <button
-                id="major-pyq-trigger"
-                class="accordion-trigger"
-                data-cat="major"
-                style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
-              >
-                <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-                  <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary);">Major Paper</span>
-                  <span style="font-size: 0.62rem; font-weight: 700; background: rgba(99,102,241,0.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
-                    MJ · 100 Marks
-                  </span>
-                  <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{majorData.length} subjects</span>
-                </div>
-                <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
-              </button>
-
-              <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
-                <div style="padding: 1rem 1.25rem 1.25rem;">
-                  <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
-                    <!-- Major Semester Filter Tabs + Search -->
-                    <div id="major-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
-                      <button class="btn btn-secondary major-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                        All ({majorData.length})
-                      </button>
-                      {majorSems.map(sem => (
-                        <button class="btn btn-secondary major-pyq-tab" data-sem={String(sem)} style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                          Sem {sem}
-                        </button>
-                      ))}
-                      <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="major-pyq-search-wrapper">
-                        <input type="text" id="major-pyq-search" class="form-input" placeholder="Search subjects..." style="height: 34px; padding-left: 2.1rem; font-size: 0.8rem; width: 200px; border-radius: var(--radius-xs);" />
-                        <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
-                      </div>
-                    </div>
-
-                    <!-- Major Subject Card Grid -->
-                    <div id="major-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
-                      {majorData.map(({ subject, sems, totalPapers }) => {
-                        const minSem = sems[0];
-                        const subjectSlug = subject.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-                        const cardId = `major-card-${subjectSlug}`;
-                        const panelId = `major-panel-${subjectSlug}`;
-                        // For tab filter: card shows for any semester in its sems list
-                        const semAttr = sems.join(',');
-                        return (
-                          <div
-                            class="major-pyq-subject-card card"
-                            data-sems={semAttr}
-                            data-search={subject.toLowerCase()}
-                            style="padding: 0; overflow: hidden; border-color: var(--border-color); transition: border-color 0.2s;"
-                          >
-                            <button
-                              id={cardId}
-                              class="major-pyq-subject-btn"
-                              data-panel={panelId}
-                              style="width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: space-between; text-align: left; background: transparent; border: none; cursor: pointer; transition: background 0.2s;"
-                            >
-                              <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
-                                <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={subject}>
-                                  {subject}
-                                </span>
-                                <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.1rem;">
-                                  <span>Sem {sems.join(', ')}</span>
-                                  <span style="font-size: 0.65rem; color: var(--accent-primary); font-weight: 600;">{totalPapers} paper{totalPapers !== 1 ? 's' : ''} available</span>
-                                </span>
-                              </div>
-                              <span class="major-subject-icon" style="color: var(--accent-primary); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;">📥</span>
-                            </button>
-
-                            <!-- Expandable semesters list -->
-                            <div id={panelId} class="major-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
-                              <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
-                                {sems.map(sem => (
-                                  <a
-                                    href={`${baseUrl}/pyqs/major/${subject.toLowerCase()}/${sem}`}
-                                    class="btn btn-primary btn-sm"
-                                    style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none;"
-                                  >
-                                    <span>📚 Semester {sem}</span>
-                                    <ChevronRight size="12" />
-                                  </a>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    <div id="major-pyq-empty" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem;">
-                      No matching Major papers found.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <!-- ─── Minor PYQ Widget ──────────────────────────────────────────────── -->
-          {minorData.length > 0 && (
-            <div class="accordion-item" style="border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-sm); overflow: hidden;">
-              <button
-                id="minor-pyq-trigger"
-                class="accordion-trigger"
-                data-cat="minor"
-                style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
-              >
-                <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-                  <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-success);">Minor Paper</span>
-                  <span style="font-size: 0.62rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
-                    AC · 100 Marks
-                  </span>
-                  <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{minorData.length} subjects</span>
-                </div>
-                <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
-              </button>
-
-              <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
-                <div style="padding: 1rem 1.25rem 1.25rem;">
-                  <div style="display: flex; align-items: flex-start; gap: 0.55rem; background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-xs); padding: 0.65rem 0.9rem; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.85rem;">
-                    <span style="flex-shrink: 0;">ℹ️</span>
-                    <span><strong style="color: var(--accent-success);">2025 batch onwards:</strong> "Minor" is officially renamed <strong>Associated Core (AC)</strong>. Same papers, new name.</span>
-                  </div>
-                  <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
-                    <div id="minor-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
-                      <button class="btn btn-secondary minor-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                        All ({minorData.length})
-                      </button>
-                      {minorSems.map(sem => (
-                        <button class="btn btn-secondary minor-pyq-tab" data-sem={String(sem)} style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                          Sem {sem}
-                        </button>
-                      ))}
-                      <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="minor-pyq-search-wrapper">
-                        <input type="text" id="minor-pyq-search" class="form-input" placeholder="Search subjects..." style="height: 34px; padding-left: 2.1rem; font-size: 0.8rem; width: 200px; border-radius: var(--radius-xs);" />
-                        <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
-                      </div>
-                    </div>
-
-                    <div id="minor-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
-                      {minorData.map(({ subject, sems, totalPapers }) => {
-                        const subjectSlug = subject.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-                        const cardId = `minor-card-${subjectSlug}`;
-                        const panelId = `minor-panel-${subjectSlug}`;
-                        const semAttr = sems.join(',');
-                        return (
-                          <div
-                            class="minor-pyq-subject-card card"
-                            data-sems={semAttr}
-                            data-search={subject.toLowerCase()}
-                            style="padding: 0; overflow: hidden; border-color: var(--border-color); transition: border-color 0.2s;"
-                          >
-                            <button
-                              id={cardId}
-                              class="minor-pyq-subject-btn"
-                              data-panel={panelId}
-                              style="width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: space-between; text-align: left; background: transparent; border: none; cursor: pointer; transition: background 0.2s;"
-                            >
-                              <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
-                                <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={subject}>
-                                  {subject}
-                                </span>
-                                <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.1rem;">
-                                  <span>Sem {sems.join(', ')}</span>
-                                  <span style="font-size: 0.65rem; color: var(--accent-success); font-weight: 600;">{totalPapers} paper{totalPapers !== 1 ? 's' : ''} available</span>
-                                </span>
-                              </div>
-                              <span class="minor-subject-icon" style="color: var(--accent-success); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;">📥</span>
-                            </button>
-
-                            <div id={panelId} class="minor-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
-                              <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
-                                {sems.map(sem => (
-                                  <a
-                                    href={`${baseUrl}/pyqs/minor/${subject.toLowerCase()}/${sem}`}
-                                    class="btn btn-sm"
-                                    style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.3); border-radius: var(--radius-xs);">
-                                    <span>📚 Semester {sem}</span>
-                                    <ChevronRight size="12" />
-                                  </a>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    <div id="minor-pyq-empty" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem;">
-                      No matching Minor papers found.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <!-- ─── MDC PYQ Widget ─────────────────────────────────────────────────── -->
-          {mdcData.length > 0 && (
-            <div class="accordion-item" style="border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-sm); overflow: hidden;">
-              <button
-                id="mdc-pyq-trigger"
-                class="accordion-trigger"
-                data-cat="mdc"
-                style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
-              >
-                <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-                  <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-warning);">MDC Paper</span>
-                  <span style="font-size: 0.62rem; font-weight: 700; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
-                    MDC · 75 Marks
-                  </span>
-                  <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{mdcData.length} subjects</span>
-                </div>
-                <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
-              </button>
-
-              <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
-                <div style="padding: 1rem 1.25rem 1.25rem;">
-
-                  <!-- ── Static MDC same-syllabus tip ───────────────────────── -->
-                  <div style="display: flex; align-items: flex-start; gap: 0.55rem; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius-xs); padding: 0.65rem 0.9rem; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.75rem;">
-                    <span style="flex-shrink: 0; font-size: 0.95rem;">💡</span>
-                    <span>
-                      <strong style="color: var(--accent-warning);">MDC syllabus is the same for Sem 1, 2 &amp; 3</strong>
-                      — don't just download Sem 1 papers! Check <em>all three semesters</em> for better exam preparation.
-                    </span>
-                  </div>
-
-                  <!-- ── Collapsible MDC Guide ───────────────────────────────── -->
-                  <details id="mdc-guide-details" style="margin-bottom: 0.85rem; border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-xs); overflow: hidden; background: rgba(245,158,11,0.04);">
-                    <summary id="mdc-guide-summary" style="cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 0.9rem; font-size: 0.8rem; font-weight: 700; color: var(--accent-warning); user-select: none;">
-                      <span style="display: flex; align-items: center; gap: 0.45rem;">
-                        <span>📖</span>
-                        <span>MDC Guide — What is MDC &amp; how to choose your subject?</span>
-                      </span>
-                      <span id="mdc-guide-arrow" style="font-size: 0.7rem; color: var(--text-tertiary); transition: transform 0.25s; display: inline-block;">▼</span>
-                    </summary>
-
-                    <div style="padding: 0.75rem 0.9rem 1rem; border-top: 1px solid rgba(245,158,11,0.15); display: flex; flex-direction: column; gap: 0.85rem;">
-
-                      <!-- What is MDC & when -->
-                      <div>
-                        <p style="font-size: 0.75rem; font-weight: 700; color: var(--accent-warning); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem;">📅 When do you take MDC?</p>
-                        <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
-                          Under Kolhan University's <strong style="color: var(--text-primary);">4-Year UG NEP 2020</strong> program, MDC (Multidisciplinary Course) appears in
-                          <strong style="color: var(--accent-warning);">Semester 1, Semester 2, and Semester 3</strong>.
-                          The syllabus pattern is <strong style="color: var(--text-primary);">identical across all three semesters</strong>, so previous year papers from any semester are useful for any MDC exam.
-                        </p>
-                      </div>
-
-                      <!-- Divider -->
-                      <div style="height: 1px; background: rgba(245,158,11,0.12);"></div>
-
-                      <!-- How to choose subject -->
-                      <div>
-                        <p style="font-size: 0.75rem; font-weight: 700; color: var(--accent-warning); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">🎯 How to choose your MDC subject</p>
-                        <p style="font-size: 0.75rem; color: var(--text-tertiary); line-height: 1.5; margin-bottom: 0.55rem;">Your MDC subject must be from a <strong style="color: var(--text-secondary);">different stream</strong> than your Major (MJ) and Associated Core (AC). The rules are:</p>
-                        <div style="display: flex; flex-direction: column; gap: 0.4rem;">
-
-                          <div style="display: flex; gap: 0.55rem; align-items: flex-start; background: rgba(0,0,0,0.15); border-radius: 6px; padding: 0.5rem 0.65rem;">
-                            <span style="font-size: 0.8rem; flex-shrink: 0;">🔬</span>
-                            <span style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5;">
-                              <strong style="color: var(--text-primary);">Science students</strong> → must choose MDC from <strong>Arts or Commerce</strong> stream
-                            </span>
-                          </div>
-
-                          <div style="display: flex; gap: 0.55rem; align-items: flex-start; background: rgba(0,0,0,0.15); border-radius: 6px; padding: 0.5rem 0.65rem;">
-                            <span style="font-size: 0.8rem; flex-shrink: 0;">🎨</span>
-                            <span style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5;">
-                              <strong style="color: var(--text-primary);">Arts students</strong> → must choose MDC from <strong>Science or Commerce</strong> stream. Subjects not in their 10+2 marksheet are preferred.
-                            </span>
-                          </div>
-
-                          <div style="display: flex; gap: 0.55rem; align-items: flex-start; background: rgba(0,0,0,0.15); border-radius: 6px; padding: 0.5rem 0.65rem;">
-                            <span style="font-size: 0.8rem; flex-shrink: 0;">💼</span>
-                            <span style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5;">
-                              <strong style="color: var(--text-primary);">Commerce (MJ) students</strong> → cannot choose "Fundamentals of Commerce" as MDC. Must pick from <strong>Arts or Science</strong>.
-                            </span>
-                          </div>
-
-                          <div style="display: flex; gap: 0.55rem; align-items: flex-start; background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.2); border-radius: 6px; padding: 0.5rem 0.65rem;">
-                            <span style="font-size: 0.8rem; flex-shrink: 0;">⚠️</span>
-                            <span style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5;">
-                              If Arts/Science students choose a <strong>Commerce MDC</strong>, their admit card will show "Fundamentals of Commerce" under MDC-1.
-                            </span>
-                          </div>
-
-                        </div>
-                      </div>
-
-                      <!-- Divider -->
-                      <div style="height: 1px; background: rgba(245,158,11,0.12);"></div>
-
-                      <!-- Why check all sems -->
-                      <div style="display: flex; align-items: flex-start; gap: 0.5rem; background: rgba(245,158,11,0.06); border-left: 3px solid var(--accent-warning); padding: 0.6rem 0.75rem; border-radius: 0 6px 6px 0;">
-                        <span style="font-size: 0.85rem; flex-shrink: 0;">✅</span>
-                        <span style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6;">
-                          <strong style="color: var(--accent-warning);">Pro Tip:</strong> Since the MDC syllabus is the same for Sem 1, 2 &amp; 3, a Sem 2 MDC Anthropology paper is <em>just as useful</em> as a Sem 1 paper for your Sem 1 exam. Always browse all available semesters!
-                        </span>
-                      </div>
-
-                    </div>
-                  </details>
-
-                  <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
-                    <div id="mdc-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
-                      <button class="btn btn-secondary mdc-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                        All ({mdcData.length})
-                      </button>
-                      {mdcSems.map(sem => (
-                        <button class="btn btn-secondary mdc-pyq-tab" data-sem={String(sem)} style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                          Sem {sem}
-                        </button>
-                      ))}
-                      <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="mdc-pyq-search-wrapper">
-                        <input type="text" id="mdc-pyq-search" class="form-input" placeholder="Search subjects..." style="height: 34px; padding-left: 2.1rem; font-size: 0.8rem; width: 200px; border-radius: var(--radius-xs);" />
-                        <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
-                      </div>
-                    </div>
-
-                    <div id="mdc-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
-                      {mdcData.map(({ subject, sems, totalPapers }) => {
-                        const subjectSlug = subject.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-                        const cardId = `mdc-card-${subjectSlug}`;
-                        const panelId = `mdc-panel-${subjectSlug}`;
-                        const semAttr = sems.join(',');
-                        return (
-                          <div
-                            class="mdc-pyq-subject-card card"
-                            data-sems={semAttr}
-                            data-search={subject.toLowerCase()}
-                            style="padding: 0; overflow: hidden; border-color: var(--border-color); transition: border-color 0.2s;"
-                          >
-                            <button
-                              id={cardId}
-                              class="mdc-pyq-subject-btn"
-                              data-panel={panelId}
-                              style="width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: space-between; text-align: left; background: transparent; border: none; cursor: pointer; transition: background 0.2s;"
-                            >
-                              <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
-                                <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={subject}>
-                                  {subject}
-                                </span>
-                                <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.1rem;">
-                                  <span>Sem {sems.join(', ')}</span>
-                                  <span style="font-size: 0.65rem; color: var(--accent-warning); font-weight: 600;">{totalPapers} paper{totalPapers !== 1 ? 's' : ''} available</span>
-                                  {(subject.toLowerCase() === 'psychology' || subject.toLowerCase() === 'economics') && (
-                                    <span style="font-size: 0.6rem; font-weight: 700; color: #06b6d4; display: flex; align-items: center; gap: 0.2rem;">📝 Notes available (HI + EN)</span>
-                                  )}
-                                </span>
-                              </div>
-                              <span class="mdc-subject-icon" style="color: var(--accent-warning); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;">📥</span>
-                            </button>
-
-                            <div id={panelId} class="mdc-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
-                              <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
-                                {sems.map(sem => (
-                                  <a
-                                    href={`${baseUrl}/pyqs/mdc/${subject.toLowerCase()}/${sem}`}
-                                    class="btn btn-sm"
-                                    style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius-xs);">
-                                    <span>📚 Semester {sem}</span>
-                                    <ChevronRight size="12" />
-                                  </a>
-                                ))}
-                                {/* Study Notes — MDC Psychology only */}
-                                {subject.toLowerCase() === 'psychology' && (
-                                  <div style="margin-top: 0.35rem; border-top: 1px dashed rgba(6,182,212,0.25); padding-top: 0.45rem; display: flex; flex-direction: column; gap: 0.3rem;">
-                                    <span style="font-size: 0.62rem; font-weight: 700; color: #06b6d4; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.25rem;">
-                                      📝 Study Notes
-                                    </span>
-                                    <a
-                                      href="https://drive.google.com/file/d/14pbl6LnBudXXh4G7i6zU4cCFKiypkrVO/view?usp=drive_link"
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      class="btn btn-sm"
-                                      style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none; background: rgba(6,182,212,0.1); color: #06b6d4; border: 1px solid rgba(6,182,212,0.28); border-radius: var(--radius-xs);"
-                                      onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Psychology', language: 'Hindi', category: 'MDC', medium: 'HI' });">
-                                      <span>🇮🇳 Notes — Hindi</span>
-                                      <BookOpen size="12" />
-                                    </a>
-                                    <a
-                                      href="https://drive.google.com/file/d/1HF_YhACN2FaNEYe-twiVsl5gxjXoFmfl/view?usp=drive_link"
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      class="btn btn-sm"
-                                      style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none; background: rgba(6,182,212,0.1); color: #06b6d4; border: 1px solid rgba(6,182,212,0.28); border-radius: var(--radius-xs);"
-                                      onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Psychology', language: 'English', category: 'MDC', medium: 'EN' });">
-                                      <span>🇬🇧 Notes — English</span>
-                                      <BookOpen size="12" />
-                                    </a>
-                                  </div>
-                                )}
-                                {/* Study Notes — MDC Economics */}
-                                {subject.toLowerCase() === 'economics' && (
-                                  <div style="margin-top: 0.35rem; border-top: 1px dashed rgba(6,182,212,0.25); padding-top: 0.45rem; display: flex; flex-direction: column; gap: 0.3rem;">
-                                    <span style="font-size: 0.62rem; font-weight: 700; color: #06b6d4; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.25rem;">
-                                      📝 Study Notes (HI + EN)
-                                    </span>
-                                    <div style="background: rgba(6,182,212,0.07); border: 1px solid rgba(6,182,212,0.22); border-radius: var(--radius-xs); overflow: hidden;">
-                                      <button onclick="(function(btn){var p=btn.nextElementSibling;var open=p.style.maxHeight&&p.style.maxHeight!=='0px';p.style.maxHeight=open?'0':p.scrollHeight+'px';var par=btn.closest('.mdc-pyq-papers-panel');if(par){if(!open){par.style.maxHeight='none';}else{setTimeout(function(){par.style.maxHeight=par.scrollHeight+'px';},300);}}})(this)" style="cursor:pointer;font-size:0.72rem;font-weight:700;color:#06b6d4;padding:0.35rem 0.65rem;display:flex;align-items:center;gap:0.4rem;width:100%;background:transparent;border:none;text-align:left;">
-                                        🇮🇳 Notes — Hindi (6 Parts)
-                                      </button>
-                                      <div style="max-height:0;overflow:hidden;transition:max-height 0.25s ease-out;">
-                                        <div style="display:flex;flex-direction:column;gap:0.2rem;padding:0.3rem 0.5rem 0.4rem;">
-                                          {[
-                                            'https://drive.google.com/file/d/1zQtrK7oKtcgwgEHvyva3AjMzWgmltbMe/view?usp=drive_link',
-                                            'https://drive.google.com/file/d/10H5g8bSTqmfC52zbMOZJBpvi087IfHi8/view?usp=drive_link',
-                                            'https://drive.google.com/file/d/1bJnM-vubtpwJ-GedFWaG8xz8moWM9pzq/view?usp=drive_link',
-                                            'https://drive.google.com/file/d/1bfyP9n9lqZBvYP8NGzi1ckPUMpevJnQq/view?usp=drive_link',
-                                            'https://drive.google.com/file/d/17AVOKb_nkJLfTOm70cEUnjG9dybdSu7Y/view?usp=drive_link',
-                                            'https://drive.google.com/file/d/1N74vTH34MxTumRylAI0UBL7IG4M2RuyT/view?usp=drive_link',
-                                          ].map((url, i) => (
-                                            <a href={url} target="_blank" rel="noopener noreferrer"
-                                              style="font-size:0.7rem;color:#06b6d4;padding:0.25rem 0.4rem;border-radius:4px;text-decoration:none;display:flex;align-items:center;justify-content:space-between;background:rgba(6,182,212,0.08);"
-                                              onclick={`if(window.trackDownload) window.trackDownload('note',{subject:'Economics',language:'Hindi',category:'MDC',part:${i+1}});`}>
-                                              <span>Part {i + 1}</span>
-                                              <BookOpen size="11" />
-                                            </a>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div style="background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.22); border-radius: var(--radius-xs); overflow: hidden;">
-                                      <button onclick="(function(btn){var p=btn.nextElementSibling;var open=p.style.maxHeight&&p.style.maxHeight!=='0px';p.style.maxHeight=open?'0':p.scrollHeight+'px';var par=btn.closest('.mdc-pyq-papers-panel');if(par){if(!open){par.style.maxHeight='none';}else{setTimeout(function(){par.style.maxHeight=par.scrollHeight+'px';},300);}}})(this)" style="cursor:pointer;font-size:0.72rem;font-weight:700;color:var(--accent-warning);padding:0.35rem 0.65rem;display:flex;align-items:center;gap:0.4rem;width:100%;background:transparent;border:none;text-align:left;">
-                                        🇬🇧 Notes — English (6 Parts)
-                                      </button>
-                                      <div style="max-height:0;overflow:hidden;transition:max-height 0.25s ease-out;">
-                                        <div style="display:flex;flex-direction:column;gap:0.2rem;padding:0.3rem 0.5rem 0.4rem;">
-                                          {[
-                                            'https://drive.google.com/file/d/1QK023k5qJka4CgGqFA4acZRrphTOTZni/view?usp=drive_link',
-                                            'https://drive.google.com/file/d/1dK737cXukGiN4Dc-RS1zCJv0a5eumeYF/view?usp=drive_link',
-                                            'https://drive.google.com/file/d/10WkAns8spzpIY21bClNSbU6Hb344Y2Wm/view?usp=drive_link',
-                                            'https://drive.google.com/file/d/12pyJeseGPT0fk6U9OG37W7V7T0AjRy40/view?usp=drive_link',
-                                            'https://drive.google.com/file/d/1ch1t7_aefSDyaubVY7bpY9VAq0jP0jvH/view?usp=drive_link',
-                                            'https://drive.google.com/file/d/1pUXjwAV13pyM1KOEHbHgjjPgf3l-Ahjf/view?usp=drive_link',
-                                          ].map((url, i) => (
-                                            <a href={url} target="_blank" rel="noopener noreferrer"
-                                              style="font-size:0.7rem;color:var(--accent-warning);padding:0.25rem 0.4rem;border-radius:4px;text-decoration:none;display:flex;align-items:center;justify-content:space-between;background:rgba(245,158,11,0.08);"
-                                              onclick={`if(window.trackDownload) window.trackDownload('note',{subject:'Economics',language:'English',category:'MDC',part:${i+1}});`}>
-                                              <span>Part {i + 1}</span>
-                                              <BookOpen size="11" />
-                                            </a>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    <div id="mdc-pyq-empty" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem;">
-                      No matching MDC papers found.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <!-- ─── AEC PYQ Widget (Syllabus-style) ──────────────────────────────── -->
-          <div class="accordion-item" style="border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-sm); overflow: hidden;">
-            <!-- AEC Trigger -->
-            <button
-              id="aec-pyq-trigger"
-              class="accordion-trigger"
-              data-cat="aec"
-              style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
-            >
-              <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-                <GraduationCap style="color: var(--accent-success); width: 18px; height: 18px;" />
-                <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-success);">AEC Paper</span>
-                <span style="font-size: 0.62rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
-                  AEC · 50 Marks
-                </span>
-                <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{aecGroupsRaw.length} subjects · {aecTotal} papers</span>
-              </div>
-              <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
-            </button>
-
-            <!-- AEC Collapsible Content -->
-            <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
-              <div style="padding: 1rem 1.25rem 1.25rem;">
-                <p style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-bottom: 1rem;">
-                  Ability Enhancement Courses (AEC) run across Semesters 1–4. AEC-1 (Hindi) in Sem 1, AEC-2 (English) in Sem 2, and AEC-3 &amp; AEC-4 offer Hindi, English, or Sanskrit options. Browse by semester below.
-                </p>
-
-                <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
-                  <!-- AEC Semester Filter Tabs + Search -->
-                  <div id="aec-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
-                    <button class="btn btn-secondary aec-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                      All ({aecGroupsRaw.length})
-                    </button>
-                    {aecSemesters.map(sem => (
-                      <button class="btn btn-secondary aec-pyq-tab" data-sem={String(sem)} style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                        Sem {sem} — AEC-{sem}
-                      </button>
-                    ))}
-                    <!-- Search -->
-                    <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="aec-pyq-search-wrapper">
-                      <input
-                        type="text"
-                        id="aec-pyq-search"
-                        class="form-input"
-                        placeholder="Search AEC papers..."
-                        style="height: 34px; padding-left: 2.1rem; font-size: 0.8rem; width: 200px; border-radius: var(--radius-xs);"
-                      />
-                      <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
-                    </div>
-                  </div>
-
-                  <!-- AEC Subject Card Grid -->
-                  <div id="aec-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
-                    {aecGroupsRaw.map(group => {
-                      const papers = getAecGroupPapers(group.semester, group.subject);
-                      const label  = `AEC-${group.semester} ${group.subject}`;
-                      const slug   = `${group.subject.toLowerCase()}-sem${group.semester}`;
-                      const cardId = `aec-card-${slug}`;
-                      const panelId = `aec-panel-${slug}`;
-                      return (
-                        <div
-                          class="aec-pyq-subject-card card"
-                          data-sems={String(group.semester)}
-                          data-search={label.toLowerCase()}
-                          style="padding: 0; overflow: hidden; border-color: var(--border-color); transition: border-color 0.2s;"
-                        >
-                          <!-- Card Header (clickable) -->
-                          <button
-                            id={cardId}
-                            class="aec-pyq-subject-btn"
-                            data-panel={panelId}
-                            style="width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: space-between; text-align: left; background: transparent; border: none; cursor: pointer; transition: background 0.2s;"
-                          >
-                            <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
-                              <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={label}>
-                                {label}
-                              </span>
-                              <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.1rem;">
-                                <span>Semester {group.semester}</span>
-                                <span style="font-size: 0.65rem; color: var(--accent-success); font-weight: 600;">{papers.length} paper{papers.length !== 1 ? 's' : ''} available</span>
-                              </span>
-                            </div>
-                            <span class="aec-subject-icon" style="color: var(--accent-success); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;">📥</span>
-                          </button>
-
-                          <!-- Expandable papers list -->
-                          <div id={panelId} class="aec-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
-                            <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
-                              {papers.map(paper => (
-                                <a
-                                  href={paper.downloadUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  class="btn btn-primary btn-sm"
-                                  style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none;"
-                                  onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.subject}', category: 'AEC', semester: '${paper.semester}' });`}
-                                >
-                                  <span>📄 {paper.year}{(paper as any).set ? ` — ${(paper as any).set}` : ''}</span>
-                                  <Download size="12" />
-                                </a>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <!-- Empty state -->
-                  <div id="aec-pyq-empty" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem;">
-                    No matching AEC papers found.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- ─────────────────────────────────────────────────────────────────── -->
-
-          <!-- ─── VAC PYQ Widget (Syllabus-style) ──────────────────────────────── -->
-          <div class="accordion-item" style="border: 1px solid rgba(99,102,241,0.25); border-radius: var(--radius-sm); overflow: hidden;">
-            <!-- VAC Trigger -->
-            <button
-              id="vac-pyq-trigger"
-              class="accordion-trigger"
-              data-cat="vac"
-              style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
-            >
-              <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-                <Award style="color: var(--accent-primary); width: 18px; height: 18px;" />
-                <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-primary);">VAC Paper</span>
-                <span style="font-size: 0.62rem; font-weight: 700; background: rgba(99,102,241,0.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
-                  VAC · 50 Marks
-                </span>
-                <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{vacSubjects.length} subjects · {vacPapers.length} papers</span>
-              </div>
-              <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
-            </button>
-
-            <!-- VAC Collapsible Content -->
-            <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
-              <div style="padding: 1rem 1.25rem 1.25rem;">
-                <p style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-bottom: 1rem;">
-                  Under NEP 2020, Value Added Courses (VAC) are designed to provide holistic education. In Semester 1, students take VAC-1 (Understanding India). In Semester 4, students take VAC-2 (Global Citizenship Education).
-                </p>
-
-                <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
-                  <!-- VAC Semester Filter Tabs + Search -->
-                  <div id="vac-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
-                    <button class="btn btn-secondary vac-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                      All ({vacSubjects.length})
-                    </button>
-                    {vacSemesters.map(sem => (
-                      <button class="btn btn-secondary vac-pyq-tab" data-sem={String(sem)} style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                        Sem {sem}
-                      </button>
-                    ))}
-                    <!-- Search -->
-                    <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="vac-pyq-search-wrapper">
-                      <input
-                        type="text"
-                        id="vac-pyq-search"
-                        class="form-input"
-                        placeholder="Search VAC papers..."
-                        style="height: 34px; padding-left: 2.1rem; font-size: 0.8rem; width: 200px; border-radius: var(--radius-xs);"
-                      />
-                      <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
-                    </div>
-                  </div>
-
-                  <!-- VAC Subject Card Grid -->
-                  <div id="vac-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
-                    {vacSubjects.map(subject => {
-                      const papers = getVacPapersForSubject(subject);
-                      const sem = Math.min(...papers.map(p => p.semester));
-                      const subjectSlug = subject.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-                      const cardId = `vac-card-${subjectSlug}`;
-                      const panelId = `vac-panel-${subjectSlug}`;
-                      return (
-                        <div
-                          class="vac-pyq-subject-card card"
-                          data-sem={String(sem)}
-                          data-search={subject.toLowerCase()}
-                          style="padding: 0; overflow: hidden; border-color: var(--border-color); transition: border-color 0.2s;"
-                        >
-                          <!-- Card Header (clickable) -->
-                          <button
-                            id={cardId}
-                            class="vac-pyq-subject-btn"
-                            data-panel={panelId}
-                            style="width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: space-between; text-align: left; background: transparent; border: none; cursor: pointer; transition: background 0.2s;"
-                          >
-                            <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
-                              <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={subject}>
-                                {subject}
-                              </span>
-                              <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.1rem;">
-                                <span>Semester {sem}</span>
-                                <span style="font-size: 0.65rem; color: var(--accent-primary); font-weight: 600;">{papers.length} paper{papers.length !== 1 ? 's' : ''} available</span>
-                              </span>
-                            </div>
-                            <span class="vac-subject-icon" style="color: var(--accent-primary); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;">📥</span>
-                          </button>
-
-                          <!-- Expandable papers list -->
-                          <div id={panelId} class="vac-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
-                            <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
-                              {papers.map(paper => (
-                                <a
-                                  href={paper.downloadUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  class="btn btn-primary btn-sm"
-                                  style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none;"
-                                  onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.subject}', category: 'VAC', semester: '${paper.semester}' });`}
-                                >
-                                  <span>📄 {paper.year}{(paper as any).set ? ` — ${(paper as any).set}` : ''}</span>
-                                  <Download size="12" />
-                                </a>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <!-- Empty state -->
-                  <div id="vac-pyq-empty" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem;">
-                    No matching VAC papers found.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- ─────────────────────────────────────────────────────────────────── -->
-
-          <!-- ─── SEC PYQ Widget (Syllabus-style) ──────────────────────────────── -->
-          <div class="accordion-item" style="border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-sm); overflow: hidden;">
-            <!-- SEC Trigger -->
-            <button
-              id="sec-pyq-trigger"
-              class="accordion-trigger"
-              data-cat="sec"
-              style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
-            >
-              <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-                <BookOpen style="color: var(--accent-warning); width: 18px; height: 18px;" />
-                <span style="font-size: 1.05rem; font-weight: 700; color: var(--accent-warning);">SEC Paper</span>
-                <span style="font-size: 0.62rem; font-weight: 700; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
-                  SEC · 75 Marks
-                </span>
-                <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{secSubjects.length} subjects · {secPapers.length} papers</span>
-              </div>
-              <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
-            </button>
-
-            <!-- SEC Collapsible Content -->
-            <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
-              <div style="padding: 1rem 1.25rem 1.25rem;">
-                <p style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.55; margin-bottom: 1rem;">
-                  Skill Enhancement Courses (SEC) are designed to provide hands-on training and skills. In Semester 2, students choose either Communication Skills or News Writing. Browse papers by semester below.
-                </p>
-
-                <div style="background-color: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1rem 1rem;">
-                  <!-- SEC Semester Filter Tabs + Search -->
-                  <div id="sec-pyq-tabs" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.9rem; align-items: center;">
-                    <button class="btn btn-secondary sec-pyq-tab active" data-sem="all" style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                      All ({secSubjects.length})
-                    </button>
-                    {secSemesters.map(sem => (
-                      <button class="btn btn-secondary sec-pyq-tab" data-sem={String(sem)} style="height: 34px; font-size: 0.8rem; padding: 0 0.85rem; border-radius: var(--radius-xs);">
-                        Sem {sem}
-                      </button>
-                    ))}
-                    <!-- Search -->
-                    <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="sec-pyq-search-wrapper">
-                      <input
-                        type="text"
-                        id="sec-pyq-search"
-                        class="form-input"
-                        placeholder="Search SEC papers..."
-                        style="height: 34px; padding-left: 2.1rem; font-size: 0.8rem; width: 200px; border-radius: var(--radius-xs);"
-                      />
-                      <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
-                    </div>
-                  </div>
-
-                  <!-- SEC Note for Sem 2 choice -->
-                  <div style="display: flex; align-items: flex-start; gap: 0.5rem; background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-xs); padding: 0.6rem 0.85rem; font-size: 0.77rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.85rem;">
-                    <span style="flex-shrink: 0;">ℹ️</span>
-                    <span><strong style="color: var(--accent-warning);">Semester 2 choice:</strong> Students pick <em>either</em> Communication Skill & Personality Development <em>or</em> News Writing — both papers are listed below.</span>
-                  </div>
-
-                  <!-- SEC Subject Card Grid -->
-                  <div id="sec-pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;">
-                    {secSubjects.map(subject => {
-                      const papers = getSecPapersForSubject(subject);
-                      const sem = Math.min(...papers.map(p => p.semester));
-                      const subjectSlug = subject.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-                      const cardId = `sec-card-${subjectSlug}`;
-                      const panelId = `sec-panel-${subjectSlug}`;
-                      return (
-                        <div
-                          class="sec-pyq-subject-card card"
-                          data-sem={String(sem)}
-                          data-search={subject.toLowerCase()}
-                          style="padding: 0; overflow: hidden; border-color: var(--border-color); transition: border-color 0.2s;"
-                        >
-                          <!-- Card Header (clickable) -->
-                          <button
-                            id={cardId}
-                            class="sec-pyq-subject-btn"
-                            data-panel={panelId}
-                            style="width: 100%; padding: 1rem; display: flex; align-items: center; justify-content: space-between; text-align: left; background: transparent; border: none; cursor: pointer; transition: background 0.2s;"
-                          >
-                            <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
-                              <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={subject}>
-                                {subject}
-                              </span>
-                              <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.1rem;">
-                                <span>Semester {sem}</span>
-                                <span style="font-size: 0.65rem; color: var(--accent-warning); font-weight: 600;">{papers.length} paper{papers.length !== 1 ? 's' : ''} available</span>
-                              </span>
-                            </div>
-                            <span class="sec-subject-icon" style="color: var(--accent-warning); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;">📥</span>
-                          </button>
-
-                          <!-- Expandable papers list -->
-                          <!-- Expandable papers list -->
-                          <div style="padding: 0 1rem 0.65rem;"><a href={`${baseUrl}/pyqs/sec/${subject.toLowerCase()}/${sem}`} style="font-size: 0.72rem; font-weight: 700; color: #818cf8; text-decoration: none;">📘 Open Full Page &amp; Notes →</a></div>
-                          <div id={panelId} class="sec-pyq-papers-panel" style="max-height: 0; overflow: hidden; transition: max-height 0.25s ease-out;">
-                            <div style="border-top: 1px solid var(--border-color); padding: 0.6rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; background: rgba(0,0,0,0.1);">
-                              {papers.map(paper => (
-                                <a
-                                  href={paper.downloadUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  class="btn btn-sm"
-                                  style="font-size: 0.72rem; padding: 0.35rem 0.65rem; display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; width: 100%; text-decoration: none; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius-xs);"
-                                  onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.subject}', category: 'SEC', semester: '${paper.semester}' });`}
-                                >
-                                  <span>📄 {paper.year}{(paper as any).set ? ` — ${(paper as any).set}` : ''}</span>
-                                  <Download size="12" />
-                                </a>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <!-- Empty state -->
-                  <div id="sec-pyq-empty" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem;">
-                    No matching SEC papers found.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- ─────────────────────────────────────────────────────────────────── -->
-
-          <!-- ─── IKS PYQ Section (Reference Papers from Other Universities) ─── -->
-          {(() => {
-            const iksPyqs = pyqsData.filter((p: any) => p.category === 'IKS' && p.type !== 'notes' && !!p.downloadUrl);
-            const iksNotes = pyqsData.filter((p: any) => p.category === 'IKS' && p.type === 'notes' && !!p.downloadUrl);
-            // match colors: 95% -> green, 65-70% -> amber (inlined below)
+        <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; background: rgba(0,0,0,0.15);">
+          {contributorsList.map(c => {
+            const [c1, c2] = c.c.split(',');
             return (
-          <div class="accordion-item" style="border: 1px solid rgba(251,146,60,0.3); border-radius: var(--radius-sm); overflow: hidden;">
-            <!-- IKS Trigger -->
-            <button
-              id="iks-pyq-trigger"
-              class="accordion-trigger"
-              data-cat="iks"
-              style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; transition: background 0.25s;"
-            >
-              <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-                <span style="font-size: 1.1rem;">🏛️</span>
-                <span style="font-size: 1.05rem; font-weight: 700; color: #fb923c;">IKS Paper</span>
-                <span style="font-size: 0.62rem; font-weight: 700; background: rgba(251,146,60,0.12); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); border-radius: 20px; padding: 2px 7px; letter-spacing: 0.3px;">
-                  IKS · Compulsory
-                </span>
-                <span style="font-size: 0.62rem; font-weight: 600; color: var(--text-tertiary); margin-left: 0.25rem;">{iksPyqs.length} reference papers · {iksNotes.length} notes</span>
+              <div style="display: flex; align-items: center; gap: 0.45rem; padding: 0.2rem 0; min-width: 0;">
+                <div style={`width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, ${c1}, ${c2}); display: flex; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 800; color: white; flex-shrink: 0;`}>{c.i}</div>
+                <span style="font-size: 0.74rem; font-weight: 700; color: var(--text-primary); flex-shrink: 0;">{c.n}</span>
+                <span style="font-size: 0.65rem; color: var(--text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;">{c.f}</span>
               </div>
-              <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s;" />
-            </button>
-
-            <!-- IKS Collapsible Content -->
-            <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
-              <div style="padding: 1rem 1.25rem 1.25rem;">
-
-                <!-- Explanation banner -->
-                <div style="background: linear-gradient(135deg, rgba(251,146,60,0.08) 0%, rgba(0,0,0,0.15) 100%); border: 1px solid rgba(251,146,60,0.25); border-radius: var(--radius-xs); padding: 0.85rem 1rem; margin-bottom: 1rem;">
-                  <div style="display: flex; gap: 0.6rem; align-items: flex-start;">
-                    <span style="font-size: 1.1rem; flex-shrink: 0;">ℹ️</span>
-                    <div>
-                      <p style="font-size: 0.82rem; font-weight: 700; color: #fb923c; margin-bottom: 0.3rem;">Kolhan & Reference Papers Available</p>
-                      <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
-                        Official Kolhan University IKS-1 question papers (2025 batch) are now available! We have also kept reference papers from other Jharkhand universities that follow the same FYUGP syllabus for your extra preparation.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Match Rating Table -->
-                <div style="background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.85rem 1rem; margin-bottom: 1rem; overflow-x: auto;">
-                  <p style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.65rem; letter-spacing: 0.5px; text-transform: uppercase;">Syllabus Match Analysis</p>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem;">
-                    <thead>
-                      <tr style="border-bottom: 1px solid var(--border-color);">
-                        <th style="text-align: left; padding: 0.35rem 0.5rem; color: var(--text-secondary); font-weight: 600;">University</th>
-                        <th style="text-align: center; padding: 0.35rem 0.5rem; color: var(--text-secondary); font-weight: 600;">Exam Pattern</th>
-                        <th style="text-align: center; padding: 0.35rem 0.5rem; color: var(--text-secondary); font-weight: 600;">Syllabus Match</th>
-                        <th style="text-align: center; padding: 0.35rem 0.5rem; color: var(--text-secondary); font-weight: 600;">Overall Rating</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr style="border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(59,130,246,0.05);">
-                        <td style="padding: 0.4rem 0.5rem; font-weight: 600; color: #3b82f6;">Kolhan University</td>
-                        <td style="padding: 0.4rem 0.5rem; text-align: center; color: #3b82f6; font-weight: 700;">100% ✓ (Actual Paper)</td>
-                        <td style="padding: 0.4rem 0.5rem; text-align: center; color: #3b82f6; font-weight: 700;">100%</td>
-                        <td style="padding: 0.4rem 0.5rem; text-align: center;"><span style="background: rgba(59,130,246,0.15); color: #3b82f6; border-radius: 20px; padding: 2px 8px; font-weight: 700; font-size: 0.72rem;">🎯 Official</span></td>
-                      </tr>
-                      <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                        <td style="padding: 0.4rem 0.5rem; font-weight: 600; color: var(--text-primary);">BBMKU</td>
-                        <td style="padding: 0.4rem 0.5rem; text-align: center; color: #10b981; font-weight: 700;">100% ✓ (50 MCQs/OMR)</td>
-                        <td style="padding: 0.4rem 0.5rem; text-align: center; color: #10b981; font-weight: 700;">95%</td>
-                        <td style="padding: 0.4rem 0.5rem; text-align: center;"><span style="background: rgba(16,185,129,0.15); color: #10b981; border-radius: 20px; padding: 2px 8px; font-weight: 700; font-size: 0.72rem;">⭐ Highest Match</span></td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 0.4rem 0.5rem; font-weight: 600; color: var(--text-primary);">VBU (Set 1 & 2)</td>
-                        <td style="padding: 0.4rem 0.5rem; text-align: center; color: var(--text-secondary);">Subjective</td>
-                        <td style="padding: 0.4rem 0.5rem; text-align: center; color: #f59e0b; font-weight: 700;">65–70%</td>
-                        <td style="padding: 0.4rem 0.5rem; text-align: center;"><span style="background: rgba(245,158,11,0.15); color: #f59e0b; border-radius: 20px; padding: 2px 8px; font-weight: 700; font-size: 0.72rem;">Good for Concepts</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <!-- PYQ Cards -->
-                <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem;">
-                  {iksPyqs.map((paper: any) => {
-                    const mColor = paper.matchRating === '100%' ? '#3b82f6' : (paper.matchRating === '95%' ? '#10b981' : '#f59e0b');
-                    return (
-                    <div style={`border: 1px solid ${mColor}30; border-radius: var(--radius-xs); overflow: hidden; background: rgba(0,0,0,0.15);`}>
-                      <div style="padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
-                        <div>
-                          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                            <span style={`font-size: 0.9rem; font-weight: 700; color: ${paper.matchRating === '100%' ? '#3b82f6' : 'var(--text-primary)'};`}>{paper.university}</span>
-                            <span style={`font-size: 0.65rem; font-weight: 700; background: ${mColor}20; color: ${mColor}; border: 1px solid ${mColor}40; border-radius: 20px; padding: 1px 7px;`}>
-                              {paper.matchRating} Match
-                            </span>
-                          </div>
-                          <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0.2rem 0 0; line-height: 1.4;">{paper.matchNote}</p>
-                        </div>
-                        <a
-                          href={paper.downloadUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="btn btn-primary btn-sm"
-                          style="font-size: 0.75rem; padding: 0.4rem 0.85rem; white-space: nowrap; text-decoration: none; display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0;"
-                          onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.subject}', category: 'IKS', semester: '${paper.semester}', university: '${paper.university}' });`}
-                        >
-                          <span>📄 {paper.year}{paper.set ? ` — ${paper.set}` : ''}</span>
-                          <Download size="12" />
-                        </a>
-                      </div>
-                    </div>
-                    );
-                  })}
-                </div>
-
-                <!-- Notes Section -->
-                {iksNotes.length > 0 && (
-                  <div style="border: 1px solid rgba(99,102,241,0.25); border-radius: var(--radius-xs); overflow: hidden; background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(0,0,0,0.15) 100%);">
-                    <div style="padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
-                      <div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                          <span style="font-size: 0.9rem; font-weight: 700; color: var(--accent-primary);">📚 IKS Study Notes</span>
-                          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(99,102,241,0.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 1px 7px;">2025 Batch</span>
-                        </div>
-                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0.2rem 0 0;">Comprehensive notes for Kolhan University IKS-1 syllabus</p>
-                      </div>
-                      {iksNotes.map((note: any) => (
-                        <a
-                          href={note.downloadUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="btn btn-secondary btn-sm"
-                          style="font-size: 0.75rem; padding: 0.4rem 0.85rem; white-space: nowrap; text-decoration: none; display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0;"
-                          onclick="if(window.trackDownload) window.trackDownload('note', { subject: 'Indian Knowledge System', category: 'IKS', semester: '1', medium: 'IKS' });"
-                        >
-                          <span>📖 Download Notes</span>
-                          <Download size="12" />
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-              </div>
-            </div>
-          </div>
             );
-          })()}
-          <!-- ─────────────────────────────────────────────────────────────────── -->
-
+          })}
+          <a href="https://api.whatsapp.com/send?phone=918002059887&text=Hi!%20I%20have%20some%20PYQ%20papers%20to%20share%20%F0%9F%93%9A" target="_blank" rel="noopener noreferrer" style="font-size: 0.7rem; color: rgba(37,211,102,0.9); font-weight: 600; text-decoration: none; margin-top: 0.2rem;">
+            💬 Share PYQ files →
+          </a>
         </div>
       </div>
-
     </div>
-      <!-- Passing Marks Info Panel (below categories) -->
-      <div style="background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(16,185,129,0.04) 100%); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1.35rem;">
-        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem;">
-          <span style="font-size: 1rem;">📊</span>
-          <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.06em; text-transform: uppercase;">Marks &amp; Passing Criteria (FYUGP)</span>
-          <span style="font-size: 0.7rem; color: var(--text-tertiary); margin-left: auto;">Qualifying: <strong style="color: var(--accent-success);">40% of total marks</strong></span>
-        </div>
-        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-          <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-            <span style="font-weight: 700; color: var(--accent-primary);">MJ / AC</span>
-            <span style="color: var(--text-tertiary);">|</span>
-            <span style="color: var(--text-secondary);">100 marks</span>
-            <span style="color: var(--text-tertiary);">·</span>
-            <span style="color: var(--accent-success); font-weight: 600;">Pass: 40</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-            <span style="font-weight: 700; color: var(--accent-warning);">MDC</span>
-            <span style="color: var(--text-tertiary);">|</span>
-            <span style="color: var(--text-secondary);">75 marks</span>
-            <span style="color: var(--text-tertiary);">·</span>
-            <span style="color: var(--accent-success); font-weight: 600;">Pass: 30</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-            <span style="font-weight: 700; color: var(--accent-warning);">SEC</span>
-            <span style="color: var(--text-tertiary);">|</span>
-            <span style="color: var(--text-secondary);">75 marks</span>
-            <span style="color: var(--text-tertiary);">·</span>
-            <span style="color: var(--accent-success); font-weight: 600;">Pass: 30</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-            <span style="font-weight: 700; color: var(--accent-primary);">AEC / VAC</span>
-            <span style="color: var(--text-tertiary);">|</span>
-            <span style="color: var(--text-secondary);">50 marks</span>
-            <span style="color: var(--text-tertiary);">·</span>
-            <span style="color: var(--accent-success); font-weight: 600;">Pass: 20</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-            <span style="font-weight: 700; color: var(--text-secondary);">Practical / Lab</span>
-            <span style="color: var(--text-tertiary);">|</span>
-            <span style="color: var(--text-secondary);">25 marks</span>
-            <span style="color: var(--text-tertiary);">·</span>
-            <span style="color: var(--accent-success); font-weight: 600;">Pass: 10</span>
-          </div>
-        </div>
-        <p style="font-size: 0.72rem; color: var(--text-tertiary); margin-top: 0.75rem; line-height: 1.5;">* For 100-mark theory papers: 75 marks End-Semester + 25 marks Internal Assessment.</p>
-      </div>
-
-    </div>
-
-
-    <!-- Right 1 Col: Popular downloads & Quick request -->
-    <div style="display: flex; flex-direction: column; gap: 2rem;">
-      
-      <!-- Most Downloaded (live from Google Sheets) -->
-      <div class="card">
-        <h2 style="font-size: 1.25rem; font-family: var(--font-display); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
-          <GraduationCap style="color: var(--accent-success);" /> Most Downloaded
-        </h2>
-
-        <!-- Live list — filled by JS below -->
-        <div id="most-downloaded-list" style="display: flex; flex-direction: column; gap: 1rem;">
-          <!-- skeleton rows while loading -->
-          {[1,2,3,4,5].map(() => (
-            <div style="display:flex; flex-direction:column; gap:0.25rem; padding-bottom:0.75rem; border-bottom:1px solid var(--border-color);">
-              <div style="height:0.875rem; width:65%; background:var(--bg-tertiary); border-radius:4px; animation: pulse 1.5s infinite;"></div>
-              <div style="height:0.75rem; width:45%; background:var(--bg-tertiary); border-radius:4px; animation: pulse 1.5s infinite;"></div>
-            </div>
-          ))}
-        </div>
-        <p id="most-downloaded-note" style="display:none; font-size:0.75rem; color:var(--text-tertiary); margin-top:0.75rem; text-align:center;">Based on real student downloads</p>
-      </div>
-
-      <!-- Quick Contribution Card -->
-      <div class="card" style="background-color: var(--bg-tertiary); text-align: center; display: flex; flex-direction: column; gap: 0.75rem;">
-        <h3 style="font-size: 1.1rem; font-family: var(--font-display);">Missing a paper?</h3>
-        <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
-          Help fellow college students by contributing missing papers, or request a specific semester PYQ paper!
-        </p>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%; margin-top: 0.5rem;">
-          <button 
-            class="btn btn-outline btn-sm" 
-            style="width: 100%;"
-            onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));"
-          >
-            Submit / Upload Paper
-          </button>
-          <button 
-            class="btn btn-primary btn-sm" 
-            style="width: 100%;"
-            onclick="document.dispatchEvent(new CustomEvent('open-request-modal'));"
-          >
-            Request a Paper
-          </button>
-        </div>
-        <div style="margin-top: 0.25rem; text-align: center;">
-          <button 
-            onclick="document.dispatchEvent(new CustomEvent('open-report-modal'));" 
-            style="background:none; border:none; padding:0; color: var(--accent-danger); font-size: 0.75rem; font-weight: 700; cursor:pointer; opacity: 0.85; transition: opacity 0.15s; display: inline-flex; align-items: center; gap: 0.25rem;"
-            onmouseover="this.style.opacity='1'"
-            onmouseout="this.style.opacity='0.85'"
-          >
-            ⚠️ Report wrong paper or broken link
-          </button>
-        </div>
-      </div>
-
-    </div>
-
   </div>
+
+  <!-- ═══ COMPACT HINDI HELPER BOX ═══ -->
+  <section aria-labelledby="pyq-hindi-heading" lang="hi" style="border: 1px solid rgba(99,102,241,0.22); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem; background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(16,185,129,0.03) 100%);">
+    <h2 id="pyq-hindi-heading" style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.55rem; color: var(--text-primary);">
+      🇮🇳 कोल्हान यूनिवर्सिटी पिछले वर्ष के प्रश्न पत्र (PYQ PDF) कैसे डाउनलोड करें?
+    </h2>
+    <ul style="margin: 0; padding-left: 1.15rem; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.65; display: flex; flex-direction: column; gap: 0.3rem;">
+      <li>ऊपर दी गई कैटेगरी (<strong>Major, Minor, MDC, AEC, VAC, SEC, IKS</strong>) से अपना विषय और सेमेस्टर चुनें।</li>
+      <li>सभी <strong>37 कोल्हान यूनिवर्सिटी कॉलेजों</strong> (Tata College, Co-op, ABM, Ghatshila, Karim City आदि) का प्रश्न पत्र पैटर्न एक ही होता है।</li>
+      <li><strong>MDC पेपर</strong> का सिलेबस Sem 1, 2 और 3 में एक समान रहता है, इसलिए तीनों सेमेस्टर के पेपर अभ्यास के लिए देखें।</li>
+      <li>पेज पर जाकर <strong>Download PDF</strong> दबाएँ — बिना किसी लॉगिन या शुल्क के Google Drive से PDF खुल जाएगी।</li>
+    </ul>
+  </section>
+
+  <!-- ═══ VISIBLE FAQ ACCORDION (Synced with FAQPage JSON-LD) ═══ -->
+  <section aria-labelledby="pyq-faq-heading" style="margin-bottom: 1.25rem;">
+    <h2 id="pyq-faq-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+      ❓ Frequently Asked Questions
+    </h2>
+    <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+      {faqItems.map((item, idx) => (
+        <details open={idx === 0} style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.7rem 0.9rem; background: var(--bg-secondary);">
+          <summary style="font-size: 0.83rem; font-weight: 700; color: var(--text-primary); cursor: pointer;">{item.q}</summary>
+          <p style="font-size: 0.79rem; color: var(--text-secondary); line-height: 1.55; margin: 0.5rem 0 0; padding-top: 0.5rem; border-top: 1px solid var(--border-color);">{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══ 2×2 STUDENT TOOLS STRIP ═══ -->
+  <section aria-labelledby="pyq-tools-heading" style="margin-bottom: 0.5rem;">
+    <h2 id="pyq-tools-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+      🛠️ Next Steps &amp; Student Tools
+    </h2>
+    <div class="pyq-tools-grid">
+      <a href={`${baseUrl}/syllabus/`} class="card pyq-tool-card">
+        <span style="font-size: 1.1rem;">📖</span>
+        <div>
+          <div style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary);">NEP FYUGP Syllabus</div>
+          <div style="font-size: 0.7rem; color: var(--text-tertiary);">Major, Minor, MDC &amp; VAC</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/results/`} class="card pyq-tool-card">
+        <span style="font-size: 1.1rem;">📊</span>
+        <div>
+          <div style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary);">Kolhan University Results</div>
+          <div style="font-size: 0.7rem; color: var(--text-tertiary);">Sem 1–7 All 37 Colleges</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/holiday-list/`} class="card pyq-tool-card">
+        <span style="font-size: 1.1rem;">📅</span>
+        <div>
+          <div style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary);">Holiday List 2026</div>
+          <div style="font-size: 0.7rem; color: var(--text-tertiary);">College Open Status &amp; PDF</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/cgpa/`} class="card pyq-tool-card">
+        <span style="font-size: 1.1rem;">🧮</span>
+        <div>
+          <div style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary);">CGPA Calculator</div>
+          <div style="font-size: 0.7rem; color: var(--text-tertiary);">SGPA to % Converter</div>
+        </div>
+      </a>
+    </div>
+  </section>
 
   <style>
-    .aec-pyq-tab.active {
-      background-color: rgba(16,185,129,0.12) !important;
-      color: var(--accent-success) !important;
-      border-color: var(--accent-success) !important;
+    .pyq-cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+      gap: 0.65rem;
+    }
+    .pyq-marks-grid,
+    .pyq-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+    .pyq-two-col-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.85rem;
+    }
+    @media (min-width: 640px) {
+      .pyq-two-col-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .pyq-sem-link {
+      font-size: 0.72rem;
       font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: opacity 0.15s;
     }
-    .aec-pyq-subject-card:hover {
-      border-color: var(--accent-success) !important;
-      box-shadow: 0 0 0 1px rgba(16,185,129,0.15);
+    .pyq-sem-link:hover {
+      opacity: 0.85;
     }
-    .aec-pyq-subject-card.is-open {
-      border-color: rgba(16,185,129,0.4) !important;
+    .pyq-sem-link-primary {
+      background: rgba(99,102,241,0.14);
+      color: var(--accent-primary);
+      border: 1px solid rgba(99,102,241,0.3);
     }
-    .aec-pyq-subject-btn:hover {
-      background: rgba(16,185,129,0.06) !important;
+    .pyq-sem-link-success {
+      background: rgba(16,185,129,0.12);
+      color: var(--accent-success);
+      border: 1px solid rgba(16,185,129,0.3);
     }
-    /* VAC PYQ tab active */
-    .vac-pyq-tab.active {
-      background-color: rgba(99,102,241,0.12) !important;
-      color: var(--accent-primary) !important;
-      border-color: var(--accent-primary) !important;
-      font-weight: 700;
+    .pyq-sem-link-warning {
+      background: rgba(245,158,11,0.12);
+      color: var(--accent-warning);
+      border: 1px solid rgba(245,158,11,0.3);
     }
-    /* SEC PYQ tab active */
-    .sec-pyq-tab.active {
-      background-color: rgba(245,158,11,0.12) !important;
-      color: var(--accent-warning) !important;
-      border-color: var(--accent-warning) !important;
-      font-weight: 700;
-    }
-    /* Major PYQ tab active */
-    .major-pyq-tab.active {
-      background-color: rgba(99,102,241,0.12) !important;
-      color: var(--accent-primary) !important;
-      border-color: var(--accent-primary) !important;
-      font-weight: 700;
-    }
-    /* Minor PYQ tab active */
-    .minor-pyq-tab.active {
-      background-color: rgba(16,185,129,0.12) !important;
-      color: var(--accent-success) !important;
-      border-color: var(--accent-success) !important;
-      font-weight: 700;
-    }
-    /* MDC PYQ tab active */
-    .mdc-pyq-tab.active {
-      background-color: rgba(245,158,11,0.12) !important;
-      color: var(--accent-warning) !important;
-      border-color: var(--accent-warning) !important;
-      font-weight: 700;
-    }
-    /* Major/Minor/MDC subject card hover + open */
-    .major-pyq-subject-card:hover { border-color: rgba(99,102,241,0.45) !important; box-shadow: 0 0 0 1px rgba(99,102,241,0.12); }
-    .major-pyq-subject-card.is-open { border-color: var(--accent-primary) !important; }
-    .minor-pyq-subject-card:hover { border-color: rgba(16,185,129,0.45) !important; box-shadow: 0 0 0 1px rgba(16,185,129,0.12); }
-    .minor-pyq-subject-card.is-open { border-color: var(--accent-success) !important; }
-    .mdc-pyq-subject-card:hover { border-color: rgba(245,158,11,0.45) !important; box-shadow: 0 0 0 1px rgba(245,158,11,0.12); }
-    .mdc-pyq-subject-card.is-open { border-color: var(--accent-warning) !important; }
-    .major-pyq-subject-btn:hover { background: rgba(99,102,241,0.06) !important; }
-    .minor-pyq-subject-btn:hover { background: rgba(16,185,129,0.06) !important; }
-    .mdc-pyq-subject-btn:hover { background: rgba(245,158,11,0.06) !important; }
-    /* Subject card hover effects */
-    .vac-pyq-subject-card:hover {
-      border-color: rgba(99,102,241,0.45) !important;
-      box-shadow: 0 0 0 1px rgba(99,102,241,0.12);
-    }
-    .vac-pyq-subject-card.is-open {
+    .pyq-direct-card:hover {
       border-color: var(--accent-primary) !important;
     }
-    .sec-pyq-subject-card:hover {
-      border-color: rgba(245,158,11,0.45) !important;
-      box-shadow: 0 0 0 1px rgba(245,158,11,0.12);
-    }
-    .sec-pyq-subject-card.is-open {
-      border-color: var(--accent-warning) !important;
-    }
-    .vac-pyq-subject-btn:hover { background: rgba(99,102,241,0.06) !important; }
-    .sec-pyq-subject-btn:hover { background: rgba(245,158,11,0.06) !important; }
-    @media (max-width: 600px) {
-      .aec-pyq-search-wrapper { width: 100% !important; margin-top: 0.5rem; }
-      .aec-pyq-search-wrapper input { width: 100% !important; }
-      .vac-pyq-search-wrapper { width: 100% !important; margin-top: 0.5rem; }
-      .vac-pyq-search-wrapper input { width: 100% !important; }
-      .sec-pyq-search-wrapper { width: 100% !important; margin-top: 0.5rem; }
-      .sec-pyq-search-wrapper input { width: 100% !important; }
+    .pyq-tool-card {
+      padding: 0.75rem 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+      min-width: 0;
     }
     @keyframes pulse {
       0%, 100% { opacity: 1; }
@@ -1354,524 +933,154 @@ const popularPapers = [...availablePyqs.filter(p => !!p.downloadUrl)]
     }
   </style>
 
-  <!-- Live Most Downloaded — stale-while-revalidate via localStorage -->
-  <script is:inline>
-    // PYQ community panels — both open/close together
+  <script define:vars={{ subpagesJson, baseUrl }}>
     (function() {
-      var reqT  = document.getElementById('pyq-req-trigger');
-      var reqC  = document.getElementById('pyq-req-content');
-      var reqCh = document.getElementById('pyq-req-chevron');
-      var conT  = document.getElementById('pyq-contrib-trigger');
-      var conC  = document.getElementById('pyq-contrib-content');
-      var conCh = document.getElementById('pyq-contrib-chevron');
-      function toggleBoth() {
-        if (!reqC || !conC) return;
-        var open = reqC.style.maxHeight && reqC.style.maxHeight !== '0px';
-        reqC.style.maxHeight = open ? '0px' : reqC.scrollHeight + 'px';
-        conC.style.maxHeight = open ? '0px' : conC.scrollHeight + 'px';
-        var rot = open ? 'rotate(0deg)' : 'rotate(90deg)';
-        if (reqCh) reqCh.style.transform = rot;
-        if (conCh) conCh.style.transform = rot;
+      const subpages = JSON.parse(subpagesJson || '[]');
+      const escHtml = (str) => String(str || '').replace(/[&<>"']/g, c => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+      ));
+
+      // 1. Category Accordion Controls + Hash Deep-Linking
+      const triggers = document.querySelectorAll('.accordion-trigger');
+      function toggleAccordion(btn, forceOpen) {
+        const content = btn.nextElementSibling;
+        const chevron = btn.querySelector('.chevron');
+        const isOpen = content && content.style.maxHeight && content.style.maxHeight !== '0px';
+
+        document.querySelectorAll('.accordion-content').forEach(c => { c.style.maxHeight = '0px'; });
+        document.querySelectorAll('.chevron').forEach(ch => { ch.style.transform = 'rotate(0deg)'; });
+        document.querySelectorAll('.accordion-trigger').forEach(tr => { tr.style.backgroundColor = 'transparent'; });
+
+        if (forceOpen || !isOpen) {
+          if (content) content.style.maxHeight = 'none';
+          if (chevron) chevron.style.transform = 'rotate(90deg)';
+          btn.style.backgroundColor = 'rgba(99,102,241,0.08)';
+        }
       }
-      if (reqT) reqT.addEventListener('click', toggleBoth);
-      if (conT) conT.addEventListener('click', toggleBoth);
-    })();
-    (function() {
-      var STATS_URL = 'https://script.google.com/macros/s/AKfycbx3ZJ1VuRgNc71FSKnrIAzLsv3qxnUeBwA8HALHWhDxlpJC93YzOwCV5rmLLT-swLaXHQ/exec?action=top';
-      var CACHE_KEY = 'tch_most_downloaded_v1';
-      var listEl = document.getElementById('most-downloaded-list');
-      var noteEl = document.getElementById('most-downloaded-note');
+
+      triggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+          toggleAccordion(e.currentTarget, false);
+        });
+      });
+
+      if (window.location.hash) {
+        const hashId = window.location.hash.substring(1);
+        const target = document.getElementById(hashId);
+        if (target) {
+          const parentAcc = target.classList.contains('accordion-trigger')
+            ? target
+            : target.closest('.accordion-item')?.querySelector('.accordion-trigger');
+          if (parentAcc) toggleAccordion(parentAcc, true);
+          setTimeout(() => {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 180);
+        }
+      }
+
+      // 3. MDC Guide arrow rotation
+      const mdcGuideDetails = document.getElementById('mdc-guide-details');
+      const mdcGuideArrow = document.getElementById('mdc-guide-arrow');
+      if (mdcGuideDetails && mdcGuideArrow) {
+        mdcGuideDetails.addEventListener('toggle', () => {
+          mdcGuideArrow.style.transform = mdcGuideDetails.open ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+      }
+
+      // 4. Independent Community Accordions
+      function bindCommunityToggle(triggerId, contentId, chevronId) {
+        const t = document.getElementById(triggerId);
+        const c = document.getElementById(contentId);
+        const ch = document.getElementById(chevronId);
+        t?.addEventListener('click', () => {
+          if (!c) return;
+          const open = c.style.maxHeight && c.style.maxHeight !== '0px';
+          c.style.maxHeight = open ? '0px' : c.scrollHeight + 'px';
+          if (ch) ch.style.transform = open ? 'rotate(0deg)' : 'rotate(90deg)';
+        });
+      }
+      bindCommunityToggle('pyq-req-trigger', 'pyq-req-content', 'pyq-req-chevron');
+      bindCommunityToggle('pyq-contrib-trigger', 'pyq-contrib-content', 'pyq-contrib-chevron');
+
+      // 5. IKS direct download tracking
+      document.querySelectorAll('.iks-direct-link').forEach(el => {
+        el.addEventListener('click', () => {
+          if (window.trackDownload) {
+            window.trackDownload('pyq', {
+              subject: el.getAttribute('data-track-subject') || 'Indian Knowledge System',
+              category: 'IKS',
+              semester: el.getAttribute('data-track-semester') || '1',
+              university: el.getAttribute('data-track-university') || ''
+            });
+          }
+        });
+      });
+
+      // 6. Clickable Most Downloaded Loader (stale-while-revalidate)
+      const STATS_URL = 'https://script.google.com/macros/s/AKfycbx3ZJ1VuRgNc71FSKnrIAzLsv3qxnUeBwA8HALHWhDxlpJC93YzOwCV5rmLLT-swLaXHQ/exec?action=top';
+      const CACHE_KEY = 'tch_most_downloaded_v1';
+      const listEl = document.getElementById('most-downloaded-list');
+      const noteEl = document.getElementById('most-downloaded-note');
+
+      function resolveItemHref(item) {
+        if (item.fileType === 'syllabus') return `${baseUrl}/syllabus/`;
+        const itemCat = String(item.category || '').toLowerCase();
+        const itemSub = String(item.subject || '').toLowerCase();
+        const itemSem = String(item.semester || '');
+
+        let match = subpages.find(s =>
+          s.catLower === itemCat && s.subjectLower === itemSub && String(s.sem) === itemSem
+        );
+        if (!match) {
+          match = subpages.find(s =>
+            s.catLower === itemCat && String(s.sem) === itemSem && itemSub.includes(s.subjectLower)
+          );
+        }
+        if (!match) {
+          match = subpages.find(s => itemSub.includes(s.subjectLower) && String(s.sem) === itemSem);
+        }
+        return match ? match.href : `${baseUrl}/pyqs/`;
+      }
 
       function renderTop(top) {
         if (!listEl) return;
-        var html = '';
-        top.forEach(function(item, i) {
-          var isLast = i === top.length - 1;
-          html += '<div style="display:flex;flex-direction:column;gap:0.25rem;padding-bottom:0.75rem;' + (!isLast ? 'border-bottom:1px solid var(--border-color);' : '') + '">' +
-            '<div style="font-weight:700;font-size:0.875rem;color:var(--text-primary);">' + item.subject + ' (' + item.category + ')</div>' +
-            '<div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-secondary);">' +
-              '<span>Sem ' + item.semester + ' &bull; ' + (item.fileType === 'pyq' ? 'PYQ' : 'Syllabus') + '</span>' +
-              '<span style="display:flex;align-items:center;gap:0.2rem;color:var(--accent-success);font-weight:600;">↓ ' + item.count + '</span>' +
-            '</div>' +
-          '</div>';
-        });
-        listEl.innerHTML = html;
+        listEl.innerHTML = top.map((item, i) => {
+          const isLast = i === top.length - 1;
+          const href = resolveItemHref(item);
+          return `
+            <a href="${escHtml(href)}" style="display:flex;flex-direction:column;gap:0.2rem;padding:0.4rem 0.35rem;border-radius:6px;text-decoration:none;${!isLast ? 'border-bottom:1px solid var(--border-color);' : ''}">
+              <div style="font-weight:700;font-size:0.86rem;color:var(--text-primary);overflow-wrap:anywhere;">${escHtml(item.subject)} (${escHtml(item.category)})</div>
+              <div style="display:flex;justify-content:space-between;font-size:0.74rem;color:var(--text-secondary);">
+                <span>Sem ${escHtml(item.semester)} &bull; ${item.fileType === 'pyq' ? 'PYQ' : 'Syllabus'}</span>
+                <span style="display:flex;align-items:center;gap:0.2rem;color:var(--accent-success);font-weight:700;">↓ ${escHtml(item.count)}</span>
+              </div>
+            </a>
+          `;
+        }).join('');
         if (noteEl) noteEl.style.display = 'block';
       }
 
-      // STEP 1: Show cached data immediately if available — skips the skeleton entirely
-      var cached = null;
-      try { cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); } catch(e) {}
+      let cached = null;
+      try { cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); } catch (e) {}
       if (cached && cached.top && cached.top.length > 0) {
         renderTop(cached.top);
       }
 
-      // STEP 2: Always fetch fresh data in background — update UI + cache when done
       fetch(STATS_URL)
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
+        .then(r => r.json())
+        .then(data => {
           if (data.status === 'ok' && data.top && data.top.length > 0) {
             renderTop(data.top);
-            try { localStorage.setItem(CACHE_KEY, JSON.stringify({ top: data.top, ts: Date.now() })); } catch(e) {}
-          } else if (!cached) {
-            if (listEl) listEl.innerHTML = '<p style="font-size:0.8rem;color:var(--text-tertiary);text-align:center;">Not enough data yet.</p>';
+            try { localStorage.setItem(CACHE_KEY, JSON.stringify({ top: data.top, ts: Date.now() })); } catch (e) {}
+          } else if (!cached && listEl) {
+            listEl.innerHTML = '<p style="font-size:0.8rem;color:var(--text-tertiary);text-align:center;">Not enough data yet.</p>';
           }
         })
-        .catch(function() {
-          // Only show error if nothing was rendered from cache
+        .catch(() => {
           if (!cached && listEl && listEl.querySelector('[style*="animation"]')) {
             listEl.innerHTML = '<p style="font-size:0.8rem;color:var(--text-tertiary);text-align:center;">Could not load data.</p>';
           }
         });
     })();
   </script>
-
-  <script>
-    // ══════════════════════════════════════════════════════════════════════════
-    // STATE PERSISTENCE — save open accordion + card before navigating away,
-    // restore when user presses Back so they land exactly where they were.
-    //
-    // Root cause of earlier failures:
-    //   • Reading sessionStorage / history.state in the MAIN script body
-    //     does NOT work for bfcache restores (scripts don't re-run).
-    //
-    // Correct approach:
-    //   1. SAVE  → sessionStorage on semester-link click (survives navigation).
-    //   2. READ  → inside window 'pageshow' handler (fires for BOTH fresh loads
-    //              AND bfcache restores — scripts don't re-run on bfcache, but
-    //              already-registered event listeners still fire).
-    //   3. BFCACHE (event.persisted=true): DOM is already correct, just scroll.
-    //   4. FRESH  (event.persisted=false): read sessionStorage, restore full state.
-    // ══════════════════════════════════════════════════════════════════════════
-
-    // Helper: open an accordion trigger programmatically
-    function openAccordionById(triggerId: string) {
-      const trigger = document.getElementById(triggerId) as HTMLButtonElement | null;
-      if (!trigger) return;
-      const content = trigger.nextElementSibling as HTMLElement;
-      const chevron = trigger.querySelector('.chevron') as HTMLElement;
-      document.querySelectorAll('.accordion-content').forEach(c => {
-        (c as HTMLElement).style.maxHeight = '0px';
-      });
-      document.querySelectorAll('.chevron').forEach(ch => {
-        (ch as HTMLElement).style.transform = 'rotate(0deg)';
-      });
-      document.querySelectorAll('.accordion-trigger').forEach(tr => {
-        (tr as HTMLElement).style.backgroundColor = 'transparent';
-      });
-      if (content) {
-        content.style.maxHeight = 'none';
-        trigger.style.backgroundColor = 'rgba(99,102,241,0.08)';
-        if (chevron) chevron.style.transform = 'rotate(90deg)';
-      }
-    }
-
-    // Helper: open a subject card panel programmatically
-    function openSubjectPanel(panelId: string) {
-      const panel = document.getElementById(panelId) as HTMLElement | null;
-      if (!panel) return;
-      panel.style.maxHeight = 'none';
-      const prefixes = ['major', 'minor', 'mdc', 'vac', 'sec'];
-      for (const prefix of prefixes) {
-        const btn = document.querySelector(`.${prefix}-pyq-subject-btn[data-panel="${panelId}"]`) as HTMLElement | null;
-        if (btn) {
-          const card = btn.closest(`.${prefix}-pyq-subject-card`) as HTMLElement | null;
-          if (card) card.classList.add('is-open');
-          const icon = btn.querySelector(`.${prefix}-subject-icon`) as HTMLElement | null;
-          if (icon) { icon.textContent = '📂'; icon.style.transform = 'rotate(-10deg)'; }
-          break;
-        }
-      }
-    }
-
-    // ── STEP 1: Save to sessionStorage on semester-link click ───────────────
-    const catPanelSelectors = [
-      '.major-pyq-papers-panel a',
-      '.minor-pyq-papers-panel a',
-      '.mdc-pyq-papers-panel a',
-    ];
-    document.querySelectorAll(catPanelSelectors.join(', ')).forEach(link => {
-      link.addEventListener('click', () => {
-        const panel = link.closest('.major-pyq-papers-panel, .minor-pyq-papers-panel, .mdc-pyq-papers-panel') as HTMLElement | null;
-        if (!panel) return;
-        const accordionContent = link.closest('.accordion-content') as HTMLElement | null;
-        const trigger = accordionContent?.previousElementSibling as HTMLElement | null;
-        if (panel.id && trigger?.id) {
-          sessionStorage.setItem('pyq_restore', JSON.stringify({
-            trigger: trigger.id,
-            panel: panel.id,
-            ts: Date.now(),
-          }));
-        }
-      });
-    });
-
-    // ── STEP 2: Read sessionStorage INSIDE pageshow (the only place it works) ─
-    window.addEventListener('pageshow', (event: PageTransitionEvent) => {
-      let saved: { trigger: string; panel: string; ts: number } | null = null;
-      try {
-        const raw = sessionStorage.getItem('pyq_restore');
-        if (raw) saved = JSON.parse(raw);
-      } catch { /* ignore */ }
-
-      if (!saved?.trigger || !saved?.panel) return;
-      // Ignore stale saves older than 60 seconds (user opened a new tab etc.)
-      if (Date.now() - (saved.ts || 0) > 60000) {
-        sessionStorage.removeItem('pyq_restore');
-        return;
-      }
-
-      const { trigger: triggerId, panel: panelId } = saved;
-
-      if (event.persisted) {
-        // ─ bfcache restore ─────────────────────────────────────────────────
-        // DOM is FROZEN as it was when user left (accordion open, card open).
-        // Don't touch the DOM — just scroll smoothly to the card.
-        setTimeout(() => {
-          document.getElementById(panelId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-        // Keep sessionStorage intact (if bfcache is later evicted, the fresh
-        // load path below will handle it).
-      } else {
-        // ─ Fresh load (bfcache evicted / not supported / first load) ───────
-        // Remove the save so a subsequent fresh visit doesn't re-trigger.
-        sessionStorage.removeItem('pyq_restore');
-        requestAnimationFrame(() => {
-          openAccordionById(triggerId);
-          openSubjectPanel(panelId);
-          setTimeout(() => {
-            document.getElementById(panelId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }, 150);
-        });
-      }
-    });
-
-    // ── Accordion script (non-AEC categories) ──────────────────────────────
-    const triggers = document.querySelectorAll('.accordion-trigger');
-
-    triggers.forEach(trigger => {
-      trigger.addEventListener('click', (e) => {
-        const btn = e.currentTarget as HTMLButtonElement;
-        const content = btn.nextElementSibling as HTMLElement;
-        const chevron = btn.querySelector('.chevron') as HTMLElement;
-
-        const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
-
-        // Close all others
-        document.querySelectorAll('.accordion-content').forEach(c => {
-          (c as HTMLElement).style.maxHeight = '0px';
-        });
-        document.querySelectorAll('.chevron').forEach(ch => {
-          (ch as HTMLElement).style.transform = 'rotate(0deg)';
-        });
-        document.querySelectorAll('.accordion-trigger').forEach(tr => {
-          (tr as HTMLElement).style.backgroundColor = 'transparent';
-        });
-
-        if (!isOpen) {
-          content.style.maxHeight = content.scrollHeight + 'px';
-          if (chevron) chevron.style.transform = 'rotate(90deg)';
-          btn.style.backgroundColor = 'rgba(99,102,241,0.08)';
-        }
-      });
-    });
-
-    // ── AEC PYQ: handled via initCatWidget below ──────────────────────────────
-
-    // ── Generic card-grid widget factory for Major / Minor / MDC ────────────
-    type CatConfig = {
-      prefix: string;
-      triggerId: string;
-      accentColor: string;
-    };
-
-    function initCatWidget(cfg: CatConfig) {
-      const tabs   = document.querySelectorAll(`.${cfg.prefix}-pyq-tab`) as NodeListOf<HTMLButtonElement>;
-      const cards  = document.querySelectorAll(`.${cfg.prefix}-pyq-subject-card`) as NodeListOf<HTMLElement>;
-      const search = document.getElementById(`${cfg.prefix}-pyq-search`) as HTMLInputElement | null;
-      const empty  = document.getElementById(`${cfg.prefix}-pyq-empty`) as HTMLElement | null;
-
-      let activeSem = 'all';
-      let searchVal = '';
-
-      function filter() {
-        let visible = 0;
-        cards.forEach(card => {
-          const cardSems   = (card.getAttribute('data-sems') || '').split(',');
-          const cardSearch = card.getAttribute('data-search') || '';
-          const semMatch   = activeSem === 'all' || cardSems.includes(activeSem);
-          const txtMatch   = searchVal === '' || cardSearch.includes(searchVal);
-          const show = semMatch && txtMatch;
-          card.style.display = show ? '' : 'none';
-          if (show) visible++;
-        });
-        if (empty) empty.style.display = visible === 0 ? 'block' : 'none';
-        // Re-measure parent accordion height
-        const trigger = document.getElementById(cfg.triggerId);
-        const content = trigger?.nextElementSibling as HTMLElement | null;
-        if (content && content.style.maxHeight && content.style.maxHeight !== '0px') {
-          content.style.maxHeight = 'none';
-        }
-      }
-
-      tabs.forEach(btn => {
-        btn.addEventListener('click', () => {
-          tabs.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          activeSem = btn.getAttribute('data-sem') || 'all';
-          filter();
-        });
-      });
-
-      search?.addEventListener('input', () => {
-        searchVal = search.value.toLowerCase().trim();
-        filter();
-      });
-
-      // Card expand/collapse
-      document.querySelectorAll(`.${cfg.prefix}-pyq-subject-btn`).forEach(btn => {
-        btn.addEventListener('click', () => {
-          const panelId = (btn as HTMLElement).getAttribute('data-panel');
-          const panel = panelId ? document.getElementById(panelId) : null;
-          const card = btn.closest(`.${cfg.prefix}-pyq-subject-card`) as HTMLElement;
-          const icon = btn.querySelector(`.${cfg.prefix}-subject-icon`) as HTMLElement;
-          if (!panel) return;
-          const isOpen = panel.style.maxHeight && panel.style.maxHeight !== '0px';
-          if (isOpen) {
-            panel.style.maxHeight = '0px';
-            card?.classList.remove('is-open');
-            if (icon) { icon.textContent = '📥'; icon.style.transform = ''; }
-          } else {
-            panel.style.maxHeight = panel.scrollHeight + 'px';
-            card?.classList.add('is-open');
-            if (icon) { icon.textContent = '📂'; icon.style.transform = 'rotate(-10deg)'; }
-          }
-          // Re-measure parent accordion
-          const trigger = document.getElementById(cfg.triggerId);
-          const content = trigger?.nextElementSibling as HTMLElement | null;
-          if (content && content.style.maxHeight && content.style.maxHeight !== '0px') {
-            content.style.maxHeight = 'none';
-          }
-        });
-      });
-    }
-
-    initCatWidget({ prefix: 'major', triggerId: 'major-pyq-trigger', accentColor: 'var(--accent-primary)' });
-    initCatWidget({ prefix: 'minor', triggerId: 'minor-pyq-trigger', accentColor: 'var(--accent-success)' });
-    initCatWidget({ prefix: 'mdc',   triggerId: 'mdc-pyq-trigger',   accentColor: 'var(--accent-warning)' });
-    initCatWidget({ prefix: 'aec',   triggerId: 'aec-pyq-trigger',   accentColor: 'var(--accent-success)' });
-
-    // ── VAC PYQ: Tab filter + Search + Card expand ─────────────────────────
-    const vacTabs    = document.querySelectorAll('.vac-pyq-tab') as NodeListOf<HTMLButtonElement>;
-    const vacCards   = document.querySelectorAll('.vac-pyq-subject-card') as NodeListOf<HTMLElement>;
-    const vacSearch  = document.getElementById('vac-pyq-search') as HTMLInputElement;
-    const vacEmpty   = document.getElementById('vac-pyq-empty') as HTMLElement;
-
-    let vacActiveSem  = 'all';
-    let vacSearchTerm = '';
-
-    function filterVac() {
-      let visible = 0;
-      vacCards.forEach(card => {
-        const cardSem    = card.getAttribute('data-sem') || '';
-        const cardSearch = card.getAttribute('data-search') || '';
-        const semMatch   = vacActiveSem === 'all' || cardSem === vacActiveSem;
-        const txtMatch   = vacSearchTerm === '' || cardSearch.includes(vacSearchTerm);
-        const show       = semMatch && txtMatch;
-        card.style.display = show ? '' : 'none';
-        if (show) visible++;
-      });
-      if (vacEmpty) vacEmpty.style.display = visible === 0 ? 'block' : 'none';
-      // Re-measure accordion height
-      const vacContent = document.getElementById('vac-pyq-trigger')?.nextElementSibling as HTMLElement | null;
-      if (vacContent && vacContent.style.maxHeight && vacContent.style.maxHeight !== '0px') {
-        vacContent.style.maxHeight = 'none';
-      }
-    }
-
-    vacTabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        vacTabs.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        vacActiveSem = btn.getAttribute('data-sem') || 'all';
-        filterVac();
-      });
-    });
-
-    vacSearch?.addEventListener('input', () => {
-      vacSearchTerm = vacSearch.value.toLowerCase().trim();
-      filterVac();
-    });
-
-    // VAC subject card expand/collapse
-    document.querySelectorAll('.vac-pyq-subject-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const panelId = (btn as HTMLElement).getAttribute('data-panel');
-        const panel = panelId ? document.getElementById(panelId) : null;
-        const card = btn.closest('.vac-pyq-subject-card') as HTMLElement;
-        const icon = btn.querySelector('.vac-subject-icon') as HTMLElement;
-        if (!panel) return;
-        const isOpen = panel.style.maxHeight && panel.style.maxHeight !== '0px';
-        if (isOpen) {
-          panel.style.maxHeight = '0px';
-          card?.classList.remove('is-open');
-          if (icon) { icon.textContent = '📥'; icon.style.transform = ''; }
-        } else {
-          panel.style.maxHeight = panel.scrollHeight + 'px';
-          card?.classList.add('is-open');
-          if (icon) { icon.textContent = '📂'; icon.style.transform = 'rotate(-10deg)'; }
-        }
-        // Re-measure parent accordion
-        const vacContent = document.getElementById('vac-pyq-trigger')?.nextElementSibling as HTMLElement | null;
-        if (vacContent && vacContent.style.maxHeight && vacContent.style.maxHeight !== '0px') {
-          vacContent.style.maxHeight = 'none';
-        }
-      });
-    });
-
-    // ── SEC PYQ: Tab filter + Search + Card expand ─────────────────────────
-    const secTabs    = document.querySelectorAll('.sec-pyq-tab') as NodeListOf<HTMLButtonElement>;
-    const secCards   = document.querySelectorAll('.sec-pyq-subject-card') as NodeListOf<HTMLElement>;
-    const secSearch  = document.getElementById('sec-pyq-search') as HTMLInputElement;
-    const secEmpty   = document.getElementById('sec-pyq-empty') as HTMLElement;
-
-    let secActiveSem  = 'all';
-    let secSearchTerm = '';
-
-    function filterSec() {
-      let visible = 0;
-      secCards.forEach(card => {
-        const cardSem    = card.getAttribute('data-sem') || '';
-        const cardSearch = card.getAttribute('data-search') || '';
-        const semMatch   = secActiveSem === 'all' || cardSem === secActiveSem;
-        const txtMatch   = secSearchTerm === '' || cardSearch.includes(secSearchTerm);
-        const show       = semMatch && txtMatch;
-        card.style.display = show ? '' : 'none';
-        if (show) visible++;
-      });
-      if (secEmpty) secEmpty.style.display = visible === 0 ? 'block' : 'none';
-      // Re-measure accordion height
-      const secContent = document.getElementById('sec-pyq-trigger')?.nextElementSibling as HTMLElement | null;
-      if (secContent && secContent.style.maxHeight && secContent.style.maxHeight !== '0px') {
-        secContent.style.maxHeight = 'none';
-      }
-    }
-
-    secTabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        secTabs.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        secActiveSem = btn.getAttribute('data-sem') || 'all';
-        filterSec();
-      });
-    });
-
-    secSearch?.addEventListener('input', () => {
-      secSearchTerm = secSearch.value.toLowerCase().trim();
-      filterSec();
-    });
-
-    // SEC subject card expand/collapse
-    document.querySelectorAll('.sec-pyq-subject-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const panelId = (btn as HTMLElement).getAttribute('data-panel');
-        const panel = panelId ? document.getElementById(panelId) : null;
-        const card = btn.closest('.sec-pyq-subject-card') as HTMLElement;
-        const icon = btn.querySelector('.sec-subject-icon') as HTMLElement;
-        if (!panel) return;
-        const isOpen = panel.style.maxHeight && panel.style.maxHeight !== '0px';
-        if (isOpen) {
-          panel.style.maxHeight = '0px';
-          card?.classList.remove('is-open');
-          if (icon) { icon.textContent = '📥'; icon.style.transform = ''; }
-        } else {
-          panel.style.maxHeight = panel.scrollHeight + 'px';
-          card?.classList.add('is-open');
-          if (icon) { icon.textContent = '📂'; icon.style.transform = 'rotate(-10deg)'; }
-        }
-        // Re-measure parent accordion
-        const secContent = document.getElementById('sec-pyq-trigger')?.nextElementSibling as HTMLElement | null;
-        if (secContent && secContent.style.maxHeight && secContent.style.maxHeight !== '0px') {
-          secContent.style.maxHeight = 'none';
-        }
-      });
-    });
-
-    // ── MDC Guide <details> arrow toggle ──────────────────────────────────────
-    const mdcGuideDetails = document.getElementById('mdc-guide-details') as HTMLDetailsElement | null;
-    const mdcGuideArrow = document.getElementById('mdc-guide-arrow') as HTMLElement | null;
-    if (mdcGuideDetails && mdcGuideArrow) {
-      mdcGuideDetails.addEventListener('toggle', () => {
-        mdcGuideArrow.style.transform = mdcGuideDetails.open ? 'rotate(180deg)' : 'rotate(0deg)';
-      });
-    }
-
-    // ── Auto-open accordion and cards based on URL hash ─────────────────────────────────
-    setTimeout(() => {
-      if (window.location.hash) {
-        const hashId = window.location.hash.substring(1);
-        const targetElement = document.getElementById(hashId);
-        
-        if (targetElement) {
-          // If it's a sub-card or grid, we must open its parent accordion first
-          if (!targetElement.classList.contains('accordion-trigger')) {
-            const parentAccordion = targetElement.closest('.accordion-item');
-            if (parentAccordion) {
-              const trigger = parentAccordion.querySelector('.accordion-trigger');
-              if (trigger) trigger.click();
-            }
-          }
-          
-          // Auto-select Sem 4 tab if targeting aec-pyq-grid or vac-pyq-grid
-          if (hashId === 'aec-pyq-grid') {
-            setTimeout(() => {
-              const tabs = document.querySelectorAll('.aec-pyq-tab');
-              tabs.forEach(btn => { if (btn.getAttribute('data-sem') === '4') btn.click(); });
-            }, 100);
-          }
-          if (hashId === 'vac-pyq-grid') {
-            setTimeout(() => {
-              const tabs = document.querySelectorAll('.vac-pyq-tab');
-              tabs.forEach(btn => { if (btn.getAttribute('data-sem') === '4') btn.click(); });
-            }, 100);
-          }
-
-          // Click the target if it's a button (accordion or card), skip if it's a grid/div
-          if (targetElement.tagName === 'BUTTON') {
-            targetElement.click();
-          }
-          
-          // Scroll it into view smoothly
-          setTimeout(() => {
-            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }, 400);
-        }
-      }
-    }, 150);
-  </script>
-
-  <!-- ═══ Contextual Help: PYQ Not Found ═══ -->
-  <div style="margin-top: 2.5rem; margin-bottom: 1rem; border: 1px solid rgba(251,191,36,0.15); border-radius: 14px; padding: 1.1rem 1.15rem; background: linear-gradient(135deg, rgba(251,191,36,0.03) 0%, rgba(0,0,0,0.08) 100%);">
-    <div style="font-size: 0.88rem; font-weight: 800; color: #fbbf24; font-family: var(--font-display); margin-bottom: 0.5rem;">📄 Can't find your paper?</div>
-    <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.65rem;">
-      We're actively reaching out to college teachers and seniors to collect more papers. In the meantime:
-    </div>
-    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.6rem;">
-      <button onclick="document.dispatchEvent(new CustomEvent('open-request-modal'))" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 700; color: #fbbf24; background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25); border-radius: 20px; padding: 5px 14px; cursor: pointer; transition: background 0.2s;">
-        📝 Request a Paper
-      </button>
-      <button onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'))" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 700; color: #818cf8; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 5px 14px; cursor: pointer; transition: background 0.2s;">
-        📤 Submit a Paper You Have
-      </button>
-    </div>
-    <div style="font-size: 0.68rem; color: var(--text-tertiary); line-height: 1.5;">
-      💡 <strong style="color: var(--text-secondary);">Tip:</strong> Ask your subject teacher and seniors — they often have papers from previous years that haven't been digitized yet.
-    </div>
-  </div>
-
 </Layout>
-
-
-
-
-
