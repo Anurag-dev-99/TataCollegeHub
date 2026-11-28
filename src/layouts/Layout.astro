@@ -150,13 +150,18 @@ const webPageSchema = JSON.stringify(webPageObj);
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content="https://kolhanhub.in/images/og-kolhanhub.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="KolhanHub — Kolhan University PYQs, Syllabus, Results & Study Notes" />
     <meta property="og:site_name" content="KolhanHub" />
     <meta property="og:locale" content="en_IN" />
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content="https://kolhanhub.in/images/og-kolhanhub.png" />
 
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json" is:inline>
@@ -164,10 +169,15 @@ const webPageSchema = JSON.stringify(webPageObj);
         "@context": "https://schema.org",
         "@type": "EducationalOrganization",
         "name": "KolhanHub",
-        "alternateName": "Kolhan University Student Portal (Tata College Hub)",
+        "alternateName": "Kolhan Hub",
         "description": "Free Kolhan University PYQs (previous year question papers), NEP FYUGP syllabus, exam results, holiday list, and academic resources for all 37 colleges — Semester 1 to 8.",
         "url": "https://kolhanhub.in",
-        "sameAs": [],
+        "logo": "https://kolhanhub.in/images/og-kolhanhub.png",
+        "sameAs": [
+          "https://t.me/kolhan_hub",
+          "https://t.me/kolhanhub",
+          "https://whatsapp.com/channel/0029VbDFg6B47XeIqUB91L3a"
+        ],
         "keywords": "Kolhan University PYQ, Kolhan University result, Kolhan University syllabus, KolhanHub, Tata College Chaibasa",
         "address": {
           "@type": "PostalAddress",
@@ -220,13 +230,13 @@ const webPageSchema = JSON.stringify(webPageObj);
       <!-- Desktop Sidebar -->
       <aside class="sidebar">
         <a href={`${baseUrl}/`} class="logo-link" style="display: flex; align-items: center; gap: 0.75rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); text-decoration: none; color: inherit;">
-          <div class="logo-icon" style="background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); color: white; width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; box-shadow: var(--shadow-glow); transition: all var(--transition-normal);">
-            T
+          <div class="logo-icon" style="background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); color: white; width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; letter-spacing: -0.04em; box-shadow: var(--shadow-glow); transition: all var(--transition-normal);">
+            KH
           </div>
           <div>
-            <h2 style="font-size: 1.1rem; font-weight: 800; tracking: -0.02em; font-family: var(--font-display); margin: 0; transition: color var(--transition-fast);">
-              <span style="color: var(--text-primary);" class="logo-text-primary">Tata </span><span style="color: var(--accent-primary);">Hub</span>
-            </h2>
+            <span style="display: block; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; font-family: var(--font-display); margin: 0; transition: color var(--transition-fast);">
+              <span style="color: var(--text-primary);" class="logo-text-primary">Kolhan</span><span style="color: var(--accent-primary);">Hub</span>
+            </span>
             <span style="font-size: 0.7rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: block;">Student Portal</span>
           </div>
         </a>
@@ -275,12 +285,12 @@ const webPageSchema = JSON.stringify(webPageObj);
         <!-- Sticky Header -->
         <header style="background-color: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 40; padding: 0.75rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; box-shadow: var(--shadow-sm); height: 68px;">
           <!-- Logo & Branding -->
-          <a href={`${baseUrl}/`} class="logo-link" style="display: flex; align-items: center; gap: 0.625rem; text-decoration: none; color: inherit;">
-            <div class="logo-icon" style="background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); color: white; width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; box-shadow: var(--shadow-glow); transition: all var(--transition-normal);">
-              T
+          <a href={`${baseUrl}/`} class="logo-link" style="display: flex; align-items: center; gap: 0.55rem; text-decoration: none; color: inherit;">
+            <div class="logo-icon" style="background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); color: white; width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; letter-spacing: -0.04em; box-shadow: var(--shadow-glow); transition: all var(--transition-normal); flex-shrink: 0;">
+              KH
             </div>
-            <span style="font-size: 1.15rem; font-weight: 800; font-family: var(--font-display); letter-spacing: -0.01em; margin: 0; line-height: 1.2; transition: color var(--transition-fast);">
-              <span style="color: var(--text-primary);" class="logo-text-primary">Tata </span><span style="color: var(--accent-primary);">Hub</span>
+            <span style="font-size: 1.08rem; font-weight: 800; font-family: var(--font-display); letter-spacing: -0.01em; margin: 0; line-height: 1.2; transition: color var(--transition-fast); white-space: nowrap;">
+              <span style="color: var(--text-primary);" class="logo-text-primary">Kolhan</span><span style="color: var(--accent-primary);">Hub</span>
             </span>
           </a>
 
