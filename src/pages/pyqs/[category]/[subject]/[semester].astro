@@ -383,11 +383,30 @@ if (isMathsMajorSem3) {
   seoTitle = c1.length <= 62 ? c1 : (c2.length <= 62 ? c2 : c3);
 }
 
-const seoDescription = isMathsMajorSem3
-  ? 'Download Kolhan University B.Sc. Mathematics Honours Semester 3 Previous Year Question Papers (MJ-04 Real Analysis & MJ-05 Vectors) for 2022 & 2023 batches with complete step-by-step solved answers, repeated questions, book guide, and 2023 batch result stats.'
-  : (availableCount > 0
-      ? `Download free Kolhan University ${originalSubject} (${originalCategory}) Semester ${originalSemester} previous year question paper PDF (${yearsSummary} — ${availableCount} ${availableCount === 1 ? 'paper' : 'papers'}) for NEP FYUGP all 37 colleges.`
-      : `Kolhan University ${originalSubject} (${originalCategory}) Semester ${originalSemester} previous year question paper archive for NEP FYUGP all 37 colleges. Request or upload this paper on KolhanHub.`);
+const startYears = [...new Set(uniqueYears.map(y => y.slice(0, 4)).filter(Boolean))].sort();
+const yearsShort = uniqueYears.length === 0
+  ? '2022–2026 batches'
+  : uniqueYears.length === 1
+    ? (/^\d{4}$/.test(uniqueYears[0]) ? uniqueYears[0] : `${uniqueYears[0]} batch`)
+    : uniqueYears.length === 2
+      ? `${startYears[0]}, ${startYears[1]} batches`
+      : `${startYears[0]}–${startYears[startYears.length - 1]} batches`;
+
+const descSubject = originalSubject.length > 32 ? shortSubject : originalSubject;
+
+let seoDescription = '';
+if (isMathsMajorSem3) {
+  seoDescription = 'Download Kolhan University B.Sc. Mathematics Honours Semester 3 Previous Year Question Papers (MJ-04 Real Analysis & MJ-05 Vectors) for 2022 & 2023 batches with complete step-by-step solved answers, repeated questions, book guide, and 2023 batch result stats.';
+} else if (availableCount > 0) {
+  const paperWord = availableCount === 1 ? 'paper' : 'papers';
+  const fullDesc = `Download free Kolhan University ${descSubject} (${originalCategory}) Sem ${originalSemester} previous year question paper PDF (${yearsShort} — ${availableCount} ${paperWord}) for NEP FYUGP all 37 colleges.`;
+  const compactDesc = `Download free Kolhan University ${descSubject} (${originalCategory}) Sem ${originalSemester} PYQ PDF (${yearsShort} — ${availableCount} ${paperWord}) for all 37 colleges.`;
+  seoDescription = fullDesc.length <= 160 ? fullDesc : compactDesc;
+} else {
+  const fullEmpty = `Kolhan University ${descSubject} (${originalCategory}) Sem ${originalSemester} previous year question paper archive for NEP FYUGP all 37 colleges. Request or upload on KolhanHub.`;
+  const compactEmpty = `Kolhan University ${descSubject} (${originalCategory}) Sem ${originalSemester} PYQ archive for all 37 colleges. Request or upload on KolhanHub.`;
+  seoDescription = fullEmpty.length <= 160 ? fullEmpty : compactEmpty;
+}
 
 const seoKeywords = `${originalSubject} sem ${originalSemester} question paper, ${originalSubject} ${originalCategory} sem ${originalSemester} pyq, Kolhan University ${originalSubject} previous year question paper pdf, ${originalCategory} ${originalSubject} sem ${originalSemester}, NEP FYUGP ${originalSubject} pyq, Kolhan University question paper 2025 2026`;
 
@@ -448,6 +467,7 @@ const breadcrumbSchema = JSON.stringify({
   description={seoDescription}
   keywords={seoKeywords}
   activeTab="pyqs"
+  hideDefaultBreadcrumb={true}
 >
   <Fragment slot="head">
     {isMathsMajorSem3 && (

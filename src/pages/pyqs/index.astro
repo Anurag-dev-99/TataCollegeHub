@@ -111,6 +111,13 @@ const vacTotal = availablePyqs.filter(p => p.category === 'VAC').length;
 const secGroups = buildSemSubjectGroups('SEC');
 const secTotal = availablePyqs.filter(p => p.category === 'SEC').length;
 
+const majorSems = [...new Set(majorData.flatMap(d => d.sems))].sort((a, b) => a - b);
+const minorSems = [...new Set(minorData.flatMap(d => d.sems))].sort((a, b) => a - b);
+const mdcSems = [...new Set(mdcData.flatMap(d => d.sems))].sort((a, b) => a - b);
+const aecSems = [...new Set(aecGroups.map(g => g.sem))].sort((a, b) => a - b);
+const vacSems = [...new Set(vacGroups.map(g => g.sem))].sort((a, b) => a - b);
+const secSems = [...new Set(secGroups.map(g => g.sem))].sort((a, b) => a - b);
+
 const iksPyqs = pyqsData.filter((p: any) => p.category === 'IKS' && p.type !== 'notes' && !!p.downloadUrl);
 const iksNotes = pyqsData.filter((p: any) => p.category === 'IKS' && p.type === 'notes' && !!p.downloadUrl);
 
@@ -261,9 +268,19 @@ const faqSchema = JSON.stringify({
 
           <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
             <div style="padding: 0.85rem;">
-              <div class="pyq-cat-grid">
+              <div class="pyq-pill-row" data-pyq-tabs="major" style="margin-bottom: 0.75rem;">
+                <button type="button" class="btn btn-secondary pyq-sem-tab pyq-sem-tab-primary active" data-sem="all">
+                  All ({majorData.length})
+                </button>
+                {majorSems.map(sem => (
+                  <button type="button" class="btn btn-secondary pyq-sem-tab pyq-sem-tab-primary" data-sem={String(sem)}>
+                    Sem {sem}
+                  </button>
+                ))}
+              </div>
+              <div class="pyq-cat-grid" data-pyq-grid="major">
                 {majorData.map(({ subject, subjectLower, sems, totalPapers, hasSolved, hasNotes }) => (
-                  <div class="card pyq-subject-box" style="padding: 0.85rem; display: flex; flex-direction: column; gap: 0.55rem; min-width: 0;">
+                  <div class="card pyq-subject-box" data-sems={sems.join(',')} style="padding: 0.85rem; display: flex; flex-direction: column; gap: 0.55rem; min-width: 0;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.4rem;">
                       <span style="font-weight: 700; font-size: 0.92rem; color: var(--text-primary); overflow-wrap: anywhere;">{subject}</span>
                       <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-primary); white-space: nowrap;">{totalPapers} PDFs</span>
@@ -318,9 +335,19 @@ const faqSchema = JSON.stringify({
                 <span style="flex-shrink: 0;">ℹ️</span>
                 <span><strong style="color: var(--accent-success);">2025 batch onwards:</strong> "Minor" is officially renamed <strong>Associated Core (AC)</strong>. Same papers, new name.</span>
               </div>
-              <div class="pyq-cat-grid">
+              <div class="pyq-pill-row" data-pyq-tabs="minor" style="margin-bottom: 0.75rem;">
+                <button type="button" class="btn btn-secondary pyq-sem-tab pyq-sem-tab-success active" data-sem="all">
+                  All ({minorData.length})
+                </button>
+                {minorSems.map(sem => (
+                  <button type="button" class="btn btn-secondary pyq-sem-tab pyq-sem-tab-success" data-sem={String(sem)}>
+                    Sem {sem}
+                  </button>
+                ))}
+              </div>
+              <div class="pyq-cat-grid" data-pyq-grid="minor">
                 {minorData.map(({ subject, subjectLower, sems, totalPapers }) => (
-                  <div class="card pyq-subject-box" style="padding: 0.85rem; display: flex; flex-direction: column; gap: 0.55rem; min-width: 0;">
+                  <div class="card pyq-subject-box" data-sems={sems.join(',')} style="padding: 0.85rem; display: flex; flex-direction: column; gap: 0.55rem; min-width: 0;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.4rem;">
                       <span style="font-weight: 700; font-size: 0.92rem; color: var(--text-primary); overflow-wrap: anywhere;">{subject}</span>
                       <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-success); white-space: nowrap;">{totalPapers} PDFs</span>
@@ -365,6 +392,14 @@ const faqSchema = JSON.stringify({
 
           <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
             <div style="padding: 0.85rem;">
+              <a
+                href={`${baseUrl}/syllabus/mdc/`}
+                class="pyq-syl-banner"
+                style="background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.28); color: var(--accent-warning);"
+              >
+                <span>📖 Open Full MDC Syllabus Page</span>
+                <span>→</span>
+              </a>
               <div style="display: flex; align-items: flex-start; gap: 0.5rem; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius-xs); padding: 0.6rem 0.85rem; font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.7rem;">
                 <span style="flex-shrink: 0;">💡</span>
                 <span><strong style="color: var(--accent-warning);">MDC syllabus is the same for Sem 1, 2 &amp; 3</strong> — check papers from all three semesters for better exam preparation.</span>
@@ -390,9 +425,19 @@ const faqSchema = JSON.stringify({
                 </div>
               </details>
 
-              <div class="pyq-cat-grid">
+              <div class="pyq-pill-row" data-pyq-tabs="mdc" style="margin-bottom: 0.75rem;">
+                <button type="button" class="btn btn-secondary pyq-sem-tab pyq-sem-tab-warning active" data-sem="all">
+                  All ({mdcData.length})
+                </button>
+                {mdcSems.map(sem => (
+                  <button type="button" class="btn btn-secondary pyq-sem-tab pyq-sem-tab-warning" data-sem={String(sem)}>
+                    Sem {sem}
+                  </button>
+                ))}
+              </div>
+              <div class="pyq-cat-grid" data-pyq-grid="mdc">
                 {mdcData.map(({ subject, subjectLower, sems, totalPapers, hasNotes }) => (
-                  <div class="card pyq-subject-box" style="padding: 0.85rem; display: flex; flex-direction: column; gap: 0.55rem; min-width: 0;">
+                  <div class="card pyq-subject-box" data-sems={sems.join(',')} style="padding: 0.85rem; display: flex; flex-direction: column; gap: 0.55rem; min-width: 0;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.4rem;">
                       <span style="font-weight: 700; font-size: 0.92rem; color: var(--text-primary); overflow-wrap: anywhere;">{subject}</span>
                       <span style="font-size: 0.65rem; font-weight: 700; color: var(--accent-warning); white-space: nowrap;">{totalPapers} PDFs</span>
@@ -442,14 +487,33 @@ const faqSchema = JSON.stringify({
 
         <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
           <div style="padding: 0.85rem;">
-            <p style="color: var(--text-secondary); font-size: 0.78rem; line-height: 1.5; margin: 0 0 0.8rem;">
+            <a
+              href={`${baseUrl}/syllabus/aec/`}
+              class="pyq-syl-banner"
+              style="background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.28); color: var(--accent-success);"
+            >
+              <span>📖 Open Full AEC Syllabus Page</span>
+              <span>→</span>
+            </a>
+            <p style="color: var(--text-secondary); font-size: 0.78rem; line-height: 1.5; margin: 0 0 0.75rem;">
               Ability Enhancement Courses (AEC) run across Semesters 1–4 (AEC-1 Hindi, AEC-2 English, AEC-3 &amp; AEC-4 language options). Open any paper page to download all sets.
             </p>
-            <div id="aec-pyq-grid" class="pyq-cat-grid">
+            <div class="pyq-pill-row" data-pyq-tabs="aec" style="margin-bottom: 0.75rem;">
+              <button type="button" class="btn btn-secondary pyq-sem-tab pyq-sem-tab-success active" data-sem="all">
+                All ({aecGroups.length})
+              </button>
+              {aecSems.map(sem => (
+                <button type="button" class="btn btn-secondary pyq-sem-tab pyq-sem-tab-success" data-sem={String(sem)}>
+                  Sem {sem}
+                </button>
+              ))}
+            </div>
+            <div id="aec-pyq-grid" class="pyq-cat-grid" data-pyq-grid="aec">
               {aecGroups.map(group => (
                 <a
                   href={group.href}
                   class="card pyq-direct-card"
+                  data-sems={String(group.sem)}
                   style="padding: 0.85rem; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; text-decoration: none; min-width: 0;"
                 >
                   <div style="min-width: 0;">
@@ -491,14 +555,33 @@ const faqSchema = JSON.stringify({
 
         <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
           <div style="padding: 0.85rem;">
-            <p style="color: var(--text-secondary); font-size: 0.78rem; line-height: 1.5; margin: 0 0 0.8rem;">
+            <a
+              href={`${baseUrl}/syllabus/vac/`}
+              class="pyq-syl-banner"
+              style="background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.28); color: var(--accent-primary);"
+            >
+              <span>📖 Open Full VAC Syllabus Page</span>
+              <span>→</span>
+            </a>
+            <p style="color: var(--text-secondary); font-size: 0.78rem; line-height: 1.5; margin: 0 0 0.75rem;">
               Value Added Courses: VAC-1 (Understanding India) in Semester 1 and VAC-2 (Global Citizenship Education) in Semester 4.
             </p>
-            <div id="vac-pyq-grid" class="pyq-cat-grid">
+            <div class="pyq-pill-row" data-pyq-tabs="vac" style="margin-bottom: 0.75rem;">
+              <button type="button" class="btn btn-secondary pyq-sem-tab pyq-sem-tab-primary active" data-sem="all">
+                All ({vacGroups.length})
+              </button>
+              {vacSems.map(sem => (
+                <button type="button" class="btn btn-secondary pyq-sem-tab pyq-sem-tab-primary" data-sem={String(sem)}>
+                  Sem {sem}
+                </button>
+              ))}
+            </div>
+            <div id="vac-pyq-grid" class="pyq-cat-grid" data-pyq-grid="vac">
               {vacGroups.map(group => (
                 <a
                   href={group.href}
                   class="card pyq-direct-card"
+                  data-sems={String(group.sem)}
                   style="padding: 0.85rem; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; text-decoration: none; min-width: 0;"
                 >
                   <div style="min-width: 0;">
@@ -540,15 +623,34 @@ const faqSchema = JSON.stringify({
 
         <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease-out; background-color: rgba(0,0,0,0.15);">
           <div style="padding: 0.85rem;">
-            <div style="display: flex; align-items: flex-start; gap: 0.5rem; background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-xs); padding: 0.6rem 0.85rem; font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.8rem;">
+            <a
+              href={`${baseUrl}/syllabus/sec/`}
+              class="pyq-syl-banner"
+              style="background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.28); color: var(--accent-warning);"
+            >
+              <span>📖 Open Full SEC Syllabus Page</span>
+              <span>→</span>
+            </a>
+            <div style="display: flex; align-items: flex-start; gap: 0.5rem; background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-xs); padding: 0.6rem 0.85rem; font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.75rem;">
               <span style="flex-shrink: 0;">ℹ️</span>
               <span><strong style="color: var(--accent-warning);">Semester 2 choice:</strong> Students pick either Communication Skill &amp; Personality Development or News Writing — both papers are available below.</span>
             </div>
-            <div id="sec-pyq-grid" class="pyq-cat-grid">
+            <div class="pyq-pill-row" data-pyq-tabs="sec" style="margin-bottom: 0.75rem;">
+              <button type="button" class="btn btn-secondary pyq-sem-tab pyq-sem-tab-warning active" data-sem="all">
+                All ({secGroups.length})
+              </button>
+              {secSems.map(sem => (
+                <button type="button" class="btn btn-secondary pyq-sem-tab pyq-sem-tab-warning" data-sem={String(sem)}>
+                  Sem {sem}
+                </button>
+              ))}
+            </div>
+            <div id="sec-pyq-grid" class="pyq-cat-grid" data-pyq-grid="sec">
               {secGroups.map(group => (
                 <a
                   href={group.href}
                   class="card pyq-direct-card"
+                  data-sems={String(group.sem)}
                   style="padding: 0.85rem; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; text-decoration: none; min-width: 0;"
                 >
                   <div style="min-width: 0;">
@@ -599,6 +701,14 @@ const faqSchema = JSON.stringify({
             >
               <span>📂 Open Full IKS Sem 1 Page ({iksPyqs.length} Papers + Notes)</span>
               <ChevronRight size="16" />
+            </a>
+            <a
+              href={`${baseUrl}/syllabus/iks/`}
+              class="pyq-syl-banner"
+              style="margin-bottom: 0; background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.3); color: #fb923c;"
+            >
+              <span>📖 Open Full IKS Syllabus Page</span>
+              <span>→</span>
             </a>
 
             <!-- Syllabus Match Analysis Table -->
@@ -869,6 +979,61 @@ const faqSchema = JSON.stringify({
   </section>
 
   <style>
+    .pyq-syl-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.55rem 0.85rem;
+      border-radius: var(--radius-xs);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-decoration: none;
+      margin-bottom: 0.75rem;
+      transition: opacity 0.15s;
+    }
+    .pyq-syl-banner:hover {
+      opacity: 0.88;
+    }
+    .pyq-pill-row {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 0.35rem;
+      padding-bottom: 0.15rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      min-width: 0;
+    }
+    .pyq-pill-row::-webkit-scrollbar {
+      display: none;
+    }
+    .pyq-sem-tab {
+      height: 31px;
+      font-size: 0.75rem;
+      padding: 0 0.72rem;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .pyq-sem-tab-primary.active {
+      background-color: rgba(99,102,241,0.14) !important;
+      color: var(--accent-primary) !important;
+      border-color: var(--accent-primary) !important;
+      font-weight: 700;
+    }
+    .pyq-sem-tab-success.active {
+      background-color: rgba(16,185,129,0.14) !important;
+      color: var(--accent-success) !important;
+      border-color: var(--accent-success) !important;
+      font-weight: 700;
+    }
+    .pyq-sem-tab-warning.active {
+      background-color: rgba(245,158,11,0.14) !important;
+      color: var(--accent-warning) !important;
+      border-color: var(--accent-warning) !important;
+      font-weight: 700;
+    }
     .pyq-cat-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
@@ -939,6 +1104,27 @@ const faqSchema = JSON.stringify({
       const escHtml = (str) => String(str || '').replace(/[&<>"']/g, c => (
         { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
       ));
+
+      // 0. Per-category semester pill filters (Major, Minor, MDC, AEC, VAC, SEC)
+      document.querySelectorAll('[data-pyq-tabs]').forEach(container => {
+        const group = container.getAttribute('data-pyq-tabs');
+        const grid = document.querySelector(`[data-pyq-grid="${group}"]`);
+        if (!grid) return;
+        const buttons = container.querySelectorAll('.pyq-sem-tab');
+        const cards = grid.querySelectorAll('[data-sems]');
+
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const selectedSem = btn.getAttribute('data-sem') || 'all';
+            cards.forEach(card => {
+              const semsList = (card.getAttribute('data-sems') || '').split(',');
+              card.style.display = (selectedSem === 'all' || semsList.includes(selectedSem)) ? '' : 'none';
+            });
+          });
+        });
+      });
 
       // 1. Category Accordion Controls + Hash Deep-Linking
       const triggers = document.querySelectorAll('.accordion-trigger');

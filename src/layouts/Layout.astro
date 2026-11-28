@@ -8,9 +8,10 @@ interface Props {
   description?: string;
   keywords?: string;
   activeTab?: 'home' | 'syllabus' | 'pyqs' | 'results' | 'notices' | 'cgpa' | 'recheck' | 'exam-archive' | 'holidays';
+  hideDefaultBreadcrumb?: boolean;
 }
 
-const { title, rawTitle = false, activeTab } = Astro.props;
+const { title, rawTitle = false, activeTab, hideDefaultBreadcrumb = false } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, ''); // Remove trailing slash if any
 const siteUrl = 'https://kolhanhub.in';
 
@@ -43,7 +44,7 @@ if (activePageName && activeTab !== 'home') {
   breadcrumbItems.push({ name: activePageName, item: canonicalUrl });
 }
 
-const webPageSchema = JSON.stringify({
+const webPageObj: Record<string, any> = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": pageTitle,
@@ -59,8 +60,10 @@ const webPageSchema = JSON.stringify({
     "@type": "CollegeOrUniversity",
     "name": "Kolhan University",
     "url": "https://www.kolhanuniversity.ac.in"
-  },
-  "breadcrumb": {
+  }
+};
+if (!hideDefaultBreadcrumb) {
+  webPageObj.breadcrumb = {
     "@type": "BreadcrumbList",
     "itemListElement": breadcrumbItems.map((crumb, idx) => ({
       "@type": "ListItem",
@@ -68,8 +71,9 @@ const webPageSchema = JSON.stringify({
       "name": crumb.name,
       "item": crumb.item
     }))
-  }
-});
+  };
+}
+const webPageSchema = JSON.stringify(webPageObj);
 ---
 
 <!DOCTYPE html>
