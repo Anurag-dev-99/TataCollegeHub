@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import vacData from '../../../public/data/vac.json';
 import pyqsData from '../../../public/data/pyqs.json';
 import markingSchemes from '../../../public/data/paper_marking_schemes.json';
+import PastBatchScoreGlimpse from '../../components/PastBatchScoreGlimpse.astro';
 import { ChevronLeft } from '@lucide/astro';
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -112,25 +113,28 @@ const faqSchema = JSON.stringify({
     </div>
   </section>
 
+  <!-- Past Batch Score Glimpse (VAC Comparison) -->
+  <PastBatchScoreGlimpse mode="category" category="vac" marginTop="0" marginBottom="1.25rem" />
+
   <!-- Matching VAC PYQs Cross-Links -->
   <section class="card" style="background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(16,185,129,0.04) 100%); border-color: rgba(99,102,241,0.24); margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.7rem;">
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
       <h2 style="font-size: 1rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
         📝 Practice VAC Previous Year Papers (PYQs)
       </h2>
-      <a href={`${baseUrl}/pyqs/#vac-pyq-trigger`} style="font-size: 0.74rem; font-weight: 700; color: #818cf8; text-decoration: none;">
+      <a href={`${baseUrl}/pyqs/#vac-pyq-trigger`} style="font-size: 0.74rem; font-weight: 700; color: var(--text-accent-indigo); text-decoration: none;">
         All VAC PYQs →
       </a>
     </div>
     <div class="vac-wide-grid">
       {vacPyqSubjects.map(({ subject, sems, count }) => (
-        <div style="background: rgba(0,0,0,0.16); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.65rem 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; min-width: 0;">
+        <div style="background: var(--surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.65rem 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; min-width: 0;">
           <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">{subject} ({count} PDFs)</span>
           <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
             {sems.map(sem => (
               <a
                 href={`${baseUrl}/pyqs/vac/${encodeURI(subject.toLowerCase())}/${sem}/`}
-                style="font-size: 0.72rem; font-weight: 700; color: #818cf8; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.3); border-radius: 20px; padding: 3px 10px; text-decoration: none;"
+                style="font-size: 0.72rem; font-weight: 700; color: var(--text-accent-indigo); background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.3); border-radius: 20px; padding: 3px 10px; text-decoration: none;"
               >
                 Sem {sem} PYQs →
               </a>
@@ -212,8 +216,8 @@ const faqSchema = JSON.stringify({
     }
     .vac-p-tab.active {
       background-color: rgba(99, 102, 241, 0.14) !important;
-      color: var(--accent-primary) !important;
-      border-color: var(--accent-primary) !important;
+      color: var(--text-accent-indigo) !important;
+      border-color: rgba(99, 102, 241, 0.45) !important;
     }
     .vac-wide-grid {
       display: grid;

@@ -65,7 +65,7 @@ const faqSchema = JSON.stringify({
       Indian Knowledge System &bull; Compulsory Sem 1 (2025 &amp; 2026 Batches) &bull; All 37 Colleges
     </p>
     <div style="margin-top: 0.25rem; font-size: 0.75rem; color: var(--text-secondary); background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); border-radius: var(--radius-xs); padding: 0.45rem 0.7rem; width: fit-content;">
-      📊 <strong style="color: var(--accent-danger);">Exam Pattern:</strong> {iksScheme.fullMarks.total} Marks (50 MCQs / Theory) &bull; Pass: {iksScheme.passMarks.total}
+      📊 <strong style="color: var(--text-accent-red);">Exam Pattern:</strong> {iksScheme.fullMarks.total} Marks (50 MCQs / Theory) &bull; Pass: {iksScheme.passMarks.total}
     </div>
   </div>
 
@@ -97,8 +97,8 @@ const faqSchema = JSON.stringify({
 
   <!-- Free IKS Study Notes -->
   {iksNotes.length > 0 && (
-    <section class="card" style="background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(0,0,0,0.14) 100%); border-color: rgba(16,185,129,0.28); margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.6rem;">
-      <h2 style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--accent-success);">
+    <section class="card" style="background: linear-gradient(135deg, rgba(16,185,129,0.08) 0%, var(--bg-secondary) 100%); border-color: rgba(16,185,129,0.28); margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.6rem;">
+      <h2 style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-accent-green);">
         📖 Free IKS Sem 1 Study Notes
       </h2>
       {iksNotes.map((note: any) => (
@@ -124,7 +124,7 @@ const faqSchema = JSON.stringify({
       <h2 style="font-size: 1rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
         📝 IKS Previous Year Question Papers ({iksPyqs.length} PDFs)
       </h2>
-      <a href={iksPyqUrl} style="font-size: 0.74rem; font-weight: 700; color: #f87171; text-decoration: none;">
+      <a href={iksPyqUrl} style="font-size: 0.74rem; font-weight: 700; color: var(--text-accent-red); text-decoration: none;">
         Open Full IKS PYQ Page →
       </a>
     </div>
@@ -134,11 +134,11 @@ const faqSchema = JSON.stringify({
           href={paper.downloadUrl}
           target="_blank"
           rel="noopener noreferrer"
-          style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.68rem 0.85rem; border-radius: var(--radius-xs); background: rgba(0,0,0,0.16); border: 1px solid var(--border-color); text-decoration: none; color: var(--text-primary); font-size: 0.8rem; font-weight: 700; min-width: 0;"
+          style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.68rem 0.85rem; border-radius: var(--radius-xs); background: var(--surface-subtle); border: 1px solid var(--border-color); text-decoration: none; color: var(--text-primary); font-size: 0.8rem; font-weight: 700; min-width: 0;"
           onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.title}', category: 'IKS', semester: '1' });`}
         >
           <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title={paper.title}>📄 {paper.title}</span>
-          <ExternalLink size="14" style="color: #f87171; flex-shrink: 0;" />
+          <ExternalLink size="14" style="color: var(--text-accent-red); flex-shrink: 0;" />
         </a>
       ))}
     </div>

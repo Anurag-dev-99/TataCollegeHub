@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import secData from '../../../public/data/sec.json';
 import pyqsData from '../../../public/data/pyqs.json';
 import notesData from '../../../public/data/notes.json';
+import PastBatchScoreGlimpse from '../../components/PastBatchScoreGlimpse.astro';
 import { ChevronLeft, Download, FileText, Sparkles, Eye, MessageCircle, ExternalLink } from '@lucide/astro';
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -67,7 +68,7 @@ const faqSchema = JSON.stringify({
 
   <!-- Main Header -->
   <div style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
-    <div style="display: inline-flex; align-items: center; gap: 0.4rem; width: fit-content; font-size: 0.7rem; font-weight: 800; color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 3px 10px;">
+    <div style="display: inline-flex; align-items: center; gap: 0.4rem; width: fit-content; font-size: 0.7rem; font-weight: 800; color: var(--text-accent-amber); background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 3px 10px;">
       <Sparkles size="12" /> Common Paper for All Streams (Arts, Science &amp; Commerce)
     </div>
     <h1 style="font-size: clamp(1.35rem, 5vw, 1.85rem); font-family: var(--font-display); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; margin: 0;">
@@ -84,7 +85,7 @@ const faqSchema = JSON.stringify({
     <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 1rem;">
       <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
         <div style="display: flex; gap: 0.85rem; align-items: flex-start; min-width: 0;">
-          <div style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: rgba(245,158,11,0.12); color: #fbbf24; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: rgba(245,158,11,0.12); color: var(--text-accent-amber); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
             <FileText size="22" />
           </div>
           <div style="min-width: 0;">
@@ -100,7 +101,7 @@ const faqSchema = JSON.stringify({
             </div>
           </div>
         </div>
-        <span style="font-size: 0.68rem; font-weight: 800; background: rgba(245,158,11,0.14); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 3px 10px;">
+        <span style="font-size: 0.68rem; font-weight: 800; background: rgba(245,158,11,0.14); color: var(--text-accent-amber); border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 3px 10px;">
           SEC-3 · 75 Marks
         </span>
       </div>
@@ -131,13 +132,22 @@ const faqSchema = JSON.stringify({
       </div>
     </div>
 
+    <!-- Past Batch Score Glimpse (Real KU Marksheet Stats) -->
+    <PastBatchScoreGlimpse
+      category="sec"
+      subject="mathematical & computational thinking and analysis"
+      semester={3}
+      marginTop="0"
+      marginBottom="0"
+    />
+
     <!-- SEC-3 Handwritten Study Notes Box (Preserved Paid Notes Funnel) -->
     {sec3Note && (
-      <div style={`display: flex; align-items: center; justify-content: space-between; gap: 0.85rem; flex-wrap: wrap; border: 1px solid ${sec3Note.color}44; border-radius: var(--radius-sm); padding: 1rem 1.15rem; background: linear-gradient(135deg, ${sec3Note.color}12 0%, rgba(0,0,0,0.16) 100%);`}>
+      <div style={`display: flex; align-items: center; justify-content: space-between; gap: 0.85rem; flex-wrap: wrap; border: 1px solid ${sec3Note.color}44; border-radius: var(--radius-sm); padding: 1rem 1.15rem; background: linear-gradient(135deg, ${sec3Note.color}14 0%, var(--bg-secondary) 100%);`}>
         <div style="display: flex; align-items: center; gap: 0.65rem; min-width: 0;">
           <span style="font-size: 1.35rem; flex-shrink: 0;">{sec3Note.emoji}</span>
           <div style="min-width: 0;">
-            <div style={`font-size: 0.95rem; font-weight: 800; color: ${sec3Note.color}; font-family: var(--font-display);`}>
+            <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-accent-amber); font-family: var(--font-display);">
               {sec3Note.title} — Handwritten Notes PDF
             </div>
             <div style="font-size: 0.76rem; color: var(--text-secondary); margin-top: 2px;">
@@ -151,7 +161,7 @@ const faqSchema = JSON.stringify({
             target="_blank"
             rel="noopener noreferrer"
             onclick={`if(window.trackDownload) window.trackDownload('note', { subject: '${sec3Note.title}', language: 'Free Sample', category: '${sec3Note.course}', medium: 'SEC3_SYLLABUS_PAGE' });`}
-            style={`display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.76rem; font-weight: 700; color: ${sec3Note.color}; text-decoration: none; border: 1px solid ${sec3Note.color}66; border-radius: 20px; padding: 6px 13px; white-space: nowrap;`}
+            style={`display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.76rem; font-weight: 700; color: var(--text-accent-amber); text-decoration: none; border: 1px solid ${sec3Note.color}66; border-radius: 20px; padding: 6px 13px; white-space: nowrap;`}
           >
             <Eye size="14" /> Free Sample PDF
           </a>
@@ -180,7 +190,7 @@ const faqSchema = JSON.stringify({
         <h2 style="font-size: 1.05rem; font-weight: 800; margin: 0; font-family: var(--font-display); color: var(--text-primary);">
           📥 SEC-3 Previous Year Question Papers (Sem 3)
         </h2>
-        <a href={sec3PyqUrl} style="font-size: 0.78rem; font-weight: 700; color: #818cf8; text-decoration: none;">
+        <a href={sec3PyqUrl} style="font-size: 0.78rem; font-weight: 700; color: var(--text-accent-indigo); text-decoration: none;">
           Open Full SEC-3 PYQ Page →
         </a>
       </div>
@@ -194,7 +204,7 @@ const faqSchema = JSON.stringify({
             onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.title}', category: 'SEC', semester: '3' });`}
           >
             <span>📄 {paper.year} {(paper as any).set ? `— ${(paper as any).set}` : ''}</span>
-            <ExternalLink size="14" style="color: #fbbf24; flex-shrink: 0;" />
+            <ExternalLink size="14" style="color: var(--text-accent-amber); flex-shrink: 0;" />
           </a>
         ))}
       </div>

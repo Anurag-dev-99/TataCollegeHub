@@ -189,10 +189,10 @@ const faqSchema = JSON.stringify({
                     {subj.label}
                   </span>
                   {subj.slug === 'mathematics' && (
-                    <span style="font-size: 0.58rem; font-weight: 700; color: #34d399;">✨ Sem 3 Guide &amp; Notes</span>
+                    <span style="font-size: 0.58rem; font-weight: 700; color: var(--text-accent-green);">✨ Sem 3 Guide &amp; Notes</span>
                   )}
                 </div>
-                <span class="major-syl-icon" style={`color: ${subj.hasDownload ? 'var(--accent-primary)' : 'var(--text-tertiary)'}; font-size: 0.9rem; margin-left: 0.35rem; flex-shrink: 0;`}>
+                <span class="major-syl-icon" style={`color: ${subj.hasDownload ? 'var(--text-accent-indigo)' : 'var(--text-tertiary)'}; font-size: 0.9rem; margin-left: 0.35rem; flex-shrink: 0;`}>
                   {subj.hasDownload ? '📥' : '→'}
                 </span>
               </a>
@@ -210,9 +210,9 @@ const faqSchema = JSON.stringify({
     <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
       <button type="button" class="accordion-trigger">
         <div class="syl-acc-left">
-          <Award style="color: var(--accent-success); width: 18px; height: 18px; flex-shrink: 0;" />
+          <Award style="color: var(--text-accent-green); width: 18px; height: 18px; flex-shrink: 0;" />
           <span class="syl-acc-title">Minor / AC</span>
-          <span class="syl-acc-pill" style="background: rgba(16,185,129,0.12); color: var(--accent-success); border-color: rgba(16,185,129,0.25);">MN / AC · 100M</span>
+          <span class="syl-acc-pill" style="background: rgba(16,185,129,0.12); color: var(--text-accent-green); border-color: rgba(16,185,129,0.28);">MN / AC · 100M</span>
         </div>
         <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
       </button>
@@ -229,9 +229,9 @@ const faqSchema = JSON.stringify({
                   <span style="font-weight: 700; font-size: 0.82rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={dept}>
                     {dept}
                   </span>
-                  <span style="font-size: 0.65rem; color: var(--accent-success); font-weight: 600;">Minor / AC</span>
+                  <span style="font-size: 0.65rem; color: var(--text-accent-green); font-weight: 600;">Minor / AC</span>
                 </div>
-                <span style="color: var(--accent-success); font-size: 0.9rem; margin-left: 0.35rem; flex-shrink: 0;">→</span>
+                <span style="color: var(--text-accent-green); font-size: 0.9rem; margin-left: 0.35rem; flex-shrink: 0;">→</span>
               </a>
             ))}
           </div>
@@ -246,16 +246,16 @@ const faqSchema = JSON.stringify({
     <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
       <button type="button" class="accordion-trigger">
         <div class="syl-acc-left">
-          <Compass style="color: var(--accent-warning); width: 18px; height: 18px; flex-shrink: 0;" />
+          <Compass style="color: var(--text-accent-amber); width: 18px; height: 18px; flex-shrink: 0;" />
           <span class="syl-acc-title">MDC</span>
-          <span class="syl-acc-pill" style="background: rgba(245,158,11,0.12); color: var(--accent-warning); border-color: rgba(245,158,11,0.25);">Multidisciplinary · 75M</span>
+          <span class="syl-acc-pill" style="background: rgba(245,158,11,0.12); color: var(--text-accent-amber); border-color: rgba(245,158,11,0.28);">Multidisciplinary · 75M</span>
         </div>
         <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
       </button>
 
       <div class="accordion-content" id="mdc-accordion-content">
         <div class="syl-acc-body">
-          <a href={`${baseUrl}/syllabus/mdc/`} class="syl-hub-link" style="color: var(--accent-warning); border-color: rgba(245,158,11,0.25); background: rgba(245,158,11,0.06);">
+          <a href={`${baseUrl}/syllabus/mdc/`} class="syl-hub-link" style="color: var(--text-accent-amber); border-color: rgba(245,158,11,0.28); background: rgba(245,158,11,0.08);">
             <span>📖 Open full MDC Syllabus &amp; PYQs Page</span>
             <span>→</span>
           </a>
@@ -290,7 +290,7 @@ const faqSchema = JSON.stringify({
                 <span style="font-weight: 700; font-size: 0.8rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;" title={item.name}>
                   {item.name}
                 </span>
-                <span class="mdc-dl-icon" style="color: var(--accent-primary); font-size: 0.88rem; margin-left: 0.35rem; flex-shrink: 0;">
+                <span class="mdc-dl-icon" style="color: var(--text-accent-indigo); font-size: 0.88rem; margin-left: 0.35rem; flex-shrink: 0;">
                   📥
                 </span>
               </a>
@@ -308,16 +308,16 @@ const faqSchema = JSON.stringify({
     <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
       <button type="button" class="accordion-trigger" id="aec-trigger">
         <div class="syl-acc-left">
-          <Compass style="color: var(--accent-success); width: 18px; height: 18px; flex-shrink: 0;" />
+          <Compass style="color: var(--text-accent-green); width: 18px; height: 18px; flex-shrink: 0;" />
           <span class="syl-acc-title">AEC</span>
-          <span class="syl-acc-pill" style="background: rgba(16,185,129,0.12); color: var(--accent-success); border-color: rgba(16,185,129,0.25);">Languages · 50M</span>
+          <span class="syl-acc-pill" style="background: rgba(16,185,129,0.12); color: var(--text-accent-green); border-color: rgba(16,185,129,0.28);">Languages · 50M</span>
         </div>
         <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
       </button>
 
       <div class="accordion-content" id="aec-accordion-content">
         <div class="syl-acc-body">
-          <a href={`${baseUrl}/syllabus/aec/`} class="syl-hub-link" style="color: var(--accent-success); border-color: rgba(16,185,129,0.25); background: rgba(16,185,129,0.06);">
+          <a href={`${baseUrl}/syllabus/aec/`} class="syl-hub-link" style="color: var(--text-accent-green); border-color: rgba(16,185,129,0.28); background: rgba(16,185,129,0.08);">
             <span>📖 Open full AEC Syllabus &amp; PYQs Page</span>
             <span>→</span>
           </a>
@@ -346,9 +346,9 @@ const faqSchema = JSON.stringify({
           </div>
 
           <!-- Compact 1-line note shown ONLY when Sem 4 tab is active -->
-          <div id="aec-sem4-note" style="display: none; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-xs); padding: 0.45rem 0.7rem; font-size: 0.72rem; color: var(--text-secondary);">
+          <div id="aec-sem4-note" style="display: none; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.28); border-radius: var(--radius-xs); padding: 0.45rem 0.7rem; font-size: 0.72rem; color: var(--text-secondary);">
             <span>⚠️ Sem 4 regional PDFs are Ranchi Univ. reference.</span>
-            <button type="button" onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));" style="background:none; border:none; padding:0; color:#fbbf24; font-weight:700; font-size:0.72rem; cursor:pointer;">
+            <button type="button" onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));" style="background:none; border:none; padding:0; color: var(--text-accent-amber); font-weight:700; font-size:0.72rem; cursor:pointer;">
               Have Kolhan Univ. PDF? Share →
             </button>
           </div>
@@ -373,7 +373,7 @@ const faqSchema = JSON.stringify({
                     {item.semester}
                   </span>
                 </div>
-                <span class="aec-dl-icon" style="color: var(--accent-success); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
+                <span class="aec-dl-icon" style="color: var(--text-accent-green); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
                   📥
                 </span>
               </a>
@@ -391,16 +391,16 @@ const faqSchema = JSON.stringify({
     <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
       <button type="button" class="accordion-trigger" id="vac-trigger">
         <div class="syl-acc-left">
-          <Award style="color: var(--accent-primary); width: 18px; height: 18px; flex-shrink: 0;" />
+          <Award style="color: var(--text-accent-indigo); width: 18px; height: 18px; flex-shrink: 0;" />
           <span class="syl-acc-title">VAC</span>
-          <span class="syl-acc-pill" style="background: rgba(99,102,241,0.12); color: var(--accent-primary); border-color: rgba(99,102,241,0.25);">Value Added · 50M</span>
+          <span class="syl-acc-pill" style="background: rgba(99,102,241,0.12); color: var(--text-accent-indigo); border-color: rgba(99,102,241,0.28);">Value Added · 50M</span>
         </div>
         <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
       </button>
 
       <div class="accordion-content" id="vac-accordion-content">
         <div class="syl-acc-body">
-          <a href={`${baseUrl}/syllabus/vac/`} class="syl-hub-link" style="color: var(--accent-primary); border-color: rgba(99,102,241,0.25); background: rgba(99,102,241,0.06);">
+          <a href={`${baseUrl}/syllabus/vac/`} class="syl-hub-link" style="color: var(--text-accent-indigo); border-color: rgba(99,102,241,0.28); background: rgba(99,102,241,0.08);">
             <span>📖 Open full VAC Syllabus &amp; PYQs Page</span>
             <span>→</span>
           </a>
@@ -437,7 +437,7 @@ const faqSchema = JSON.stringify({
                     {item.semester} &bull; {item.type}
                   </span>
                 </div>
-                <span class="vac-dl-icon" style="color: var(--accent-primary); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
+                <span class="vac-dl-icon" style="color: var(--text-accent-indigo); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
                   📥
                 </span>
               </a>
@@ -451,16 +451,16 @@ const faqSchema = JSON.stringify({
     <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
       <button type="button" class="accordion-trigger" id="sec-trigger">
         <div class="syl-acc-left">
-          <BookOpen style="color: var(--accent-warning); width: 18px; height: 18px; flex-shrink: 0;" />
+          <BookOpen style="color: var(--text-accent-amber); width: 18px; height: 18px; flex-shrink: 0;" />
           <span class="syl-acc-title">SEC</span>
-          <span class="syl-acc-pill" style="background: rgba(245,158,11,0.12); color: var(--accent-warning); border-color: rgba(245,158,11,0.25);">Skill · 75M</span>
+          <span class="syl-acc-pill" style="background: rgba(245,158,11,0.12); color: var(--text-accent-amber); border-color: rgba(245,158,11,0.28);">Skill · 75M</span>
         </div>
         <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
       </button>
 
       <div class="accordion-content" id="sec-accordion-content">
         <div class="syl-acc-body">
-          <a href={`${baseUrl}/syllabus/sec/`} class="syl-hub-link" style="color: var(--accent-warning); border-color: rgba(245,158,11,0.25); background: rgba(245,158,11,0.06);">
+          <a href={`${baseUrl}/syllabus/sec/`} class="syl-hub-link" style="color: var(--text-accent-amber); border-color: rgba(245,158,11,0.28); background: rgba(245,158,11,0.08);">
             <span>📖 Open full SEC Syllabus &amp; PYQs Page</span>
             <span>→</span>
           </a>
@@ -497,10 +497,10 @@ const faqSchema = JSON.stringify({
                     </span>
                     <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
                       <span style="font-size: 0.69rem; color: var(--text-secondary);">{item.semester}</span>
-                      <span style="font-size: 0.58rem; font-weight: 700; color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 1px 6px;">✨ Notes &amp; PYQs</span>
+                      <span style="font-size: 0.58rem; font-weight: 700; color: var(--text-accent-amber); background: rgba(251,191,36,0.14); border: 1px solid rgba(251,191,36,0.32); border-radius: 20px; padding: 1px 6px;">✨ Notes &amp; PYQs</span>
                     </div>
                   </div>
-                  <span class="sec-dl-icon" style="color: var(--accent-warning); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
+                  <span class="sec-dl-icon" style="color: var(--text-accent-amber); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
                     →
                   </span>
                 </a>
@@ -523,7 +523,7 @@ const faqSchema = JSON.stringify({
                       {item.semester}
                     </span>
                   </div>
-                  <span class="sec-dl-icon" style="color: var(--accent-warning); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
+                  <span class="sec-dl-icon" style="color: var(--text-accent-amber); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
                     📥
                   </span>
                 </a>
@@ -538,16 +538,16 @@ const faqSchema = JSON.stringify({
     <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
       <button type="button" class="accordion-trigger" id="iks-trigger">
         <div class="syl-acc-left">
-          <Compass style="color: var(--accent-danger); width: 18px; height: 18px; flex-shrink: 0;" />
+          <Compass style="color: var(--text-accent-red); width: 18px; height: 18px; flex-shrink: 0;" />
           <span class="syl-acc-title">IKS</span>
-          <span class="syl-acc-pill" style="background: rgba(239,68,68,0.12); color: var(--accent-danger); border-color: rgba(239,68,68,0.25);">Sem 1 · 50M</span>
+          <span class="syl-acc-pill" style="background: rgba(239,68,68,0.12); color: var(--text-accent-red); border-color: rgba(239,68,68,0.25);">Sem 1 · 50M</span>
         </div>
         <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
       </button>
 
       <div class="accordion-content" id="iks-accordion-content">
         <div class="syl-acc-body">
-          <a href={`${baseUrl}/syllabus/iks/`} class="syl-hub-link" style="color: var(--accent-danger); border-color: rgba(239,68,68,0.25); background: rgba(239,68,68,0.06);">
+          <a href={`${baseUrl}/syllabus/iks/`} class="syl-hub-link" style="color: var(--text-accent-red); border-color: rgba(239,68,68,0.25); background: rgba(239,68,68,0.06);">
             <span>📖 Open full IKS Syllabus, Notes &amp; PYQs Page</span>
             <span>→</span>
           </a>
@@ -570,7 +570,7 @@ const faqSchema = JSON.stringify({
                     {item.semester} &bull; {item.type}
                   </span>
                 </div>
-                <span style="color: var(--accent-danger); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
+                <span style="color: var(--text-accent-red); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
                   📥
                 </span>
               </a>
@@ -588,24 +588,24 @@ const faqSchema = JSON.stringify({
       <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-display);">
         ✍️ Sem 3 Handwritten Study Notes &amp; Guides
       </span>
-      <a href={`${baseUrl}/notes/`} style="font-size: 0.72rem; font-weight: 700; color: #fbbf24; text-decoration: none;">
+      <a href={`${baseUrl}/notes/`} style="font-size: 0.72rem; font-weight: 700; color: var(--text-accent-amber); text-decoration: none;">
         View All Notes →
       </a>
     </div>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0.6rem;">
       <a href={`${baseUrl}/syllabus/sec-3/`} style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.68rem 0.85rem; border-radius: var(--radius-xs); background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); text-decoration: none; color: var(--text-primary); min-width: 0;">
         <div style="min-width: 0;">
-          <div style="font-size: 0.8rem; font-weight: 800; color: #fbbf24;">💻 SEC-3 (All Streams)</div>
+          <div style="font-size: 0.8rem; font-weight: 800; color: var(--text-accent-amber);">💻 SEC-3 (All Streams)</div>
           <div style="font-size: 0.69rem; color: var(--text-secondary); margin-top: 2px;">Syllabus PDF, PYQs &amp; Notes</div>
         </div>
-        <span style="font-size: 0.85rem; font-weight: 800; color: #fbbf24; flex-shrink: 0;">→</span>
+        <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-accent-amber); flex-shrink: 0;">→</span>
       </a>
       <a href={`${baseUrl}/syllabus/mathematics/#maths-sem3-deep-section`} style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.68rem 0.85rem; border-radius: var(--radius-xs); background: rgba(129,140,248,0.1); border: 1px solid rgba(129,140,248,0.3); text-decoration: none; color: var(--text-primary); min-width: 0;">
         <div style="min-width: 0;">
-          <div style="font-size: 0.8rem; font-weight: 800; color: #818cf8;">📐 Maths Major Sem 3 (MJ-04 &amp; MJ-05)</div>
+          <div style="font-size: 0.8rem; font-weight: 800; color: var(--text-accent-indigo);">📐 Maths Major Sem 3 (MJ-04 &amp; MJ-05)</div>
           <div style="font-size: 0.69rem; color: var(--text-secondary); margin-top: 2px;">Unit Weightage, PYQs &amp; Notes</div>
         </div>
-        <span style="font-size: 0.85rem; font-weight: 800; color: #818cf8; flex-shrink: 0;">→</span>
+        <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-accent-indigo); flex-shrink: 0;">→</span>
       </a>
     </div>
   </section>
@@ -614,28 +614,28 @@ const faqSchema = JSON.stringify({
   <section aria-label="Marks and passing criteria" style="background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(16,185,129,0.04) 100%); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem;">
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
       <span style="font-size: 0.76rem; font-weight: 800; color: var(--text-primary); letter-spacing: 0.03em; text-transform: uppercase;">📊 Marks &amp; Passing Criteria (FYUGP)</span>
-      <span style="font-size: 0.7rem; color: var(--text-tertiary);">Qualifying: <strong style="color: var(--accent-success);">40% per component</strong></span>
+      <span style="font-size: 0.7rem; color: var(--text-tertiary);">Qualifying: <strong style="color: var(--text-accent-green);">40% per component</strong></span>
     </div>
     <div class="syl-marks-grid">
       <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.75rem; min-width: 0;">
-        <div style="font-size: 0.76rem; font-weight: 800; color: var(--accent-primary);">MJ / AC (Practical)</div>
+        <div style="font-size: 0.76rem; font-weight: 800; color: var(--text-accent-indigo);">MJ / AC (Practical)</div>
         <div style="font-size: 0.73rem; color: var(--text-secondary); margin-top: 2px;">{pracFull.total} Marks ({pracFull.theory} Th + {pracFull.internal} Int + {pracFull.practical} Prac)</div>
-        <div style="font-size: 0.69rem; color: var(--accent-success); font-weight: 700; margin-top: 2px;">Pass: {pracPass.total} ({pracPass.theory}/{pracPass.internal}/{pracPass.practical})</div>
+        <div style="font-size: 0.69rem; color: var(--text-accent-green); font-weight: 700; margin-top: 2px;">Pass: {pracPass.total} ({pracPass.theory}/{pracPass.internal}/{pracPass.practical})</div>
       </div>
       <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.75rem; min-width: 0;">
-        <div style="font-size: 0.76rem; font-weight: 800; color: var(--accent-primary);">MJ / AC (Non-Practical)</div>
+        <div style="font-size: 0.76rem; font-weight: 800; color: var(--text-accent-indigo);">MJ / AC (Non-Practical)</div>
         <div style="font-size: 0.73rem; color: var(--text-secondary); margin-top: 2px;">{nonPracFull.total} Marks ({nonPracFull.theory} Th + {nonPracFull.internal} Int)</div>
-        <div style="font-size: 0.69rem; color: var(--accent-success); font-weight: 700; margin-top: 2px;">Pass: {nonPracPass.total} ({nonPracPass.theory}/{nonPracPass.internal})</div>
+        <div style="font-size: 0.69rem; color: var(--text-accent-green); font-weight: 700; margin-top: 2px;">Pass: {nonPracPass.total} ({nonPracPass.theory}/{nonPracPass.internal})</div>
       </div>
       <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.75rem; min-width: 0;">
-        <div style="font-size: 0.76rem; font-weight: 800; color: var(--accent-warning);">MDC / SEC</div>
+        <div style="font-size: 0.76rem; font-weight: 800; color: var(--text-accent-amber);">MDC / SEC</div>
         <div style="font-size: 0.73rem; color: var(--text-secondary); margin-top: 2px;">{mdcSecFull.total} Marks (Theory Only)</div>
-        <div style="font-size: 0.69rem; color: var(--accent-success); font-weight: 700; margin-top: 2px;">Pass: {mdcSecPass.total}</div>
+        <div style="font-size: 0.69rem; color: var(--text-accent-green); font-weight: 700; margin-top: 2px;">Pass: {mdcSecPass.total}</div>
       </div>
       <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.75rem; min-width: 0;">
-        <div style="font-size: 0.76rem; font-weight: 800; color: var(--accent-success);">AEC / VAC / IKS</div>
+        <div style="font-size: 0.76rem; font-weight: 800; color: var(--text-accent-green);">AEC / VAC / IKS</div>
         <div style="font-size: 0.73rem; color: var(--text-secondary); margin-top: 2px;">{aecVacFull.total} Marks (Theory / MCQs)</div>
-        <div style="font-size: 0.69rem; color: var(--accent-success); font-weight: 700; margin-top: 2px;">Pass: {aecVacPass.total}</div>
+        <div style="font-size: 0.69rem; color: var(--text-accent-green); font-weight: 700; margin-top: 2px;">Pass: {aecVacPass.total}</div>
       </div>
     </div>
     <p style="font-size: 0.71rem; color: var(--text-tertiary); margin: 0.65rem 0 0; line-height: 1.45;">
@@ -645,39 +645,39 @@ const faqSchema = JSON.stringify({
 
   <!-- ═══ COMPACT SYLLABUS COMMUNITY ROW (Independent Toggles) ═══ -->
   <div class="syl-two-col-grid" style="margin-bottom: 1.25rem;">
-    <div style="border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(16,185,129,0.02) 0%, rgba(0,0,0,0.12) 100%); min-width: 0;">
+    <div style="border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(16,185,129,0.04) 0%, var(--bg-secondary) 100%); min-width: 0;">
       <button type="button" id="syl-req-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 0.9rem; background: transparent; border: none; cursor: pointer; text-align: left;">
         <div style="display: flex; align-items: center; gap: 0.4rem; min-width: 0;">
-          <span style="display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; background: rgba(16,185,129,0.15); border-radius: 50%; font-size: 0.65rem; flex-shrink: 0;">✓</span>
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; background: rgba(16,185,129,0.15); border-radius: 50%; font-size: 0.65rem; flex-shrink: 0; color: var(--text-accent-green);">✓</span>
           <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">Syllabus Requests Done</span>
-          <span style="font-size: 0.6rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 1px 5px;">4</span>
+          <span style="font-size: 0.6rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--text-accent-green); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 1px 5px;">4</span>
         </div>
         <ChevronRight id="syl-req-chevron" size="14" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
       </button>
       <div id="syl-req-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 1px solid rgba(16,185,129,0.12);">
-        <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; background: rgba(0,0,0,0.15);">
+        <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; background: var(--surface-subtle);">
           {[{e:'🗺️',t:'Geography Major Syllabus',s:'Sem 1–8'},{e:'📖',t:'English Major Syllabus',s:'Sem 1'},{e:'🌿',t:'Botany Major Syllabus',s:'Sem 1–8'},{e:'🔬',t:'Zoology Major Syllabus',s:'Sem 1–8'}].map(r => (
             <div style="display: flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0; min-width: 0;">
               <span style="font-size: 0.65rem; flex-shrink: 0;">{r.e}</span>
               <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-primary); flex: 1; min-width: 0; overflow-wrap: anywhere;">{r.t}</span>
-              <span style="font-size: 0.65rem; color: var(--accent-success); font-weight: 600; white-space: nowrap;">{r.s}</span>
+              <span style="font-size: 0.65rem; color: var(--text-accent-green); font-weight: 600; white-space: nowrap;">{r.s}</span>
             </div>
           ))}
         </div>
       </div>
     </div>
 
-    <div style="border: 1px solid rgba(37,211,102,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(37,211,102,0.02) 0%, rgba(0,0,0,0.12) 100%); min-width: 0;">
+    <div style="border: 1px solid rgba(37,211,102,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(37,211,102,0.04) 0%, var(--bg-secondary) 100%); min-width: 0;">
       <button type="button" id="syl-contrib-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 0.9rem; background: transparent; border: none; cursor: pointer; text-align: left;">
         <div style="display: flex; align-items: center; gap: 0.4rem; min-width: 0;">
           <span style="font-size: 0.75rem; flex-shrink: 0;">📚</span>
           <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">Syllabus Contributors</span>
-          <span style="font-size: 0.6rem; font-weight: 700; background: rgba(37,211,102,0.12); color: #34d399; border: 1px solid rgba(37,211,102,0.25); border-radius: 20px; padding: 1px 5px;">4</span>
+          <span style="font-size: 0.6rem; font-weight: 700; background: rgba(37,211,102,0.12); color: var(--text-accent-green); border: 1px solid rgba(37,211,102,0.25); border-radius: 20px; padding: 1px 5px;">4</span>
         </div>
         <ChevronRight id="syl-contrib-chevron" size="14" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
       </button>
       <div id="syl-contrib-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 1px solid rgba(37,211,102,0.12);">
-        <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; background: rgba(0,0,0,0.15);">
+        <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; background: var(--surface-subtle);">
           {[{i:'K',bg:'#ec4899,#db2777',n:'Kirti Arya',f:'Botany Major Syllabus'},{i:'D',bg:'#6366f1,#8b5cf6',n:'Deepika',f:'AEC Hindi Syllabus'},{i:'N',bg:'#34d399,#059669',n:'Neha Kumari',f:'Geography Syllabus'},{i:'R',bg:'#0ea5e9,#0284c7',n:'Ravi Kumar',f:'English Syllabus'}].map(c => (
             <div style="display: flex; align-items: center; gap: 0.45rem; padding: 0.2rem 0; min-width: 0;">
               <div style={`width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, ${c.bg.split(',')[0]}, ${c.bg.split(',')[1]}); display: flex; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 800; color: white; flex-shrink: 0;`}>{c.i}</div>
@@ -685,7 +685,7 @@ const faqSchema = JSON.stringify({
               <span style="font-size: 0.65rem; color: var(--text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;">{c.f}</span>
             </div>
           ))}
-          <a href="https://api.whatsapp.com/send?phone=918002059887&text=Hi!%20I%20have%20a%20syllabus%20PDF%20to%20share%20for%20Kolhan%20University%20%F0%9F%93%9A" target="_blank" rel="noopener noreferrer" style="font-size: 0.7rem; color: rgba(37,211,102,0.9); font-weight: 600; text-decoration: none; margin-top: 0.2rem;">💬 Share syllabus files →</a>
+          <a href="https://api.whatsapp.com/send?phone=918002059887&text=Hi!%20I%20have%20a%20syllabus%20PDF%20to%20share%20for%20Kolhan%20University%20%F0%9F%93%9A" target="_blank" rel="noopener noreferrer" style="font-size: 0.7rem; color: var(--text-accent-green); font-weight: 600; text-decoration: none; margin-top: 0.2rem;">💬 Share syllabus files →</a>
         </div>
       </div>
     </div>
@@ -719,22 +719,22 @@ const faqSchema = JSON.stringify({
       <button
         type="button"
         onclick="document.dispatchEvent(new CustomEvent('open-report-modal'));"
-        style="background:none; border:none; padding:0; color: var(--accent-danger); font-size: 0.74rem; font-weight: 700; cursor:pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem;"
+        style="background:none; border:none; padding:0; color: var(--text-accent-red); font-size: 0.74rem; font-weight: 700; cursor:pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem;"
       >
         ⚠️ Report wrong syllabus or broken link
       </button>
     </div>
 
-    <div class="card" style="border-color: rgba(99,102,241,0.18); padding: 1.1rem; background: linear-gradient(135deg, rgba(99,102,241,0.04) 0%, rgba(0,0,0,0.08) 100%); display: flex; flex-direction: column; justify-content: center; gap: 0.55rem; min-width: 0;">
-      <div style="font-size: 0.92rem; font-weight: 800; color: #818cf8; font-family: var(--font-display);">📚 Official University Sources</div>
+    <div class="card" style="border-color: rgba(99,102,241,0.18); padding: 1.1rem; background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, var(--bg-secondary) 100%); display: flex; flex-direction: column; justify-content: center; gap: 0.55rem; min-width: 0;">
+      <div style="font-size: 0.92rem; font-weight: 800; color: var(--text-accent-indigo); font-family: var(--font-display);">📚 Official University Sources</div>
       <div style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.55;">
         We keep adding updated department syllabi regularly. Meanwhile, you can also check these official portals:
       </div>
       <div style="display: flex; flex-direction: column; gap: 0.45rem;">
-        <a href="https://www.kolhanuniversity.ac.in/undergraduate-syllabus" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.73rem; font-weight: 700; color: #818cf8; text-decoration: none; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.22); border-radius: 20px; padding: 5px 12px; width: fit-content;">
+        <a href="https://www.kolhanuniversity.ac.in/undergraduate-syllabus" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.73rem; font-weight: 700; color: var(--text-accent-indigo); text-decoration: none; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.22); border-radius: 20px; padding: 5px 12px; width: fit-content;">
           🏛️ Kolhan University Official Syllabus →
         </a>
-        <a href="https://karimcitycollege.ac.in/syllabi/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.73rem; font-weight: 700; color: #34d399; text-decoration: none; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.22); border-radius: 20px; padding: 5px 12px; width: fit-content;">
+        <a href="https://karimcitycollege.ac.in/syllabi/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.73rem; font-weight: 700; color: var(--text-accent-green); text-decoration: none; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.22); border-radius: 20px; padding: 5px 12px; width: fit-content;">
           🏫 Karim City College Syllabus →
         </a>
       </div>
@@ -943,34 +943,34 @@ const faqSchema = JSON.stringify({
     }
     .mdc-tab-btn.active {
       background-color: rgba(99, 102, 241, 0.12) !important;
-      color: var(--accent-primary) !important;
+      color: var(--text-accent-indigo) !important;
       border-color: var(--accent-primary) !important;
     }
     .aec-tab-btn.active {
       background-color: rgba(16, 185, 129, 0.12) !important;
-      color: var(--accent-success) !important;
+      color: var(--text-accent-green) !important;
       border-color: var(--accent-success) !important;
     }
     .vac-tab-btn.active {
       background-color: rgba(99, 102, 241, 0.12) !important;
-      color: var(--accent-primary) !important;
+      color: var(--text-accent-indigo) !important;
       border-color: var(--accent-primary) !important;
     }
     .sec-tab-btn.active {
       background-color: rgba(245, 158, 11, 0.12) !important;
-      color: var(--accent-warning) !important;
+      color: var(--text-accent-amber) !important;
       border-color: var(--accent-warning) !important;
     }
     .major-syl-tab.active {
       background-color: rgba(99, 102, 241, 0.12) !important;
-      color: var(--accent-primary) !important;
+      color: var(--text-accent-indigo) !important;
       border-color: var(--accent-primary) !important;
     }
     .accordion-content {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.25s ease-out;
-      background-color: rgba(0, 0, 0, 0.15);
+      background-color: var(--surface-accordion);
     }
   </style>
 

@@ -1,0 +1,340 @@
+---
+import scoreStats from '../../public/data/paper_score_stats.json';
+
+interface Props {
+  category: string;
+  subject?: string;
+  semester?: string | number;
+  mode?: 'paper' | 'category';
+  marginTop?: string;
+  marginBottom?: string;
+}
+
+const {
+  category,
+  subject = '',
+  semester,
+  mode = 'paper',
+  marginTop = '0',
+  marginBottom = '0',
+} = Astro.props;
+
+const catKey = String(category || '').toLowerCase().trim();
+const aliases = (scoreStats.aliases || {}) as Record<string, string>;
+const bySubject = (scoreStats.bySubject || {}) as Record<string, any>;
+const bySubjectSem = (scoreStats.bySubjectSem || {}) as Record<string, any>;
+
+const rawSubj = String(subject || '').toLowerCase().trim();
+const resolvedSubj = aliases[rawSubj] || rawSubj;
+
+const rateColor = (rate: number) =>
+  rate >= 85 ? 'var(--text-accent-green)' : rate >= 70 ? 'var(--text-accent-amber)' : 'var(--text-accent-red)';
+
+const formatBatches = (batches?: string[]) => {
+  if (!batches || batches.length === 0) return '';
+  if (batches.length === 1) return `${batches[0]} Batch`;
+  return `${batches[0]}–${String(batches[batches.length - 1]).slice(-2)} Batches`;
+};
+
+const formatCount = (n: number) => Number(n || 0).toLocaleString('en-IN');
+
+// Mode A: Single paper / subject lookup (MDC always uses All Sems bySubject)
+const semKey = (catKey !== 'mdc' && semester !== undefined && semester !== '') ? `${catKey}|${resolvedSubj}|${semester}` : '';
+const semEntry = semKey ? bySubjectSem[semKey] : null;
+const subjEntry = bySubject[`${catKey}|${resolvedSubj}`] || null;
+const paperStat = mode === 'paper' ? (semEntry || subjEntry) : null;
+const paperBatchLabel = paperStat ? formatBatches(paperStat.batches) : '';
+const paperScopeLabel = semEntry
+  ? `Sem ${semester}${paperBatchLabel ? ` · ${paperBatchLabel}` : ''}`
+  : `All Sems${paperBatchLabel ? ` · ${paperBatchLabel}` : ''}`;
+
+// Mode B: Category comparison lookup
+const catEntries = mode === 'category'
+  ? Object.values(bySubject).filter((e: any) => String(e.cat || '').toLowerCase() === catKey)
+  : [];
+
+const isMdc = catKey === 'mdc';
+const mdcEligible = isMdc ? catEntries.filter((e: any) => Number(e.appeared || 0) >= 50) : [];
+const mdcTopScoring = isMdc
+  ? [...mdcEligible].sort((a: any, b: any) => (b.passRate - a.passRate) || (b.avg - a.avg)).slice(0, 4)
+  : [];
+const mdcTopNames = new Set(mdcTopScoring.map((e: any) => e.subject));
+const mdcToughest = isMdc
+  ? [...mdcEligible]
+      .filter((e: any) => !mdcTopNames.has(e.subject))
+      .sort((a: any, b: any) => (a.passRate - b.passRate) || (a.avg - b.avg))
+      .slice(0, 4)
+  : [];
+
+const catCompareList = !isMdc && catEntries.length > 0
+  ? [...catEntries]
+      .sort((a: any, b: any) => Number(b.appeared || 0) - Number(a.appeared || 0))
+      .slice(0, catKey === 'aec' ? 6 : 12)
+  : [];
+
+const catUpper = catKey.toUpperCase();
+const catDeepLink = `https://kolhanresult.in/paper-analysis?cat=${encodeURIComponent(catUpper)}`;
+const shouldRender = mode === 'paper' ? !!paperStat : (isMdc ? (mdcTopScoring.length > 0 || mdcToughest.length > 0) : catCompareList.length > 0);
+---
+
+{shouldRender && (
+  <section
+    aria-label="Past batch score glimpse from real Kolhan University marksheets"
+    class="card pbsg-card"
+    style={`margin-top: ${marginTop}; margin-bottom: ${marginBottom}; background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(99,102,241,0.05) 100%); border-color: rgba(16,185,129,0.28); padding: 0.95rem 1rem; display: flex; flex-direction: column; gap: 0.75rem; min-width: 0;`}
+  >
+    {mode === 'paper' && paperStat && (
+      <>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.45rem; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; min-width: 0;">
+            <span style="font-size: 0.94rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-display);">
+              📊 Past Batch Score Glimpse
+            </span>
+            <span style="font-size: 0.6rem; font-weight: 800; background: rgba(16,185,129,0.14); color: var(--text-accent-green); border: 1px solid rgba(16,185,129,0.32); border-radius: 20px; padding: 1px 7px; white-space: nowrap;">
+              Real KU Data
+            </span>
+          </div>
+          <span style="font-size: 0.68rem; color: var(--text-tertiary); font-weight: 600;">
+            {paperScopeLabel}
+          </span>
+        </div>
+
+        <div class="pbsg-stats-grid">
+          <div class="pbsg-stat-tile">
+            <div class="pbsg-stat-val" style={`color: ${rateColor(Number(paperStat.passRate))};`}>{paperStat.passRate}%</div>
+            <div class="pbsg-stat-lbl">Pass Rate</div>
+          </div>
+          <div class="pbsg-stat-tile">
+            <div class="pbsg-stat-val" style="color: var(--text-accent-indigo);">{paperStat.avg}<span class="pbsg-stat-den">/{paperStat.maxMarks}</span></div>
+            <div class="pbsg-stat-lbl">Average Marks</div>
+          </div>
+          <div class="pbsg-stat-tile">
+            <div class="pbsg-stat-val" style="color: var(--text-accent-amber);">{paperStat.high}<span class="pbsg-stat-den">/{paperStat.maxMarks}</span></div>
+            <div class="pbsg-stat-lbl">Highest Score</div>
+          </div>
+          <div class="pbsg-stat-tile">
+            <div class="pbsg-stat-val" style="color: var(--text-primary);">{formatCount(paperStat.appeared)}</div>
+            <div class="pbsg-stat-lbl">Students Analyzed</div>
+          </div>
+        </div>
+
+        {Array.isArray(paperStat.papers) && paperStat.papers.length > 0 && (
+          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+            <span style="font-size: 0.68rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em;">
+              Paper-wise Breakdown
+            </span>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.38rem;">
+              {paperStat.papers.map((p: any) => (
+                <a
+                  href={`${paperStat.deepLink}&paperCode=${encodeURIComponent(p.shortPaper)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="pbsg-paper-pill"
+                >
+                  <strong style="color: var(--text-primary);">{p.code}</strong>
+                  <span style={`color: ${rateColor(Number(p.passRate))}; font-weight: 700;`}>{p.passRate}%</span>
+                  <span style="color: var(--text-tertiary);">avg {p.avg}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <a
+          href={paperStat.deepLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="pbsg-cta-btn"
+        >
+          <span>Full Marks Distribution &amp; College Stats on KolhanResult</span>
+          <span>↗</span>
+        </a>
+      </>
+    )}
+
+    {mode === 'category' && (
+      <>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.45rem; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; min-width: 0;">
+            <span style="font-size: 0.94rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-display);">
+              📊 Past Batch Score Glimpse ({catUpper})
+            </span>
+            <span style="font-size: 0.6rem; font-weight: 800; background: rgba(16,185,129,0.14); color: var(--text-accent-green); border: 1px solid rgba(16,185,129,0.32); border-radius: 20px; padding: 1px 7px; white-space: nowrap;">
+              Real KU Data
+            </span>
+          </div>
+          <span style="font-size: 0.68rem; color: var(--text-tertiary); font-weight: 600;">
+            {isMdc ? 'Min. 50 students' : 'By student volume'}
+          </span>
+        </div>
+
+        {isMdc ? (
+          <div class="pbsg-two-col">
+            <div style="display: flex; flex-direction: column; gap: 0.4rem; min-width: 0;">
+              <div style="font-size: 0.72rem; font-weight: 800; color: var(--text-accent-green);">🔥 Highest Pass-Rate MDCs</div>
+              {mdcTopScoring.map((e: any) => (
+                <a href={e.deepLink} target="_blank" rel="noopener noreferrer" class="pbsg-cat-row">
+                  <div style="min-width: 0;">
+                    <div class="pbsg-cat-subj">{e.subject}</div>
+                    <div class="pbsg-cat-meta">{formatCount(e.appeared)} students &bull; Avg {e.avg}/{e.maxMarks}</div>
+                  </div>
+                  <span class="pbsg-cat-rate" style={`color: ${rateColor(Number(e.passRate))};`}>{e.passRate}%</span>
+                </a>
+              ))}
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.4rem; min-width: 0;">
+              <div style="font-size: 0.72rem; font-weight: 800; color: var(--text-accent-amber);">⚠️ Toughest MDCs</div>
+              {mdcToughest.map((e: any) => (
+                <a href={e.deepLink} target="_blank" rel="noopener noreferrer" class="pbsg-cat-row">
+                  <div style="min-width: 0;">
+                    <div class="pbsg-cat-subj">{e.subject}</div>
+                    <div class="pbsg-cat-meta">{formatCount(e.appeared)} students &bull; Avg {e.avg}/{e.maxMarks}</div>
+                  </div>
+                  <span class="pbsg-cat-rate" style={`color: ${rateColor(Number(e.passRate))};`}>{e.passRate}%</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div class="pbsg-two-col">
+            {catCompareList.map((e: any) => (
+              <a href={e.deepLink} target="_blank" rel="noopener noreferrer" class="pbsg-cat-row">
+                <div style="min-width: 0;">
+                  <div class="pbsg-cat-subj">{e.subject}</div>
+                  <div class="pbsg-cat-meta">{formatCount(e.appeared)} students &bull; Avg {e.avg}/{e.maxMarks} &bull; High {e.high}</div>
+                </div>
+                <span class="pbsg-cat-rate" style={`color: ${rateColor(Number(e.passRate))};`}>{e.passRate}%</span>
+              </a>
+            ))}
+          </div>
+        )}
+
+        <a
+          href={catDeepLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="pbsg-cta-btn"
+        >
+          <span>Explore Full {catUpper} Marks Analysis on KolhanResult</span>
+          <span>↗</span>
+        </a>
+      </>
+    )}
+  </section>
+)}
+
+<style>
+  .pbsg-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+  @media (min-width: 520px) {
+    .pbsg-stats-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .pbsg-stat-tile {
+    background: var(--surface-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xs);
+    padding: 0.5rem 0.45rem;
+    text-align: center;
+    min-width: 0;
+  }
+  .pbsg-stat-val {
+    font-size: 1.05rem;
+    font-weight: 850;
+    font-family: var(--font-display);
+    line-height: 1.15;
+  }
+  .pbsg-stat-den {
+    font-size: 0.68rem;
+    color: var(--text-tertiary);
+    font-weight: 600;
+  }
+  .pbsg-stat-lbl {
+    font-size: 0.64rem;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+  }
+  .pbsg-paper-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    background: var(--surface-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 3px 9px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .pbsg-paper-pill:hover {
+    border-color: rgba(16, 185, 129, 0.45);
+  }
+  .pbsg-two-col {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  @media (min-width: 600px) {
+    .pbsg-two-col {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .pbsg-cat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    background: var(--surface-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xs);
+    padding: 0.5rem 0.68rem;
+    text-decoration: none;
+    min-width: 0;
+  }
+  .pbsg-cat-row:hover {
+    border-color: rgba(16, 185, 129, 0.45);
+  }
+  .pbsg-cat-subj {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pbsg-cat-meta {
+    font-size: 0.65rem;
+    color: var(--text-tertiary);
+    margin-top: 1px;
+  }
+  .pbsg-cat-rate {
+    font-size: 0.86rem;
+    font-weight: 850;
+    font-family: var(--font-display);
+    flex-shrink: 0;
+  }
+  .pbsg-cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    width: 100%;
+    padding: 0.52rem 0.8rem;
+    border-radius: var(--radius-xs);
+    background: rgba(16, 185, 129, 0.14);
+    border: 1px solid rgba(16, 185, 129, 0.34);
+    color: var(--text-accent-green);
+    font-size: 0.74rem;
+    font-weight: 800;
+    text-decoration: none;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  .pbsg-cta-btn:hover {
+    background: rgba(16, 185, 129, 0.2);
+  }
+</style>

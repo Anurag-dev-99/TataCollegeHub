@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import aecData from '../../../public/data/aec.json';
 import pyqsData from '../../../public/data/pyqs.json';
 import markingSchemes from '../../../public/data/paper_marking_schemes.json';
+import PastBatchScoreGlimpse from '../../components/PastBatchScoreGlimpse.astro';
 import { ChevronLeft } from '@lucide/astro';
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -75,7 +76,7 @@ const faqSchema = JSON.stringify({
       Ability Enhancement Course &bull; Sem 1–4 &bull; All 37 Colleges
     </p>
     <div style="margin-top: 0.25rem; font-size: 0.75rem; color: var(--text-secondary); background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.25); border-radius: var(--radius-xs); padding: 0.45rem 0.7rem; width: fit-content;">
-      📊 <strong style="color: var(--accent-success);">Exam Pattern:</strong> {aecScheme.fullMarks.total} Marks (Theory Only) &bull; Pass: {aecScheme.passMarks.total} &bull; AEC-3 &amp; AEC-4 are the same language
+      📊 <strong style="color: var(--text-accent-green);">Exam Pattern:</strong> {aecScheme.fullMarks.total} Marks (Theory Only) &bull; Pass: {aecScheme.passMarks.total} &bull; AEC-3 &amp; AEC-4 are the same language
     </div>
   </div>
 
@@ -96,7 +97,7 @@ const faqSchema = JSON.stringify({
 
     <div id="aec-page-sem4-note" style="display: none; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-xs); padding: 0.45rem 0.7rem; font-size: 0.72rem; color: var(--text-secondary);">
       <span>⚠️ Sem 4 regional PDFs are Ranchi Univ. reference.</span>
-      <button type="button" onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));" style="background:none; border:none; padding:0; color:#fbbf24; font-weight:700; font-size:0.72rem; cursor:pointer;">
+      <button type="button" onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));" style="background:none; border:none; padding:0; color: var(--text-accent-amber); font-weight:700; font-size:0.72rem; cursor:pointer;">
         Have Kolhan Univ. PDF? Share →
       </button>
     </div>
@@ -119,7 +120,7 @@ const faqSchema = JSON.stringify({
             </span>
             <span style="font-size: 0.7rem; color: var(--text-secondary);">{item.semester}</span>
           </div>
-          <span style="color: var(--accent-success); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">📥</span>
+          <span style="color: var(--text-accent-green); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">📥</span>
         </a>
       ))}
     </div>
@@ -129,25 +130,28 @@ const faqSchema = JSON.stringify({
     </div>
   </section>
 
+  <!-- Past Batch Score Glimpse (AEC Comparison) -->
+  <PastBatchScoreGlimpse mode="category" category="aec" marginTop="0" marginBottom="1.25rem" />
+
   <!-- Matching AEC PYQs Cross-Links -->
   <section class="card" style="background: linear-gradient(135deg, rgba(16,185,129,0.05) 0%, rgba(99,102,241,0.04) 100%); border-color: rgba(16,185,129,0.24); margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.7rem;">
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
       <h2 style="font-size: 1rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
         📝 Practice AEC Previous Year Papers (PYQs)
       </h2>
-      <a href={`${baseUrl}/pyqs/#aec-pyq-trigger`} style="font-size: 0.74rem; font-weight: 700; color: var(--accent-success); text-decoration: none;">
+      <a href={`${baseUrl}/pyqs/#aec-pyq-trigger`} style="font-size: 0.74rem; font-weight: 700; color: var(--text-accent-green); text-decoration: none;">
         All AEC PYQs →
       </a>
     </div>
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 0.55rem;">
       {aecPyqSubjects.map(({ subject, sems }) => (
-        <div style="background: rgba(0,0,0,0.16); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.55rem 0.7rem; display: flex; flex-direction: column; gap: 0.35rem; min-width: 0;">
+        <div style="background: var(--surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.55rem 0.7rem; display: flex; flex-direction: column; gap: 0.35rem; min-width: 0;">
           <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">AEC {subject}</span>
           <div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
             {sems.map(sem => (
               <a
                 href={`${baseUrl}/pyqs/aec/${encodeURI(subject.toLowerCase())}/${sem}/`}
-                style="font-size: 0.68rem; font-weight: 700; color: var(--accent-success); background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 2px 8px; text-decoration: none;"
+                style="font-size: 0.68rem; font-weight: 700; color: var(--text-accent-green); background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 2px 8px; text-decoration: none;"
               >
                 Sem {sem}
               </a>
@@ -230,8 +234,8 @@ const faqSchema = JSON.stringify({
     }
     .aec-p-tab.active {
       background-color: rgba(16, 185, 129, 0.14) !important;
-      color: var(--accent-success) !important;
-      border-color: var(--accent-success) !important;
+      color: var(--text-accent-green) !important;
+      border-color: rgba(16, 185, 129, 0.45) !important;
     }
     .aec-wide-grid {
       display: grid;

@@ -5,6 +5,7 @@ import mathsSem3Data from '../../../public/data/maths-sem3-complete.json';
 import notesData from '../../../public/data/notes.json';
 import pyqsData from '../../../public/data/pyqs.json';
 import markingSchemes from '../../../public/data/paper_marking_schemes.json';
+import PastBatchScoreGlimpse from '../../components/PastBatchScoreGlimpse.astro';
 import { renderMathText } from '../../utils/renderMath';
 import { ChevronLeft, Calendar, Download, FileText, Sparkles, MessageCircle, Eye } from '@lucide/astro';
 
@@ -201,7 +202,7 @@ const faqSchema = JSON.stringify({
               <span style="font-size: 1rem;">🎓</span>
               <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.04em;">Select Your Admission Batch</span>
             </div>
-            <span style="font-size: 0.66rem; font-weight: 700; color: #34d399; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.28); border-radius: 20px; padding: 2px 9px;">Avoid Syllabus Confusion</span>
+            <span style="font-size: 0.66rem; font-weight: 700; color: var(--text-accent-green); background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.28); border-radius: 20px; padding: 2px 9px;">Avoid Syllabus Confusion</span>
           </div>
 
           <div style="display: flex; gap: 0.55rem; flex-wrap: wrap;">
@@ -211,23 +212,23 @@ const faqSchema = JSON.stringify({
             </button>
             <button type="button" class="math-batch-btn" data-batch="2025-2026" style="flex: 1; min-width: min(100%, 220px); padding: 0.68rem 0.9rem; border-radius: var(--radius-xs); border: 1px solid var(--border-color); background: var(--bg-secondary); color: var(--text-secondary); font-weight: 700; font-size: 0.82rem; cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
               <span>🆕 2025 &amp; 2026 Batch (Updated Syllabus)</span>
-              <span style="font-size: 0.64rem; background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); padding: 2px 7px; border-radius: 12px; font-weight: 700; white-space: nowrap;">Revised NEP</span>
+              <span style="font-size: 0.64rem; background: rgba(245,158,11,0.15); color: var(--text-accent-amber); border: 1px solid rgba(245,158,11,0.3); padding: 2px 7px; border-radius: 12px; font-weight: 700; white-space: nowrap;">Revised NEP</span>
             </button>
           </div>
 
           <div id="batch-note-2022-2024" style="font-size: 0.77rem; color: var(--text-secondary); line-height: 1.55;">
-            <strong style="color: #818cf8;">Note for 2022, 2023 &amp; 2024 batches:</strong> Your syllabus for Semester 1 to Semester 8 is <strong>100% identical</strong>. Semester 3 has two Major papers: <strong>MJ-04 (Real Analysis)</strong> and <strong>MJ-05 (Vectors)</strong>. Scroll down for the full interactive Semester 3 syllabus, unit weightage, book chapters, and 2023 batch result statistics!
+            <strong style="color: var(--text-accent-indigo);">Note for 2022, 2023 &amp; 2024 batches:</strong> Your syllabus for Semester 1 to Semester 8 is <strong>100% identical</strong>. Semester 3 has two Major papers: <strong>MJ-04 (Real Analysis)</strong> and <strong>MJ-05 (Vectors)</strong>. Scroll down for the full interactive Semester 3 syllabus, unit weightage, book chapters, and 2023 batch result statistics!
           </div>
           <div id="batch-note-2025-2026" style="display: none; font-size: 0.77rem; color: var(--text-secondary); line-height: 1.55; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-xs); padding: 0.65rem 0.85rem;">
-            <strong style="color: #fbbf24;">⚠️ Important for 2025 &amp; 2026 batches:</strong> Kolhan University revised the Mathematics Major syllabus from the 2025 admission batch onwards (Semester 1 &amp; Semester 2 papers have changed compared to 2022–2024 batches). Do not follow the old 2022–2024 Semester 1 &amp; 2 syllabus. We are adding the separate 2025–2026 batch text breakdown soon!
+            <strong style="color: var(--text-accent-amber);">⚠️ Important for 2025 &amp; 2026 batches:</strong> Kolhan University revised the Mathematics Major syllabus from the 2025 admission batch onwards (Semester 1 &amp; Semester 2 papers have changed compared to 2022–2024 batches). Do not follow the old 2022–2024 Semester 1 &amp; 2 syllabus. We are adding the separate 2025–2026 batch text breakdown soon!
           </div>
 
           <!-- Sem 3 Quick-Jump Banner (Connects Homepage Maths Major Notes Funnel) -->
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.55rem; flex-wrap: wrap; border-top: 1px solid rgba(129,140,248,0.22); padding-top: 0.65rem;">
-            <a href="#maths-sem3-deep-section" style="font-size: 0.78rem; font-weight: 800; color: #818cf8; text-decoration: none;">
+            <a href="#maths-sem3-deep-section" style="font-size: 0.78rem; font-weight: 800; color: var(--text-accent-indigo); text-decoration: none;">
               ⚡ Sem 3 Student? Jump to MJ-04 &amp; MJ-05 Interactive Syllabus, Weightage &amp; Notes ↓
             </a>
-            <a href={`${baseUrl}/pyqs/major/mathematics/3/`} style="font-size: 0.72rem; font-weight: 700; color: #34d399; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 3px 10px; text-decoration: none; white-space: nowrap;">
+            <a href={`${baseUrl}/pyqs/major/mathematics/3/`} style="font-size: 0.72rem; font-weight: 700; color: var(--text-accent-green); background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 3px 10px; text-decoration: none; white-space: nowrap;">
               📄 Sem 3 Solved PYQs →
             </a>
           </div>
@@ -312,7 +313,7 @@ const faqSchema = JSON.stringify({
                       : `Download Part ${idx + 1}`;
                     const displayLabel = customLabels[idx] || (total === 1 ? 'Download Full Syllabus (Sem 1–8)' : `Download Part ${idx + 1}`);
                     return (
-                      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.65rem; flex-wrap: wrap; background: rgba(0,0,0,0.12); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.5rem 0.65rem;">
+                      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.65rem; flex-wrap: wrap; background: var(--surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.5rem 0.65rem;">
                         <a
                           href={url}
                           target="_blank"
@@ -338,7 +339,7 @@ const faqSchema = JSON.stringify({
                   <span>
                     ℹ️ Applies to <strong>2022–2024 NEP FYUGP</strong> batches{isMinorDept ? ' (renamed AC from 2025)' : ''}. <strong>2025/2026 batch?</strong> Confirm if your department revised Sem 1–2 papers.
                   </span>
-                  <a href={updateShareWa} target="_blank" rel="noopener noreferrer" style="font-weight: 700; color: #fbbf24; text-decoration: none; white-space: nowrap;">
+                  <a href={updateShareWa} target="_blank" rel="noopener noreferrer" style="font-weight: 700; color: var(--text-accent-amber); text-decoration: none; white-space: nowrap;">
                     Share updated 2025/26 PDF →
                   </a>
                 </div>
@@ -349,6 +350,16 @@ const faqSchema = JSON.stringify({
       })}
 
       {/* ══════════════════════════════════════════════════════════════════
+          PAST BATCH SCORE GLIMPSE (REAL KU DATA FROM KOLHANRESULT)
+      ══════════════════════════════════════════════════════════════════ */}
+      <PastBatchScoreGlimpse
+        category={primaryCat}
+        subject={baseSubject}
+        marginTop="0"
+        marginBottom="0"
+      />
+
+      {/* ══════════════════════════════════════════════════════════════════
           CROSS-LINK CARD: MATCHING PYQs, NOTES & SIBLING MAJOR/MINOR
       ══════════════════════════════════════════════════════════════════ */}
       {(primaryPyqs.sems.length > 0 || altPyqs.sems.length > 0 || mdcPyqs.sems.length > 0 || siblingSlug || (!isMathsMajor && deptNotes.length > 0)) ? (
@@ -357,7 +368,7 @@ const faqSchema = JSON.stringify({
             <h2 style="font-size: 1rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
               📝 Practice {departmentName} Previous Year Papers (PYQs)
             </h2>
-            <a href={`${baseUrl}/pyqs/`} style="font-size: 0.74rem; font-weight: 700; color: #34d399; text-decoration: none;">
+            <a href={`${baseUrl}/pyqs/`} style="font-size: 0.74rem; font-weight: 700; color: var(--text-accent-green); text-decoration: none;">
               All PYQs →
             </a>
           </div>
@@ -371,7 +382,7 @@ const faqSchema = JSON.stringify({
                 {primaryPyqs.sems.map(sem => (
                   <a
                     href={pyqUrl(primaryCat, baseSubject.toLowerCase(), sem)}
-                    style="font-size: 0.74rem; font-weight: 700; color: #34d399; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 4px 11px; text-decoration: none;"
+                    style="font-size: 0.74rem; font-weight: 700; color: var(--text-accent-green); background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 4px 11px; text-decoration: none;"
                   >
                     Sem {sem} PYQs →
                   </a>
@@ -386,7 +397,7 @@ const faqSchema = JSON.stringify({
               {altPyqs.sems.map(sem => (
                 <a
                   href={pyqUrl(altCat, baseSubject.toLowerCase(), sem)}
-                  style="font-size: 0.72rem; font-weight: 700; color: #818cf8; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.28); border-radius: 20px; padding: 3px 10px; text-decoration: none;"
+                  style="font-size: 0.72rem; font-weight: 700; color: var(--text-accent-indigo); background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.28); border-radius: 20px; padding: 3px 10px; text-decoration: none;"
                 >
                   {altCat === 'minor' ? 'Minor' : 'Major'} Sem {sem} →
                 </a>
@@ -400,7 +411,7 @@ const faqSchema = JSON.stringify({
               {mdcPyqs.sems.map(sem => (
                 <a
                   href={pyqUrl('mdc', baseSubject.toLowerCase(), sem)}
-                  style="font-size: 0.72rem; font-weight: 700; color: #fbbf24; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.28); border-radius: 20px; padding: 3px 10px; text-decoration: none;"
+                  style="font-size: 0.72rem; font-weight: 700; color: var(--text-accent-amber); background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.28); border-radius: 20px; padding: 3px 10px; text-decoration: none;"
                 >
                   MDC Sem {sem} →
                 </a>
@@ -410,7 +421,7 @@ const faqSchema = JSON.stringify({
 
           {siblingSlug && (
             <div style="border-top: 1px solid var(--border-color); padding-top: 0.6rem;">
-              <a href={`${baseUrl}/syllabus/${siblingSlug}/`} style="font-size: 0.76rem; font-weight: 700; color: #818cf8; text-decoration: none;">
+              <a href={`${baseUrl}/syllabus/${siblingSlug}/`} style="font-size: 0.76rem; font-weight: 700; color: var(--text-accent-indigo); text-decoration: none;">
                 📘 Looking for {siblingDeptName} Syllabus? Open {siblingDeptName} →
               </a>
             </div>
@@ -439,7 +450,7 @@ const faqSchema = JSON.stringify({
           <span style="font-size: 0.82rem; color: var(--text-secondary);">
             📝 Preparing for exams? Browse all 220+ Kolhan University Previous Year Question Papers.
           </span>
-          <a href={`${baseUrl}/pyqs/`} style="font-size: 0.78rem; font-weight: 700; color: #34d399; text-decoration: none; white-space: nowrap;">
+          <a href={`${baseUrl}/pyqs/`} style="font-size: 0.78rem; font-weight: 700; color: var(--text-accent-green); text-decoration: none; white-space: nowrap;">
             Browse All PYQs →
           </a>
         </div>
@@ -452,10 +463,10 @@ const faqSchema = JSON.stringify({
         <div id="maths-sem3-deep-section" style="display: flex; flex-direction: column; gap: 1.5rem;">
 
           <!-- Section Header + Paper Switcher -->
-          <div style="border: 1px solid rgba(129,140,248,0.3); border-radius: var(--radius-sm); padding: 1.1rem 1.25rem; background: linear-gradient(135deg, rgba(129,140,248,0.08) 0%, rgba(0,0,0,0.18) 100%); display: flex; flex-direction: column; gap: 0.85rem;">
+          <div style="border: 1px solid rgba(129,140,248,0.3); border-radius: var(--radius-sm); padding: 1.1rem 1.25rem; background: linear-gradient(135deg, rgba(129,140,248,0.08) 0%, var(--bg-secondary) 100%); display: flex; flex-direction: column; gap: 0.85rem;">
             <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
               <div>
-                <div style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.68rem; font-weight: 800; color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 2px 9px; margin-bottom: 0.35rem;">
+                <div style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.68rem; font-weight: 800; color: var(--text-accent-amber); background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 2px 9px; margin-bottom: 0.35rem;">
                   <Sparkles size="12" /> COMPLETE INTERACTIVE SYLLABUS &amp; PYQ ANALYSIS
                 </div>
                 <h2 style="font-size: 1.35rem; font-weight: 850; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
@@ -498,7 +509,7 @@ const faqSchema = JSON.stringify({
                 <!-- 1. Quick Paper Overview + 2023 Batch Result Analytics -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1rem;">
                   <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.6rem;">
-                    <div style="font-size: 0.72rem; font-weight: 800; color: #818cf8; text-transform: uppercase; letter-spacing: 0.05em;">📋 Paper Structure ({paper.paperCode})</div>
+                    <div style="font-size: 0.72rem; font-weight: 800; color: var(--text-accent-indigo); text-transform: uppercase; letter-spacing: 0.05em;">📋 Paper Structure ({paper.paperCode})</div>
                     <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-primary);">{paper.paperCode} — {paper.paperTitle}</div>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);">
                       <span style="background: var(--bg-tertiary); padding: 3px 8px; border-radius: 6px;">End-Sem Theory: <strong>{paper.fullMarks.theory}M</strong></span>
@@ -513,20 +524,20 @@ const faqSchema = JSON.stringify({
                   <!-- 2023 Batch Result Analysis Card -->
                   <div class="card" style="background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, var(--bg-secondary) 100%); border-color: rgba(16,185,129,0.28); display: flex; flex-direction: column; gap: 0.6rem;">
                     <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
-                      <span style="font-size: 0.72rem; font-weight: 800; color: #34d399; text-transform: uppercase; letter-spacing: 0.05em;">📊 2023 Batch Sem 3 Result Stats</span>
+                      <span style="font-size: 0.72rem; font-weight: 800; color: var(--text-accent-green); text-transform: uppercase; letter-spacing: 0.05em;">📊 2023 Batch Sem 3 Result Stats</span>
                       <span style="font-size: 0.62rem; color: var(--text-tertiary);">{paper.resultStats.scope}</span>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; text-align: center;">
-                      <div style="background: rgba(0,0,0,0.2); padding: 0.45rem; border-radius: var(--radius-xs);">
-                        <div style="font-size: 1rem; font-weight: 850; color: #34d399;">{paper.resultStats.passPercentage}%</div>
+                      <div style="background: var(--surface-subtle); padding: 0.45rem; border-radius: var(--radius-xs);">
+                        <div style="font-size: 1rem; font-weight: 850; color: var(--text-accent-green);">{paper.resultStats.passPercentage}%</div>
                         <div style="font-size: 0.65rem; color: var(--text-tertiary);">Pass Rate ({paper.resultStats.passedStudents}/{paper.resultStats.totalStudents})</div>
                       </div>
-                      <div style="background: rgba(0,0,0,0.2); padding: 0.45rem; border-radius: var(--radius-xs);">
-                        <div style="font-size: 1rem; font-weight: 850; color: #fbbf24;">{paper.resultStats.highestTotal}/100</div>
+                      <div style="background: var(--surface-subtle); padding: 0.45rem; border-radius: var(--radius-xs);">
+                        <div style="font-size: 1rem; font-weight: 850; color: var(--text-accent-amber);">{paper.resultStats.highestTotal}/100</div>
                         <div style="font-size: 0.65rem; color: var(--text-tertiary);">Topper Total (Th: {paper.resultStats.highestTheory}/75)</div>
                       </div>
-                      <div style="background: rgba(0,0,0,0.2); padding: 0.45rem; border-radius: var(--radius-xs);">
-                        <div style="font-size: 1rem; font-weight: 850; color: #818cf8;">{paper.resultStats.averageTotal}/100</div>
+                      <div style="background: var(--surface-subtle); padding: 0.45rem; border-radius: var(--radius-xs);">
+                        <div style="font-size: 1rem; font-weight: 850; color: var(--text-accent-indigo);">{paper.resultStats.averageTotal}/100</div>
                         <div style="font-size: 0.65rem; color: var(--text-tertiary);">Avg Score (Th Avg: {paper.resultStats.averageTheory})</div>
                       </div>
                     </div>
@@ -544,17 +555,18 @@ const faqSchema = JSON.stringify({
 
                   {paper.units.map((u: any) => {
                     const pColor = u.priority === 'High' ? '#34d399' : '#fbbf24';
+                    const pTextColor = u.priority === 'High' ? 'var(--text-accent-green)' : 'var(--text-accent-amber)';
                     return (
                       <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.85rem; padding: 1.15rem 1.25rem;">
                         <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
                           <div>
                             <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                              <span style="font-size: 0.7rem; font-weight: 800; background: rgba(129,140,248,0.15); color: #818cf8; border: 1px solid rgba(129,140,248,0.3); border-radius: 6px; padding: 2px 8px;">UNIT {u.unit}</span>
+                              <span style="font-size: 0.7rem; font-weight: 800; background: rgba(129,140,248,0.15); color: var(--text-accent-indigo); border: 1px solid rgba(129,140,248,0.3); border-radius: 6px; padding: 2px 8px;">UNIT {u.unit}</span>
                               <h4 style="font-size: 1.02rem; font-weight: 800; color: var(--text-primary); margin: 0;" set:html={renderMathText(u.title)} />
                             </div>
                           </div>
                           <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
-                            <span style={`font-size: 0.68rem; font-weight: 800; color: ${pColor}; background: ${pColor}1a; border: 1px solid ${pColor}44; border-radius: 20px; padding: 2px 9px;`}>
+                            <span style={`font-size: 0.68rem; font-weight: 800; color: ${pTextColor}; background: ${pColor}1a; border: 1px solid ${pColor}44; border-radius: 20px; padding: 2px 9px;`}>
                               {u.priority} Priority
                             </span>
                             {u.marksAskedByYear && (
@@ -578,7 +590,7 @@ const faqSchema = JSON.stringify({
                         <!-- Must-Do vs Can Skip Grid -->
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 0.75rem;">
                           <div style="background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.22); border-radius: var(--radius-xs); padding: 0.75rem 0.9rem;">
-                            <div style="font-size: 0.72rem; font-weight: 800; color: #34d399; margin-bottom: 0.35rem;">🔥 Must-Do for Exam (Repeated)</div>
+                            <div style="font-size: 0.72rem; font-weight: 800; color: var(--text-accent-green); margin-bottom: 0.35rem;">🔥 Must-Do for Exam (Repeated)</div>
                             <ul style="margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5;">
                               {u.mustDoTopics.map((m: string) => (
                                 <li set:html={renderMathText(m)} />
@@ -588,7 +600,7 @@ const faqSchema = JSON.stringify({
 
                           {u.canSkipIfShortOnTime && u.canSkipIfShortOnTime.length > 0 && (
                             <div style="background: rgba(248,113,113,0.05); border: 1px solid rgba(248,113,113,0.2); border-radius: var(--radius-xs); padding: 0.75rem 0.9rem;">
-                              <div style="font-size: 0.72rem; font-weight: 800; color: #f87171; margin-bottom: 0.35rem;">⏭️ Safe to Skip (If Short on Time)</div>
+                              <div style="font-size: 0.72rem; font-weight: 800; color: var(--text-accent-red); margin-bottom: 0.35rem;">⏭️ Safe to Skip (If Short on Time)</div>
                               <ul style="margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5;">
                                 {u.canSkipIfShortOnTime.map((s: string) => (
                                   <li set:html={renderMathText(s)} />
@@ -608,15 +620,15 @@ const faqSchema = JSON.stringify({
 
                 <!-- 3. Most Important / Repeated Theorems & Questions -->
                 <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.75rem;">
-                  <h3 style="font-size: 1.05rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: #fbbf24;">
+                  <h3 style="font-size: 1.05rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-accent-amber);">
                     🏆 High-Frequency Theorems &amp; Repeated Questions ({paper.paperCode})
                   </h3>
                   <div style="display: flex; flex-direction: column; gap: 0.6rem;">
                     {paper.mostRepeatedQuestionsAndTheorems.map((item: any, idx: number) => (
-                      <div style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.75rem 0.9rem; background: rgba(0,0,0,0.14); display: flex; flex-direction: column; gap: 0.3rem;">
+                      <div style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.75rem 0.9rem; background: var(--surface-subtle); display: flex; flex-direction: column; gap: 0.3rem;">
                         <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
                           <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-primary);" set:html={`${idx + 1}. ${renderMathText(item.item)}`} />
-                          <span style="font-size: 0.65rem; font-weight: 700; color: #fbbf24; background: rgba(251,191,36,0.14); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 2px 8px;">
+                          <span style="font-size: 0.65rem; font-weight: 700; color: var(--text-accent-amber); background: rgba(251,191,36,0.14); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 2px 8px;">
                             Asked: {item.askedIn.join(', ')}
                           </span>
                         </div>
@@ -628,35 +640,41 @@ const faqSchema = JSON.stringify({
 
                 <!-- 4. Senior Strategy, Best Books & Last 3-Day Plan -->
                 <div class="card" style="background: linear-gradient(135deg, rgba(129,140,248,0.07) 0%, rgba(251,191,36,0.04) 100%); border-color: rgba(129,140,248,0.28); display: flex; flex-direction: column; gap: 0.85rem;">
-                  <h3 style="font-size: 1.05rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: #818cf8;">
+                  <h3 style="font-size: 1.05rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-accent-indigo);">
                     🧭 Exam Strategy, Book Advice &amp; Last 3-Days Revision Plan ({paper.paperCode})
                   </h3>
 
                   <div>
-                    <div style="font-size: 0.75rem; font-weight: 800; color: #34d399; margin-bottom: 0.25rem;">🎯 Smartest Scoring Strategy</div>
+                    <div style="font-size: 0.75rem; font-weight: 800; color: var(--text-accent-green); margin-bottom: 0.25rem;">🎯 Smartest Scoring Strategy</div>
                     <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;" set:html={renderMathText(paper.examStrategy.bestPassStrategy)} />
                   </div>
 
                   <div>
-                    <div style="font-size: 0.75rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.25rem;">📚 Which Book to Buy / Follow</div>
+                    <div style="font-size: 0.75rem; font-weight: 800; color: var(--text-accent-amber); margin-bottom: 0.25rem;">📚 Which Book to Buy / Follow</div>
                     <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6;" set:html={renderMathText(paper.examStrategy.bookRecommendation)} />
                   </div>
 
                   <div>
-                    <div style="font-size: 0.75rem; font-weight: 800; color: #818cf8; margin-bottom: 0.35rem;">⚡ If You Have Only 3 Days Left</div>
+                    <div style="font-size: 0.75rem; font-weight: 800; color: var(--text-accent-indigo); margin-bottom: 0.35rem;">⚡ If You Have Only 3 Days Left</div>
                     <div style="display: flex; flex-direction: column; gap: 0.45rem;">
                       {paper.examStrategy.last3DaysPlan.map((d: string) => (
-                        <div style="font-size: 0.8rem; color: var(--text-secondary); background: rgba(0,0,0,0.18); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.8rem; line-height: 1.55;" set:html={renderMathText(d)} />
+                        <div style="font-size: 0.8rem; color: var(--text-secondary); background: var(--surface-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.8rem; line-height: 1.55;" set:html={renderMathText(d)} />
                       ))}
                     </div>
                   </div>
                 </div>
 
                 <!-- 5. Notes Box + PYQ Redirect -->
-                {noteItem && (
-                  <div style={`display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; border: 1px solid ${noteItem.color}44; border-radius: var(--radius-sm); padding: 0.85rem 1.1rem; background: linear-gradient(135deg, ${noteItem.color}12 0%, rgba(0,0,0,0.16) 100%);`}>
+                {noteItem && (() => {
+                  const noteText = noteItem.color === '#34d399'
+                    ? 'var(--text-accent-green)'
+                    : noteItem.color === '#818cf8'
+                      ? 'var(--text-accent-indigo)'
+                      : 'var(--text-accent-amber)';
+                  return (
+                  <div style={`display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; border: 1px solid ${noteItem.color}44; border-radius: var(--radius-sm); padding: 0.85rem 1.1rem; background: linear-gradient(135deg, ${noteItem.color}12 0%, var(--bg-secondary) 100%);`}>
                     <div>
-                      <div style={`font-size: 0.9rem; font-weight: 800; color: ${noteItem.color};`}>
+                      <div style={`font-size: 0.9rem; font-weight: 800; color: ${noteText};`}>
                         {noteItem.emoji} Handwritten Coaching Notes for {noteItem.title}
                       </div>
                       <div style="font-size: 0.74rem; color: var(--text-secondary); margin-top: 2px;">
@@ -666,7 +684,7 @@ const faqSchema = JSON.stringify({
                     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                       <a href={noteItem.demoUrl} target="_blank" rel="noopener noreferrer"
                          onclick={`if(window.trackDownload) window.trackDownload('note', { subject: '${noteItem.title}', language: 'Free Sample', category: '${noteItem.course}', medium: 'SYLLABUS_PAGE' });`}
-                         style={`display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.74rem; font-weight: 700; color: ${noteItem.color}; text-decoration: none; border: 1px solid ${noteItem.color}66; border-radius: 20px; padding: 6px 12px;`}>
+                         style={`display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.74rem; font-weight: 700; color: ${noteText}; text-decoration: none; border: 1px solid ${noteItem.color}66; border-radius: 20px; padding: 6px 12px;`}>
                         <Eye size="13" /> Free sample
                       </a>
                       <a href={notesWaLink(`${noteItem.title} notes (${noteItem.course})`, noteItem.price)} target="_blank" rel="noopener noreferrer"
@@ -680,7 +698,8 @@ const faqSchema = JSON.stringify({
                       </a>
                     </div>
                   </div>
-                )}
+                  );
+                })()}
 
                 <!-- 6. Paper-Specific FAQs -->
                 <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.65rem;">
@@ -689,7 +708,7 @@ const faqSchema = JSON.stringify({
                   </h3>
                   <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                     {paper.faqs.map((f: any) => (
-                      <details style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.65rem 0.85rem; background: rgba(0,0,0,0.12);">
+                      <details style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.65rem 0.85rem; background: var(--surface-subtle);">
                         <summary style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary); cursor: pointer;" set:html={renderMathText(f.q)} />
                         <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border-color);" set:html={renderMathText(f.a)} />
                       </details>
