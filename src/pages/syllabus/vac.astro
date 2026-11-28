@@ -1,0 +1,255 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import vacData from '../../../public/data/vac.json';
+import pyqsData from '../../../public/data/pyqs.json';
+import markingSchemes from '../../../public/data/paper_marking_schemes.json';
+import { ChevronLeft } from '@lucide/astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const vacScheme = markingSchemes.schemes['50_THEORY_ONLY'];
+
+// Group available VAC PYQs by subject
+const vacPyqMap = new Map<string, { sems: number[]; count: number }>();
+pyqsData.forEach((p: any) => {
+  if (p.category === 'VAC' && p.downloadUrl && p.type !== 'notes') {
+    if (!vacPyqMap.has(p.subject)) vacPyqMap.set(p.subject, { sems: [], count: 0 });
+    const entry = vacPyqMap.get(p.subject)!;
+    entry.count += 1;
+    const sem = Number(p.semester);
+    if (!entry.sems.includes(sem)) entry.sems.push(sem);
+  }
+});
+const vacPyqSubjects = Array.from(vacPyqMap.entries())
+  .map(([subject, info]) => ({ subject, sems: info.sems.sort((a, b) => a - b), count: info.count }));
+
+const faqItems = [
+  {
+    q: 'Which VAC papers are taught in Sem 1 and Sem 4 at Kolhan University?',
+    a: 'In Semester 1, students study VAC-1(A) Understanding India along with VAC-1(B) (Environmental Studies, Health & Wellness, or Yoga). In Semester 4, VAC-2 is Global Citizenship Education for Sustainable Development.'
+  },
+  {
+    q: 'What is the marking scheme and passing marks for VAC papers?',
+    a: `Every Kolhan University VAC paper carries ${vacScheme.fullMarks.total} marks (Theory only, no internal or practical). Minimum passing mark is ${vacScheme.passMarks.total} out of ${vacScheme.fullMarks.total} (40%).`
+  },
+  {
+    q: 'Are these VAC syllabus PDFs valid for all 37 Kolhan University colleges?',
+    a: 'Yes! Kolhan University conducts a common NEP FYUGP examination across all 37 constituent and affiliated colleges.'
+  }
+];
+
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(item => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a }
+  }))
+});
+---
+
+<Layout
+  title="Kolhan University VAC Syllabus PDF — Understanding India"
+  rawTitle={true}
+  description="Download official Kolhan University NEP FYUGP VAC Syllabus PDFs — Understanding India, EVS, Health & Wellness, Yoga (Sem 1) & Global Citizenship (Sem 4)."
+  keywords="Kolhan University VAC syllabus, Understanding India syllabus Kolhan University, Global Citizenship VAC 2 syllabus Kolhan University"
+  activeTab="syllabus"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={faqSchema} />
+  </Fragment>
+
+  <div style="margin-bottom: 1.1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; font-size: 0.85rem;">
+    <a href={`${baseUrl}/syllabus/`} style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 600; color: var(--text-secondary); text-decoration: none;">
+      <ChevronLeft size="16" /> Syllabus Directory
+    </a>
+    <span style="color: var(--text-tertiary);">/</span>
+    <span style="color: var(--text-primary); font-weight: 600;">VAC Syllabus</span>
+  </div>
+
+  <div style="margin-bottom: 1.15rem; display: flex; flex-direction: column; gap: 0.4rem;">
+    <h1 style="font-size: clamp(1.38rem, 5vw, 1.9rem); font-family: var(--font-display); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; margin: 0;">
+      Kolhan University VAC Syllabus PDF
+    </h1>
+    <p style="color: var(--text-secondary); font-size: 0.86rem; line-height: 1.45; margin: 0;">
+      Value Added Courses (Understanding India, EVS, Yoga, Global Citizenship) &bull; All 37 Colleges
+    </p>
+    <div style="margin-top: 0.25rem; font-size: 0.75rem; color: var(--text-secondary); background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25); border-radius: var(--radius-xs); padding: 0.45rem 0.7rem; width: fit-content;">
+      📊 <strong style="color: var(--accent-primary);">Exam Pattern:</strong> {vacScheme.fullMarks.total} Marks (Theory Only) &bull; Pass: {vacScheme.passMarks.total}
+    </div>
+  </div>
+
+  <!-- All 6 VAC PDFs -->
+  <section class="card" style="background: var(--bg-secondary); padding: 1rem; margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;">
+    <div class="vac-pill-row">
+      <button type="button" class="btn btn-secondary vac-p-tab vac-pill active" data-semester="all">All ({vacData.length})</button>
+      <button type="button" class="btn btn-secondary vac-p-tab vac-pill" data-semester="Semester 1">Sem 1</button>
+      <button type="button" class="btn btn-secondary vac-p-tab vac-pill" data-semester="Semester 4">Sem 4</button>
+    </div>
+
+    <div class="vac-wide-grid">
+      {vacData.map(item => (
+        <a
+          href={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="card card-interactive vac-p-item"
+          data-semester={item.semester}
+          style="padding: 0.72rem 0.85rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; min-width: 0;"
+          onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'VAC', semester: '${item.semester || 'Unknown'}', department: 'VAC' });`}
+        >
+          <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+            <span style="font-weight: 700; font-size: 0.85rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
+              {item.name}
+            </span>
+            <span style="font-size: 0.7rem; color: var(--text-secondary);">
+              {item.semester} &bull; {item.type}
+            </span>
+          </div>
+          <span style="color: var(--accent-primary); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">📥</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Matching VAC PYQs Cross-Links -->
+  <section class="card" style="background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(16,185,129,0.04) 100%); border-color: rgba(99,102,241,0.24); margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.7rem;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+      <h2 style="font-size: 1rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
+        📝 Practice VAC Previous Year Papers (PYQs)
+      </h2>
+      <a href={`${baseUrl}/pyqs/#vac-pyq-trigger`} style="font-size: 0.74rem; font-weight: 700; color: #818cf8; text-decoration: none;">
+        All VAC PYQs →
+      </a>
+    </div>
+    <div class="vac-wide-grid">
+      {vacPyqSubjects.map(({ subject, sems, count }) => (
+        <div style="background: rgba(0,0,0,0.16); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.65rem 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; min-width: 0;">
+          <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">{subject} ({count} PDFs)</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+            {sems.map(sem => (
+              <a
+                href={`${baseUrl}/pyqs/vac/${encodeURI(subject.toLowerCase())}/${sem}/`}
+                style="font-size: 0.72rem; font-weight: 700; color: #818cf8; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.3); border-radius: 20px; padding: 3px 10px; text-decoration: none;"
+              >
+                Sem {sem} PYQs →
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Visible FAQ Accordion -->
+  <section aria-labelledby="vac-faq-heading" style="margin-bottom: 1.25rem;">
+    <h2 id="vac-faq-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+      ❓ Frequently Asked Questions — VAC
+    </h2>
+    <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+      {faqItems.map((item, idx) => (
+        <details open={idx === 0} style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.7rem 0.9rem; background: var(--bg-secondary);">
+          <summary style="font-size: 0.83rem; font-weight: 700; color: var(--text-primary); cursor: pointer;">{item.q}</summary>
+          <p style="font-size: 0.79rem; color: var(--text-secondary); line-height: 1.55; margin: 0.5rem 0 0; padding-top: 0.5rem; border-top: 1px solid var(--border-color);">{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- 2×2 Student Tools Strip -->
+  <section aria-labelledby="vac-tools-heading" style="margin-bottom: 0.5rem;">
+    <h2 id="vac-tools-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+      🛠️ Student Tools
+    </h2>
+    <div class="vac-tools-grid">
+      <a href={`${baseUrl}/pyqs/`} class="card vac-tool-card">
+        <span style="font-size: 1.05rem;">📝</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">Previous Year Papers</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">Sem 1–7 PDFs</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/syllabus/`} class="card vac-tool-card">
+        <span style="font-size: 1.05rem;">📖</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">All Syllabi</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">Major, Minor, MDC, SEC</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/results/`} class="card vac-tool-card">
+        <span style="font-size: 1.05rem;">📊</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">University Results</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">All 37 Colleges</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/cgpa/`} class="card vac-tool-card">
+        <span style="font-size: 1.05rem;">🧮</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">CGPA Calculator</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">SGPA to %</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <style>
+    .vac-pill-row {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 0.35rem;
+      scrollbar-width: none;
+    }
+    .vac-pill-row::-webkit-scrollbar { display: none; }
+    .vac-pill {
+      height: 31px;
+      font-size: 0.75rem;
+      padding: 0 0.75rem;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .vac-p-tab.active {
+      background-color: rgba(99, 102, 241, 0.14) !important;
+      color: var(--accent-primary) !important;
+      border-color: var(--accent-primary) !important;
+    }
+    .vac-wide-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.55rem;
+    }
+    @media (min-width: 520px) {
+      .vac-wide-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .vac-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+    .vac-tool-card {
+      padding: 0.72rem 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+      min-width: 0;
+    }
+  </style>
+
+  <script>
+    const tabs = document.querySelectorAll('.vac-p-tab');
+    const items = document.querySelectorAll('.vac-p-item') as NodeListOf<HTMLElement>;
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      t.classList.add('active');
+      const sem = t.getAttribute('data-semester') || 'all';
+      items.forEach(el => {
+        el.style.display = (sem === 'all' || el.getAttribute('data-semester') === sem) ? 'flex' : 'none';
+      });
+    }));
+  </script>
+</Layout>

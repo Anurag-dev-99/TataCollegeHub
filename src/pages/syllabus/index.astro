@@ -6,18 +6,23 @@ import aecData from '../../../public/data/aec.json';
 import vacData from '../../../public/data/vac.json';
 import secData from '../../../public/data/sec.json';
 import iksData from '../../../public/data/iks.json';
-import { BookOpen, GraduationCap, ChevronRight, FileText, Compass, Award } from '@lucide/astro';
+import markingSchemes from '../../../public/data/paper_marking_schemes.json';
+import { BookOpen, GraduationCap, ChevronRight, Compass, Award } from '@lucide/astro';
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 const categories = ["Science", "Arts & Humanities", "Commerce & Business", "Languages"];
+const shortCatLabel: Record<string, string> = {
+  "Science": "Science",
+  "Arts & Humanities": "Arts",
+  "Commerce & Business": "Commerce",
+  "Languages": "Languages",
+};
 
 // Sort MDC data alphabetically by subject name
 const sortedMdcData = [...mdcData].sort((a, b) => a.name.localeCompare(b.name));
 
 // Create slug helper
-const getSlug = (dept: string) => {
-  return dept.toLowerCase().replace(/\s+/g, '-');
-};
+const getSlug = (dept: string) => dept.toLowerCase().replace(/\s+/g, '-');
 
 // Filter syllabus to only keep ones with actual PDF files
 const activeDepartments = [
@@ -32,7 +37,7 @@ const activeDepartments = [
 ];
 const filteredSyllabusData = syllabusData.filter(item => activeDepartments.includes(item.department));
 
-// ── Major subject category mapping ────────────────────────────────────────
+// Major subject category mapping
 const majorCategoryMap: Record<string, string> = {
   'Mathematics': 'Science', 'Physics': 'Science', 'Chemistry': 'Science',
   'Botany': 'Science', 'Zoology': 'Science', 'Geology': 'Science',
@@ -49,7 +54,6 @@ const majorCategoryMap: Record<string, string> = {
 };
 const majorCategories = ['Science', 'Arts & Humanities', 'Commerce & Business', 'Languages'];
 
-// Build flat list of major subjects (non-minor, de-duplicated by dept label)
 const majorSubjectDepts = [...new Set(
   filteredSyllabusData
     .filter(item => !item.department.toLowerCase().includes('minor'))
@@ -63,630 +67,377 @@ const majorSubjects = majorSubjectDepts.map(dept => {
   return {
     dept,
     label: dept,
-    slug: dept.toLowerCase().replace(/\s+/g, '-'),
+    slug: getSlug(dept),
     category: majorCategoryMap[dept] ?? 'Others',
     hasDownload: urls.length > 0,
   };
 });
 
-// Group syllabuses by department to show summaries in card
-interface SyllabusItem {
-  id: string;
-  title: string;
-  department: string;
-  semester: string;
-  effectiveFrom: string;
-  fileSize: string;
-  description: string;
-  modules: string[];
-}
+const minorDepartments = [...new Set(
+  filteredSyllabusData
+    .filter(item => item.department.toLowerCase().includes('minor'))
+    .map(item => item.department)
+)].sort((a, b) => a.localeCompare(b));
 
-const deptGroups: Record<string, SyllabusItem[]> = {};
-filteredSyllabusData.forEach(item => {
-  if (!deptGroups[item.department]) {
-    deptGroups[item.department] = [];
+// Verified marking schemes from paper_marking_schemes.json
+const pracFull = markingSchemes.schemes['100_PRACTICAL'].fullMarks;
+const pracPass = markingSchemes.schemes['100_PRACTICAL'].passMarks;
+const nonPracFull = markingSchemes.schemes['100_NON_PRACTICAL'].fullMarks;
+const nonPracPass = markingSchemes.schemes['100_NON_PRACTICAL'].passMarks;
+const mdcSecFull = markingSchemes.schemes['75_THEORY_ONLY'].fullMarks;
+const mdcSecPass = markingSchemes.schemes['75_THEORY_ONLY'].passMarks;
+const aecVacFull = markingSchemes.schemes['50_THEORY_ONLY'].fullMarks;
+const aecVacPass = markingSchemes.schemes['50_THEORY_ONLY'].passMarks;
+
+// Visible FAQs + synced FAQPage JSON-LD
+const faqItems = [
+  {
+    q: 'How to download Kolhan University NEP FYUGP UG Syllabus (Sem 1–8) PDF?',
+    a: 'Choose your course category above (Major, Minor / AC, MDC, AEC, VAC, SEC, or IKS), select your subject, and tap Download PDF. All syllabus PDFs open directly without login or fees.'
+  },
+  {
+    q: 'Does this syllabus apply to all 37 Kolhan University colleges?',
+    a: 'Yes! Kolhan University follows a unified NEP 2020 FYUGP syllabus across all 37 constituent and affiliated colleges in East Singhbhum, West Singhbhum, and Seraikela-Kharsawan (including Tata College, Co-operative College, ABM College, Karim City College, Ghatshila College, etc.).'
+  },
+  {
+    q: 'Is the syllabus the same for 2022, 2023, 2024, 2025, and 2026 batches?',
+    a: '2022, 2023, and 2024 admission batches share the same NEP 2020 FYUGP syllabus. From the 2025 batch onwards, Minor was renamed to Associated Core (AC), IKS became compulsory in Semester 1, and some departments (such as Mathematics) revised Semester 1–2 papers — always confirm with your subject teacher if you are in the 2025 or 2026 batch.'
+  },
+  {
+    q: 'What is the difference between Major (MJ), Minor/AC, MDC, AEC, VAC, SEC, and IKS?',
+    a: 'Major (MJ) is your core Honours subject (100 marks). Minor / Associated Core (AC) is your supporting subject (100 marks). MDC is Multidisciplinary Course (75 marks), SEC is Skill Enhancement Course (75 marks), AEC is Ability Enhancement Language (50 marks), VAC is Value Added Course like Understanding India (50 marks), and IKS is Indian Knowledge System (50 marks).'
   }
-  deptGroups[item.department].push(item);
-});
+];
 
-const departments = Object.keys(deptGroups);
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(item => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.a
+    }
+  }))
+});
 ---
 
-<Layout 
-  title="Kolhan University Syllabus — NEP 2020 FYUGP | Tata College, Chaibasa"
-  description="Download complete Kolhan University NEP 2020 FYUGP syllabus for Tata College, Chaibasa. Official curriculum PDFs for the 2022 batch — Major Honours, Minor, MDC, AEC, VAC, and SEC courses for Semester 1 to 8. Free Kolhan syllabus download."
-  keywords="Kolhan University syllabus, Kolhan syllabus download, Kolhan University NEP 2020 syllabus, Kolhan University FYUGP syllabus, Tata College syllabus, Tata College Chaibasa curriculum, 2022 batch Kolhan University syllabus, Major Minor MDC AEC VAC SEC syllabus, Kolhan University Chaibasa, NEP syllabus Kolhan, Kolhan University semester syllabus"
+<Layout
+  title="Kolhan University Syllabus 2026 PDF — NEP FYUGP Sem 1–8"
+  rawTitle={true}
+  description="Download official Kolhan University NEP 2020 FYUGP UG Syllabus PDF (Sem 1 to 8) for all 37 colleges — BA, BSc, BCom Major, Minor, MDC, AEC, VAC & SEC."
+  keywords="kolhan university syllabus, kolhan university syllabus pdf, kuuniv syllabus, kolhan university chaibasa syllabus, kolhan university fyugp syllabus semester 1 2 3 4, kolhan university ug syllabus pdf, kolhan university nep syllabus, kolhan university syllabus 2026 pdf download, कोल्हान यूनिवर्सिटी सिलेबस 2026"
   activeTab="syllabus"
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={faqSchema} />
+  </Fragment>
 
-  <!-- Header -->
-  <div style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
-    <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">Kolhan University Syllabus</h1>
-    <p style="color: var(--text-secondary); max-width: 650px; font-size: 1.05rem; line-height: 1.6;">
-      Official <strong>Kolhan University NEP 2020 FYUGP syllabus</strong> for Tata College, Chaibasa students.
-      Download curriculum PDFs for the <strong>2022 batch</strong> &mdash; Major Honours, Minor, MDC, AEC, VAC &amp; SEC courses across Semester 1 to 8.
+  <!-- Compact Mobile-First Hero Header -->
+  <div style="margin-bottom: 1rem;">
+    <h1 style="font-size: clamp(1.38rem, 5.2vw, 1.9rem); font-family: var(--font-display); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; margin: 0;">
+      Kolhan University Syllabus (NEP FYUGP)
+    </h1>
+    <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.45; margin-top: 0.35rem; margin-bottom: 0;">
+      Official UG PDFs &bull; Sem 1–8 &bull; All 37 Colleges (BA, BSc, BCom)
     </p>
   </div>
 
-  <!-- Compact Syllabus Community Row -->
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem;">
+  <!-- ═══ COURSE TYPES SELECTION (7 Uniform, Left-Aligned, Closed-by-Default Accordions) ═══ -->
+  <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.25rem;">
 
-    <!-- Completed Syllabus Requests -->
-    <div style="border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(16,185,129,0.02) 0%, rgba(0,0,0,0.12) 100%);">
-      <button id="syl-req-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; background: transparent; border: none; cursor: pointer; text-align: left;">
-        <div style="display: flex; align-items: center; gap: 0.4rem;">
-          <span style="display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; background: rgba(16,185,129,0.15); border-radius: 50%; font-size: 0.65rem;">✓</span>
-          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">Syllabus Requests Done</span>
-          <span style="font-size: 0.6rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 1px 5px;">4</span>
-        </div>
-        <svg id="syl-req-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
-      </button>
-      <div id="syl-req-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 1px solid rgba(16,185,129,0.12);">
-        <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; background: rgba(0,0,0,0.15);">
-          {[{e:'🗺️',t:'Geography Major Syllabus',s:'Sem 1–8'},{e:'📖',t:'English Major Syllabus',s:'Sem 1'},{e:'🌿',t:'Botany Major Syllabus',s:'Sem 1–8'},{e:'🔬',t:'Zoology Major Syllabus',s:'Sem 1–8'}].map(r => (
-            <div style="display: flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0;">
-              <span style="font-size: 0.65rem;">{r.e}</span>
-              <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-primary); flex: 1;">{r.t}</span>
-              <span style="font-size: 0.65rem; color: var(--accent-success); font-weight: 600;">{r.s}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-
-    <!-- Syllabus File Contributors -->
-    <div style="border: 1px solid rgba(37,211,102,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(37,211,102,0.02) 0%, rgba(0,0,0,0.12) 100%);">
-      <button id="syl-contrib-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; background: transparent; border: none; cursor: pointer; text-align: left;">
-        <div style="display: flex; align-items: center; gap: 0.4rem;">
-          <span style="font-size: 0.75rem;">📚</span>
-          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">Syllabus Contributors</span>
-        </div>
-        <svg id="syl-contrib-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
-      </button>
-      <div id="syl-contrib-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 1px solid rgba(37,211,102,0.12);">
-        <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; background: rgba(0,0,0,0.15);">
-          {[{i:'K',bg:'#ec4899,#db2777',n:'Kirti Arya',f:'Botany Major Syllabus'},{i:'D',bg:'#6366f1,#8b5cf6',n:'Deepika',f:'AEC Hindi Syllabus'},{i:'N',bg:'#34d399,#059669',n:'Neha Kumari',f:'Geography Syllabus'},{i:'R',bg:'#0ea5e9,#0284c7',n:'Ravi Kumar',f:'English Syllabus'}].map(c => (
-            <div style="display: flex; align-items: center; gap: 0.45rem; padding: 0.25rem 0;">
-              <div style={`width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, ${c.bg.split(',')[0]}, ${c.bg.split(',')[1]}); display: flex; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 800; color: white; flex-shrink: 0;`}>{c.i}</div>
-              <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-primary); flex-shrink: 0;">{c.n}</span>
-              <span style="font-size: 0.65rem; color: var(--text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{c.f}</span>
-            </div>
-          ))}
-          <a href="https://api.whatsapp.com/send?phone=918002059887&text=Hi!%20I%20have%20a%20syllabus%20PDF%20to%20share%20for%20Kolhan%20University%20%F0%9F%93%9A" target="_blank" rel="noopener noreferrer" style="font-size: 0.7rem; color: rgba(37,211,102,0.9); font-weight: 600; text-decoration: none; margin-top: 0.25rem;">💬 Share syllabus files →</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Passing Marks Info Panel -->
-  <div style="background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(16,185,129,0.04) 100%); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.1rem 1.35rem; margin-bottom: 1.75rem;">
-
-    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem;">
-      <span style="font-size: 1rem;">📊</span>
-      <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); letter-spacing: 0.06em; text-transform: uppercase;">Marks &amp; Passing Criteria (FYUGP)</span>
-      <span style="font-size: 0.7rem; color: var(--text-tertiary); margin-left: auto;">Qualifying: <strong style="color: var(--accent-success);">40% of total marks</strong></span>
-    </div>
-    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-        <span style="font-weight: 700; color: var(--accent-primary);">MJ / AC</span>
-        <span style="color: var(--text-tertiary);">|</span>
-        <span style="color: var(--text-secondary);">100 marks</span>
-        <span style="color: var(--text-tertiary);">·</span>
-        <span style="color: var(--accent-success); font-weight: 600;">Pass: 40</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-        <span style="font-weight: 700; color: var(--accent-warning);">MDC</span>
-        <span style="color: var(--text-tertiary);">|</span>
-        <span style="color: var(--text-secondary);">75 marks</span>
-        <span style="color: var(--text-tertiary);">·</span>
-        <span style="color: var(--accent-success); font-weight: 600;">Pass: 30</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-        <span style="font-weight: 700; color: var(--accent-warning);">SEC</span>
-        <span style="color: var(--text-tertiary);">|</span>
-        <span style="color: var(--text-secondary);">75 marks</span>
-        <span style="color: var(--text-tertiary);">·</span>
-        <span style="color: var(--accent-success); font-weight: 600;">Pass: 30</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-        <span style="font-weight: 700; color: var(--accent-primary);">AEC / VAC</span>
-        <span style="color: var(--text-tertiary);">|</span>
-        <span style="color: var(--text-secondary);">50 marks</span>
-        <span style="color: var(--text-tertiary);">·</span>
-        <span style="color: var(--accent-success); font-weight: 600;">Pass: 20</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.45rem 0.75rem; font-size: 0.8rem;">
-        <span style="font-weight: 700; color: var(--text-secondary);">Practical / Lab</span>
-        <span style="color: var(--text-tertiary);">|</span>
-        <span style="color: var(--text-secondary);">25 marks</span>
-        <span style="color: var(--text-tertiary);">·</span>
-        <span style="color: var(--accent-success); font-weight: 600;">Pass: 10</span>
-      </div>
-    </div>
-    <p style="font-size: 0.72rem; color: var(--text-tertiary); margin-top: 0.75rem; line-height: 1.5;">* For 100-mark theory papers: 75 marks End-Semester + 25 marks Internal Assessment. Combined total must meet the passing threshold.</p>
-  </div>
-
-  <!-- Course Types Selection Section -->
-  <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
-    
-    <!-- Major Honours Accordion Item -->
+    <!-- 1. Major (Honours) -->
     <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
-      <button class="accordion-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; transition: background 0.25s;">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <Compass style="color: var(--accent-primary); width: 20px; height: 20px;" />
-          <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Major (Honours) Syllabus</span>
-          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(99,102,241,0.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">MJ · 100 Marks</span>
+      <button type="button" class="accordion-trigger">
+        <div class="syl-acc-left">
+          <Compass style="color: var(--accent-primary); width: 18px; height: 18px; flex-shrink: 0;" />
+          <span class="syl-acc-title">Major (Honours)</span>
+          <span class="syl-acc-pill" style="background: rgba(99,102,241,0.12); color: var(--accent-primary); border-color: rgba(99,102,241,0.25);">MJ · 100M</span>
         </div>
-        <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
+        <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
       </button>
-      
+
       <div class="accordion-content">
-        <div class="accordion-content-inner" style="padding: 1.25rem 1.5rem 1.5rem;">
-          <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.5; margin-bottom: 1rem;">
-            Select your department to view semester details and download official FYUGP curriculum PDFs.
-          </p>
-
-          <!-- Major Filter Tabs + Search -->
-          <div style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem; box-shadow: var(--shadow-sm);">
-            <div id="major-syl-tabs" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; align-items: center;">
-              <button class="btn btn-secondary major-syl-tab active" data-category="all" style="height: 36px; font-size: 0.82rem; padding: 0 0.9rem; border-radius: var(--radius-xs);">
-                All ({majorSubjects.length})
+        <div class="syl-acc-body">
+          <div id="major-syl-tabs" class="syl-pill-row">
+            <button type="button" class="btn btn-secondary major-syl-tab syl-filter-pill active" data-category="all">
+              All ({majorSubjects.length})
+            </button>
+            {majorCategories.map(cat => (
+              <button type="button" class="btn btn-secondary major-syl-tab syl-filter-pill" data-category={cat}>
+                {shortCatLabel[cat] || cat} ({majorSubjects.filter(s => s.category === cat).length})
               </button>
-              {majorCategories.map(cat => (
-                <button class="btn btn-secondary major-syl-tab" data-category={cat} style="height: 36px; font-size: 0.82rem; padding: 0 0.9rem; border-radius: var(--radius-xs);">
-                  {cat} ({majorSubjects.filter(s => s.category === cat).length})
-                </button>
-              ))}
-              <!-- Search -->
-              <div style="margin-left: auto; position: relative; display: flex; align-items: center;">
-                <input type="text" id="major-syl-search" class="form-input" placeholder="Search subjects..." style="height: 36px; padding-left: 2.1rem; font-size: 0.82rem; width: 180px; border-radius: var(--radius-xs);" />
-                <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
-              </div>
-            </div>
-
-            <!-- Major Subject List -->
-            <div id="major-syl-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem;">
-              {majorSubjects.map(subj => (
-                <a
-                  href={`${baseUrl}/syllabus/${subj.slug}`}
-                  class="card card-interactive major-syl-item"
-                  data-name={subj.label.toLowerCase()}
-                  data-category={subj.category}
-                  style="padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; transition: all 0.2s;"
-                >
-                  <div style="display: flex; flex-direction: column; gap: 0.2rem; min-width: 0;">
-                    <span style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={subj.label}>
-                      {subj.label}
-                    </span>
-                    <span style="font-size: 0.72rem; color: var(--text-secondary);">
-                      {subj.category}
-                    </span>
-                  </div>
-                  <span class="major-syl-icon" style={`color: ${subj.hasDownload ? 'var(--accent-primary)' : 'var(--text-tertiary)'}; font-size: 1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block; flex-shrink: 0;`}>
-                    {subj.hasDownload ? '📥' : '📖'}
-                  </span>
-                </a>
-              ))}
-            </div>
-
-            <!-- Empty state -->
-            <div id="major-syl-empty" style="display: none; text-align: center; padding: 2rem 1rem; color: var(--text-secondary); font-size: 0.9rem;">
-              No matching subjects found.
-            </div>
+            ))}
           </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Minor / Associated Core Accordion Item -->
-    <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
-      <button class="accordion-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; transition: background 0.25s;">
-        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-          <Award style="color: var(--accent-success); width: 20px; height: 20px;" />
-          <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Minor Syllabus</span>
-          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">AC · 100 Marks</span>
-        </div>
-        <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
-      </button>
-      
-      <div class="accordion-content">
-        <div class="accordion-content-inner" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
-          <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.5; margin-bottom: 0.25rem;">
-            Official Kolhan University FYUGP Minor course credit requirement syllabuses.
-          </p>
-          <!-- AC Rename Notice -->
-          <div style="display: flex; align-items: flex-start; gap: 0.6rem; background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-xs); padding: 0.75rem 1rem; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
-            <span style="font-size: 1rem; flex-shrink: 0;">ℹ️</span>
-            <span><strong style="color: var(--accent-success);">Nomenclature update:</strong> From the <strong>2025 batch onwards</strong>, the "Minor" paper is officially renamed to <strong>Associated Core (AC)</strong> under Kolhan University's current NEP syllabus. The syllabus content remains the same — only the label has changed.</span>
+          <div style="position: relative; display: flex; align-items: center;">
+            <input type="text" id="major-syl-search" class="form-input" placeholder="Search Major subjects..." style="height: 34px; padding-left: 2rem; font-size: 0.8rem; width: 100%; border-radius: var(--radius-xs);" />
+            <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.82rem;">🔍</span>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr; gap: 1.25rem;" class="md:grid-cols-2">
-            {departments
-              .filter(dept => dept.toLowerCase().includes('minor'))
-              .map(dept => {
-                const items = deptGroups[dept];
-                const firstItem = items[0];
-                const slug = getSlug(dept);
-                
-                return (
-                  <a href={`${baseUrl}/syllabus/${slug}`} class="card card-interactive" style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; text-decoration: none; color: inherit;">
-                    <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
-                      <div style="background-color: rgba(16, 185, 129, 0.1); color: var(--accent-success); width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
-                        <GraduationCap size="22" />
-                      </div>
-                      <span class="badge badge-success" style="font-size: 0.7rem;">Minor Paper</span>
-                    </div>
-                    
-                    <div>
-                      <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary);">{dept}</h3>
-                      <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                        {firstItem.description}
-                      </p>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-between; width: 100%; border-top: 1px solid var(--border-color); padding-top: 0.875rem; margin-top: auto; font-size: 0.8rem; color: var(--text-secondary);">
-                      <span>Effective: {firstItem.effectiveFrom}</span>
-                      <span style="display: flex; align-items: center; font-weight: 700; color: var(--accent-success);">View Semesters <ChevronRight size="14" /></span>
-                    </div>
-                  </a>
-                );
-              })}
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Multidisciplinary Courses (MDC) Accordion Item -->
-    <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
-      <button class="accordion-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; transition: background 0.25s;">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <Compass style="color: var(--accent-warning); width: 20px; height: 20px;" />
-          <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Multidisciplinary Course (MDC) Syllabus</span>
-          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">MDC · 75 Marks</span>
-        </div>
-        <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
-      </button>
-      
-      <div class="accordion-content" id="mdc-accordion-content">
-        <div class="accordion-content-inner" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
-          <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.5; margin-bottom: 0.25rem;">
-            Under NEP 2020, students choose 3 Multidisciplinary Courses (MDC) from outside their major/minor disciplines. Select a course below to download the official PDF.
-          </p>
-          
-          <!-- MDC Categories & Filter Tabs -->
-          <div style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);">
-            <div id="mdc-tabs" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.25rem; align-items: center;">
-              <button class="btn btn-secondary mdc-tab-btn active" data-category="all" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                All ({mdcData.length})
-              </button>
-              {categories.map(cat => (
-                <button class="btn btn-secondary mdc-tab-btn" data-category={cat} style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                  {cat} ({mdcData.filter(item => item.category === cat).length})
-                </button>
-              ))}
-              
-              <!-- Search input for MDC subjects -->
-              <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="mdc-search-wrapper">
-                <input type="text" id="mdc-search-input" class="form-input" placeholder="Search MDC subjects..." style="height: 38px; padding-left: 2.25rem; font-size: 0.85rem; width: 220px; border-radius: var(--radius-xs);" />
-                <span style="position: absolute; left: 0.75rem; color: var(--text-tertiary); display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">🔍</span>
-              </div>
-            </div>
-
-            <!-- MDC Subjects Grid -->
-            <div id="mdc-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
-              {sortedMdcData.map(item => (
-                <a 
-                  href={item.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  class="card card-interactive mdc-item" 
-                  data-name={item.name.toLowerCase()} 
-                  data-category={item.category} 
-                  style="padding: 1rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; transition: all 0.2s;"
-                  onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'MDC', semester: '${item.semester || 'Unknown'}', department: 'MDC' });`}
-                >
-                  <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
-                    <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
-                      {item.name}
-                    </span>
-                    <span style="font-size: 0.75rem; color: var(--text-secondary);">
-                      {item.category}
-                    </span>
-                  </div>
-                  <span class="mdc-dl-icon" style="color: var(--accent-primary); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block;">
-                    📥
-                  </span>
-                </a>
-              ))}
-            </div>
-
-            <!-- Empty state -->
-            <div id="mdc-empty" style="display: none; text-align: center; padding: 2.5rem 1rem; color: var(--text-secondary); font-size: 0.95rem;">
-              No matching MDC subjects found.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Ability Enhancement Courses (AEC) Accordion Item -->
-    <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
-      <button class="accordion-trigger" id="aec-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; transition: background 0.25s;">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <Compass style="color: var(--accent-success); width: 20px; height: 20px;" />
-          <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Ability Enhancement Course (AEC) Syllabus</span>
-          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">AEC · 50 Marks</span>
-        </div>
-        <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
-      </button>
-      
-      <div class="accordion-content" id="aec-accordion-content">
-        <div class="accordion-content-inner" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
-          <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.5; margin-bottom: 0.25rem;">
-            Under NEP 2020, Ability Enhancement Courses focus on developing language, communication, and critical thinking skills. Select your semester below.
-          </p>
-
-          <!-- Ranchi University Reference Warning -->
-          <div style="background-color: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-sm); padding: 0.75rem 1rem; margin-bottom: 1rem; margin-top: 0.5rem; display: flex; gap: 0.75rem; align-items: flex-start;">
-            <span style="font-size: 1.1rem; flex-shrink: 0;">⚠️</span>
-            <p style="color: var(--text-secondary); font-size: 0.825rem; line-height: 1.4; margin: 0;">
-              <strong style="color: #f59e0b;">Reference Note:</strong> The syllabi for Semester 4 regional languages (Bengali, Ho, Kharia, Khortha, Kurmali, Kurukh, Mundari, Nagpuri, Santali, Urdu) are currently provided from Ranchi University for reference purposes only, as the official Kolhan University versions are unavailable.
-            </p>
-          </div>
-          
-          <!-- AEC Semester Filter Tabs -->
-          <div style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);">
-            <div id="aec-tabs" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.25rem; align-items: center;">
-              <button class="btn btn-secondary aec-tab-btn active" data-semester="all" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                All ({aecData.length})
-              </button>
-              <button class="btn btn-secondary aec-tab-btn" data-semester="Semester 1" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                Sem 1
-              </button>
-              <button class="btn btn-secondary aec-tab-btn" data-semester="Semester 2" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                Sem 2
-              </button>
-              <button class="btn btn-secondary aec-tab-btn" data-semester="Semester 3" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                Sem 3
-              </button>
-              <button class="btn btn-secondary aec-tab-btn" data-semester="Semester 4" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                Sem 4
-              </button>
-              
-              <!-- Search input for AEC subjects -->
-              <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="aec-search-wrapper">
-                <input type="text" id="aec-search-input" class="form-input" placeholder="Search AEC subjects..." style="height: 38px; padding-left: 2.25rem; font-size: 0.85rem; width: 220px; border-radius: var(--radius-xs);" />
-                <span style="position: absolute; left: 0.75rem; color: var(--text-tertiary); display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">🔍</span>
-              </div>
-            </div>
-
-            <!-- AEC Subjects Grid -->
-            <div id="aec-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
-              {aecData.map(item => (
-                <a 
-                  href={item.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  class="card card-interactive aec-item" 
-                  data-name={item.name.toLowerCase()} 
-                  data-semester={item.semester} 
-                  style="padding: 1rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; transition: all 0.2s;"
-                  onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'AEC', semester: '${item.semester || 'Unknown'}', department: 'AEC' });`}
-                >
-                  <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
-                    <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
-                      {item.name}
-                    </span>
-                    <span style="font-size: 0.75rem; color: var(--text-secondary);">
-                      {item.semester}
-                    </span>
-                  </div>
-                  <span class="aec-dl-icon" style="color: var(--accent-success); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block;">
-                    📥
-                  </span>
-                </a>
-              ))}
-            </div>
-
-            <!-- Empty state -->
-            <div id="aec-empty" style="display: none; text-align: center; padding: 2.5rem 1rem; color: var(--text-secondary); font-size: 0.95rem;">
-              No matching AEC subjects found.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Value Added Courses (VAC) Accordion Item -->
-    <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
-      <button class="accordion-trigger" id="vac-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; transition: background 0.25s;">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <Award style="color: var(--accent-primary); width: 20px; height: 20px;" />
-          <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Value Added Course (VAC) Syllabus</span>
-          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(99,102,241,0.12); color: var(--accent-primary); border: 1px solid rgba(99,102,241,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">VAC · 50 Marks</span>
-        </div>
-        <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
-      </button>
-      
-      <div class="accordion-content" id="vac-accordion-content">
-        <div class="accordion-content-inner" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
-          <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.5; margin-bottom: 0.25rem;">
-            Under NEP 2020, Value Added Courses (VAC) are designed to provide holistic education. In Semester 1, students take two 2-credit courses: VAC-1(A) (compulsory: Understanding India) and VAC-1(B) (choose one from EVS, Health & Wellness, or Yoga). In Semester 4, students take the 2-credit VAC-2 course (Global Citizenship Education).
-          </p>
-          
-          <!-- VAC Semester Filter Tabs -->
-          <div style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);">
-            <div id="vac-tabs" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.25rem; align-items: center;">
-              <button class="btn btn-secondary vac-tab-btn active" data-semester="all" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                All ({vacData.length})
-              </button>
-              <button class="btn btn-secondary vac-tab-btn" data-semester="Semester 1" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                Sem 1
-              </button>
-              <button class="btn btn-secondary vac-tab-btn" data-semester="Semester 4" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                Sem 4
-              </button>
-              
-              <!-- Search input for VAC subjects -->
-              <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="vac-search-wrapper">
-                <input type="text" id="vac-search-input" class="form-input" placeholder="Search VAC subjects..." style="height: 38px; padding-left: 2.25rem; font-size: 0.85rem; width: 220px; border-radius: var(--radius-xs);" />
-                <span style="position: absolute; left: 0.75rem; color: var(--text-tertiary); display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">🔍</span>
-              </div>
-            </div>
-
-            <!-- VAC Subjects Grid -->
-            <div id="vac-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
-              {vacData.map(item => (
-                <a 
-                  href={item.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  class="card card-interactive vac-item" 
-                  data-name={item.name.toLowerCase()} 
-                  data-semester={item.semester} 
-                  style="padding: 1rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; transition: all 0.2s;"
-                  onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'VAC', semester: '${item.semester || 'Unknown'}', department: 'VAC' });`}
-                >
-                  <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
-                    <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
-                      {item.name}
-                    </span>
-                    <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.15rem;">
-                      <span>{item.semester}</span>
-                      <span style="font-size: 0.65rem; color: var(--accent-primary); font-weight: 600;">{item.type}</span>
-                    </span>
-                  </div>
-                  <span class="vac-dl-icon" style="color: var(--accent-primary); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block;">
-                    📥
-                  </span>
-                </a>
-              ))}
-            </div>
-
-            <!-- Empty state -->
-            <div id="vac-empty" style="display: none; text-align: center; padding: 2.5rem 1rem; color: var(--text-secondary); font-size: 0.95rem;">
-              No matching VAC subjects found.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Skill Enhancement Course (SEC) Accordion Item -->
-    <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
-      <button class="accordion-trigger" id="sec-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; transition: background 0.25s;">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <BookOpen style="color: var(--accent-warning); width: 20px; height: 20px;" />
-          <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Skill Enhancement Course (SEC) Syllabus</span>
-          <span style="font-size: 0.65rem; font-weight: 700; background: rgba(245,158,11,0.12); color: var(--accent-warning); border: 1px solid rgba(245,158,11,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">SEC · 75 Marks</span>
-        </div>
-        <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
-      </button>
-      
-      <div class="accordion-content" id="sec-accordion-content">
-        <div class="accordion-content-inner" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
-          <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.5; margin-bottom: 0.25rem;">
-            Under NEP 2020, Skill Enhancement Courses (SEC) are designed to provide hands-on training, competency, and skills. Select your semester below.
-          </p>
-          
-          <!-- SEC Semester Filter Tabs -->
-          <div style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);">
-            <div id="sec-tabs" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.25rem; align-items: center;">
-              <button class="btn btn-secondary sec-tab-btn active" data-semester="all" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                All ({secData.length})
-              </button>
-              <button class="btn btn-secondary sec-tab-btn" data-semester="Semester 1" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                Sem 1
-              </button>
-              <button class="btn btn-secondary sec-tab-btn" data-semester="Semester 2" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                Sem 2
-              </button>
-              <button class="btn btn-secondary sec-tab-btn" data-semester="Semester 3" style="height: 38px; font-size: 0.85rem; padding: 0 1rem; border-radius: var(--radius-xs);">
-                Sem 3
-              </button>
-              
-              <!-- Search input for SEC subjects -->
-              <div style="margin-left: auto; position: relative; display: flex; align-items: center;" class="sec-search-wrapper">
-                <input type="text" id="sec-search-input" class="form-input" placeholder="Search SEC subjects..." style="height: 38px; padding-left: 2.25rem; font-size: 0.85rem; width: 220px; border-radius: var(--radius-xs);" />
-                <span style="position: absolute; left: 0.75rem; color: var(--text-tertiary); display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">🔍</span>
-              </div>
-            </div>
-
-            <!-- SEC Subjects Grid -->
-            <div id="sec-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
-              {secData.map(item => (
-                <a 
-                  href={item.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  class="card card-interactive sec-item" 
-                  data-name={item.name.toLowerCase()} 
-                  data-semester={item.semester} 
-                  style="padding: 1rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; transition: all 0.2s;"
-                  onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'SEC', semester: '${item.semester || 'Unknown'}', department: 'SEC' });`}
-                >
-                  <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
-                    <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
-                      {item.name}
-                    </span>
-                    <span style="font-size: 0.75rem; color: var(--text-secondary);">
-                      {item.semester}
-                    </span>
-                  </div>
-                  <span class="sec-dl-icon" style="color: var(--accent-warning); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block;">
-                    📥
-                  </span>
-                </a>
-              ))}
-            </div>
-
-            <!-- Empty state -->
-            <div id="sec-empty" style="display: none; text-align: center; padding: 2.5rem 1rem; color: var(--text-secondary); font-size: 0.95rem;">
-              No matching SEC subjects found.
-            </div>
-          </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Indian Knowledge System (IKS) Accordion Item -->
-  <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary); margin-bottom: 1rem;">
-    <button class="accordion-trigger" id="iks-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; transition: background 0.25s;">
-      <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <Compass style="color: var(--accent-danger); width: 20px; height: 20px;" />
-        <span style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-display);">Indian Knowledge System (IKS) Syllabus</span>
-        <span style="font-size: 0.65rem; font-weight: 700; background: rgba(239,68,68,0.12); color: var(--accent-danger); border: 1px solid rgba(239,68,68,0.25); border-radius: 20px; padding: 2px 8px; letter-spacing: 0.3px;">IKS · Sem 1</span>
-      </div>
-      <ChevronRight class="chevron" size="20" style="color: var(--text-secondary); transition: transform 0.25s;" />
-    </button>
-    
-    <div class="accordion-content" id="iks-accordion-content">
-      <div class="accordion-content-inner" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
-        <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.5; margin-bottom: 0.25rem;">
-          Introduced for the 2025 batch onwards, the Indian Knowledge System (IKS) is a compulsory paper in Semester 1.
-        </p>
-        
-        <div style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);">
-          <div id="iks-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
-            {iksData.map(item => (
-              <a 
-                href={item.link} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                class="card card-interactive" 
-                style="padding: 1rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; transition: all 0.2s;"
-                onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'IKS', semester: '${item.semester || 'Unknown'}', department: 'IKS' });`}
+          <div id="major-syl-grid" class="syl-compact-grid">
+            {majorSubjects.map(subj => (
+              <a
+                href={`${baseUrl}/syllabus/${subj.slug}/`}
+                class="card card-interactive major-syl-item syl-compact-card"
+                data-name={subj.label.toLowerCase()}
+                data-category={subj.category}
               >
-                <div style="display: flex; flex-direction: column; gap: 0.25rem; min-width: 0;">
-                  <span style="font-weight: 700; font-size: 0.925rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
+                <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+                  <span style="font-weight: 700; font-size: 0.82rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={subj.label}>
+                    {subj.label}
+                  </span>
+                  {subj.slug === 'mathematics' && (
+                    <span style="font-size: 0.58rem; font-weight: 700; color: #34d399;">✨ Sem 3 Guide &amp; Notes</span>
+                  )}
+                </div>
+                <span class="major-syl-icon" style={`color: ${subj.hasDownload ? 'var(--accent-primary)' : 'var(--text-tertiary)'}; font-size: 0.9rem; margin-left: 0.35rem; flex-shrink: 0;`}>
+                  {subj.hasDownload ? '📥' : '→'}
+                </span>
+              </a>
+            ))}
+          </div>
+
+          <div id="major-syl-empty" style="display: none; text-align: center; padding: 1.25rem 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">
+            No matching subjects found.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Minor / AC -->
+    <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
+      <button type="button" class="accordion-trigger">
+        <div class="syl-acc-left">
+          <Award style="color: var(--accent-success); width: 18px; height: 18px; flex-shrink: 0;" />
+          <span class="syl-acc-title">Minor / AC</span>
+          <span class="syl-acc-pill" style="background: rgba(16,185,129,0.12); color: var(--accent-success); border-color: rgba(16,185,129,0.25);">MN / AC · 100M</span>
+        </div>
+        <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+      </button>
+
+      <div class="accordion-content">
+        <div class="syl-acc-body">
+          <div class="syl-compact-grid">
+            {minorDepartments.map(dept => (
+              <a
+                href={`${baseUrl}/syllabus/${getSlug(dept)}/`}
+                class="card card-interactive syl-compact-card"
+              >
+                <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+                  <span style="font-weight: 700; font-size: 0.82rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={dept}>
+                    {dept}
+                  </span>
+                  <span style="font-size: 0.65rem; color: var(--accent-success); font-weight: 600;">Minor / AC</span>
+                </div>
+                <span style="color: var(--accent-success); font-size: 0.9rem; margin-left: 0.35rem; flex-shrink: 0;">→</span>
+              </a>
+            ))}
+          </div>
+          <div style="font-size: 0.7rem; color: var(--text-tertiary);">
+            2025+ batch: renamed Associated Core (AC). More Minor syllabi coming soon.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. MDC -->
+    <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
+      <button type="button" class="accordion-trigger">
+        <div class="syl-acc-left">
+          <Compass style="color: var(--accent-warning); width: 18px; height: 18px; flex-shrink: 0;" />
+          <span class="syl-acc-title">MDC</span>
+          <span class="syl-acc-pill" style="background: rgba(245,158,11,0.12); color: var(--accent-warning); border-color: rgba(245,158,11,0.25);">Multidisciplinary · 75M</span>
+        </div>
+        <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+      </button>
+
+      <div class="accordion-content" id="mdc-accordion-content">
+        <div class="syl-acc-body">
+          <a href={`${baseUrl}/syllabus/mdc/`} class="syl-hub-link" style="color: var(--accent-warning); border-color: rgba(245,158,11,0.25); background: rgba(245,158,11,0.06);">
+            <span>📖 Open full MDC Syllabus &amp; PYQs Page</span>
+            <span>→</span>
+          </a>
+
+          <div id="mdc-tabs" class="syl-pill-row">
+            <button type="button" class="btn btn-secondary mdc-tab-btn syl-filter-pill active" data-category="all">
+              All ({mdcData.length})
+            </button>
+            {categories.map(cat => (
+              <button type="button" class="btn btn-secondary mdc-tab-btn syl-filter-pill" data-category={cat}>
+                {shortCatLabel[cat] || cat} ({mdcData.filter(item => item.category === cat).length})
+              </button>
+            ))}
+          </div>
+
+          <div style="position: relative; display: flex; align-items: center;">
+            <input type="text" id="mdc-search-input" class="form-input" placeholder="Search MDC subjects..." style="height: 34px; padding-left: 2rem; font-size: 0.8rem; width: 100%; border-radius: var(--radius-xs);" />
+            <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.82rem;">🔍</span>
+          </div>
+
+          <div id="mdc-grid" class="syl-compact-grid">
+            {sortedMdcData.map(item => (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="card card-interactive mdc-item syl-compact-card"
+                data-name={item.name.toLowerCase()}
+                data-category={item.category}
+                onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'MDC', semester: '${item.semester || 'Unknown'}', department: 'MDC' });`}
+              >
+                <span style="font-weight: 700; font-size: 0.8rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;" title={item.name}>
+                  {item.name}
+                </span>
+                <span class="mdc-dl-icon" style="color: var(--accent-primary); font-size: 0.88rem; margin-left: 0.35rem; flex-shrink: 0;">
+                  📥
+                </span>
+              </a>
+            ))}
+          </div>
+
+          <div id="mdc-empty" style="display: none; text-align: center; padding: 1.25rem 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">
+            No matching MDC subjects found.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. AEC -->
+    <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
+      <button type="button" class="accordion-trigger" id="aec-trigger">
+        <div class="syl-acc-left">
+          <Compass style="color: var(--accent-success); width: 18px; height: 18px; flex-shrink: 0;" />
+          <span class="syl-acc-title">AEC</span>
+          <span class="syl-acc-pill" style="background: rgba(16,185,129,0.12); color: var(--accent-success); border-color: rgba(16,185,129,0.25);">Languages · 50M</span>
+        </div>
+        <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+      </button>
+
+      <div class="accordion-content" id="aec-accordion-content">
+        <div class="syl-acc-body">
+          <a href={`${baseUrl}/syllabus/aec/`} class="syl-hub-link" style="color: var(--accent-success); border-color: rgba(16,185,129,0.25); background: rgba(16,185,129,0.06);">
+            <span>📖 Open full AEC Syllabus &amp; PYQs Page</span>
+            <span>→</span>
+          </a>
+
+          <div id="aec-tabs" class="syl-pill-row">
+            <button type="button" class="btn btn-secondary aec-tab-btn syl-filter-pill active" data-semester="all">
+              All ({aecData.length})
+            </button>
+            <button type="button" class="btn btn-secondary aec-tab-btn syl-filter-pill" data-semester="Semester 1">
+              Sem 1
+            </button>
+            <button type="button" class="btn btn-secondary aec-tab-btn syl-filter-pill" data-semester="Semester 2">
+              Sem 2
+            </button>
+            <button type="button" class="btn btn-secondary aec-tab-btn syl-filter-pill" data-semester="Semester 3">
+              Sem 3
+            </button>
+            <button type="button" class="btn btn-secondary aec-tab-btn syl-filter-pill" data-semester="Semester 4">
+              Sem 4
+            </button>
+          </div>
+
+          <div style="position: relative; display: flex; align-items: center;">
+            <input type="text" id="aec-search-input" class="form-input" placeholder="Search AEC subjects..." style="height: 34px; padding-left: 2rem; font-size: 0.8rem; width: 100%; border-radius: var(--radius-xs);" />
+            <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.82rem;">🔍</span>
+          </div>
+
+          <!-- Compact 1-line note shown ONLY when Sem 4 tab is active -->
+          <div id="aec-sem4-note" style="display: none; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-xs); padding: 0.45rem 0.7rem; font-size: 0.72rem; color: var(--text-secondary);">
+            <span>⚠️ Sem 4 regional PDFs are Ranchi Univ. reference.</span>
+            <button type="button" onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));" style="background:none; border:none; padding:0; color:#fbbf24; font-weight:700; font-size:0.72rem; cursor:pointer;">
+              Have Kolhan Univ. PDF? Share →
+            </button>
+          </div>
+
+          <div id="aec-grid" class="syl-wide-grid">
+            {aecData.map(item => (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="card card-interactive aec-item"
+                data-name={item.name.toLowerCase()}
+                data-semester={item.semester}
+                style="padding: 0.68rem 0.82rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; min-width: 0;"
+                onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'AEC', semester: '${item.semester || 'Unknown'}', department: 'AEC' });`}
+              >
+                <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+                  <span style="font-weight: 700; font-size: 0.84rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
                     {item.name}
                   </span>
-                  <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.15rem;">
-                    <span>{item.semester}</span>
-                    <span style="font-size: 0.65rem; color: var(--accent-danger); font-weight: 600;">{item.type}</span>
+                  <span style="font-size: 0.7rem; color: var(--text-secondary);">
+                    {item.semester}
                   </span>
                 </div>
-                <span class="vac-dl-icon" style="color: var(--accent-danger); font-size: 1.1rem; margin-left: 0.5rem; transition: transform 0.2s; display: inline-block;">
+                <span class="aec-dl-icon" style="color: var(--accent-success); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
+                  📥
+                </span>
+              </a>
+            ))}
+          </div>
+
+          <div id="aec-empty" style="display: none; text-align: center; padding: 1.25rem 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">
+            No matching AEC subjects found.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. VAC -->
+    <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
+      <button type="button" class="accordion-trigger" id="vac-trigger">
+        <div class="syl-acc-left">
+          <Award style="color: var(--accent-primary); width: 18px; height: 18px; flex-shrink: 0;" />
+          <span class="syl-acc-title">VAC</span>
+          <span class="syl-acc-pill" style="background: rgba(99,102,241,0.12); color: var(--accent-primary); border-color: rgba(99,102,241,0.25);">Value Added · 50M</span>
+        </div>
+        <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+      </button>
+
+      <div class="accordion-content" id="vac-accordion-content">
+        <div class="syl-acc-body">
+          <a href={`${baseUrl}/syllabus/vac/`} class="syl-hub-link" style="color: var(--accent-primary); border-color: rgba(99,102,241,0.25); background: rgba(99,102,241,0.06);">
+            <span>📖 Open full VAC Syllabus &amp; PYQs Page</span>
+            <span>→</span>
+          </a>
+
+          <div id="vac-tabs" class="syl-pill-row">
+            <button type="button" class="btn btn-secondary vac-tab-btn syl-filter-pill active" data-semester="all">
+              All ({vacData.length})
+            </button>
+            <button type="button" class="btn btn-secondary vac-tab-btn syl-filter-pill" data-semester="Semester 1">
+              Sem 1
+            </button>
+            <button type="button" class="btn btn-secondary vac-tab-btn syl-filter-pill" data-semester="Semester 4">
+              Sem 4
+            </button>
+          </div>
+
+          <div id="vac-grid" class="syl-wide-grid">
+            {vacData.map(item => (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="card card-interactive vac-item"
+                data-name={item.name.toLowerCase()}
+                data-semester={item.semester}
+                style="padding: 0.68rem 0.82rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; min-width: 0;"
+                onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'VAC', semester: '${item.semester || 'Unknown'}', department: 'VAC' });`}
+              >
+                <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+                  <span style="font-weight: 700; font-size: 0.84rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
+                    {item.name}
+                  </span>
+                  <span style="font-size: 0.69rem; color: var(--text-secondary);">
+                    {item.semester} &bull; {item.type}
+                  </span>
+                </div>
+                <span class="vac-dl-icon" style="color: var(--accent-primary); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
                   📥
                 </span>
               </a>
@@ -695,168 +446,569 @@ const departments = Object.keys(deptGroups);
         </div>
       </div>
     </div>
+
+    <!-- 6. SEC -->
+    <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
+      <button type="button" class="accordion-trigger" id="sec-trigger">
+        <div class="syl-acc-left">
+          <BookOpen style="color: var(--accent-warning); width: 18px; height: 18px; flex-shrink: 0;" />
+          <span class="syl-acc-title">SEC</span>
+          <span class="syl-acc-pill" style="background: rgba(245,158,11,0.12); color: var(--accent-warning); border-color: rgba(245,158,11,0.25);">Skill · 75M</span>
+        </div>
+        <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+      </button>
+
+      <div class="accordion-content" id="sec-accordion-content">
+        <div class="syl-acc-body">
+          <a href={`${baseUrl}/syllabus/sec/`} class="syl-hub-link" style="color: var(--accent-warning); border-color: rgba(245,158,11,0.25); background: rgba(245,158,11,0.06);">
+            <span>📖 Open full SEC Syllabus &amp; PYQs Page</span>
+            <span>→</span>
+          </a>
+
+          <div id="sec-tabs" class="syl-pill-row">
+            <button type="button" class="btn btn-secondary sec-tab-btn syl-filter-pill active" data-semester="all">
+              All ({secData.length})
+            </button>
+            <button type="button" class="btn btn-secondary sec-tab-btn syl-filter-pill" data-semester="Semester 1">
+              Sem 1
+            </button>
+            <button type="button" class="btn btn-secondary sec-tab-btn syl-filter-pill" data-semester="Semester 2">
+              Sem 2
+            </button>
+            <button type="button" class="btn btn-secondary sec-tab-btn syl-filter-pill" data-semester="Semester 3">
+              Sem 3
+            </button>
+          </div>
+
+          <div id="sec-grid" class="syl-wide-grid">
+            {secData.map(item => {
+              const isSec3 = item.id === 'sec-3-mathematical-computational-thinking';
+              return isSec3 ? (
+                <a
+                  href={`${baseUrl}/syllabus/sec-3/`}
+                  class="card card-interactive sec-item"
+                  data-name={item.name.toLowerCase()}
+                  data-semester={item.semester}
+                  style="padding: 0.68rem 0.82rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; border-color: rgba(251,191,36,0.35); min-width: 0;"
+                >
+                  <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+                    <span style="font-weight: 700; font-size: 0.84rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
+                      {item.name}
+                    </span>
+                    <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                      <span style="font-size: 0.69rem; color: var(--text-secondary);">{item.semester}</span>
+                      <span style="font-size: 0.58rem; font-weight: 700; color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 1px 6px;">✨ Notes &amp; PYQs</span>
+                    </div>
+                  </div>
+                  <span class="sec-dl-icon" style="color: var(--accent-warning); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
+                    →
+                  </span>
+                </a>
+              ) : (
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="card card-interactive sec-item"
+                  data-name={item.name.toLowerCase()}
+                  data-semester={item.semester}
+                  style="padding: 0.68rem 0.82rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; min-width: 0;"
+                  onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'SEC', semester: '${item.semester || 'Unknown'}', department: 'SEC' });`}
+                >
+                  <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+                    <span style="font-weight: 700; font-size: 0.84rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
+                      {item.name}
+                    </span>
+                    <span style="font-size: 0.69rem; color: var(--text-secondary);">
+                      {item.semester}
+                    </span>
+                  </div>
+                  <span class="sec-dl-icon" style="color: var(--accent-warning); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
+                    📥
+                  </span>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. IKS -->
+    <div class="accordion-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; background-color: var(--bg-secondary);">
+      <button type="button" class="accordion-trigger" id="iks-trigger">
+        <div class="syl-acc-left">
+          <Compass style="color: var(--accent-danger); width: 18px; height: 18px; flex-shrink: 0;" />
+          <span class="syl-acc-title">IKS</span>
+          <span class="syl-acc-pill" style="background: rgba(239,68,68,0.12); color: var(--accent-danger); border-color: rgba(239,68,68,0.25);">Sem 1 · 50M</span>
+        </div>
+        <ChevronRight class="chevron" size="18" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+      </button>
+
+      <div class="accordion-content" id="iks-accordion-content">
+        <div class="syl-acc-body">
+          <a href={`${baseUrl}/syllabus/iks/`} class="syl-hub-link" style="color: var(--accent-danger); border-color: rgba(239,68,68,0.25); background: rgba(239,68,68,0.06);">
+            <span>📖 Open full IKS Syllabus, Notes &amp; PYQs Page</span>
+            <span>→</span>
+          </a>
+
+          <div id="iks-grid" class="syl-wide-grid">
+            {iksData.map(item => (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="card card-interactive"
+                style="padding: 0.68rem 0.82rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; min-width: 0;"
+                onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'IKS', semester: '${item.semester || 'Unknown'}', department: 'IKS' });`}
+              >
+                <div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+                  <span style="font-weight: 700; font-size: 0.84rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
+                    {item.name}
+                  </span>
+                  <span style="font-size: 0.69rem; color: var(--text-secondary);">
+                    {item.semester} &bull; {item.type}
+                  </span>
+                </div>
+                <span style="color: var(--accent-danger); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">
+                  📥
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Quick Contribution Card -->
-  <div class="card" style="background-color: var(--bg-tertiary); text-align: center; display: flex; flex-direction: column; gap: 0.75rem; margin-top: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto; padding: 1.75rem;">
-    <h3 style="font-size: 1.15rem; font-family: var(--font-display); font-weight: 800; color: var(--text-primary);">Missing a paper?</h3>
-    <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; max-width: 480px; margin: 0 auto;">
-      Help fellow college students by contributing missing papers, or request a specific semester PYQ paper!
-    </p>
-    <div style="display: flex; gap: 0.75rem; width: 100%; margin-top: 0.5rem; justify-content: center; flex-wrap: wrap;">
-      <button 
-        class="btn btn-outline btn-sm" 
-        style="flex: 1; min-width: 200px; max-width: 240px; font-weight: 700;"
-        onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));"
-      >
-        Submit / Upload Paper
-      </button>
-      <button 
-        class="btn btn-primary btn-sm" 
-        style="flex: 1; min-width: 200px; max-width: 240px; font-weight: 700;"
-        onclick="document.dispatchEvent(new CustomEvent('open-request-modal'));"
-      >
-        Request a Paper
-      </button>
+  <!-- ═══ SEM 3 HANDWRITTEN STUDY NOTES & GUIDES (Connects Homepage Notes Funnel) ═══ -->
+  <section aria-label="Semester 3 handwritten study notes and syllabus guides" style="border: 1px solid rgba(251,191,36,0.28); border-radius: var(--radius-sm); padding: 0.9rem 1rem; margin-bottom: 1.25rem; background: linear-gradient(135deg, rgba(251,191,36,0.06) 0%, rgba(129,140,248,0.05) 100%);">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.65rem;">
+      <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-display);">
+        ✍️ Sem 3 Handwritten Study Notes &amp; Guides
+      </span>
+      <a href={`${baseUrl}/notes/`} style="font-size: 0.72rem; font-weight: 700; color: #fbbf24; text-decoration: none;">
+        View All Notes →
+      </a>
     </div>
-    <div style="margin-top: 0.5rem; text-align: center;">
-      <button 
-        onclick="document.dispatchEvent(new CustomEvent('open-report-modal'));" 
-        style="background:none; border:none; padding:0; color: var(--accent-danger); font-size: 0.75rem; font-weight: 700; cursor:pointer; opacity: 0.85; transition: opacity 0.15s; display: inline-flex; align-items: center; gap: 0.25rem;"
-        onmouseover="this.style.opacity='1'"
-        onmouseout="this.style.opacity='0.85'"
-      >
-        ⚠️ Report wrong paper or broken link
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0.6rem;">
+      <a href={`${baseUrl}/syllabus/sec-3/`} style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.68rem 0.85rem; border-radius: var(--radius-xs); background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); text-decoration: none; color: var(--text-primary); min-width: 0;">
+        <div style="min-width: 0;">
+          <div style="font-size: 0.8rem; font-weight: 800; color: #fbbf24;">💻 SEC-3 (All Streams)</div>
+          <div style="font-size: 0.69rem; color: var(--text-secondary); margin-top: 2px;">Syllabus PDF, PYQs &amp; Notes</div>
+        </div>
+        <span style="font-size: 0.85rem; font-weight: 800; color: #fbbf24; flex-shrink: 0;">→</span>
+      </a>
+      <a href={`${baseUrl}/syllabus/mathematics/#maths-sem3-deep-section`} style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.68rem 0.85rem; border-radius: var(--radius-xs); background: rgba(129,140,248,0.1); border: 1px solid rgba(129,140,248,0.3); text-decoration: none; color: var(--text-primary); min-width: 0;">
+        <div style="min-width: 0;">
+          <div style="font-size: 0.8rem; font-weight: 800; color: #818cf8;">📐 Maths Major Sem 3 (MJ-04 &amp; MJ-05)</div>
+          <div style="font-size: 0.69rem; color: var(--text-secondary); margin-top: 2px;">Unit Weightage, PYQs &amp; Notes</div>
+        </div>
+        <span style="font-size: 0.85rem; font-weight: 800; color: #818cf8; flex-shrink: 0;">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ MARKS & PASSING CRITERIA (Verified from paper_marking_schemes.json) ═══ -->
+  <section aria-label="Marks and passing criteria" style="background: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(16,185,129,0.04) 100%); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+      <span style="font-size: 0.76rem; font-weight: 800; color: var(--text-primary); letter-spacing: 0.03em; text-transform: uppercase;">📊 Marks &amp; Passing Criteria (FYUGP)</span>
+      <span style="font-size: 0.7rem; color: var(--text-tertiary);">Qualifying: <strong style="color: var(--accent-success);">40% per component</strong></span>
+    </div>
+    <div class="syl-marks-grid">
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.75rem; min-width: 0;">
+        <div style="font-size: 0.76rem; font-weight: 800; color: var(--accent-primary);">MJ / AC (Practical)</div>
+        <div style="font-size: 0.73rem; color: var(--text-secondary); margin-top: 2px;">{pracFull.total} Marks ({pracFull.theory} Th + {pracFull.internal} Int + {pracFull.practical} Prac)</div>
+        <div style="font-size: 0.69rem; color: var(--accent-success); font-weight: 700; margin-top: 2px;">Pass: {pracPass.total} ({pracPass.theory}/{pracPass.internal}/{pracPass.practical})</div>
+      </div>
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.75rem; min-width: 0;">
+        <div style="font-size: 0.76rem; font-weight: 800; color: var(--accent-primary);">MJ / AC (Non-Practical)</div>
+        <div style="font-size: 0.73rem; color: var(--text-secondary); margin-top: 2px;">{nonPracFull.total} Marks ({nonPracFull.theory} Th + {nonPracFull.internal} Int)</div>
+        <div style="font-size: 0.69rem; color: var(--accent-success); font-weight: 700; margin-top: 2px;">Pass: {nonPracPass.total} ({nonPracPass.theory}/{nonPracPass.internal})</div>
+      </div>
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.75rem; min-width: 0;">
+        <div style="font-size: 0.76rem; font-weight: 800; color: var(--accent-warning);">MDC / SEC</div>
+        <div style="font-size: 0.73rem; color: var(--text-secondary); margin-top: 2px;">{mdcSecFull.total} Marks (Theory Only)</div>
+        <div style="font-size: 0.69rem; color: var(--accent-success); font-weight: 700; margin-top: 2px;">Pass: {mdcSecPass.total}</div>
+      </div>
+      <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.6rem 0.75rem; min-width: 0;">
+        <div style="font-size: 0.76rem; font-weight: 800; color: var(--accent-success);">AEC / VAC / IKS</div>
+        <div style="font-size: 0.73rem; color: var(--text-secondary); margin-top: 2px;">{aecVacFull.total} Marks (Theory / MCQs)</div>
+        <div style="font-size: 0.69rem; color: var(--accent-success); font-weight: 700; margin-top: 2px;">Pass: {aecVacPass.total}</div>
+      </div>
+    </div>
+    <p style="font-size: 0.71rem; color: var(--text-tertiary); margin: 0.65rem 0 0; line-height: 1.45;">
+      {markingSchemes.passingRule}
+    </p>
+  </section>
+
+  <!-- ═══ COMPACT SYLLABUS COMMUNITY ROW (Independent Toggles) ═══ -->
+  <div class="syl-two-col-grid" style="margin-bottom: 1.25rem;">
+    <div style="border: 1px solid rgba(16,185,129,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(16,185,129,0.02) 0%, rgba(0,0,0,0.12) 100%); min-width: 0;">
+      <button type="button" id="syl-req-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 0.9rem; background: transparent; border: none; cursor: pointer; text-align: left;">
+        <div style="display: flex; align-items: center; gap: 0.4rem; min-width: 0;">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; background: rgba(16,185,129,0.15); border-radius: 50%; font-size: 0.65rem; flex-shrink: 0;">✓</span>
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">Syllabus Requests Done</span>
+          <span style="font-size: 0.6rem; font-weight: 700; background: rgba(16,185,129,0.12); color: var(--accent-success); border: 1px solid rgba(16,185,129,0.25); border-radius: 20px; padding: 1px 5px;">4</span>
+        </div>
+        <ChevronRight id="syl-req-chevron" size="14" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
       </button>
+      <div id="syl-req-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 1px solid rgba(16,185,129,0.12);">
+        <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; background: rgba(0,0,0,0.15);">
+          {[{e:'🗺️',t:'Geography Major Syllabus',s:'Sem 1–8'},{e:'📖',t:'English Major Syllabus',s:'Sem 1'},{e:'🌿',t:'Botany Major Syllabus',s:'Sem 1–8'},{e:'🔬',t:'Zoology Major Syllabus',s:'Sem 1–8'}].map(r => (
+            <div style="display: flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0; min-width: 0;">
+              <span style="font-size: 0.65rem; flex-shrink: 0;">{r.e}</span>
+              <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-primary); flex: 1; min-width: 0; overflow-wrap: anywhere;">{r.t}</span>
+              <span style="font-size: 0.65rem; color: var(--accent-success); font-weight: 600; white-space: nowrap;">{r.s}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div style="border: 1px solid rgba(37,211,102,0.2); border-radius: var(--radius-sm); overflow: hidden; background: linear-gradient(135deg, rgba(37,211,102,0.02) 0%, rgba(0,0,0,0.12) 100%); min-width: 0;">
+      <button type="button" id="syl-contrib-trigger" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 0.9rem; background: transparent; border: none; cursor: pointer; text-align: left;">
+        <div style="display: flex; align-items: center; gap: 0.4rem; min-width: 0;">
+          <span style="font-size: 0.75rem; flex-shrink: 0;">📚</span>
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">Syllabus Contributors</span>
+          <span style="font-size: 0.6rem; font-weight: 700; background: rgba(37,211,102,0.12); color: #34d399; border: 1px solid rgba(37,211,102,0.25); border-radius: 20px; padding: 1px 5px;">4</span>
+        </div>
+        <ChevronRight id="syl-contrib-chevron" size="14" style="color: var(--text-secondary); transition: transform 0.25s; flex-shrink: 0;" />
+      </button>
+      <div id="syl-contrib-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-top: 1px solid rgba(37,211,102,0.12);">
+        <div style="padding: 0.5rem 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; background: rgba(0,0,0,0.15);">
+          {[{i:'K',bg:'#ec4899,#db2777',n:'Kirti Arya',f:'Botany Major Syllabus'},{i:'D',bg:'#6366f1,#8b5cf6',n:'Deepika',f:'AEC Hindi Syllabus'},{i:'N',bg:'#34d399,#059669',n:'Neha Kumari',f:'Geography Syllabus'},{i:'R',bg:'#0ea5e9,#0284c7',n:'Ravi Kumar',f:'English Syllabus'}].map(c => (
+            <div style="display: flex; align-items: center; gap: 0.45rem; padding: 0.2rem 0; min-width: 0;">
+              <div style={`width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, ${c.bg.split(',')[0]}, ${c.bg.split(',')[1]}); display: flex; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 800; color: white; flex-shrink: 0;`}>{c.i}</div>
+              <span style="font-size: 0.74rem; font-weight: 700; color: var(--text-primary); flex-shrink: 0;">{c.n}</span>
+              <span style="font-size: 0.65rem; color: var(--text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;">{c.f}</span>
+            </div>
+          ))}
+          <a href="https://api.whatsapp.com/send?phone=918002059887&text=Hi!%20I%20have%20a%20syllabus%20PDF%20to%20share%20for%20Kolhan%20University%20%F0%9F%93%9A" target="_blank" rel="noopener noreferrer" style="font-size: 0.7rem; color: rgba(37,211,102,0.9); font-weight: 600; text-decoration: none; margin-top: 0.2rem;">💬 Share syllabus files →</a>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- ═══ MISSING OR UPDATED SYLLABUS + OFFICIAL SOURCES ═══ -->
+  <div class="syl-two-col-grid" style="margin-bottom: 1.25rem;">
+    <div class="card" style="background-color: var(--bg-tertiary); text-align: center; display: flex; flex-direction: column; justify-content: center; gap: 0.65rem; padding: 1.1rem; min-width: 0;">
+      <h2 style="font-size: 1.02rem; font-family: var(--font-display); font-weight: 800; color: var(--text-primary); margin: 0;">Missing or Updated Syllabus?</h2>
+      <p style="font-size: 0.79rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+        Request a missing syllabus or share a revised 2025/2026 department PDF to help fellow students!
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 0.45rem; width: 100%;">
+        <button
+          type="button"
+          class="btn btn-outline btn-sm"
+          style="width: 100%; font-weight: 700;"
+          onclick="document.dispatchEvent(new CustomEvent('open-submit-modal'));"
+        >
+          Submit / Upload Syllabus PDF
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          style="width: 100%; font-weight: 700;"
+          onclick="document.dispatchEvent(new CustomEvent('open-request-modal'));"
+        >
+          Request Missing Syllabus
+        </button>
+      </div>
+      <button
+        type="button"
+        onclick="document.dispatchEvent(new CustomEvent('open-report-modal'));"
+        style="background:none; border:none; padding:0; color: var(--accent-danger); font-size: 0.74rem; font-weight: 700; cursor:pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem;"
+      >
+        ⚠️ Report wrong syllabus or broken link
+      </button>
+    </div>
+
+    <div class="card" style="border-color: rgba(99,102,241,0.18); padding: 1.1rem; background: linear-gradient(135deg, rgba(99,102,241,0.04) 0%, rgba(0,0,0,0.08) 100%); display: flex; flex-direction: column; justify-content: center; gap: 0.55rem; min-width: 0;">
+      <div style="font-size: 0.92rem; font-weight: 800; color: #818cf8; font-family: var(--font-display);">📚 Official University Sources</div>
+      <div style="font-size: 0.76rem; color: var(--text-secondary); line-height: 1.55;">
+        We keep adding updated department syllabi regularly. Meanwhile, you can also check these official portals:
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+        <a href="https://www.kolhanuniversity.ac.in/undergraduate-syllabus" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.73rem; font-weight: 700; color: #818cf8; text-decoration: none; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.22); border-radius: 20px; padding: 5px 12px; width: fit-content;">
+          🏛️ Kolhan University Official Syllabus →
+        </a>
+        <a href="https://karimcitycollege.ac.in/syllabi/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.73rem; font-weight: 700; color: #34d399; text-decoration: none; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.22); border-radius: 20px; padding: 5px 12px; width: fit-content;">
+          🏫 Karim City College Syllabus →
+        </a>
+      </div>
+      <div style="font-size: 0.7rem; color: var(--text-tertiary); line-height: 1.45;">
+        💡 <strong style="color: var(--text-secondary);">Tip:</strong> 2025/2026 batch students should always confirm with their subject teacher if a syllabus was revised.
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ COMPACT HINDI HELPER BOX ═══ -->
+  <section aria-labelledby="syl-hindi-heading" lang="hi" style="border: 1px solid rgba(99,102,241,0.22); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem; background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(16,185,129,0.03) 100%);">
+    <h2 id="syl-hindi-heading" style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.55rem; color: var(--text-primary);">
+      🇮🇳 कोल्हान यूनिवर्सिटी सिलेबस 2026 PDF कैसे डाउनलोड करें?
+    </h2>
+    <ul style="margin: 0; padding-left: 1.15rem; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.65; display: flex; flex-direction: column; gap: 0.3rem;">
+      <li>ऊपर दी गई कैटेगरी (<strong>Major, Minor/AC, MDC, AEC, VAC, SEC, IKS</strong>) में अपना विषय चुनें।</li>
+      <li>यह NEP 2020 FYUGP सिलेबस <strong>सभी 37 कोल्हान यूनिवर्सिटी कॉलेजों</strong> (Tata College, Co-op, ABM, Ghatshila, Karim City आदि) के BA, BSc और BCom छात्रों के लिए है।</li>
+      <li><strong>2022–2024 बैच</strong> का सिलेबस समान है; <strong>2025 व 2026 बैच</strong> के छात्र अपने विभाग से Sem 1–2 सिलेबस अपडेट ज़रूर जाँचें (Minor का नाम बदलकर AC और Sem 1 में IKS लागू हुआ है)।</li>
+      <li>विषय पेज पर जाकर <strong>Download PDF</strong> दबाएँ — बिना किसी लॉगिन या शुल्क के PDF खुल जाएगी।</li>
+    </ul>
+  </section>
+
+  <!-- ═══ VISIBLE FAQ ACCORDION (Synced with FAQPage JSON-LD) ═══ -->
+  <section aria-labelledby="syl-faq-heading" style="margin-bottom: 1.25rem;">
+    <h2 id="syl-faq-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+      ❓ Frequently Asked Questions
+    </h2>
+    <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+      {faqItems.map((item, idx) => (
+        <details open={idx === 0} style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.7rem 0.9rem; background: var(--bg-secondary);">
+          <summary style="font-size: 0.83rem; font-weight: 700; color: var(--text-primary); cursor: pointer;">{item.q}</summary>
+          <p style="font-size: 0.79rem; color: var(--text-secondary); line-height: 1.55; margin: 0.5rem 0 0; padding-top: 0.5rem; border-top: 1px solid var(--border-color);">{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══ 2×2 STUDENT TOOLS STRIP ═══ -->
+  <section aria-labelledby="syl-tools-heading" style="margin-bottom: 0.5rem;">
+    <h2 id="syl-tools-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+      🛠️ Next Steps &amp; Student Tools
+    </h2>
+    <div class="syl-tools-grid">
+      <a href={`${baseUrl}/pyqs/`} class="card syl-tool-card">
+        <span style="font-size: 1.1rem;">📝</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary);">Previous Year Papers</div>
+          <div style="font-size: 0.7rem; color: var(--text-tertiary);">220+ PYQs Sem 1–7</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/results/`} class="card syl-tool-card">
+        <span style="font-size: 1.1rem;">📊</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary);">Kolhan University Results</div>
+          <div style="font-size: 0.7rem; color: var(--text-tertiary);">Sem 1–7 All 37 Colleges</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/holiday-list/`} class="card syl-tool-card">
+        <span style="font-size: 1.1rem;">📅</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary);">Holiday List 2026</div>
+          <div style="font-size: 0.7rem; color: var(--text-tertiary);">College Open Status &amp; PDF</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/cgpa/`} class="card syl-tool-card">
+        <span style="font-size: 1.1rem;">🧮</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.84rem; font-weight: 700; color: var(--text-primary);">CGPA Calculator</div>
+          <div style="font-size: 0.7rem; color: var(--text-tertiary);">SGPA to % Converter</div>
+        </div>
+      </a>
+    </div>
+  </section>
 
   <style>
-    .db-filter-btn.active {
-      background-color: rgba(99, 102, 241, 0.1) !important;
-      color: var(--accent-primary) !important;
-      border-color: var(--accent-primary) !important;
+    .accordion-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
     }
-    
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 4px;
+    .accordion-trigger:hover {
+      background-color: rgba(99, 102, 241, 0.04);
     }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: var(--radius-full);
+    .syl-acc-left {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      min-width: 0;
+      flex: 1;
     }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: var(--border-color);
-      border-radius: var(--radius-full);
+    .syl-acc-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      white-space: nowrap;
     }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: var(--text-tertiary);
+    .syl-acc-pill {
+      font-size: 0.6rem;
+      font-weight: 700;
+      border: 1px solid;
+      border-radius: 20px;
+      padding: 1px 7px;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
     }
-
+    .syl-acc-body {
+      padding: 0.75rem 0.85rem 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .syl-hub-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid;
+      border-radius: var(--radius-xs);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .syl-pill-row {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 0.35rem;
+      padding-bottom: 0.15rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .syl-pill-row::-webkit-scrollbar {
+      display: none;
+    }
+    .syl-filter-pill {
+      height: 31px;
+      font-size: 0.75rem;
+      padding: 0 0.72rem;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .syl-compact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.5rem;
+    }
+    @media (min-width: 640px) {
+      .syl-compact-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    .syl-compact-card {
+      padding: 0.58rem 0.68rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: var(--radius-xs);
+      text-decoration: none;
+      color: inherit;
+      min-width: 0;
+    }
+    .syl-wide-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.55rem;
+    }
+    @media (min-width: 520px) {
+      .syl-wide-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .syl-marks-grid,
+    .syl-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+    .syl-two-col-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.85rem;
+    }
+    @media (min-width: 640px) {
+      .syl-two-col-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .syl-tool-card {
+      padding: 0.75rem 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+      min-width: 0;
+    }
     .mdc-tab-btn.active {
-      background-color: rgba(99, 102, 241, 0.1) !important;
+      background-color: rgba(99, 102, 241, 0.12) !important;
       color: var(--accent-primary) !important;
       border-color: var(--accent-primary) !important;
     }
-    
     .aec-tab-btn.active {
-      background-color: rgba(16, 185, 129, 0.1) !important;
+      background-color: rgba(16, 185, 129, 0.12) !important;
       color: var(--accent-success) !important;
       border-color: var(--accent-success) !important;
     }
-    
     .vac-tab-btn.active {
-      background-color: rgba(99, 102, 241, 0.1) !important;
+      background-color: rgba(99, 102, 241, 0.12) !important;
       color: var(--accent-primary) !important;
       border-color: var(--accent-primary) !important;
     }
-
     .sec-tab-btn.active {
-      background-color: rgba(245, 158, 11, 0.1) !important;
+      background-color: rgba(245, 158, 11, 0.12) !important;
       color: var(--accent-warning) !important;
       border-color: var(--accent-warning) !important;
     }
-    
-    .mdc-item:hover .mdc-dl-icon, .aec-item:hover .aec-dl-icon, .vac-item:hover .vac-dl-icon, .sec-item:hover .sec-dl-icon {
-      transform: translateY(-2px);
+    .major-syl-tab.active {
+      background-color: rgba(99, 102, 241, 0.12) !important;
+      color: var(--accent-primary) !important;
+      border-color: var(--accent-primary) !important;
     }
-    
     .accordion-content {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.25s ease-out;
       background-color: rgba(0, 0, 0, 0.15);
     }
-    
-    .accordion-trigger:hover {
-      background-color: rgba(99, 102, 241, 0.04);
-    }
-    
-    @media (max-width: 767px) {
-      .mdc-search-wrapper, .aec-search-wrapper, .vac-search-wrapper, .sec-search-wrapper {
-        width: 100% !important;
-        margin-top: 0.75rem;
-      }
-      .mdc-search-wrapper input, .aec-search-wrapper input, .vac-search-wrapper input, .sec-search-wrapper input {
-        width: 100% !important;
-      }
-      #mdc-tabs, #aec-tabs, #vac-tabs, #sec-tabs {
-        padding-bottom: 1rem;
-      }
-    }
   </style>
 
   <script>
-    // Syllabus community panels — both open/close together
+    // Independent Community Accordion Toggles
     (function() {
-      var reqT  = document.getElementById('syl-req-trigger');
-      var reqC  = document.getElementById('syl-req-content');
-      var reqCh = document.getElementById('syl-req-chevron');
-      var conT  = document.getElementById('syl-contrib-trigger');
-      var conC  = document.getElementById('syl-contrib-content');
-      var conCh = document.getElementById('syl-contrib-chevron');
-      function toggleBoth() {
-        if (!reqC || !conC) return;
-        var open = reqC.style.maxHeight && reqC.style.maxHeight !== '0px';
-        reqC.style.maxHeight = open ? '0px' : reqC.scrollHeight + 'px';
-        conC.style.maxHeight = open ? '0px' : conC.scrollHeight + 'px';
-        var rot = open ? 'rotate(0deg)' : 'rotate(90deg)';
-        if (reqCh) reqCh.style.transform = rot;
-        if (conCh) conCh.style.transform = rot;
+      function bindIndependentToggle(triggerId: string, contentId: string, chevronId: string) {
+        const trigger = document.getElementById(triggerId);
+        const content = document.getElementById(contentId);
+        const chevron = document.getElementById(chevronId);
+        if (!trigger || !content) return;
+        trigger.addEventListener('click', () => {
+          const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+          content.style.maxHeight = isOpen ? '0px' : content.scrollHeight + 'px';
+          if (chevron) chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(90deg)';
+        });
       }
-      if (reqT) reqT.addEventListener('click', toggleBoth);
-      if (conT) conT.addEventListener('click', toggleBoth);
+      bindIndependentToggle('syl-req-trigger', 'syl-req-content', 'syl-req-chevron');
+      bindIndependentToggle('syl-contrib-trigger', 'syl-contrib-content', 'syl-contrib-chevron');
     })();
 
-    // Accordion Toggle Logic
+    // Course Category Accordion Toggle Logic (all closed by default)
     const accordionTriggers = document.querySelectorAll('.accordion-trigger');
-    
-    // Add custom handling for initially open accordions
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.accordion-trigger.active-initially').forEach(btn => {
-        const content = btn.nextElementSibling as HTMLElement;
-        if (content) {
-          content.classList.add('open');
-          content.style.maxHeight = 'none';
-        }
-      });
-    });
 
     accordionTriggers.forEach(trigger => {
       trigger.addEventListener('click', (e) => {
         const btn = e.currentTarget as HTMLButtonElement;
         const content = btn.nextElementSibling as HTMLElement;
         const chevron = btn.querySelector('.chevron') as HTMLElement;
-
         const isOpen = content.classList.contains('open');
 
-        // Close all other accordions first for clean UI
+        // Close all other accordions
         document.querySelectorAll('.accordion-content').forEach(c => {
           const contentEl = c as HTMLElement;
           if (contentEl !== content && contentEl.classList.contains('open')) {
             contentEl.classList.remove('open');
             contentEl.style.maxHeight = contentEl.scrollHeight + 'px';
-            void contentEl.offsetHeight; // force reflow
+            void contentEl.offsetHeight;
             contentEl.style.maxHeight = '0px';
 
             const siblingBtn = contentEl.previousElementSibling as HTMLElement;
@@ -874,7 +1026,6 @@ const departments = Object.keys(deptGroups);
           if (chevron) chevron.style.transform = 'rotate(90deg)';
           btn.style.backgroundColor = 'rgba(99, 102, 241, 0.08)';
 
-          // Transition to none to allow dynamic height changes (tab filtering / search)
           const handleTransitionEnd = (event: TransitionEvent) => {
             if (event.propertyName === 'max-height') {
               if (content.classList.contains('open')) {
@@ -886,9 +1037,8 @@ const departments = Object.keys(deptGroups);
           content.addEventListener('transitionend', handleTransitionEnd);
         } else {
           content.classList.remove('open');
-          // Collapse from current height
           content.style.maxHeight = content.scrollHeight + 'px';
-          void content.offsetHeight; // force reflow
+          void content.offsetHeight;
           content.style.maxHeight = '0px';
           if (chevron) chevron.style.transform = 'rotate(0deg)';
           btn.style.backgroundColor = 'transparent';
@@ -896,303 +1046,9 @@ const departments = Object.keys(deptGroups);
       });
     });
 
-    const tabBtns = document.querySelectorAll('.mdc-tab-btn');
-    const searchInput = document.getElementById('mdc-search-input') as HTMLInputElement;
-    const mdcItems = document.querySelectorAll('.mdc-item') as NodeListOf<HTMLAnchorElement>;
-    const emptyState = document.getElementById('mdc-empty');
-
-    let activeCategory = 'all';
-    let searchQuery = '';
-
-    const filterMdc = () => {
-      let visibleCount = 0;
-
-      mdcItems.forEach(item => {
-        const name = item.getAttribute('data-name') || '';
-        const category = item.getAttribute('data-category') || '';
-
-        const matchesCategory = activeCategory === 'all' || category === activeCategory;
-        const matchesSearch = name.includes(searchQuery);
-
-        if (matchesCategory && matchesSearch) {
-          item.style.display = 'flex';
-          visibleCount++;
-        } else {
-          item.style.display = 'none';
-        }
-      });
-
-      if (emptyState) {
-        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-      }
-    };
-
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        tabBtns.forEach(b => b.classList.remove('active'));
-        const clickedBtn = e.currentTarget as HTMLElement;
-        clickedBtn.classList.add('active');
-
-        activeCategory = clickedBtn.getAttribute('data-category') || 'all';
-        filterMdc();
-      });
-    });
-
-    searchInput?.addEventListener('input', (e) => {
-      searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
-      filterMdc();
-    });
-
-    // AEC Filtering Logic
-    const aecTabBtns = document.querySelectorAll('.aec-tab-btn');
-    const aecSearchInput = document.getElementById('aec-search-input') as HTMLInputElement;
-    const aecItems = document.querySelectorAll('.aec-item') as NodeListOf<HTMLAnchorElement>;
-    const aecEmptyState = document.getElementById('aec-empty');
-
-    let activeAecSemester = 'all';
-    let aecSearchQuery = '';
-
-    const filterAec = () => {
-      let visibleCount = 0;
-
-      aecItems.forEach(item => {
-        const name = item.getAttribute('data-name') || '';
-        const semester = item.getAttribute('data-semester') || '';
-
-        const matchesSemester = activeAecSemester === 'all' || semester === activeAecSemester;
-        const matchesSearch = name.includes(aecSearchQuery);
-
-        if (matchesSemester && matchesSearch) {
-          item.style.display = 'flex';
-          visibleCount++;
-        } else {
-          item.style.display = 'none';
-        }
-      });
-
-      if (aecEmptyState) {
-        aecEmptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-      }
-    };
-
-    aecTabBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        aecTabBtns.forEach(b => b.classList.remove('active'));
-        const clickedBtn = e.currentTarget as HTMLElement;
-        clickedBtn.classList.add('active');
-
-        activeAecSemester = clickedBtn.getAttribute('data-semester') || 'all';
-        filterAec();
-      });
-    });
-
-    aecSearchInput?.addEventListener('input', (e) => {
-      aecSearchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
-      filterAec();
-    });
-
-    // VAC Filtering Logic
-    const vacTabBtns = document.querySelectorAll('.vac-tab-btn');
-    const vacSearchInput = document.getElementById('vac-search-input') as HTMLInputElement;
-    const vacItems = document.querySelectorAll('.vac-item') as NodeListOf<HTMLAnchorElement>;
-    const vacEmptyState = document.getElementById('vac-empty');
-
-    let activeVacSemester = 'all';
-    let vacSearchQuery = '';
-
-    const filterVac = () => {
-      let visibleCount = 0;
-
-      vacItems.forEach(item => {
-        const name = item.getAttribute('data-name') || '';
-        const semester = item.getAttribute('data-semester') || '';
-
-        const matchesSemester = activeVacSemester === 'all' || semester === activeVacSemester;
-        const matchesSearch = name.includes(vacSearchQuery);
-
-        if (matchesSemester && matchesSearch) {
-          item.style.display = 'flex';
-          visibleCount++;
-        } else {
-          item.style.display = 'none';
-        }
-      });
-
-      if (vacEmptyState) {
-        vacEmptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-      }
-    };
-
-    vacTabBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        vacTabBtns.forEach(b => b.classList.remove('active'));
-        const clickedBtn = e.currentTarget as HTMLElement;
-        clickedBtn.classList.add('active');
-
-        activeVacSemester = clickedBtn.getAttribute('data-semester') || 'all';
-        filterVac();
-      });
-    });
-
-    vacSearchInput?.addEventListener('input', (e) => {
-      vacSearchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
-      filterVac();
-    });
-
-    // SEC Filtering Logic
-    const secTabBtns = document.querySelectorAll('.sec-tab-btn');
-    const secSearchInput = document.getElementById('sec-search-input') as HTMLInputElement;
-    const secItems = document.querySelectorAll('.sec-item') as NodeListOf<HTMLAnchorElement>;
-    const secEmptyState = document.getElementById('sec-empty');
-
-    let activeSecSemester = 'all';
-    let secSearchQuery = '';
-
-    const filterSec = () => {
-      let visibleCount = 0;
-
-      secItems.forEach(item => {
-        const name = item.getAttribute('data-name') || '';
-        const semester = item.getAttribute('data-semester') || '';
-
-        const matchesSemester = activeSecSemester === 'all' || semester === activeSecSemester;
-        const matchesSearch = name.includes(secSearchQuery);
-
-        if (matchesSemester && matchesSearch) {
-          item.style.display = 'flex';
-          visibleCount++;
-        } else {
-          item.style.display = 'none';
-        }
-      });
-
-      if (secEmptyState) {
-        secEmptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-      }
-    };
-
-    secTabBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        secTabBtns.forEach(b => b.classList.remove('active'));
-        const clickedBtn = e.currentTarget as HTMLElement;
-        clickedBtn.classList.add('active');
-
-        activeSecSemester = clickedBtn.getAttribute('data-semester') || 'all';
-        filterSec();
-      });
-    });
-
-    secSearchInput?.addEventListener('input', (e) => {
-      secSearchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
-      filterSec();
-    });
-
-    // --- Searchable Syllabi Database Script ---
-    const dbSearchInput = document.getElementById('db-search-input') as HTMLInputElement;
-    const dbItems = document.querySelectorAll('.db-item') as NodeListOf<HTMLElement>;
-    const dbEmptyState = document.getElementById('db-empty');
-    const dbShowingCount = document.getElementById('db-showing-count');
-    
-    let dbSearchQuery = '';
-    let dbActiveCat = 'all';
-    let dbActiveLevel = 'all';
-    let dbActiveType = 'all';
-
-    const filterDatabase = () => {
-      let visibleCount = 0;
-
-      dbItems.forEach(item => {
-        const name = item.getAttribute('data-name') || '';
-        const category = item.getAttribute('data-category') || '';
-        const level = item.getAttribute('data-level') || '';
-        const type = item.getAttribute('data-type') || '';
-
-        const matchesSearch = !dbSearchQuery || name.includes(dbSearchQuery);
-        const matchesCategory = dbActiveCat === 'all' || category === dbActiveCat;
-        const matchesLevel = dbActiveLevel === 'all' || level === dbActiveLevel;
-        const matchesType = dbActiveType === 'all' || type === dbActiveType;
-
-        if (matchesSearch && matchesCategory && matchesLevel && matchesType) {
-          item.style.display = 'flex';
-          visibleCount++;
-        } else {
-          item.style.display = 'none';
-        }
-      });
-
-      if (dbEmptyState) {
-        dbEmptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-      }
-      if (dbShowingCount) {
-        dbShowingCount.innerHTML = `Showing <strong>${visibleCount}</strong> items`;
-      }
-    };
-
-    // Listen to text search input
-    dbSearchInput?.addEventListener('input', (e) => {
-      dbSearchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
-      filterDatabase();
-    });
-
-    // Category filter button click handlers
-    const catBtns = document.querySelectorAll('.db-filter-btn.cat');
-    catBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        catBtns.forEach(b => b.classList.remove('active'));
-        const clicked = e.currentTarget as HTMLElement;
-        clicked.classList.add('active');
-        dbActiveCat = clicked.getAttribute('data-filter') || 'all';
-        filterDatabase();
-      });
-    });
-
-    // Level filter button click handlers
-    const levelBtns = document.querySelectorAll('.db-filter-btn.level');
-    levelBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        levelBtns.forEach(b => b.classList.remove('active'));
-        const clicked = e.currentTarget as HTMLElement;
-        clicked.classList.add('active');
-        dbActiveLevel = clicked.getAttribute('data-filter') || 'all';
-        filterDatabase();
-      });
-    });
-
-    // Type filter button click handlers
-    const typeBtns = document.querySelectorAll('.db-filter-btn.type');
-    typeBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        typeBtns.forEach(b => b.classList.remove('active'));
-        const clicked = e.currentTarget as HTMLElement;
-        clicked.classList.add('active');
-        dbActiveType = clicked.getAttribute('data-filter') || 'all';
-        filterDatabase();
-      });
-    });
-
-    // Copy link buttons functionality
-    const copyBtns = document.querySelectorAll('.copy-syl-link-btn');
-    copyBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const clickedBtn = e.currentTarget as HTMLButtonElement;
-        const url = clickedBtn.getAttribute('data-url') || '';
-        
-        navigator.clipboard.writeText(url).then(() => {
-          const originalText = clickedBtn.innerHTML;
-          clickedBtn.innerHTML = '✅ Copied!';
-          clickedBtn.disabled = true;
-          setTimeout(() => {
-            clickedBtn.innerHTML = originalText;
-            clickedBtn.disabled = false;
-          }, 2000);
-        });
-      });
-    });
-
-    // ── Major Syllabus filter tabs + search ────────────────────────────────
+    // Major Syllabus filter tabs + search
     let majorActiveCat = 'all';
     let majorSearchTerm = '';
-
     const filterMajor = () => {
       const items = document.querySelectorAll<HTMLElement>('.major-syl-item');
       const emptyEl = document.getElementById('major-syl-empty');
@@ -1202,12 +1058,11 @@ const departments = Object.keys(deptGroups);
         const cat  = item.getAttribute('data-category') || '';
         const catOk  = majorActiveCat === 'all' || cat === majorActiveCat;
         const termOk = !majorSearchTerm || name.includes(majorSearchTerm);
-        if (catOk && termOk) { item.style.display = ''; visible++; }
+        if (catOk && termOk) { item.style.display = 'flex'; visible++; }
         else item.style.display = 'none';
       });
       if (emptyEl) emptyEl.style.display = visible === 0 ? 'block' : 'none';
     };
-
     document.querySelectorAll('.major-syl-tab').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.major-syl-tab').forEach(b => b.classList.remove('active'));
@@ -1216,39 +1071,144 @@ const departments = Object.keys(deptGroups);
         filterMajor();
       });
     });
-
     const majorSearch = document.getElementById('major-syl-search') as HTMLInputElement | null;
     majorSearch?.addEventListener('input', () => {
       majorSearchTerm = majorSearch.value.toLowerCase().trim();
       filterMajor();
     });
 
-    // ── Auto-open accordion based on URL hash ─────────────────────────────────
+    // MDC Filtering Logic
+    const tabBtns = document.querySelectorAll('.mdc-tab-btn');
+    const searchInput = document.getElementById('mdc-search-input') as HTMLInputElement;
+    const mdcItems = document.querySelectorAll('.mdc-item') as NodeListOf<HTMLAnchorElement>;
+    const emptyState = document.getElementById('mdc-empty');
+    let activeCategory = 'all';
+    let searchQuery = '';
+    const filterMdc = () => {
+      let visibleCount = 0;
+      mdcItems.forEach(item => {
+        const name = item.getAttribute('data-name') || '';
+        const category = item.getAttribute('data-category') || '';
+        const matchesCategory = activeCategory === 'all' || category === activeCategory;
+        const matchesSearch = name.includes(searchQuery);
+        if (matchesCategory && matchesSearch) { item.style.display = 'flex'; visibleCount++; }
+        else { item.style.display = 'none'; }
+      });
+      if (emptyState) emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+    };
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        const clickedBtn = e.currentTarget as HTMLElement;
+        clickedBtn.classList.add('active');
+        activeCategory = clickedBtn.getAttribute('data-category') || 'all';
+        filterMdc();
+      });
+    });
+    searchInput?.addEventListener('input', (e) => {
+      searchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+      filterMdc();
+    });
+
+    // AEC Filtering Logic + Sem 4 Ranchi Univ. Note Toggle
+    const aecTabBtns = document.querySelectorAll('.aec-tab-btn');
+    const aecSearchInput = document.getElementById('aec-search-input') as HTMLInputElement;
+    const aecItems = document.querySelectorAll('.aec-item') as NodeListOf<HTMLAnchorElement>;
+    const aecEmptyState = document.getElementById('aec-empty');
+    const aecSem4Note = document.getElementById('aec-sem4-note');
+    let activeAecSemester = 'all';
+    let aecSearchQuery = '';
+    const filterAec = () => {
+      let visibleCount = 0;
+      aecItems.forEach(item => {
+        const name = item.getAttribute('data-name') || '';
+        const semester = item.getAttribute('data-semester') || '';
+        const matchesSemester = activeAecSemester === 'all' || semester === activeAecSemester;
+        const matchesSearch = name.includes(aecSearchQuery);
+        if (matchesSemester && matchesSearch) { item.style.display = 'flex'; visibleCount++; }
+        else { item.style.display = 'none'; }
+      });
+      if (aecEmptyState) aecEmptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      if (aecSem4Note) aecSem4Note.style.display = activeAecSemester === 'Semester 4' ? 'flex' : 'none';
+    };
+    aecTabBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        aecTabBtns.forEach(b => b.classList.remove('active'));
+        const clickedBtn = e.currentTarget as HTMLElement;
+        clickedBtn.classList.add('active');
+        activeAecSemester = clickedBtn.getAttribute('data-semester') || 'all';
+        filterAec();
+      });
+    });
+    aecSearchInput?.addEventListener('input', (e) => {
+      aecSearchQuery = (e.target as HTMLInputElement).value.toLowerCase().trim();
+      filterAec();
+    });
+
+    // VAC Filtering Logic (tabs only)
+    const vacTabBtns = document.querySelectorAll('.vac-tab-btn');
+    const vacItems = document.querySelectorAll('.vac-item') as NodeListOf<HTMLAnchorElement>;
+    let activeVacSemester = 'all';
+    const filterVac = () => {
+      vacItems.forEach(item => {
+        const semester = item.getAttribute('data-semester') || '';
+        item.style.display = (activeVacSemester === 'all' || semester === activeVacSemester) ? 'flex' : 'none';
+      });
+    };
+    vacTabBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        vacTabBtns.forEach(b => b.classList.remove('active'));
+        const clickedBtn = e.currentTarget as HTMLElement;
+        clickedBtn.classList.add('active');
+        activeVacSemester = clickedBtn.getAttribute('data-semester') || 'all';
+        filterVac();
+      });
+    });
+
+    // SEC Filtering Logic (tabs only)
+    const secTabBtns = document.querySelectorAll('.sec-tab-btn');
+    const secItems = document.querySelectorAll('.sec-item') as NodeListOf<HTMLAnchorElement>;
+    let activeSecSemester = 'all';
+    const filterSec = () => {
+      secItems.forEach(item => {
+        const semester = item.getAttribute('data-semester') || '';
+        item.style.display = (activeSecSemester === 'all' || semester === activeSecSemester) ? 'flex' : 'none';
+      });
+    };
+    secTabBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        secTabBtns.forEach(b => b.classList.remove('active'));
+        const clickedBtn = e.currentTarget as HTMLElement;
+        clickedBtn.classList.add('active');
+        activeSecSemester = clickedBtn.getAttribute('data-semester') || 'all';
+        filterSec();
+      });
+    });
+
+    // Auto-open accordion based on URL hash
     setTimeout(() => {
       if (window.location.hash) {
         const hashId = window.location.hash.substring(1);
         const targetElement = document.getElementById(hashId);
         if (targetElement) {
-          // If it's a trigger/button, click it directly
           if (targetElement.classList.contains('accordion-trigger') || targetElement.tagName === 'BUTTON') {
-            targetElement.click();
+            if (!targetElement.nextElementSibling?.classList.contains('open')) {
+              targetElement.click();
+            }
             setTimeout(() => {
               targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 350);
           } else {
-            // For non-trigger elements (e.g. vac-grid), open parent accordion first
             const parentContent = targetElement.closest('.accordion-content');
-            if (parentContent) {
+            if (parentContent && !parentContent.classList.contains('open')) {
               const parentItem = parentContent.closest('.accordion-item') || parentContent.parentElement;
-              const trigger = parentItem?.querySelector('.accordion-trigger');
+              const trigger = parentItem?.querySelector('.accordion-trigger') as HTMLElement | null;
               if (trigger) trigger.click();
             }
-            // Auto-select Sem 4 tab if targeting aec-grid or vac-grid
             if (hashId === 'aec-grid' || hashId === 'vac-grid') {
               const prefix = hashId.startsWith('aec') ? 'aec' : 'vac';
-              const tabBtns = document.querySelectorAll(`.${prefix}-tab-btn`);
-              tabBtns.forEach(btn => {
-                if (btn.getAttribute('data-semester') === 'Semester 4') btn.click();
+              document.querySelectorAll(`.${prefix}-tab-btn`).forEach(btn => {
+                if (btn.getAttribute('data-semester') === 'Semester 4') (btn as HTMLElement).click();
               });
             }
             setTimeout(() => {
@@ -1259,24 +1219,4 @@ const departments = Object.keys(deptGroups);
       }
     }, 150);
   </script>
-
-  <!-- ═══ Contextual Help: Syllabus Not Found ═══ -->
-  <div style="margin-top: 2.5rem; margin-bottom: 1rem; border: 1px solid rgba(99,102,241,0.15); border-radius: 14px; padding: 1.1rem 1.15rem; background: linear-gradient(135deg, rgba(99,102,241,0.03) 0%, rgba(0,0,0,0.08) 100%);">
-    <div style="font-size: 0.88rem; font-weight: 800; color: #818cf8; font-family: var(--font-display); margin-bottom: 0.5rem;">📚 Syllabus not here?</div>
-    <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.65rem;">
-      We're adding more syllabi regularly. Meanwhile, check these official sources:
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.6rem;">
-      <a href="https://www.kolhanuniversity.ac.in/undergraduate-syllabus" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 700; color: #818cf8; text-decoration: none; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2); border-radius: 20px; padding: 4px 12px; width: fit-content; transition: background 0.2s;">
-        🏛️ Kolhan University Official Syllabus →
-      </a>
-      <a href="https://karimcitycollege.ac.in/syllabi/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 700; color: #34d399; text-decoration: none; background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 20px; padding: 4px 12px; width: fit-content; transition: background 0.2s;">
-        🏫 Karim City College Syllabus →
-      </a>
-    </div>
-    <div style="font-size: 0.68rem; color: var(--text-tertiary); line-height: 1.5;">
-      💡 <strong style="color: var(--text-secondary);">Tip:</strong> Always confirm with your subject teacher for the latest syllabus — universities update them periodically.
-    </div>
-  </div>
-
 </Layout>

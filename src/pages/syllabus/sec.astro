@@ -1,0 +1,295 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import secData from '../../../public/data/sec.json';
+import pyqsData from '../../../public/data/pyqs.json';
+import markingSchemes from '../../../public/data/paper_marking_schemes.json';
+import { ChevronLeft } from '@lucide/astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const secScheme = markingSchemes.schemes['75_THEORY_ONLY'];
+
+// Group available SEC PYQs by subject
+const secPyqMap = new Map<string, { sems: number[]; count: number }>();
+pyqsData.forEach((p: any) => {
+  if (p.category === 'SEC' && p.downloadUrl && p.type !== 'notes') {
+    if (!secPyqMap.has(p.subject)) secPyqMap.set(p.subject, { sems: [], count: 0 });
+    const entry = secPyqMap.get(p.subject)!;
+    entry.count += 1;
+    const sem = Number(p.semester);
+    if (!entry.sems.includes(sem)) entry.sems.push(sem);
+  }
+});
+const secPyqSubjects = Array.from(secPyqMap.entries())
+  .map(([subject, info]) => ({ subject, sems: info.sems.sort((a, b) => a - b), count: info.count }));
+
+const faqItems = [
+  {
+    q: 'Which SEC papers are offered in Sem 1, Sem 2, and Sem 3 at Kolhan University?',
+    a: 'Sem 1 has SEC-1 Digital Education, Sem 2 offers SEC-2 News Writing & Reporting or Communication Skills & Personality Development, and Sem 3 has SEC-3 Mathematical & Computational Thinking and Analysis (common for all streams).'
+  },
+  {
+    q: 'What is the exam pattern and passing marks for SEC papers?',
+    a: `All Kolhan University SEC papers (Sem 1 to 3) carry ${secScheme.fullMarks.total} marks (Theory only, no internal or practical). Minimum passing mark is ${secScheme.passMarks.total} out of ${secScheme.fullMarks.total} (40%).`
+  },
+  {
+    q: 'Where can I get SEC-3 solved PYQs and handwritten study notes?',
+    a: 'Open the SEC-3 page linked above (/syllabus/sec-3/) to download the official PDF, browse all SEC-3 PYQ papers, and view free sample handwritten notes.'
+  }
+];
+
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(item => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a }
+  }))
+});
+---
+
+<Layout
+  title="Kolhan University SEC Syllabus PDF (Sem 1–3) — NEP FYUGP"
+  rawTitle={true}
+  description="Download official Kolhan University NEP FYUGP SEC Syllabus PDFs — Digital Education (Sem 1), Communication Skills, News Writing (Sem 2) & SEC-3 (Sem 3)."
+  keywords="Kolhan University SEC syllabus, Digital Education SEC 1 syllabus Kolhan University, SEC 2 Communication Skills syllabus, SEC 3 Kolhan University"
+  activeTab="syllabus"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={faqSchema} />
+  </Fragment>
+
+  <div style="margin-bottom: 1.1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; font-size: 0.85rem;">
+    <a href={`${baseUrl}/syllabus/`} style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 600; color: var(--text-secondary); text-decoration: none;">
+      <ChevronLeft size="16" /> Syllabus Directory
+    </a>
+    <span style="color: var(--text-tertiary);">/</span>
+    <span style="color: var(--text-primary); font-weight: 600;">SEC Syllabus</span>
+  </div>
+
+  <div style="margin-bottom: 1.15rem; display: flex; flex-direction: column; gap: 0.4rem;">
+    <h1 style="font-size: clamp(1.38rem, 5vw, 1.9rem); font-family: var(--font-display); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; margin: 0;">
+      Kolhan University SEC Syllabus PDF
+    </h1>
+    <p style="color: var(--text-secondary); font-size: 0.86rem; line-height: 1.45; margin: 0;">
+      Skill Enhancement Courses &bull; Sem 1–3 &bull; All 37 Colleges
+    </p>
+    <div style="margin-top: 0.25rem; font-size: 0.75rem; color: var(--text-secondary); background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-xs); padding: 0.45rem 0.7rem; width: fit-content;">
+      📊 <strong style="color: #fbbf24;">Exam Pattern:</strong> {secScheme.fullMarks.total} Marks (Theory Only) &bull; Pass: {secScheme.passMarks.total}
+    </div>
+  </div>
+
+  <!-- All 4 SEC Items -->
+  <section class="card" style="background: var(--bg-secondary); padding: 1rem; margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;">
+    <div class="sec-pill-row">
+      <button type="button" class="btn btn-secondary sec-p-tab sec-pill active" data-semester="all">All ({secData.length})</button>
+      <button type="button" class="btn btn-secondary sec-p-tab sec-pill" data-semester="Semester 1">Sem 1</button>
+      <button type="button" class="btn btn-secondary sec-p-tab sec-pill" data-semester="Semester 2">Sem 2</button>
+      <button type="button" class="btn btn-secondary sec-p-tab sec-pill" data-semester="Semester 3">Sem 3</button>
+    </div>
+
+    <div class="sec-wide-grid">
+      {secData.map(item => {
+        const isSec3 = item.id === 'sec-3-mathematical-computational-thinking';
+        return isSec3 ? (
+          <a
+            href={`${baseUrl}/syllabus/sec-3/`}
+            class="card card-interactive sec-p-item"
+            data-semester={item.semester}
+            style="padding: 0.72rem 0.85rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; border-color: rgba(251,191,36,0.35); min-width: 0;"
+          >
+            <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+              <span style="font-weight: 700; font-size: 0.85rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
+                {item.name}
+              </span>
+              <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                <span style="font-size: 0.7rem; color: var(--text-secondary);">{item.semester}</span>
+                <span style="font-size: 0.6rem; font-weight: 700; color: #fbbf24; background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.3); border-radius: 20px; padding: 1px 6px;">✨ Notes &amp; PYQs</span>
+              </div>
+            </div>
+            <span style="color: var(--accent-warning); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">→</span>
+          </a>
+        ) : (
+          <a
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="card card-interactive sec-p-item"
+            data-semester={item.semester}
+            style="padding: 0.72rem 0.85rem; display: flex; align-items: center; justify-content: space-between; border-radius: var(--radius-sm); text-decoration: none; color: inherit; min-width: 0;"
+            onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'SEC', semester: '${item.semester || 'Unknown'}', department: 'SEC' });`}
+          >
+            <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+              <span style="font-weight: 700; font-size: 0.85rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
+                {item.name}
+              </span>
+              <span style="font-size: 0.7rem; color: var(--text-secondary);">{item.semester}</span>
+            </div>
+            <span style="color: var(--accent-warning); font-size: 0.95rem; margin-left: 0.45rem; flex-shrink: 0;">📥</span>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- SEC-3 Handwritten Notes Promo Bar -->
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; border: 1px solid rgba(251,191,36,0.32); border-radius: var(--radius-sm); padding: 0.85rem 1rem; margin-bottom: 1.25rem; background: linear-gradient(135deg, rgba(251,191,36,0.08) 0%, rgba(0,0,0,0.16) 100%);">
+    <div style="min-width: 0;">
+      <div style="font-size: 0.88rem; font-weight: 800; color: #fbbf24; font-family: var(--font-display);">
+        💻 SEC-3 Mathematical &amp; Computational Thinking Notes
+      </div>
+      <div style="font-size: 0.74rem; color: var(--text-secondary); margin-top: 2px;">
+        Handwritten PDF notes &amp; solved guidance for Arts, Science &amp; Commerce
+      </div>
+    </div>
+    <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
+      <a href={`${baseUrl}/syllabus/sec-3/`} style="font-size: 0.74rem; font-weight: 800; color: #0b0b12; background: #fbbf24; border-radius: 20px; padding: 5px 12px; text-decoration: none;">
+        Open SEC-3 Guide →
+      </a>
+      <a href={`${baseUrl}/notes/`} style="font-size: 0.74rem; font-weight: 700; color: #fbbf24; border: 1px solid rgba(251,191,36,0.4); border-radius: 20px; padding: 5px 12px; text-decoration: none;">
+        All Sem 3 Notes
+      </a>
+    </div>
+  </div>
+
+  <!-- Matching SEC PYQs Cross-Links -->
+  <section class="card" style="background: linear-gradient(135deg, rgba(245,158,11,0.05) 0%, rgba(99,102,241,0.04) 100%); border-color: rgba(245,158,11,0.24); margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.7rem;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+      <h2 style="font-size: 1rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
+        📝 Practice SEC Previous Year Papers (PYQs)
+      </h2>
+      <a href={`${baseUrl}/pyqs/#sec-pyq-trigger`} style="font-size: 0.74rem; font-weight: 700; color: #fbbf24; text-decoration: none;">
+        All SEC PYQs →
+      </a>
+    </div>
+    <div class="sec-wide-grid">
+      {secPyqSubjects.map(({ subject, sems, count }) => (
+        <div style="background: rgba(0,0,0,0.16); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.65rem 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; min-width: 0;">
+          <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">{subject} ({count} PDFs)</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+            {sems.map(sem => (
+              <a
+                href={`${baseUrl}/pyqs/sec/${encodeURI(subject.toLowerCase())}/${sem}/`}
+                style="font-size: 0.72rem; font-weight: 700; color: #fbbf24; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 3px 10px; text-decoration: none;"
+              >
+                Sem {sem} PYQs →
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Visible FAQ Accordion -->
+  <section aria-labelledby="sec-faq-heading" style="margin-bottom: 1.25rem;">
+    <h2 id="sec-faq-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+      ❓ Frequently Asked Questions — SEC
+    </h2>
+    <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+      {faqItems.map((item, idx) => (
+        <details open={idx === 0} style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.7rem 0.9rem; background: var(--bg-secondary);">
+          <summary style="font-size: 0.83rem; font-weight: 700; color: var(--text-primary); cursor: pointer;">{item.q}</summary>
+          <p style="font-size: 0.79rem; color: var(--text-secondary); line-height: 1.55; margin: 0.5rem 0 0; padding-top: 0.5rem; border-top: 1px solid var(--border-color);">{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- 2×2 Student Tools Strip -->
+  <section aria-labelledby="sec-tools-heading" style="margin-bottom: 0.5rem;">
+    <h2 id="sec-tools-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+      🛠️ Student Tools
+    </h2>
+    <div class="sec-tools-grid">
+      <a href={`${baseUrl}/pyqs/`} class="card sec-tool-card">
+        <span style="font-size: 1.05rem;">📝</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">Previous Year Papers</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">Sem 1–7 PDFs</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/syllabus/`} class="card sec-tool-card">
+        <span style="font-size: 1.05rem;">📖</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">All Syllabi</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">Major, Minor, MDC, VAC</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/results/`} class="card sec-tool-card">
+        <span style="font-size: 1.05rem;">📊</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">University Results</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">All 37 Colleges</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/cgpa/`} class="card sec-tool-card">
+        <span style="font-size: 1.05rem;">🧮</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">CGPA Calculator</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">SGPA to %</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <style>
+    .sec-pill-row {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 0.35rem;
+      scrollbar-width: none;
+    }
+    .sec-pill-row::-webkit-scrollbar { display: none; }
+    .sec-pill {
+      height: 31px;
+      font-size: 0.75rem;
+      padding: 0 0.75rem;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .sec-p-tab.active {
+      background-color: rgba(245, 158, 11, 0.14) !important;
+      color: var(--accent-warning) !important;
+      border-color: var(--accent-warning) !important;
+    }
+    .sec-wide-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.55rem;
+    }
+    @media (min-width: 520px) {
+      .sec-wide-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .sec-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+    .sec-tool-card {
+      padding: 0.72rem 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+      min-width: 0;
+    }
+  </style>
+
+  <script>
+    const tabs = document.querySelectorAll('.sec-p-tab');
+    const items = document.querySelectorAll('.sec-p-item') as NodeListOf<HTMLElement>;
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      t.classList.add('active');
+      const sem = t.getAttribute('data-semester') || 'all';
+      items.forEach(el => {
+        el.style.display = (sem === 'all' || el.getAttribute('data-semester') === sem) ? 'flex' : 'none';
+      });
+    }));
+  </script>
+</Layout>

@@ -1,0 +1,224 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import iksData from '../../../public/data/iks.json';
+import pyqsData from '../../../public/data/pyqs.json';
+import markingSchemes from '../../../public/data/paper_marking_schemes.json';
+import { ChevronLeft, Download, ExternalLink } from '@lucide/astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const iksScheme = markingSchemes.schemes['50_THEORY_ONLY'];
+
+const iksPyqs = pyqsData.filter((p: any) => p.category === 'IKS' && p.type !== 'notes' && !!p.downloadUrl);
+const iksNotes = pyqsData.filter((p: any) => p.category === 'IKS' && p.type === 'notes' && !!p.downloadUrl);
+const iksPyqUrl = `${baseUrl}/pyqs/iks/${encodeURI('indian knowledge system')}/1/`;
+
+const faqItems = [
+  {
+    q: 'Who has to study IKS (Indian Knowledge System) in Kolhan University?',
+    a: 'Introduced from the 2025 & 2026 admission batches onwards, Indian Knowledge System (IKS) is a compulsory Semester 1 paper across Arts, Science, and Commerce streams in all 37 Kolhan University colleges.'
+  },
+  {
+    q: 'What is the IKS exam pattern and passing marks?',
+    a: `IKS carries ${iksScheme.fullMarks.total} marks (50 MCQs / Theory, no internal or practical). Minimum passing mark is ${iksScheme.passMarks.total} out of ${iksScheme.fullMarks.total} (40%).`
+  },
+  {
+    q: 'Where can I get IKS previous year question papers and study notes?',
+    a: 'Direct download links for Kolhan University official IKS Sem 1 papers, BBMKU/VBU reference papers, and free IKS study notes are listed right below on this page.'
+  }
+];
+
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(item => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a }
+  }))
+});
+---
+
+<Layout
+  title="Kolhan University IKS Syllabus PDF (Sem 1) — NEP FYUGP"
+  rawTitle={true}
+  description="Download official Kolhan University Indian Knowledge System (IKS) Sem 1 syllabus PDF (2025 & 2026 batch onwards) + IKS previous year papers & free notes."
+  keywords="Kolhan University IKS syllabus, Indian Knowledge System syllabus pdf Kolhan University, IKS Sem 1 syllabus 2025 2026 batch Kolhan University"
+  activeTab="syllabus"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={faqSchema} />
+  </Fragment>
+
+  <div style="margin-bottom: 1.1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; font-size: 0.85rem;">
+    <a href={`${baseUrl}/syllabus/`} style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 600; color: var(--text-secondary); text-decoration: none;">
+      <ChevronLeft size="16" /> Syllabus Directory
+    </a>
+    <span style="color: var(--text-tertiary);">/</span>
+    <span style="color: var(--text-primary); font-weight: 600;">IKS Syllabus</span>
+  </div>
+
+  <div style="margin-bottom: 1.15rem; display: flex; flex-direction: column; gap: 0.4rem;">
+    <h1 style="font-size: clamp(1.38rem, 5vw, 1.9rem); font-family: var(--font-display); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; margin: 0;">
+      Kolhan University IKS Syllabus PDF
+    </h1>
+    <p style="color: var(--text-secondary); font-size: 0.86rem; line-height: 1.45; margin: 0;">
+      Indian Knowledge System &bull; Compulsory Sem 1 (2025 &amp; 2026 Batches) &bull; All 37 Colleges
+    </p>
+    <div style="margin-top: 0.25rem; font-size: 0.75rem; color: var(--text-secondary); background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); border-radius: var(--radius-xs); padding: 0.45rem 0.7rem; width: fit-content;">
+      📊 <strong style="color: var(--accent-danger);">Exam Pattern:</strong> {iksScheme.fullMarks.total} Marks (50 MCQs / Theory) &bull; Pass: {iksScheme.passMarks.total}
+    </div>
+  </div>
+
+  <!-- Official IKS Syllabus PDF Card -->
+  <section class="card" style="background: var(--bg-secondary); padding: 1rem; margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;">
+    {iksData.map(item => (
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
+        <div style="min-width: 0;">
+          <h2 style="font-size: 1.05rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
+            {item.name} — Official Syllabus PDF
+          </h2>
+          <div style="font-size: 0.76rem; color: var(--text-secondary); margin-top: 3px;">
+            {item.semester} &bull; {item.type} &bull; 2025 &amp; 2026 Batch Onwards
+          </div>
+        </div>
+        <a
+          href={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary btn-sm"
+          style="gap: 0.4rem; font-size: 0.82rem;"
+          onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'IKS', semester: '${item.semester || 'Unknown'}', department: 'IKS' });`}
+        >
+          <Download size="14" /> Download IKS Syllabus PDF
+        </a>
+      </div>
+    ))}
+  </section>
+
+  <!-- Free IKS Study Notes -->
+  {iksNotes.length > 0 && (
+    <section class="card" style="background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(0,0,0,0.14) 100%); border-color: rgba(16,185,129,0.28); margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.6rem;">
+      <h2 style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--accent-success);">
+        📖 Free IKS Sem 1 Study Notes
+      </h2>
+      {iksNotes.map((note: any) => (
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap;">
+          <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">{note.title}</span>
+          <a
+            href={note.downloadUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style="font-size: 0.75rem; font-weight: 800; color: #0b0b12; background: #34d399; border-radius: 20px; padding: 5px 12px; text-decoration: none; white-space: nowrap;"
+            onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${note.title}', category: 'IKS', semester: '1' });`}
+          >
+            Download Free Notes →
+          </a>
+        </div>
+      ))}
+    </section>
+  )}
+
+  <!-- Matching IKS PYQs Cross-Links -->
+  <section class="card" style="background: linear-gradient(135deg, rgba(239,68,68,0.05) 0%, rgba(99,102,241,0.04) 100%); border-color: rgba(239,68,68,0.24); margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.7rem;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+      <h2 style="font-size: 1rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
+        📝 IKS Previous Year Question Papers ({iksPyqs.length} PDFs)
+      </h2>
+      <a href={iksPyqUrl} style="font-size: 0.74rem; font-weight: 700; color: #f87171; text-decoration: none;">
+        Open Full IKS PYQ Page →
+      </a>
+    </div>
+    <div class="iks-wide-grid">
+      {iksPyqs.map((paper: any) => (
+        <a
+          href={paper.downloadUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.68rem 0.85rem; border-radius: var(--radius-xs); background: rgba(0,0,0,0.16); border: 1px solid var(--border-color); text-decoration: none; color: var(--text-primary); font-size: 0.8rem; font-weight: 700; min-width: 0;"
+          onclick={`if(window.trackDownload) window.trackDownload('pyq', { subject: '${paper.title}', category: 'IKS', semester: '1' });`}
+        >
+          <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title={paper.title}>📄 {paper.title}</span>
+          <ExternalLink size="14" style="color: #f87171; flex-shrink: 0;" />
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Visible FAQ Accordion -->
+  <section aria-labelledby="iks-faq-heading" style="margin-bottom: 1.25rem;">
+    <h2 id="iks-faq-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+      ❓ Frequently Asked Questions — IKS
+    </h2>
+    <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+      {faqItems.map((item, idx) => (
+        <details open={idx === 0} style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.7rem 0.9rem; background: var(--bg-secondary);">
+          <summary style="font-size: 0.83rem; font-weight: 700; color: var(--text-primary); cursor: pointer;">{item.q}</summary>
+          <p style="font-size: 0.79rem; color: var(--text-secondary); line-height: 1.55; margin: 0.5rem 0 0; padding-top: 0.5rem; border-top: 1px solid var(--border-color);">{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- 2×2 Student Tools Strip -->
+  <section aria-labelledby="iks-tools-heading" style="margin-bottom: 0.5rem;">
+    <h2 id="iks-tools-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+      🛠️ Student Tools
+    </h2>
+    <div class="iks-tools-grid">
+      <a href={`${baseUrl}/pyqs/`} class="card iks-tool-card">
+        <span style="font-size: 1.05rem;">📝</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">Previous Year Papers</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">Sem 1–7 PDFs</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/syllabus/`} class="card iks-tool-card">
+        <span style="font-size: 1.05rem;">📖</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">All Syllabi</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">Major, Minor, MDC, VAC</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/results/`} class="card iks-tool-card">
+        <span style="font-size: 1.05rem;">📊</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">University Results</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">All 37 Colleges</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/cgpa/`} class="card iks-tool-card">
+        <span style="font-size: 1.05rem;">🧮</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">CGPA Calculator</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">SGPA to %</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <style>
+    .iks-wide-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.55rem;
+    }
+    @media (min-width: 520px) {
+      .iks-wide-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .iks-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+    .iks-tool-card {
+      padding: 0.72rem 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+      min-width: 0;
+    }
+  </style>
+</Layout>

@@ -256,6 +256,12 @@ if (category === 'major') {
       external: true
     });
   });
+  matchedSyllabi.push({
+    label: 'All Kolhan University MDC Syllabi (32 Subjects)',
+    subtitle: 'Official NEP FYUGP MDC PDFs, selection rules & PYQs',
+    href: `${baseUrl}/syllabus/mdc/`,
+    external: false
+  });
 } else if (category === 'aec') {
   const aecMatches = aecData.filter(a =>
     a.semester === `Semester ${originalSemester}` &&
@@ -268,6 +274,12 @@ if (category === 'major') {
       href: a.link,
       external: true
     });
+  });
+  matchedSyllabi.push({
+    label: 'All Kolhan University AEC Syllabi (Sem 1–4)',
+    subtitle: 'Hindi, English, Sanskrit & regional language PDFs',
+    href: `${baseUrl}/syllabus/aec/`,
+    external: false
   });
 } else if (category === 'vac') {
   const vacMatches = vacData.filter(v => {
@@ -284,6 +296,12 @@ if (category === 'major') {
       href: v.link,
       external: true
     });
+  });
+  matchedSyllabi.push({
+    label: 'All Kolhan University VAC Syllabi (Sem 1 & 4)',
+    subtitle: 'Understanding India, EVS, Yoga & Global Citizenship PDFs',
+    href: `${baseUrl}/syllabus/vac/`,
+    external: false
   });
 } else if (category === 'sec') {
   if (subject.includes('mathematical') && semester === '3') {
@@ -310,6 +328,12 @@ if (category === 'major') {
       external: true
     });
   });
+  matchedSyllabi.push({
+    label: 'All Kolhan University SEC Syllabi (Sem 1–3)',
+    subtitle: 'Digital Education, Comm. Skills, News Writing & SEC-3',
+    href: `${baseUrl}/syllabus/sec/`,
+    external: false
+  });
 } else if (category === 'iks') {
   if (Array.isArray(iksData) && iksData[0]) {
     matchedSyllabi.push({
@@ -319,6 +343,12 @@ if (category === 'major') {
       external: true
     });
   }
+  matchedSyllabi.push({
+    label: 'Kolhan University IKS Syllabus & Study Notes',
+    subtitle: 'Official Sem 1 IKS PDF, exam pattern & free notes',
+    href: `${baseUrl}/syllabus/iks/`,
+    external: false
+  });
 }
 
 if (matchedSyllabi.length === 0) {

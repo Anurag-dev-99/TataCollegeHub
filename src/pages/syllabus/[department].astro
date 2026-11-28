@@ -3,12 +3,14 @@ import Layout from '../../layouts/Layout.astro';
 import syllabusData from '../../../public/data/syllabus.json';
 import mathsSem3Data from '../../../public/data/maths-sem3-complete.json';
 import notesData from '../../../public/data/notes.json';
+import pyqsData from '../../../public/data/pyqs.json';
+import markingSchemes from '../../../public/data/paper_marking_schemes.json';
 import { renderMathText } from '../../utils/renderMath';
-import { ChevronLeft, Calendar, Download, FileText, AlertCircle, HelpCircle, ArrowLeft, ArrowUpRight, BookOpen, Sparkles, MessageCircle, Eye, Award } from '@lucide/astro';
+import { ChevronLeft, Calendar, Download, FileText, Sparkles, MessageCircle, Eye } from '@lucide/astro';
 
 export async function getStaticPaths() {
   const getSlug = (dept: string) => dept.toLowerCase().replace(/\s+/g, '-');
-  
+
   // Filter and only build departments that have active files
   const activeDepartments = [
     'Mathematics', 'Physics', 'Mathematics Minor', 'Physics Minor',
@@ -22,56 +24,163 @@ export async function getStaticPaths() {
   ];
   const filteredSyllabus = syllabusData.filter(item => activeDepartments.includes(item.department));
   const departments = [...new Set(filteredSyllabus.map(item => item.department))];
-  
+
   return departments.map(dept => {
     return {
       params: { department: getSlug(dept) },
-      props: { departmentName: dept }
+      props: { departmentName: dept, activeDepartments }
     };
   });
 }
 
 const { department } = Astro.params;
-const { departmentName } = Astro.props;
+const { departmentName, activeDepartments } = Astro.props;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const getSlug = (dept: string) => dept.toLowerCase().replace(/\s+/g, '-');
 
 // Get all syllabuses for this department
 const syllabuses = syllabusData.filter(s => s.department.toLowerCase().replace(/\s+/g, '-') === department);
 
 const isMathsMajor = department === 'mathematics';
+const isEnglish = department === 'english';
+const isMinorDept = departmentName.toLowerCase().includes('minor');
+const baseSubject = departmentName.replace(/\s+Minor$/i, '').trim();
+
 const notesWaLink = (item: string, price: number) =>
   `https://api.whatsapp.com/send?phone=${notesData.whatsapp}&text=${encodeURIComponent(`Hi KolhanHub! 👋 I want to buy: ${item} – ₹${price}. Please send the payment QR.`)}`;
 const noteByPaperCode: Record<string, any> = {
   'MJ-04': notesData.products.find(p => p.id === 'maths-mj04-real-analysis'),
   'MJ-05': notesData.products.find(p => p.id === 'maths-mj05-vectors'),
 };
+
+// Verified marking scheme lookup from paper_marking_schemes.json
+const SUBJECT_ALIASES: Record<string, string> = {
+  'bba': 'business administration',
+  'bca': 'computer application',
+  'environmental science': 'environment & water management',
+  'bangla': 'bengali',
+  'kudmali': 'kurmali',
+  'mass communication': 'mass communication and video production'
+};
+const normalizedSubj = SUBJECT_ALIASES[baseSubject.toLowerCase()] || baseSubject.toLowerCase();
+const isPracticalSubject = markingSchemes.subjects.alwaysPractical.some(s => s.toLowerCase() === normalizedSubj);
+const isMixedVocational = markingSchemes.subjects.mixedVocationalSubjects.some(s => s.toLowerCase() === normalizedSubj);
+const markingSummary = isPracticalSubject
+  ? 'Practical Paper · 100 Marks (60 Theory + 15 Internal + 25 Practical) · Pass: 40'
+  : isMixedVocational
+    ? 'Vocational Paper · 100 Marks (60+15+25 Practical or 75+25 Theory depending on semester) · Pass: 40'
+    : 'Non-Practical Paper · 100 Marks (75 Theory + 25 Internal) · Pass: 40';
+
+// Auto cross-linking to matching PYQs, Notes & Sibling Major/Minor
+const primaryCat = isMinorDept ? 'minor' : 'major';
+const altCat = isMinorDept ? 'major' : 'minor';
+const pyqUrl = (catLower: string, subjLower: string, sem: number) =>
+  `${baseUrl}/pyqs/${catLower}/${encodeURI(subjLower)}/${sem}/`;
+
+const getPyqSemsFor = (catLower: string) => {
+  const matching = pyqsData.filter(
+    (p: any) => p.downloadUrl && p.type !== 'notes' &&
+      p.category.toLowerCase() === catLower &&
+      p.subject.toLowerCase() === baseSubject.toLowerCase()
+  );
+  const sems = [...new Set(matching.map((p: any) => Number(p.semester)))].sort((a, b) => a - b);
+  return { sems, count: matching.length };
+};
+
+const primaryPyqs = getPyqSemsFor(primaryCat);
+const altPyqs = getPyqSemsFor(altCat);
+const mdcPyqs = getPyqSemsFor('mdc');
+
+const siblingDeptName = isMinorDept ? baseSubject : `${departmentName} Minor`;
+const siblingSlug = activeDepartments.includes(siblingDeptName) ? getSlug(siblingDeptName) : null;
+
+const deptNotes = notesData.products.filter(
+  n => n.available && n.match.category === primaryCat && n.match.subject === baseSubject.toLowerCase()
+);
+
+// SEO metadata (strictly <= 60 chars title, <= 158 chars description)
+const rawCandidateTitle = `Kolhan University ${departmentName} Syllabus PDF (Sem 1–8)`;
+const pageTitle = isMathsMajor
+  ? 'Kolhan University B.Sc Mathematics Syllabus PDF (Sem 1–8)'
+  : isEnglish
+    ? 'Kolhan University English Syllabus PDF — NEP FYUGP'
+    : rawCandidateTitle.length <= 60
+      ? rawCandidateTitle
+      : `Kolhan University ${departmentName} Syllabus PDF`;
+
+const pageDescription = isMathsMajor
+  ? 'Download official Kolhan University B.Sc Mathematics NEP FYUGP syllabus PDF (Sem 1–8) + Sem 3 MJ-04 Real Analysis & MJ-05 Vectors unit guide, weightage & PYQs.'
+  : `Download official Kolhan University ${departmentName} NEP 2020 FYUGP syllabus PDF (${syllabuses[0]?.semester || 'Sem 1–8'}) for all 37 colleges — marking scheme & PYQs.`;
+
+const pageKeywords = `Kolhan University ${departmentName} syllabus, Kolhan University ${departmentName} syllabus pdf, ${departmentName} NEP FYUGP syllabus Kolhan University, KU ${departmentName} syllabus sem 1 2 3 4`;
+
+// WhatsApp link for sharing revised 2025/2026 PDFs
+const updateShareWa = `https://api.whatsapp.com/send?phone=${notesData.whatsapp}&text=${encodeURIComponent(`Hi KolhanHub! I have an updated 2025/2026 syllabus PDF for ${departmentName} 📚`)}`;
+
+// Visible 3-Question FAQ + synced FAQPage JSON-LD
+const faqItems = [
+  {
+    q: `How do I download the Kolhan University ${departmentName} Syllabus PDF?`,
+    a: `Tap any semester download button above to open the official NEP 2020 FYUGP ${departmentName} syllabus PDF directly without login or fees. It applies to all 37 Kolhan University colleges.`
+  },
+  {
+    q: `What is the exam pattern and passing marks for ${departmentName} in Kolhan University?`,
+    a: `${markingSummary}. Students must score at least 40% in each applicable component (Theory, Internal, and Practical) to pass.`
+  },
+  {
+    q: `Is this ${departmentName} syllabus the same for 2022–2024 and 2025–2026 batches?`,
+    a: isMathsMajor
+      ? 'The 2022, 2023, and 2024 admission batches follow the exact same Mathematics Major syllabus (Sem 1 to 8). From the 2025 batch onwards, Kolhan University revised Sem 1–2 papers — always switch the batch toggle above before studying.'
+      : `These PDFs follow Kolhan University's 2022–2024 NEP 2020 FYUGP syllabus${isMinorDept ? ' (renamed Associated Core / AC from 2025 onwards)' : ''}. If you are in the 2025 or 2026 batch, please verify with your subject teacher whether your department revised Sem 1–2 units.`
+  }
+];
+
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(item => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.a
+    }
+  }))
+});
 ---
 
 <Layout
-  title={isMathsMajor ? 'Kolhan University B.Sc Mathematics Honours Syllabus (Sem 1–8) & Sem 3 MJ-04, MJ-05 Analysis' : `${departmentName} Syllabus`}
-  description={isMathsMajor ? 'Official Kolhan University NEP 2020 FYUGP B.Sc. Mathematics Major syllabus (Sem 1 to 8) with complete Semester 3 MJ-04 Real Analysis & MJ-05 Vectors unit-wise syllabus, weightage, book chapters, repeated topics, and 2023 batch result stats.' : undefined}
+  title={pageTitle}
+  rawTitle={true}
+  description={pageDescription}
+  keywords={pageKeywords}
   activeTab="syllabus"
 >
-  {isMathsMajor && (
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
-  )}
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={faqSchema} />
+    {isMathsMajor && (
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+    )}
+  </Fragment>
 
   <!-- Breadcrumb Navigation -->
-  <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
-    <a href={`${baseUrl}/syllabus`} style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 600; color: var(--text-secondary);">
+  <div style="margin-bottom: 1.1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; font-size: 0.85rem;">
+    <a href={`${baseUrl}/syllabus/`} style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 600; color: var(--text-secondary); text-decoration: none;">
       <ChevronLeft size="16" /> Syllabus Directory
     </a>
     <span style="color: var(--text-tertiary);">/</span>
-    <span style="color: var(--text-primary); font-weight: 500;">{departmentName}</span>
+    <span style="color: var(--text-primary); font-weight: 600;">{departmentName}</span>
   </div>
 
   <!-- Main Department Title -->
-  <div style="margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.5rem;">
-    <h1 style="font-size: 2rem; font-family: var(--font-display); tracking: -0.03em;">{departmentName} Department</h1>
-    <p style="color: var(--text-secondary); max-width: 650px; font-size: 1.05rem;">
+  <div style="margin-bottom: 1.35rem; display: flex; flex-direction: column; gap: 0.4rem;">
+    <h1 style="font-size: clamp(1.38rem, 5vw, 1.95rem); font-family: var(--font-display); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; margin: 0;">
+      Kolhan University {departmentName} Syllabus
+    </h1>
+    <p style="color: var(--text-secondary); max-width: 680px; font-size: 0.9rem; line-height: 1.5; margin: 0;">
       {isMathsMajor
-        ? 'Select your batch below to view official FYUGP syllabus PDFs, interactive Semester 3 (MJ-04 & MJ-05) unit-wise breakdown, weightage analysis, and textbook mapping.'
-        : 'Select the course and semester tabs below to view course modules or download official PDF papers.'}
+        ? 'NEP 2020 FYUGP • Official PDF • All 37 Colleges — Select your batch below for PDFs, Semester 3 (MJ-04 & MJ-05) unit-wise breakdown, weightage, and notes.'
+        : 'NEP 2020 FYUGP • Official PDF • All 37 Colleges (BA / BSc / BCom)'}
     </p>
   </div>
 
@@ -80,51 +189,62 @@ const noteByPaperCode: Record<string, any> = {
       <p style="color: var(--text-secondary);">No syllabus records found for this department.</p>
     </div>
   ) : (
-    <div style="display: flex; flex-direction: column; gap: 2rem;">
+    <div style="display: flex; flex-direction: column; gap: 1.35rem;">
 
       {/* ══════════════════════════════════════════════════════════════════
           BATCH SELECTOR FOR MATHEMATICS MAJOR (2022–2024 vs 2025–2026)
       ══════════════════════════════════════════════════════════════════ */}
       {isMathsMajor && (
-        <div style="background: linear-gradient(135deg, rgba(129,140,248,0.08) 0%, rgba(16,185,129,0.04) 100%); border: 1px solid rgba(129,140,248,0.28); border-radius: var(--radius-sm); padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: 0.75rem;">
+        <div style="background: linear-gradient(135deg, rgba(129,140,248,0.08) 0%, rgba(16,185,129,0.04) 100%); border: 1px solid rgba(129,140,248,0.28); border-radius: var(--radius-sm); padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.7rem;">
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 0.45rem;">
               <span style="font-size: 1rem;">🎓</span>
-              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.04em;">Select Your Admission Batch</span>
+              <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-primary); font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.04em;">Select Your Admission Batch</span>
             </div>
-            <span style="font-size: 0.68rem; font-weight: 700; color: #34d399; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.28); border-radius: 20px; padding: 2px 9px;">Avoid Syllabus Confusion</span>
+            <span style="font-size: 0.66rem; font-weight: 700; color: #34d399; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.28); border-radius: 20px; padding: 2px 9px;">Avoid Syllabus Confusion</span>
           </div>
 
-          <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
-            <button type="button" class="math-batch-btn active" data-batch="2022-2024" style="flex: 1; min-width: 220px; padding: 0.7rem 1rem; border-radius: var(--radius-xs); border: 1px solid #818cf8; background: rgba(129,140,248,0.16); color: var(--text-primary); font-weight: 800; font-size: 0.85rem; cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+          <div style="display: flex; gap: 0.55rem; flex-wrap: wrap;">
+            <button type="button" class="math-batch-btn active" data-batch="2022-2024" style="flex: 1; min-width: min(100%, 220px); padding: 0.68rem 0.9rem; border-radius: var(--radius-xs); border: 1px solid #818cf8; background: rgba(129,140,248,0.16); color: var(--text-primary); font-weight: 800; font-size: 0.82rem; cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
               <span>✅ 2022, 2023 &amp; 2024 Batch (Same Syllabus)</span>
-              <span style="font-size: 0.65rem; background: #818cf8; color: #0b0b12; padding: 2px 7px; border-radius: 12px; font-weight: 800;">Sem 1–8 Live</span>
+              <span style="font-size: 0.64rem; background: #818cf8; color: #0b0b12; padding: 2px 7px; border-radius: 12px; font-weight: 800; white-space: nowrap;">Sem 1–8 Live</span>
             </button>
-            <button type="button" class="math-batch-btn" data-batch="2025-2026" style="flex: 1; min-width: 220px; padding: 0.7rem 1rem; border-radius: var(--radius-xs); border: 1px solid var(--border-color); background: var(--bg-secondary); color: var(--text-secondary); font-weight: 700; font-size: 0.85rem; cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+            <button type="button" class="math-batch-btn" data-batch="2025-2026" style="flex: 1; min-width: min(100%, 220px); padding: 0.68rem 0.9rem; border-radius: var(--radius-xs); border: 1px solid var(--border-color); background: var(--bg-secondary); color: var(--text-secondary); font-weight: 700; font-size: 0.82rem; cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
               <span>🆕 2025 &amp; 2026 Batch (Updated Syllabus)</span>
-              <span style="font-size: 0.65rem; background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); padding: 2px 7px; border-radius: 12px; font-weight: 700;">Revised NEP</span>
+              <span style="font-size: 0.64rem; background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); padding: 2px 7px; border-radius: 12px; font-weight: 700; white-space: nowrap;">Revised NEP</span>
             </button>
           </div>
 
-          <div id="batch-note-2022-2024" style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.55;">
+          <div id="batch-note-2022-2024" style="font-size: 0.77rem; color: var(--text-secondary); line-height: 1.55;">
             <strong style="color: #818cf8;">Note for 2022, 2023 &amp; 2024 batches:</strong> Your syllabus for Semester 1 to Semester 8 is <strong>100% identical</strong>. Semester 3 has two Major papers: <strong>MJ-04 (Real Analysis)</strong> and <strong>MJ-05 (Vectors)</strong>. Scroll down for the full interactive Semester 3 syllabus, unit weightage, book chapters, and 2023 batch result statistics!
           </div>
-          <div id="batch-note-2025-2026" style="display: none; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.55; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-xs); padding: 0.65rem 0.85rem;">
+          <div id="batch-note-2025-2026" style="display: none; font-size: 0.77rem; color: var(--text-secondary); line-height: 1.55; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-xs); padding: 0.65rem 0.85rem;">
             <strong style="color: #fbbf24;">⚠️ Important for 2025 &amp; 2026 batches:</strong> Kolhan University revised the Mathematics Major syllabus from the 2025 admission batch onwards (Semester 1 &amp; Semester 2 papers have changed compared to 2022–2024 batches). Do not follow the old 2022–2024 Semester 1 &amp; 2 syllabus. We are adding the separate 2025–2026 batch text breakdown soon!
+          </div>
+
+          <!-- Sem 3 Quick-Jump Banner (Connects Homepage Maths Major Notes Funnel) -->
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.55rem; flex-wrap: wrap; border-top: 1px solid rgba(129,140,248,0.22); padding-top: 0.65rem;">
+            <a href="#maths-sem3-deep-section" style="font-size: 0.78rem; font-weight: 800; color: #818cf8; text-decoration: none;">
+              ⚡ Sem 3 Student? Jump to MJ-04 &amp; MJ-05 Interactive Syllabus, Weightage &amp; Notes ↓
+            </a>
+            <a href={`${baseUrl}/pyqs/major/mathematics/3/`} style="font-size: 0.72rem; font-weight: 700; color: #34d399; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 3px 10px; text-decoration: none; white-space: nowrap;">
+              📄 Sem 3 Solved PYQs →
+            </a>
           </div>
         </div>
       )}
-      
-      <!-- Multi-Course Subselector (e.g., Arts: History vs Political Science) -->
+
+      <!-- Multi-Course Subselector -->
       {syllabuses.length > 1 && (
         <div style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 0.5rem;">
           <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; padding-left: 0.5rem;">Select Course Branch:</span>
           <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
             {syllabuses.map((syl, idx) => (
-              <button 
+              <button
+                type="button"
                 class={`btn btn-sm course-tab-btn ${idx === 0 ? 'btn-primary' : 'btn-secondary'}`}
                 data-course-id={syl.id}
-                style="flex: 1; min-width: 200px; text-align: left; justify-content: flex-start; gap: 0.5rem; font-size: 0.85rem;"
+                style="flex: 1; min-width: min(100%, 200px); text-align: left; justify-content: flex-start; gap: 0.5rem; font-size: 0.85rem;"
               >
                 <FileText size="14" /> {syl.title.replace(/ Syllabus \(FYUGP NEP-2020\)/gi, '')}
               </button>
@@ -135,30 +255,38 @@ const noteByPaperCode: Record<string, any> = {
 
       <!-- Syllabus Containers -->
       {syllabuses.map((syl, courseIdx) => {
+        const urls: string[] = (syl as any).downloadUrls || [];
+        const customLabels: string[] = (syl as any).downloadLabels || [];
         return (
-          <div 
-            class="course-container animate-fade-in" 
+          <div
+            class="course-container animate-fade-in"
             id={`course-section-${syl.id}`}
             style={`display: ${courseIdx === 0 ? 'block' : 'none'};`}
           >
             <!-- Course Header Info -->
-            <div class="card" style="margin-bottom: 1.5rem; background-color: var(--bg-secondary);">
-              <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; font-family: var(--font-display);">{syl.title}</h2>
-              <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">{syl.description}</p>
-              
-              <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.8rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); padding-top: 0.875rem;">
+            <div class="card" style="background-color: var(--bg-secondary);">
+              <h2 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 0.45rem; font-family: var(--font-display);">{syl.title}</h2>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.55; margin: 0 0 0.85rem;">{syl.description}</p>
+
+              <div style="display: flex; flex-wrap: wrap; gap: 0.65rem 0.9rem; font-size: 0.78rem; color: var(--text-secondary); border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
                 <div style="display: flex; align-items: center; gap: 0.25rem;">
                   <Calendar size="14" style="color: var(--accent-primary);" /> <span>Batch: {isMathsMajor ? '2022, 2023 & 2024 Batches' : syl.effectiveFrom}</span>
                 </div>
                 <div>•</div>
                 <div>Semester Range: {syl.semester}</div>
                 <div>•</div>
-                <div>Avg Size: {syl.fileSize}</div>
+                <div>File Info: {syl.fileSize}</div>
               </div>
-              {/* Single legacy downloadUrl (Botany, Geography) */}
-              {(syl as any).downloadUrl && !(syl as any).downloadUrls && (
-                <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.875rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-                  <a 
+
+              {/* Verified Marking Scheme Badge */}
+              <div style="margin-top: 0.75rem; font-size: 0.76rem; color: var(--text-secondary); background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.2); border-radius: var(--radius-xs); padding: 0.5rem 0.75rem; line-height: 1.45;">
+                📊 <strong style="color: var(--text-primary);">Exam Pattern:</strong> {markingSummary}
+              </div>
+
+              {/* Single legacy downloadUrl */}
+              {(syl as any).downloadUrl && urls.length === 0 && (
+                <div style="margin-top: 0.9rem; border-top: 1px solid var(--border-color); padding-top: 0.85rem; display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap;">
+                  <a
                     href={(syl as any).downloadUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -166,45 +294,156 @@ const noteByPaperCode: Record<string, any> = {
                     style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem;"
                     onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${syl.title} Full Syllabus (Sem 1-8)', category: '${syl.department}', semester: 'All', department: '${syl.department}' });`}
                   >
-                    <Download size="14" /> Download Full Syllabus (Sem 1-8)
+                    <Download size="14" /> Download Full Syllabus (Sem 1–8)
                   </a>
-                  <span style="font-size: 0.75rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.25rem;">
+                  <span style="font-size: 0.74rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.25rem;">
                     <Download size="12" /> <span class="live-paper-download-count" data-subject-title={`${syl.title} Full Syllabus (Sem 1-8)`}>—</span> downloads
                   </span>
                 </div>
               )}
-              {/* Multiple downloadUrls — one button per file */}
-              {(syl as any).downloadUrls && (syl as any).downloadUrls.length > 0 && (
-                <div style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.875rem; display: flex; flex-direction: column; gap: 0.75rem;">
-                  {((syl as any).downloadUrls as string[]).map((url: string, idx: number) => {
-                    const total = ((syl as any).downloadUrls as string[]).length;
-                    const trackingLabel = total === 1
+
+              {/* Multiple / Array downloadUrls — reads custom downloadLabels */}
+              {urls.length > 0 && (
+                <div style={`margin-top: 0.9rem; border-top: 1px solid var(--border-color); padding-top: 0.85rem; display: grid; grid-template-columns: ${urls.length > 3 ? 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))' : 'minmax(0, 1fr)'}; gap: 0.65rem;`}>
+                  {urls.map((url: string, idx: number) => {
+                    const total = urls.length;
+                    const legacyTrackingLabel = total === 1
                       ? 'Download Full Syllabus (Sem 1-8)'
                       : `Download Part ${idx + 1}`;
+                    const displayLabel = customLabels[idx] || (total === 1 ? 'Download Full Syllabus (Sem 1–8)' : `Download Part ${idx + 1}`);
                     return (
-                      <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.65rem; flex-wrap: wrap; background: rgba(0,0,0,0.12); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.5rem 0.65rem;">
                         <a
                           href={url}
                           target="_blank"
                           rel="noopener noreferrer"
                           class="btn btn-outline btn-sm"
-                          style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem;"
-                          onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${syl.title} ${trackingLabel}', category: '${syl.department}', semester: 'All', department: '${syl.department}' });`}
+                          style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem;"
+                          onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${syl.title} ${legacyTrackingLabel}', category: '${syl.department}', semester: 'All', department: '${syl.department}' });`}
                         >
-                          <Download size="14" /> {trackingLabel}
+                          <Download size="14" /> {displayLabel}
                         </a>
-                        <span style="font-size: 0.75rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.25rem;">
-                          <Download size="12" /> <span class="live-paper-download-count" data-subject-title={`${syl.title} ${trackingLabel}`}>—</span> downloads
+                        <span style="font-size: 0.72rem; color: var(--text-tertiary); display: flex; align-items: center; gap: 0.25rem;">
+                          <Download size="12" /> <span class="live-paper-download-count" data-subject-title={`${syl.title} ${legacyTrackingLabel}`}>—</span>
                         </span>
                       </div>
                     );
                   })}
                 </div>
               )}
+
+              {/* Honest 2025/2026 Batch Check Strip (Non-Maths subjects) */}
+              {!isMathsMajor && (
+                <div style="margin-top: 0.9rem; display: flex; align-items: center; justify-content: space-between; gap: 0.55rem; flex-wrap: wrap; background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.22); border-radius: var(--radius-xs); padding: 0.55rem 0.75rem; font-size: 0.74rem; color: var(--text-secondary); line-height: 1.45;">
+                  <span>
+                    ℹ️ Applies to <strong>2022–2024 NEP FYUGP</strong> batches{isMinorDept ? ' (renamed AC from 2025)' : ''}. <strong>2025/2026 batch?</strong> Confirm if your department revised Sem 1–2 papers.
+                  </span>
+                  <a href={updateShareWa} target="_blank" rel="noopener noreferrer" style="font-weight: 700; color: #fbbf24; text-decoration: none; white-space: nowrap;">
+                    Share updated 2025/26 PDF →
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         );
       })}
+
+      {/* ══════════════════════════════════════════════════════════════════
+          CROSS-LINK CARD: MATCHING PYQs, NOTES & SIBLING MAJOR/MINOR
+      ══════════════════════════════════════════════════════════════════ */}
+      {(primaryPyqs.sems.length > 0 || altPyqs.sems.length > 0 || mdcPyqs.sems.length > 0 || siblingSlug || (!isMathsMajor && deptNotes.length > 0)) ? (
+        <section aria-label={`Practice ${departmentName} PYQs and related resources`} class="card" style="background: linear-gradient(135deg, rgba(16,185,129,0.05) 0%, rgba(99,102,241,0.04) 100%); border-color: rgba(16,185,129,0.24); display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+            <h2 style="font-size: 1rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
+              📝 Practice {departmentName} Previous Year Papers (PYQs)
+            </h2>
+            <a href={`${baseUrl}/pyqs/`} style="font-size: 0.74rem; font-weight: 700; color: #34d399; text-decoration: none;">
+              All PYQs →
+            </a>
+          </div>
+
+          {primaryPyqs.sems.length > 0 && (
+            <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+              <div style="font-size: 0.74rem; color: var(--text-secondary);">
+                {departmentName} ({primaryPyqs.count} {primaryPyqs.count === 1 ? 'paper' : 'papers'}):
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                {primaryPyqs.sems.map(sem => (
+                  <a
+                    href={pyqUrl(primaryCat, baseSubject.toLowerCase(), sem)}
+                    style="font-size: 0.74rem; font-weight: 700; color: #34d399; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 4px 11px; text-decoration: none;"
+                  >
+                    Sem {sem} PYQs →
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {altPyqs.sems.length > 0 && (
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;">
+              <span style="font-size: 0.74rem; color: var(--text-secondary);">{altCat === 'minor' ? 'Minor / AC' : 'Major'} PYQs:</span>
+              {altPyqs.sems.map(sem => (
+                <a
+                  href={pyqUrl(altCat, baseSubject.toLowerCase(), sem)}
+                  style="font-size: 0.72rem; font-weight: 700; color: #818cf8; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.28); border-radius: 20px; padding: 3px 10px; text-decoration: none;"
+                >
+                  {altCat === 'minor' ? 'Minor' : 'Major'} Sem {sem} →
+                </a>
+              ))}
+            </div>
+          )}
+
+          {mdcPyqs.sems.length > 0 && (
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;">
+              <span style="font-size: 0.74rem; color: var(--text-secondary);">MDC PYQs:</span>
+              {mdcPyqs.sems.map(sem => (
+                <a
+                  href={pyqUrl('mdc', baseSubject.toLowerCase(), sem)}
+                  style="font-size: 0.72rem; font-weight: 700; color: #fbbf24; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.28); border-radius: 20px; padding: 3px 10px; text-decoration: none;"
+                >
+                  MDC Sem {sem} →
+                </a>
+              ))}
+            </div>
+          )}
+
+          {siblingSlug && (
+            <div style="border-top: 1px solid var(--border-color); padding-top: 0.6rem;">
+              <a href={`${baseUrl}/syllabus/${siblingSlug}/`} style="font-size: 0.76rem; font-weight: 700; color: #818cf8; text-decoration: none;">
+                📘 Looking for {siblingDeptName} Syllabus? Open {siblingDeptName} →
+              </a>
+            </div>
+          )}
+
+          {!isMathsMajor && deptNotes.length > 0 && (
+            <div style="border-top: 1px solid var(--border-color); padding-top: 0.65rem; display: flex; flex-direction: column; gap: 0.5rem;">
+              {deptNotes.map(n => (
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap;">
+                  <span style={`font-size: 0.8rem; font-weight: 700; color: ${n.color};`}>{n.emoji} {n.title} — Handwritten Notes</span>
+                  <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
+                    <a href={n.demoUrl} target="_blank" rel="noopener noreferrer" style={`font-size: 0.72rem; font-weight: 700; color: ${n.color}; border: 1px solid ${n.color}66; border-radius: 20px; padding: 4px 10px; text-decoration: none;`}>
+                      Free Sample
+                    </a>
+                    <a href={notesWaLink(`${n.title} notes (${n.course})`, n.price)} target="_blank" rel="noopener noreferrer" style={`font-size: 0.72rem; font-weight: 800; color: #0b0b12; background: ${n.color}; border-radius: 20px; padding: 4px 10px; text-decoration: none;`}>
+                      Get Notes
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      ) : (
+        <div class="card" style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; background: var(--bg-secondary);">
+          <span style="font-size: 0.82rem; color: var(--text-secondary);">
+            📝 Preparing for exams? Browse all 220+ Kolhan University Previous Year Question Papers.
+          </span>
+          <a href={`${baseUrl}/pyqs/`} style="font-size: 0.78rem; font-weight: 700; color: #34d399; text-decoration: none; white-space: nowrap;">
+            Browse All PYQs →
+          </a>
+        </div>
+      )}
 
       {/* ══════════════════════════════════════════════════════════════════
           DEEP INTERACTIVE SYLLABUS + EXAM ANALYSIS (SEMESTER 3: MJ-04 & MJ-05)
@@ -226,7 +465,7 @@ const noteByPaperCode: Record<string, any> = {
                   Unit-wise syllabus topics, marks weightage from past exams, what to study vs skip, textbook chapter mapping, and 2023 batch result statistics.
                 </p>
               </div>
-              <a href={`${baseUrl}/pyqs/major/mathematics/3`} style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 800; color: #0b0b12; background: #34d399; border-radius: 20px; padding: 7px 14px; text-decoration: none; white-space: nowrap;">
+              <a href={`${baseUrl}/pyqs/major/mathematics/3/`} style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 800; color: #0b0b12; background: #34d399; border-radius: 20px; padding: 7px 14px; text-decoration: none; white-space: nowrap;">
                 📝 View Sem 3 Solved PYQs →
               </a>
             </div>
@@ -238,7 +477,7 @@ const noteByPaperCode: Record<string, any> = {
                   type="button"
                   class={`sem3-paper-tab ${pIdx === 0 ? 'active' : ''}`}
                   data-paper-code={paper.paperCode}
-                  style={`flex: 1; min-width: 220px; padding: 0.7rem 1rem; border-radius: var(--radius-xs); border: 1px solid ${pIdx === 0 ? '#818cf8' : 'var(--border-color)'}; background: ${pIdx === 0 ? 'rgba(129,140,248,0.18)' : 'var(--bg-secondary)'}; color: var(--text-primary); font-weight: 800; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;`}
+                  style={`flex: 1; min-width: min(100%, 220px); padding: 0.7rem 1rem; border-radius: var(--radius-xs); border: 1px solid ${pIdx === 0 ? '#818cf8' : 'var(--border-color)'}; background: ${pIdx === 0 ? 'rgba(129,140,248,0.18)' : 'var(--bg-secondary)'}; color: var(--text-primary); font-weight: 800; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;`}
                 >
                   <span>📘 {paper.paperCode}: {paper.paperTitle}</span>
                   <span style="font-size: 0.68rem; color: var(--text-secondary); font-weight: 600;">{paper.credits} Credits · {paper.fullMarks.total} Marks</span>
@@ -257,7 +496,7 @@ const noteByPaperCode: Record<string, any> = {
                 style={`display: ${pIdx === 0 ? 'flex' : 'none'}; flex-direction: column; gap: 1.35rem;`}
               >
                 <!-- 1. Quick Paper Overview + 2023 Batch Result Analytics -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1rem;">
                   <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.6rem;">
                     <div style="font-size: 0.72rem; font-weight: 800; color: #818cf8; text-transform: uppercase; letter-spacing: 0.05em;">📋 Paper Structure ({paper.paperCode})</div>
                     <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-primary);">{paper.paperCode} — {paper.paperTitle}</div>
@@ -273,11 +512,11 @@ const noteByPaperCode: Record<string, any> = {
 
                   <!-- 2023 Batch Result Analysis Card -->
                   <div class="card" style="background: linear-gradient(135deg, rgba(16,185,129,0.06) 0%, var(--bg-secondary) 100%); border-color: rgba(16,185,129,0.28); display: flex; flex-direction: column; gap: 0.6rem;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
                       <span style="font-size: 0.72rem; font-weight: 800; color: #34d399; text-transform: uppercase; letter-spacing: 0.05em;">📊 2023 Batch Sem 3 Result Stats</span>
                       <span style="font-size: 0.62rem; color: var(--text-tertiary);">{paper.resultStats.scope}</span>
                     </div>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; text-align: center;">
+                    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; text-align: center;">
                       <div style="background: rgba(0,0,0,0.2); padding: 0.45rem; border-radius: var(--radius-xs);">
                         <div style="font-size: 1rem; font-weight: 850; color: #34d399;">{paper.resultStats.passPercentage}%</div>
                         <div style="font-size: 0.65rem; color: var(--text-tertiary);">Pass Rate ({paper.resultStats.passedStudents}/{paper.resultStats.totalStudents})</div>
@@ -337,7 +576,7 @@ const noteByPaperCode: Record<string, any> = {
                         </div>
 
                         <!-- Must-Do vs Can Skip Grid -->
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 0.75rem;">
                           <div style="background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.22); border-radius: var(--radius-xs); padding: 0.75rem 0.9rem;">
                             <div style="font-size: 0.72rem; font-weight: 800; color: #34d399; margin-bottom: 0.35rem;">🔥 Must-Do for Exam (Repeated)</div>
                             <ul style="margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5;">
@@ -435,7 +674,7 @@ const noteByPaperCode: Record<string, any> = {
                          style={`display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.74rem; font-weight: 800; color: #0b0b12; text-decoration: none; background: ${noteItem.color}; border-radius: 20px; padding: 6px 12px;`}>
                         <MessageCircle size="13" /> Get Full Notes
                       </a>
-                      <a href={`${baseUrl}/pyqs/major/mathematics/3`}
+                      <a href={`${baseUrl}/pyqs/major/mathematics/3/`}
                          style="display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.74rem; font-weight: 700; color: var(--text-primary); text-decoration: none; background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 20px; padding: 6px 12px;">
                         📄 Solved PYQs →
                       </a>
@@ -443,7 +682,7 @@ const noteByPaperCode: Record<string, any> = {
                   </div>
                 )}
 
-                <!-- 6. FAQs -->
+                <!-- 6. Paper-Specific FAQs -->
                 <div class="card" style="background: var(--bg-secondary); display: flex; flex-direction: column; gap: 0.65rem;">
                   <h3 style="font-size: 1rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
                     ❓ Frequently Asked Questions — {paper.paperCode} ({paper.paperTitle})
@@ -463,11 +702,67 @@ const noteByPaperCode: Record<string, any> = {
         </div>
       )}
 
+      {/* ══════════════════════════════════════════════════════════════════
+          VISIBLE FAQ ACCORDION (Synced 1:1 with FAQPage JSON-LD)
+      ══════════════════════════════════════════════════════════════════ */}
+      <section aria-labelledby="dept-faq-heading">
+        <h2 id="dept-faq-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+          ❓ Frequently Asked Questions — {departmentName} Syllabus
+        </h2>
+        <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+          {faqItems.map((item, idx) => (
+            <details open={idx === 0} style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.7rem 0.9rem; background: var(--bg-secondary);">
+              <summary style="font-size: 0.83rem; font-weight: 700; color: var(--text-primary); cursor: pointer;">{item.q}</summary>
+              <p style="font-size: 0.79rem; color: var(--text-secondary); line-height: 1.55; margin: 0.5rem 0 0; padding-top: 0.5rem; border-top: 1px solid var(--border-color);">{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════
+          2×2 STUDENT TOOLS STRIP
+      ══════════════════════════════════════════════════════════════════ */}
+      <section aria-labelledby="dept-tools-heading" style="margin-bottom: 0.5rem;">
+        <h2 id="dept-tools-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+          🛠️ Student Tools
+        </h2>
+        <div class="dept-tools-grid">
+          <a href={`${baseUrl}/pyqs/`} class="card dept-tool-card">
+            <span style="font-size: 1.05rem;">📝</span>
+            <div style="min-width: 0;">
+              <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">Previous Year Papers</div>
+              <div style="font-size: 0.68rem; color: var(--text-tertiary);">Sem 1–7 PDFs</div>
+            </div>
+          </a>
+          <a href={`${baseUrl}/syllabus/`} class="card dept-tool-card">
+            <span style="font-size: 1.05rem;">📖</span>
+            <div style="min-width: 0;">
+              <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">All Syllabi</div>
+              <div style="font-size: 0.68rem; color: var(--text-tertiary);">Major, Minor, MDC, SEC</div>
+            </div>
+          </a>
+          <a href={`${baseUrl}/results/`} class="card dept-tool-card">
+            <span style="font-size: 1.05rem;">📊</span>
+            <div style="min-width: 0;">
+              <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">University Results</div>
+              <div style="font-size: 0.68rem; color: var(--text-tertiary);">All 37 Colleges</div>
+            </div>
+          </a>
+          <a href={`${baseUrl}/cgpa/`} class="card dept-tool-card">
+            <span style="font-size: 1.05rem;">🧮</span>
+            <div style="min-width: 0;">
+              <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">CGPA Calculator</div>
+              <div style="font-size: 0.68rem; color: var(--text-tertiary);">SGPA to %</div>
+            </div>
+          </a>
+        </div>
+      </section>
+
     </div>
   )}
 
   <script>
-    // 1. Course Tab Branch selectors (History vs Pol Sci)
+    // 1. Course Tab Branch selectors
     const courseBtns = document.querySelectorAll('.course-tab-btn');
     const courseContainers = document.querySelectorAll('.course-container');
 
@@ -537,6 +832,19 @@ const noteByPaperCode: Record<string, any> = {
   </script>
 
   <style>
+    .dept-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+    .dept-tool-card {
+      padding: 0.72rem 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+      min-width: 0;
+    }
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }

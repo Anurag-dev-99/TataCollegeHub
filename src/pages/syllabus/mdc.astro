@@ -1,0 +1,306 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import mdcData from '../../../public/data/mdc.json';
+import pyqsData from '../../../public/data/pyqs.json';
+import markingSchemes from '../../../public/data/paper_marking_schemes.json';
+import { ChevronLeft } from '@lucide/astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const categories = ["Science", "Arts & Humanities", "Commerce & Business", "Languages"];
+const shortCatLabel: Record<string, string> = {
+  "Science": "Science",
+  "Arts & Humanities": "Arts",
+  "Commerce & Business": "Commerce",
+  "Languages": "Languages",
+};
+
+const sortedMdc = [...mdcData].sort((a, b) => a.name.localeCompare(b.name));
+const mdcScheme = markingSchemes.schemes['75_THEORY_ONLY'];
+
+// Group available MDC PYQs by subject
+const mdcPyqMap = new Map<string, number[]>();
+pyqsData.forEach((p: any) => {
+  if (p.category === 'MDC' && p.downloadUrl && p.type !== 'notes') {
+    const s = p.subject;
+    if (!mdcPyqMap.has(s)) mdcPyqMap.set(s, []);
+    const sems = mdcPyqMap.get(s)!;
+    if (!sems.includes(Number(p.semester))) sems.push(Number(p.semester));
+  }
+});
+const mdcPyqSubjects = Array.from(mdcPyqMap.entries())
+  .map(([subject, sems]) => ({ subject, sems: sems.sort((a, b) => a - b) }))
+  .sort((a, b) => a.subject.localeCompare(b.subject));
+
+const faqItems = [
+  {
+    q: 'What are the MDC subject selection rules in Kolhan University NEP FYUGP?',
+    a: 'You must pick an MDC subject from outside your Major/Minor disciplines that was NOT on your 10+2 marksheet and NOT already taken in previous semesters. Commerce students cannot pick a Commerce subject as MDC-3.'
+  },
+  {
+    q: 'What is the exam pattern and passing marks for MDC papers?',
+    a: `All Kolhan University MDC papers (Sem 1 to 3) carry ${mdcScheme.fullMarks.total} marks (Theory only, no internal or practical). Minimum passing mark is ${mdcScheme.passMarks.total} out of ${mdcScheme.fullMarks.total} (40%).`
+  },
+  {
+    q: 'Is the MDC syllabus the same for Sem 1, Sem 2, and Sem 3?',
+    a: 'Yes! When you study an MDC subject in Sem 1, Sem 2, or Sem 3, it uses the same introductory syllabus PDF — so you can also practice PYQs from all three semesters.'
+  }
+];
+
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(item => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a }
+  }))
+});
+---
+
+<Layout
+  title="Kolhan University MDC Syllabus PDF (All 32 Subjects)"
+  rawTitle={true}
+  description="Download official Kolhan University NEP FYUGP MDC (Multidisciplinary Course) syllabus PDFs for all 32 subjects across Arts, Science & Commerce + MDC PYQs."
+  keywords="Kolhan University MDC syllabus, Kolhan University MDC syllabus pdf, Kolhan University multidisciplinary course syllabus, KU MDC Sem 1 2 3 syllabus"
+  activeTab="syllabus"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={faqSchema} />
+  </Fragment>
+
+  <div style="margin-bottom: 1.1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; font-size: 0.85rem;">
+    <a href={`${baseUrl}/syllabus/`} style="display: inline-flex; align-items: center; gap: 0.25rem; font-weight: 600; color: var(--text-secondary); text-decoration: none;">
+      <ChevronLeft size="16" /> Syllabus Directory
+    </a>
+    <span style="color: var(--text-tertiary);">/</span>
+    <span style="color: var(--text-primary); font-weight: 600;">MDC Syllabus</span>
+  </div>
+
+  <div style="margin-bottom: 1.15rem; display: flex; flex-direction: column; gap: 0.4rem;">
+    <h1 style="font-size: clamp(1.38rem, 5vw, 1.9rem); font-family: var(--font-display); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; margin: 0;">
+      Kolhan University MDC Syllabus PDF
+    </h1>
+    <p style="color: var(--text-secondary); font-size: 0.86rem; line-height: 1.45; margin: 0;">
+      NEP 2020 FYUGP &bull; All {sortedMdc.length} Subjects &bull; Sem 1–3 &bull; All 37 Colleges
+    </p>
+    <div style="margin-top: 0.25rem; font-size: 0.75rem; color: var(--text-secondary); background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius-xs); padding: 0.45rem 0.7rem; width: fit-content;">
+      📊 <strong style="color: #fbbf24;">Exam Pattern:</strong> {mdcScheme.fullMarks.total} Marks (Theory Only) &bull; Pass: {mdcScheme.passMarks.total} &bull; Same syllabus for Sem 1, 2 &amp; 3
+    </div>
+  </div>
+
+  <!-- All 32 MDC Subjects (Visible SSR HTML) -->
+  <section class="card" style="background: var(--bg-secondary); padding: 1rem; margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;">
+    <div id="mdc-page-tabs" class="mdc-pill-row">
+      <button type="button" class="btn btn-secondary mdc-p-tab mdc-pill active" data-category="all">
+        All ({sortedMdc.length})
+      </button>
+      {categories.map(cat => (
+        <button type="button" class="btn btn-secondary mdc-p-tab mdc-pill" data-category={cat}>
+          {shortCatLabel[cat] || cat} ({sortedMdc.filter(i => i.category === cat).length})
+        </button>
+      ))}
+    </div>
+
+    <div style="position: relative; display: flex; align-items: center;">
+      <input type="text" id="mdc-page-search" class="form-input" placeholder="Search MDC subjects..." style="height: 35px; padding-left: 2rem; font-size: 0.82rem; width: 100%; border-radius: var(--radius-xs);" />
+      <span style="position: absolute; left: 0.65rem; color: var(--text-tertiary); font-size: 0.85rem;">🔍</span>
+    </div>
+
+    <div id="mdc-page-grid" class="mdc-compact-grid">
+      {sortedMdc.map(item => (
+        <a
+          href={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="card card-interactive mdc-p-item mdc-compact-card"
+          data-name={item.name.toLowerCase()}
+          data-category={item.category}
+          onclick={`if(window.trackDownload) window.trackDownload('syllabus', { subject: '${item.name}', category: 'MDC', semester: '${item.semester || 'Unknown'}', department: 'MDC' });`}
+        >
+          <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+            <span style="font-weight: 700; font-size: 0.82rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title={item.name}>
+              {item.name}
+            </span>
+            <span style="font-size: 0.66rem; color: var(--text-secondary);">
+              {shortCatLabel[item.category] || item.category}
+            </span>
+          </div>
+          <span style="color: var(--accent-warning); font-size: 0.9rem; margin-left: 0.35rem; flex-shrink: 0;">📥</span>
+        </a>
+      ))}
+    </div>
+
+    <div id="mdc-page-empty" style="display: none; text-align: center; padding: 1.5rem 0.5rem; color: var(--text-secondary); font-size: 0.86rem;">
+      No matching MDC subjects found.
+    </div>
+  </section>
+
+  <!-- Matching MDC PYQs Cross-Links -->
+  <section class="card" style="background: linear-gradient(135deg, rgba(245,158,11,0.05) 0%, rgba(99,102,241,0.04) 100%); border-color: rgba(245,158,11,0.24); margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.7rem;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+      <h2 style="font-size: 1rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--text-primary);">
+        📝 Practice MDC Previous Year Papers (PYQs)
+      </h2>
+      <a href={`${baseUrl}/pyqs/#mdc-pyq-trigger`} style="font-size: 0.74rem; font-weight: 700; color: #fbbf24; text-decoration: none;">
+        All MDC PYQs →
+      </a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 0.55rem;">
+      {mdcPyqSubjects.map(({ subject, sems }) => (
+        <div style="background: rgba(0,0,0,0.16); border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.55rem 0.7rem; display: flex; flex-direction: column; gap: 0.35rem; min-width: 0;">
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">{subject}</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
+            {sems.map(sem => (
+              <a
+                href={`${baseUrl}/pyqs/mdc/${encodeURI(subject.toLowerCase())}/${sem}/`}
+                style="font-size: 0.68rem; font-weight: 700; color: #fbbf24; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; padding: 2px 8px; text-decoration: none;"
+              >
+                Sem {sem}
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Visible FAQ Accordion -->
+  <section aria-labelledby="mdc-faq-heading" style="margin-bottom: 1.25rem;">
+    <h2 id="mdc-faq-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+      ❓ Frequently Asked Questions — MDC
+    </h2>
+    <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+      {faqItems.map((item, idx) => (
+        <details open={idx === 0} style="border: 1px solid var(--border-color); border-radius: var(--radius-xs); padding: 0.7rem 0.9rem; background: var(--bg-secondary);">
+          <summary style="font-size: 0.83rem; font-weight: 700; color: var(--text-primary); cursor: pointer;">{item.q}</summary>
+          <p style="font-size: 0.79rem; color: var(--text-secondary); line-height: 1.55; margin: 0.5rem 0 0; padding-top: 0.5rem; border-top: 1px solid var(--border-color);">{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- 2×2 Student Tools Strip -->
+  <section aria-labelledby="mdc-tools-heading" style="margin-bottom: 0.5rem;">
+    <h2 id="mdc-tools-heading" style="font-size: 0.98rem; font-weight: 800; font-family: var(--font-display); margin: 0 0 0.65rem; color: var(--text-primary);">
+      🛠️ Student Tools
+    </h2>
+    <div class="mdc-tools-grid">
+      <a href={`${baseUrl}/pyqs/`} class="card mdc-tool-card">
+        <span style="font-size: 1.05rem;">📝</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">Previous Year Papers</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">Sem 1–7 PDFs</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/syllabus/`} class="card mdc-tool-card">
+        <span style="font-size: 1.05rem;">📖</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">All Syllabi</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">Major, Minor, AEC, VAC</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/results/`} class="card mdc-tool-card">
+        <span style="font-size: 1.05rem;">📊</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">University Results</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">All 37 Colleges</div>
+        </div>
+      </a>
+      <a href={`${baseUrl}/cgpa/`} class="card mdc-tool-card">
+        <span style="font-size: 1.05rem;">🧮</span>
+        <div style="min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">CGPA Calculator</div>
+          <div style="font-size: 0.68rem; color: var(--text-tertiary);">SGPA to %</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <style>
+    .mdc-pill-row {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 0.35rem;
+      padding-bottom: 0.15rem;
+      scrollbar-width: none;
+    }
+    .mdc-pill-row::-webkit-scrollbar { display: none; }
+    .mdc-pill {
+      height: 31px;
+      font-size: 0.75rem;
+      padding: 0 0.75rem;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .mdc-p-tab.active {
+      background-color: rgba(245, 158, 11, 0.14) !important;
+      color: var(--accent-warning) !important;
+      border-color: var(--accent-warning) !important;
+    }
+    .mdc-compact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.5rem;
+    }
+    @media (min-width: 640px) {
+      .mdc-compact-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    .mdc-compact-card {
+      padding: 0.6rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: var(--radius-xs);
+      text-decoration: none;
+      color: inherit;
+      min-width: 0;
+    }
+    .mdc-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem;
+    }
+    .mdc-tool-card {
+      padding: 0.72rem 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+      min-width: 0;
+    }
+  </style>
+
+  <script>
+    const tabs = document.querySelectorAll('.mdc-p-tab');
+    const search = document.getElementById('mdc-page-search') as HTMLInputElement | null;
+    const items = document.querySelectorAll('.mdc-p-item') as NodeListOf<HTMLElement>;
+    const empty = document.getElementById('mdc-page-empty');
+    let activeCat = 'all';
+    let query = '';
+    const applyFilter = () => {
+      let count = 0;
+      items.forEach(el => {
+        const name = el.getAttribute('data-name') || '';
+        const cat = el.getAttribute('data-category') || '';
+        const show = (activeCat === 'all' || cat === activeCat) && name.includes(query);
+        el.style.display = show ? 'flex' : 'none';
+        if (show) count++;
+      });
+      if (empty) empty.style.display = count === 0 ? 'block' : 'none';
+    };
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      t.classList.add('active');
+      activeCat = t.getAttribute('data-category') || 'all';
+      applyFilter();
+    }));
+    search?.addEventListener('input', () => {
+      query = search.value.toLowerCase().trim();
+      applyFilter();
+    });
+  </script>
+</Layout>
